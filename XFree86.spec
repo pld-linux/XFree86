@@ -11,11 +11,11 @@ Release:	10
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
-Group(fr):	X11/XFree86
-Group(tr):	X11/XFree86
-Group(pt_BR):	X11/XFree86
 Group(es):	X11/XFree86
+Group(fr):	X11/XFree86
+Group(pl):	X11/XFree86
+Group(pt_BR):	X11/XFree86
+Group(tr):	X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.1.0/source/X410src-1.tgz
 Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source2:	xdm.pamd
@@ -164,33 +164,38 @@ kartýnýzý sürmek için gerekli olan X sunucusu bu pakete dahil
 deðildir.
 
 %description -l pt_BR
-X Window é uma interface gráfica completa com múltiplas janelas, múltiplos
-clientes e diferentes estilos de janelas. É usado na maioria das plataformas
-Unix, e clientes também podem rodar em outros sistemas de janelas populares.  O
-protocolo X permite que aplicações possam rodar tanto na máquina local como
-através da rede, provendo flexibilidade em implementações cliente/servidor.
+X Window é uma interface gráfica completa com múltiplas janelas,
+múltiplos clientes e diferentes estilos de janelas. É usado na maioria
+das plataformas Unix, e clientes também podem rodar em outros sistemas
+de janelas populares. O protocolo X permite que aplicações possam
+rodar tanto na máquina local como através da rede, provendo
+flexibilidade em implementações cliente/servidor.
 
-Este pacote contém as fontes básicas, programas e documentação para uma estação
-de trabalho X. Ele não fornece um servidor X que acessa seu hardware de vídeo --
-estes são disponibilizados em outro pacote.
+Este pacote contém as fontes básicas, programas e documentação para
+uma estação de trabalho X. Ele não fornece um servidor X que acessa
+seu hardware de vídeo -- estes são disponibilizados em outro pacote.
 
 %description -l es
-X Window es una interface gráfica completa con múltiples ventanas, múltiples
-clientes y diferentes estilos de ventanas. Se usa en la mayoría de las
-plataformas Unix, y los clientes también pueden ejecutar en otros sistemas de
-ventanas populares.  El protocolo X permite que las aplicaciones puedan
-ejecutarse tanto en la máquina local como a través de la red, y proveer
-flexibilidad en implementaciones cliente/servidor.  Este paquete contiene las
-fuentes básicas, programas y documentación para una estación de trabajo X. No
-ofrece un servidor X que acceda tu hardware de vídeo -- estos son puestos a
-disposición  en otro paquete.
+X Window es una interface gráfica completa con múltiples ventanas,
+múltiples clientes y diferentes estilos de ventanas. Se usa en la
+mayoría de las plataformas Unix, y los clientes también pueden
+ejecutar en otros sistemas de ventanas populares. El protocolo X
+permite que las aplicaciones puedan ejecutarse tanto en la máquina
+local como a través de la red, y proveer flexibilidad en
+implementaciones cliente/servidor. Este paquete contiene las fuentes
+básicas, programas y documentación para una estación de trabajo X. No
+ofrece un servidor X que acceda tu hardware de vídeo -- estos son
+puestos a disposición en otro paquete.
 
 %package modules
 Summary:	Modules with X servers extensions
 Summary(pl):	Wspólne modu³y rozszerzeñ dla wszystkich X serwerów
 Group:		X11/XFree86
 Group(de):	X11/XFree86
+Group(es):	X11/XFree86
+Group(fr):	X11/XFree86
 Group(pl):	X11/XFree86
+Group(pt_BR):	X11/XFree86
 
 %description modules
 Modules with X servers extensions.
@@ -207,10 +212,10 @@ Summary(pt_BR):	Bibliotecas compartilhadas X11R6
 Summary(es):	Bibliotecas compartidas X11R6
 Group:		X11/XFree86
 Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
-Group(fr):	X11/XFree86
-Group(pt_BR):	X11/XFree86
 Group(es):	X11/XFree86
+Group(fr):	X11/XFree86
+Group(pl):	X11/XFree86
+Group(pt_BR):	X11/XFree86
 Prereq:		grep
 Prereq:		/sbin/ldconfig
 Obsoletes:	xpm
@@ -221,18 +226,18 @@ Obsoletes:	X11R6.1-libs
 %endif
 
 %description libs
-XFree86-libs contains the shared libraries that most X programs
-need to run properly. These shared libraries are in a separate package in
-order to reduce the disk space needed to run X applications on a machine
-without an X server (i.e, over a network).
+XFree86-libs contains the shared libraries that most X programs need
+to run properly. These shared libraries are in a separate package in
+order to reduce the disk space needed to run X applications on a
+machine without an X server (i.e, over a network).
 
-If you are installing the X Window System on your machine, you will need to
-install XFree86-libs.  You will also need to install the XFree86 package,
-the XFree86-75dpi-fonts package or the XFree86-100dpi-fonts package
-(depending upon your monitor's resolution), the Xconfigurator package and
-the X11R6-contrib package.  And, finally, if you are going to be developing
-applications that run as X clients, you will also need to install
-XFree86-devel.
+If you are installing the X Window System on your machine, you will
+need to install XFree86-libs. You will also need to install the
+XFree86 package, the XFree86-75dpi-fonts package or the
+XFree86-100dpi-fonts package (depending upon your monitor's
+resolution), the Xconfigurator package and the X11R6-contrib package.
+And, finally, if you are going to be developing applications that run
+as X clients, you will also need to install XFree86-devel.
 
 %description -l de libs
 Dieses Paket enthält die zur gemeinsamen Nutzung vorgesehenen
@@ -260,16 +265,17 @@ kitaplýklarý içerir. Bunlar, X programlarýný (sunucu olsun olmasýn)
 olarak sunulmuþtur.
 
 %description -l pt_BR libs
-Este pacote contém bibliotecas compartilhadas que a maioria dos programas X
-precisam para rodar corretamente. Eles estão em um pacote separado para reduzir
-o espaço em disco necessário para rodar aplicações X em uma máquina sem um
-servidor X (através da rede).
+Este pacote contém bibliotecas compartilhadas que a maioria dos
+programas X precisam para rodar corretamente. Eles estão em um pacote
+separado para reduzir o espaço em disco necessário para rodar
+aplicações X em uma máquina sem um servidor X (através da rede).
 
 %description -l es libs
-Este paquete contiene bibliotecas compartidas que la mayoría de los programas X
-necesitan para ejecutarse correctamente. Están en un paquete a parte, para
-reducir el espacio en disco necesario para ejecutar aplicaciones X en una
-máquina sin un servidor X (a través de la red).
+Este paquete contiene bibliotecas compartidas que la mayoría de los
+programas X necesitan para ejecutarse correctamente. Están en un
+paquete a parte, para reducir el espacio en disco necesario para
+ejecutar aplicaciones X en una máquina sin un servidor X (a través de
+la red).
 
 %package devel
 Summary:	X11R6 headers and programming man pages
@@ -280,7 +286,11 @@ Summary(tr):	X11R6 ile geliþtirme için gerekli dosyalar
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
+Group(fr):	X11/Librairies
 Group(pl):	X11/Biblioteki
+Group(pt_BR):	X11/Bibliotecas
+Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-libs = %{version}
 Obsoletes:	xpm-devel
 Provides:	xpm-devel
@@ -328,7 +338,11 @@ Summary(pl):	Biblioteki statyczne do X11R6
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
+Group(fr):	X11/Librairies
 Group(pl):	X11/Biblioteki
+Group(pt_BR):	X11/Bibliotecas
+Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-devel = %{version}
 %ifarch sparc sparc64
 Obsoletes:	X11R6.1-devel
@@ -348,7 +362,11 @@ Summary(pl):	Wsparcie OpenGL dla systemu X11R6
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
+Group(fr):	X11/Librairies
 Group(pl):	X11/Biblioteki
+Group(pt_BR):	X11/Bibliotecas
+Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-libs = %{version}
 Obsoletes:	Mesa
 
@@ -364,7 +382,11 @@ Summary(pl):	Biblioteki OpenGL dla systemu X11R6
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
+Group(fr):	X11/Librairies
 Group(pl):	X11/Biblioteki
+Group(pt_BR):	X11/Bibliotecas
+Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-libs = %{version}
 Requires:	%{name}-OpenGL-core
 Provides:	OpenGL
@@ -383,7 +405,11 @@ Summary(pl):	Pliki nag³ówkowe dla OpenGL dla systemu X11R6
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
+Group(fr):	X11/Librairies
 Group(pl):	X11/Biblioteki
+Group(pt_BR):	X11/Bibliotecas
+Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-OpenGL-libs = %{version}
 Requires:	%{name}-devel
 Provides:	OpenGL-devel
@@ -401,7 +427,11 @@ Summary(pl):	Biblioteki statyczne do X11R6 ze wsparciem dla OpenGL
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
+Group(fr):	X11/Librairies
 Group(pl):	X11/Biblioteki
+Group(pt_BR):	X11/Bibliotecas
+Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-OpenGL-devel = %{version}
 Provides:	OpenGL-static
 Obsoletes:	Mesa-static
@@ -460,10 +490,10 @@ install Xvfb for that purpose.
 Xvfb (X Virtual Frame Buffer) jest X serwerem, który mo¿na uruchamiaæ
 na maszynach bez urz±dzeñ wy¶wietlaj±cych ani fizycznych urz±dzeñ
 wej¶ciowych. Xvfb emuluje prosty framebuffer w pamiêci. Zwykle jest
-u¿ywany do testowania X serwerów, mo¿e te¿ byæ u¿ywany do testowania
-X klientów w rzadko u¿ywanych konfiguracjach ekranu. Mo¿na te¿ u¿yæ
-Xvfb do uruchomienia aplikacji, które w rzeczywisto¶ci nie wymagaj±
-X serwera, ale odmawiaj± uruchomienia bez niego.
+u¿ywany do testowania X serwerów, mo¿e te¿ byæ u¿ywany do testowania X
+klientów w rzadko u¿ywanych konfiguracjach ekranu. Mo¿na te¿ u¿yæ Xvfb
+do uruchomienia aplikacji, które w rzeczywisto¶ci nie wymagaj± X
+serwera, ale odmawiaj± uruchomienia bez niego.
 
 %package Xnest
 Summary:	XFree86 Xnest server
@@ -515,7 +545,7 @@ Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	pam
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts >= 4.0
+Requires:	/usr/X11R6/lib/X11/rgb.txt
 Obsoletes:	%{name}-VGA16 %{name}-SVGA %{name}-Mono
 Obsoletes:	XFree86-S3 XFree86-S3V XFree86-I128
 Obsoletes:	XFree86-Mach8 XFree86-Mach32 XFree86-Mach64
@@ -876,13 +906,13 @@ S3 ViRGE/Trio3D video driver.
 Driver do kart na uk³adach S3 ViRGE i Trio3D.
 
 %package driver-s3
-Summary:        S3 Trio video driver
-Summary(pl):    Driver do kart na uk³adach S3 Trio
-Group:          X11/XFree86
-Group(de):      X11/XFree86
-Group(pl):      X11/XFree86
-Requires:       %{name}-modules = %{version}-%{release}
-Requires:       %{name}-Xserver = %{version}-%{release}
+Summary:	S3 Trio video driver
+Summary(pl):	Driver do kart na uk³adach S3 Trio
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-s3
 S3 Trio video driver.
@@ -1185,7 +1215,7 @@ sesji xdm.
 
 %package -n xdm
 Summary:	xdm - X Display Manager with support for XDMCP, host chooser
-Summary(pl):	XDM
+Summary(pl):	XDM - display menad¿er z obs³ug± XDMCP i wybieraniem hostów
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1206,6 +1236,11 @@ or remote servers. The design of xdm was guided by the needs of X
 terminals as well as the X Consortium standard XDMCP, the X Display
 Manager Control Protocol.
 
+%description -n xdm -l pl
+Xdm zarz±dza zestawem ekranów X, które mog± byæ lokalne lub na
+zdalnych serwerach. Zosta³ zaprojektowany zgodnie z potrzebami X
+terminali oraz standardem X Consortium XDMCP.
+
 %package -n twm
 Summary:	Tab Window Manager for the X Window System
 Summary(pl):	Twm - podstawowy zarz±dca okien dla X Window System
@@ -1221,6 +1256,12 @@ Twm is a window manager for the X Window System. It provides
 titlebars, shaped windows, several forms of icon management,
 user-defined macro functions, click-to-type and pointerdriven keyboard
 focus, and user-specified key and pointer button bindings.
+
+%description -n twm -l pl
+Twm jest menad¿erem okien dla X Window System. Daje belki tytu³owe,
+ramki okien, parê form zarz±dzania ikonami, definiowalne makra,
+ustawianie focusu klikniêciem lub po³o¿eniem wska¼nika myszy,
+definiowalne przypisania klawiszy i przycisków myszy.
 
 %package -n xfs
 Summary:	Font server for XFree86
@@ -1245,11 +1286,12 @@ to use all fonts installed on the font server, even if they are not
 installed on the remote computer.
 
 %description -l pl -n xfs
-Pakiet zawiera serwer fontów dla XFree86. Mo¿e udostêpniaæ fonty dla
-X serwerów lokalnych lub zdalnych.
+Pakiet zawiera serwer fontów dla XFree86. Mo¿e udostêpniaæ fonty dla X
+serwerów lokalnych lub zdalnych.
 
 %package -n xauth
 Summary:	xauth - X authority file utility
+Summary(pl):	xauth - nadzêdzie do plików X authority
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1262,8 +1304,16 @@ usually used to extract authorization records from one machine and
 merge them in on another (as is the case when using remote logins or
 granting access to other users).
 
+%description -n xauth -l pl
+Program xauth s³u¿y do edycji i wy¶wietlania informacji
+autoryzacyjnych u¿ywanych przy ³±czeniu z X serwerem. Ten program
+przewa¿nie jest u¿ywany do wyci±gania rekordów autoryzcji z jednej
+maszyny i do³±czania ich na innej (w celu umo¿liwienia zdalnego
+logowania lub udostêpnienia innym u¿ytkownikom).
+
 %package tools
 Summary:	Various tools for XFree86
+Summary(pl):	Ró¿ne narzêdzia dla XFree86
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1285,6 +1335,11 @@ clients, you will also need to install XFree86-devel.
 
 This package contains all applications that used to be in
 X11R6-contrib in older releases.
+
+%description tools -l pl
+Ró¿ne narzêdzia dla X, tym listres, xbiff, xedit, xeyes, xcalc, xload,
+xman, i inne. Ten pakiet zawiera aplikacje, które by³y w X11R6-contrib
+w starszych wersjach X.
 
 #--- %prep ---------------------------
 
@@ -1371,7 +1426,7 @@ rm -f $RPM_BUILD_ROOT%{_bindir}/X
 ln -sf XFree86 $RPM_BUILD_ROOT%{_bindir}/X
 
 # setting ghost X in /etc/X11 -- xf86config will fix this ...
-ln -sf ../..%{_bindir}/XFree86 $RPM_BUILD_ROOT/etc/X11/X
+ln -sf ../..%{_bindir}/XFree86 $RPM_BUILD_ROOT%{_sysconfdir}/X11/X
 
 # add X11 links in /usr/bin, /usr/lib /usr/include
 ln -sf ../X11R6/include/X11 $RPM_BUILD_ROOT/usr/include/X11
@@ -1384,15 +1439,15 @@ ln -sf libGL.so.1 $RPM_BUILD_ROOT%{_libdir}/libGL.so
 ln -sf libGLU.so.1 $RPM_BUILD_ROOT%{_libdir}/libGLU.so
 
 # set up PLD xdm config
-rm -f $RPM_BUILD_ROOT/etc/X11/xdm/{*Console,Xaccess,Xsession,Xsetup*}
-install xdm-xinitrc-*/pixmaps/* $RPM_BUILD_ROOT/etc/X11/xdm/pixmaps/
-install xdm-xinitrc-*/{*Console,Xaccess,Xsession,Xsetup*} $RPM_BUILD_ROOT/etc/X11/xdm/
+rm -f $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/{*Console,Xaccess,Xsession,Xsetup*}
+install xdm-xinitrc-*/pixmaps/* $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/pixmaps/
+install xdm-xinitrc-*/{*Console,Xaccess,Xsession,Xsetup*} $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/
 
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/xdm
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/xserver
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
-install %{SOURCE6} $RPM_BUILD_ROOT/etc/X11/fs/config
+install %{SOURCE6} $RPM_BUILD_ROOT%{_sysconfdir}/X11/fs/config
 install %{SOURCE7} $RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/pl/XTerm
 
 install %{SOURCE8} $RPM_BUILD_ROOT/etc/sysconfig/xdm
@@ -1405,7 +1460,7 @@ install %{SOURCE13} $RPM_BUILD_ROOT%{_applnkdir}/Terminals
 
 install %{SOURCE14} $RPM_BUILD_ROOT%{_datadir}/pixmaps
 
-bzip2 -dc %{SOURCE16} $RPM_BUILD_ROOT%{_mandir}
+bzip2 -dc %{SOURCE16} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
@@ -1415,7 +1470,7 @@ ln -sf %{_fontsdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
 
 # do not duplicate xkbcomp program
 rm -f $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
-ln -sf %{_bindir}/xkbcomp $RPM_BUILD_ROOT/etc/X11/xkb/xkbcomp
+ln -sf %{_bindir}/xkbcomp $RPM_BUILD_ROOT%{_sysconfdir}/X11/xkb/xkbcomp
 
 ln -sf ../../../share/doc/%{name}-%{version} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/doc
@@ -1423,7 +1478,7 @@ ln -sf ../../../share/doc/%{name}-%{version} \
 rm -f $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
 
 :> $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
-:> $RPM_BUILD_ROOT/etc/X11/XF86Config
+:> $RPM_BUILD_ROOT%{_sysconfdir}/X11/XF86Config
 
 rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/html
 
@@ -1443,6 +1498,9 @@ gzip -9nf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
 gunzip $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
 
 %endif
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 #--- %post{un}, %preun, %verifyscript, %trigge ----------
 
@@ -1534,9 +1592,6 @@ fi
 
 %post	OpenGL-libs -p /sbin/ldconfig
 %postun	OpenGL-libs -p /sbin/ldconfig
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 #--- %files --------------------------
 
@@ -1745,11 +1800,10 @@ rm -rf $RPM_BUILD_ROOT
 %lang(pl) %{_mandir}/pl/man1/xinit.1*
 %lang(pl) %{_mandir}/pl/man1/xwd.1*
 
-
 %files modules
-%defattr(-,root,root,755)
+%defattr(644,root,root,755)
 %{_libdir}/X11/xkb
-/etc/X11/xkb
+%{_sysconfdir}/X11/xkb
 /var/lib/xkb
 %dir %{_libdir}/modules
 %ifnarch alpha
@@ -1837,8 +1891,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_wmpropsdir}/twm.desktop
 %attr(755,root,root) %{_bindir}/twm
-%dir /etc/X11/twm
-%config /etc/X11/twm/system.twmrc
+%dir %{_sysconfdir}/X11/twm
+%config %{_sysconfdir}/X11/twm/system.twmrc
 %attr(755,root,root) %{_libdir}/X11/twm
 %{_mandir}/man1/twm.1*
 
@@ -1846,10 +1900,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(754,root,root) /etc/rc.d/init.d/xfs
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/xfs
-%dir /etc/X11/fs
+%dir %{_sysconfdir}/X11/fs
 %attr(755,root,root) %{_libdir}/X11/fs
-%config(noreplace) /etc/X11/fs/config
-%config(noreplace) %verify(not md5 mtime size) /etc/X11/XftConfig
+%config(noreplace) %{_sysconfdir}/X11/fs/config
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/X11/XftConfig
 
 %attr(755,root,root) %{_bindir}/xfs
 %attr(755,root,root) %{_bindir}/fslsfonts
@@ -2027,7 +2081,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(4755,root,root) %{_bindir}/Xwrapper
 %attr(755,root,root) %{_bindir}/XFree86
-%attr(755,root,root) /etc/X11/X
+%attr(755,root,root) %{_sysconfdir}/X11/X
 %attr(755,root,root) %{_bindir}/X
 %{_mandir}/man1/XFree86.1*
 %{_mandir}/man1/Xserver.1*
@@ -2036,7 +2090,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/X11/Cards
 %{_libdir}/X11/Options
 
-%config(noreplace) %verify(not md5 mtime size) /etc/X11/XF86Config
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/X11/XF86Config
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xserver
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xserver
 %config(missingok) /etc/security/console.apps/xserver
