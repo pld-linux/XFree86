@@ -132,6 +132,7 @@ Patch50:	%{name}-xterm-256colors.patch
 Patch51:	%{name}-new-s3-pScreen.patch
 Patch52:	%{name}-kernel_headers.patch
 Patch53:	%{name}-stdint.patch
+Patch54:	%{name}-new-s3-headers.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	%{_bindir}/perl
 %ifarch %{ix86} alpha amd64
@@ -1852,6 +1853,7 @@ tar xfz *.tar.gz
 %patch51 -p1
 %patch52 -p1
 %patch53 -p0
+%patch54 -p1
 
 rm -f xc/config/cf/host.def
 
@@ -1876,7 +1878,7 @@ rm -rf xc/fonts
 	CXXDEBUGFLAGS="" \
 	CDEBUGFLAGS="" \
 	ICONDIR="%{_iconsdir}" \
-	LINUXDIR="%{_kernelsrcdir}"
+	LINUXDIR="/dev/null"
 
 %ifnarch alpha
 #%%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" Makefiles
@@ -1901,8 +1903,7 @@ xmkmf $olddir/xc .
 	CXXOPTIONS="%{rpmcflags}" \
 	CXXDEBUGFLAGS="" \
 	CDEBUGFLAGS="" \
-	ICONDIR="%{_iconsdir}" \
-	LINUXDIR="%{_kernelsrcdir}"
+	ICONDIR="%{_iconsdir}"
 cd $olddir
 %endif
 
@@ -1916,8 +1917,7 @@ TOPDIR=$(pwd)/xc
 	CXXOPTIONS="%{rpmcflags}" \
 	CXXDEBUGFLAGS="" \
 	CDEBUGFLAGS="" \
-	ICONDIR="%{_iconsdir}" \
-	LINUXDIR="%{_kernelsrcdir}"
+	ICONDIR="%{_iconsdir}"
 
 cd synaptics
 for f in COMPATIBILITY INSTALL NEWS README README.alps TODO; do
@@ -1953,7 +1953,7 @@ install -d $RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,security/console.apps,sysconfi
 	CXXDEBUGFLAGS="" \
 	CDEBUGFLAGS="" \
 	ICONDIR="%{_iconsdir}" \
-	LINUXDIR="%{_kernelsrcdir}"
+	LINUXDIR="/dev/null"
 
 %ifnarch sparc sparc64
 install synaptics/synaptics_drv.o $RPM_BUILD_ROOT%{_libdir}/modules/input
