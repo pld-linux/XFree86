@@ -1082,12 +1082,17 @@ Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
+Requires:	Glide3-DRI
 
 %description driver-tdfx
 3Dfx video driver. Supports Voodoo Banshee, Voodoo3, Voodoo4, Voodoo5.
+For Banshee or Voodoo3, DRI driver requires Glide_V3-DRI package, for
+Voodoo4 or Voodoo5 it requires Glide_V5-DRI package.
 
 %description driver-tdfx -l pl
 Sterownik do kart 3Dfx: Voodoo Banshee, Voodoo3, Voodoo4, Voodoo5.
+Sterownik DRI wymaga pakietu Glide_V3-DRI do kart Banshee lub Voodoo3,
+a Glide_V5-DRI do kart Voodoo4 lub Voodoo5.
 
 %package driver-tga
 Summary:	TGA video driver
