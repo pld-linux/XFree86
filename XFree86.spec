@@ -4,14 +4,13 @@ Summary(fr):	Serveurs du système XFree86 et programmes de base
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
-Version:	3.9.17
-Release:	6
+Version:	3.9.18
+Release:	0.1
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/snapshots/3.9.17/source/X3917src-1.tgz
-Source1:	ftp://ftp.xfree86.org/pub/XFree86/snapshots/3.9.17/source/X3917src-2.tgz
-Source2:	X3917-doc.tgz
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/snapshots/3.9.18/source/X3918src-1.tgz
+Source1:	ftp://ftp.xfree86.org/pub/XFree86/snapshots/3.9.18/source/X3918src-2.tgz
 Source3:	xdm.pamd
 Source4:	xdm.initd
 Source5:	xfs.initd
@@ -25,9 +24,11 @@ Source12:	xclipboard.desktop
 Source13:	xconsole.desktop
 Source14:	xterm.desktop
 Source15:	xlogo64.png
-Patch0:		XFree86-3.9.17-PLD.patch
+Patch0:		XFree86-3.9.18-PLD.patch
 Patch1:		XFree86-HasZlib.patch
 Patch2:		XFree86-DisableDebug.patch
+Patch3:		XFree86-3.9.17-Xwrapper.patch
+Patch4:		XFree86-3.9.17-PAM.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -35,7 +36,7 @@ BuildRequires:	utempter-devel
 BuildRequires:	tcl-devel
 BuildRequires:	pam-devel
 Requires:	xauth
-Exclusivearch:	i386 i486 i586 i686 alpha sparc m68k armv4l
+Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
 Buildroot:	/tmp/%{name}-%{version}-root/
 
 %ifarch sparc
@@ -297,6 +298,7 @@ Summary(pl):	XFree86 serwer
 Summary(tr):	XFree86 sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
+Requires:	pam
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-fonts = %{version}
 Obsoletes:	%{name}-VGA16 %{name}-SVGA %{name}-Mono
@@ -622,10 +624,12 @@ Czcionki rastrowe ISO-8859-2.
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c -a1 -a2
+%setup -q -c -a1
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+#%patch3 -p1
+#%patch4 -p1
 
 #--- %build --------------------------
 
@@ -646,7 +650,8 @@ install -d $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
 	$RPM_BUILD_ROOT/usr/include \
 	$RPM_BUILD_ROOT/usr/bin \
 	$RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties \
-	$RPM_BUILD_ROOT{%{_appnkldir}/Utilities,%{_datadir}/pixmaps}
+	$RPM_BUILD_ROOT{%{_appnkldir}/Utilities,%{_datadir}/pixmaps} \
+	$RPM_BUILD_ROOT/%{_docdir}/%{name}-doc-%{version}
 
 make -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -819,7 +824,7 @@ fi
 		
 %preun -n xfs
 if [ "$1" = "0" ]; then
-	if if [ -f /var/lock/subsys/xfs ]; then
+	if [ -f /var/lock/subsys/xfs ]; then
 		/etc/rc.d/init.d/xfs stop >&2
 	fi
 	/sbin/chkconfig --del xfs
@@ -827,7 +832,7 @@ fi
 
 %preun -n xdm
 if [ "$1" = "0" ]; then
-	if if [ -f /var/lock/subsys/xdm ]; then
+	if [ -f /var/lock/subsys/xdm ]; then
 		/etc/rc.d/init.d/xdm stop >&2
 	fi
 	/sbin/chkconfig --del xdm
@@ -1199,7 +1204,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files Xserver
 %defattr(644,root,root,755)
-%attr(4755,root,root) %{_bindir}/XFree86
+%attr(4755,root,root) %{_bindir}/Xwrapper
+%attr(755,root,root) %{_bindir}/XFree86
 %attr(755,root,root) /etc/X11/X
 %attr(755,root,root) %{_bindir}/X
 %{_mandir}/man1/XFree86.1*
