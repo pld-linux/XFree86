@@ -1,0 +1,299 @@
+diff -crN -x Makefile xc/lib/font/FreeType/ft.h xc.new/lib/font/FreeType/ft.h
+*** xc/lib/font/FreeType/ft.h	Sun Apr 25 18:32:21 1999
+--- xc.new/lib/font/FreeType/ft.h	Sun Oct 10 01:48:10 1999
+***************
+*** 64,69 ****
+--- 64,70 ----
+  {
+    int has_cmap;
+    TT_CharMap cmap;
++   int base;
+    struct font_encoding *encoding;
+    struct font_encoding_mapping *mapping;
+  };
+***************
+*** 78,83 ****
+--- 79,85 ----
+  
+  int ttf_pick_cmap(char*, int, char*, TT_Face, struct ttf_mapping *);
+  int ftstrcasecmp(const char *s1, const char *s2);
++ unsigned ttf_remap(unsigned code, struct ttf_mapping *tm);
+  
+  /* ftutil.c */
+  
+***************
+*** 85,90 ****
+  int ttf_u2a(int, char*, char*, int);
+  int FTtoXReturnCode(int);
+  int ttf_GetEnglishName(TT_Face, char *, int);
+! 
+! 
+  
+--- 87,91 ----
+  int ttf_u2a(int, char*, char*, int);
+  int FTtoXReturnCode(int);
+  int ttf_GetEnglishName(TT_Face, char *, int);
+! int ttf_checkForTTCName(char*, char**, int*);
+  
+diff -crN -x Makefile xc/lib/font/FreeType/ftenc.c xc.new/lib/font/FreeType/ftenc.c
+*** xc/lib/font/FreeType/ftenc.c	Sun Apr 25 18:32:21 1999
+--- xc.new/lib/font/FreeType/ftenc.c	Sun Oct 10 02:51:55 1999
+***************
+*** 23,28 ****
+--- 23,29 ----
+  */
+  
+  /* TrueType-dependent encoding code */
++ #include <string.h>
+  
+  #include "fontmisc.h"		/* defines xalloc and friends */
+  #include "fontenc.h"
+***************
+*** 41,46 ****
+--- 42,48 ----
+    struct font_encoding *encoding;
+    struct font_encoding_mapping *mapping;
+    TT_CharMap cmap;
++   
+  
+    char *encoding_name=0;
+  
+***************
+*** 51,56 ****
+--- 53,59 ----
+  
+    if(!strcasecmp(encoding_name, "truetype-raw")) {
+      tm->has_cmap=0;
++     tm->base=0;
+      tm->encoding=0;
+      tm->mapping=0;
+      return 0;
+***************
+*** 61,66 ****
+--- 64,79 ----
+                        &cmap)) {
+            tm->has_cmap=1;
+            tm->cmap=cmap;
++           if(!strcasecmp(encoding_name, "microsoft-symbol")) {
++             /* deal with undocumented lossage */
++             TT_Face_Properties properties;
++             if(!TT_Get_Face_Properties(face, &properties) &&
++                properties.os2!=0)
++               tm->base=properties.os2->usFirstCharIndex-0x20;
++             else
++               tm->base=0;
++           } else
++             tm->base=0;
+            tm->encoding=encoding;
+            tm->mapping=mapping;
+            return 0;
+***************
+*** 82,87 ****
+--- 95,101 ----
+      if(!find_cmap(FONT_ENCODING_UNICODE, 0, 0, face, &cmap)) {
+        tm->has_cmap=1;
+        tm->cmap=cmap;
++       tm->base=0;
+        tm->encoding=0;
+        tm->mapping=0;
+        return 0;
+***************
+*** 91,96 ****
+--- 105,111 ----
+    if(!TT_Get_CharMap(face, 0, &cmap)) {
+      tm->has_cmap=1;
+      tm->cmap=cmap;
++     tm->base=0;
+      tm->encoding=0;
+      tm->mapping=0;
+      return 0;
+***************
+*** 98,103 ****
+--- 113,119 ----
+  
+    /* Tough. */
+    tm->has_cmap=0;
++   tm->base=0;
+    tm->encoding=0;
+    tm->mapping=0;
+    return 0;
+***************
+*** 170,175 ****
+--- 186,192 ----
+      else
+        return 0;
+    }
++   index += tm->base;
+    if(tm->has_cmap)
+      return TT_Char_Index(tm->cmap, index);
+    else
+diff -crN -x Makefile xc/lib/font/FreeType/ftfuncs.c xc.new/lib/font/FreeType/ftfuncs.c
+*** xc/lib/font/FreeType/ftfuncs.c	Sun Jun 13 19:06:17 1999
+--- xc.new/lib/font/FreeType/ftfuncs.c	Sun Oct 10 01:49:04 1999
+***************
+*** 23,28 ****
+--- 23,30 ----
+  
+  /* $XFree86: xc/lib/font/FreeType/ftfuncs.c,v 1.11 1999/06/13 13:47:29 dawes Exp $ */
+  
++ #include <string.h>
++ 
+  #include "fontmisc.h"
+  #include "fntfilst.h"
+  #include "fontutil.h"
+***************
+*** 134,140 ****
+  
+    face->instances=0;
+  
+!   if(ttc_checkForTTCName(fileName, &realFileName, &faceNumber)) {
+      ftrc=TT_Open_Collection(ftypeEngine, realFileName, faceNumber,
+                              &face->face);
+    } else {
+--- 136,142 ----
+  
+    face->instances=0;
+  
+!   if(ttf_checkForTTCName(fileName, &realFileName, &faceNumber)) {
+      ftrc=TT_Open_Collection(ftypeEngine, realFileName, faceNumber,
+                              &face->face);
+    } else {
+***************
+*** 775,781 ****
+  static void
+  FreeTypeFreeXFont(FontPtr pFont, int freeProps)
+  {
+-   int i;
+    TTFFont *tf;
+  
+    if(pFont) {
+--- 777,782 ----
+***************
+*** 812,818 ****
+                        int rawAverageWidth)
+  {
+    int i, j, maxprops;
+-   unsigned long code;
+    char *sp, *ep, val[256];
+    TT_Instance_Metrics imetrics;
+    int upm;                      /* units per em */
+--- 813,818 ----
+***************
+*** 1573,1579 ****
+                        FontEncoding charEncoding, unsigned long *glyphCount,
+                        CharInfoPtr *glyphs, int nlevels)
+  {
+-   int idx;
+    unsigned code;
+    TTFFont *tf;
+    CharInfoPtr *gp;
+--- 1573,1578 ----
+diff -crN -x Makefile xc/lib/font/FreeType/ftfuncs.h xc.new/lib/font/FreeType/ftfuncs.h
+*** xc/lib/font/FreeType/ftfuncs.h	Sun Apr 25 18:32:22 1999
+--- xc.new/lib/font/FreeType/ftfuncs.h	Sun Oct 10 01:45:15 1999
+***************
+*** 6,14 ****
+  /* Glyphs are held in segments of this size */
+  #define FONTSEGMENTSIZE 16
+  
+- /* defined in atom.c */
+- Atom MakeAtom(char *, unsigned, int);
+- 
+  /* A structure that holds bitmap order and padding info. */
+  
+  typedef struct {
+--- 6,11 ----
+diff -crN -x Makefile xc/lib/font/FreeType/ftutil.c xc.new/lib/font/FreeType/ftutil.c
+*** xc/lib/font/FreeType/ftutil.c	Sun Apr 25 18:32:22 1999
+--- xc.new/lib/font/FreeType/ftutil.c	Sun Oct 10 01:50:22 1999
+***************
+*** 161,167 ****
+  int 
+  ttf_GetEnglishName(TT_Face face, char *name, int nameID)
+  {
+!   int i, j, nrec;
+    unsigned short slen;
+    unsigned short nrPlatformID, nrEncodingID, nrLanguageID, nrNameID;
+    char *s;
+--- 161,167 ----
+  int 
+  ttf_GetEnglishName(TT_Face face, char *name, int nameID)
+  {
+!   int i, nrec;
+    unsigned short slen;
+    unsigned short nrPlatformID, nrEncodingID, nrLanguageID, nrNameID;
+    char *s;
+***************
+*** 179,185 ****
+            nrLanguageID==0x0c09 || nrLanguageID==0x1009 ||
+            nrLanguageID==0x1409 || nrLanguageID==0x1809)) ||
+          /* or for Apple, Unicode, English */
+!         ((nrPlatformID==0 && nrNameID==nameID &
+            nrLanguageID==0))) {
+        if(!TT_Get_Name_String(face, i, &s, &slen))
+          return ttf_u2a(slen, s, name, MSBFirst);
+--- 179,185 ----
+            nrLanguageID==0x0c09 || nrLanguageID==0x1009 ||
+            nrLanguageID==0x1409 || nrLanguageID==0x1809)) ||
+          /* or for Apple, Unicode, English */
+!         ((nrPlatformID==0 && nrNameID==nameID &&
+            nrLanguageID==0))) {
+        if(!TT_Get_Name_String(face, i, &s, &slen))
+          return ttf_u2a(slen, s, name, MSBFirst);
+***************
+*** 206,212 ****
+  }
+  
+  int
+! ttc_checkForTTCName(char *fileName, char **realFileName, int *faceNumber)
+  {
+    int length;
+    int fn;
+--- 206,212 ----
+  }
+  
+  int
+! ttf_checkForTTCName(char *fileName, char **realFileName, int *faceNumber)
+  {
+    int length;
+    int fn;
+diff -crN -x Makefile xc/lib/font/fontfile/fontenc.c xc.new/lib/font/fontfile/fontenc.c
+*** xc/lib/font/fontfile/fontenc.c	Sun Oct 10 03:03:10 1999
+--- xc.new/lib/font/fontfile/fontenc.c	Sun Oct 10 02:24:00 1999
+***************
+*** 518,537 ****
+    {0,0,0,0,0,0,0}
+  };
+  
+! /* Apparently, Microsoft Symbol aims at being compatible with Unicode
+!  * by using the 16 columns of the Private Use Area starting at code
+!  * 0xF000. */
+! 
+! static unsigned
+! eight_bit_to_microsoft_symbol(unsigned code, void *client_data)
+! {
+!   return code+0xF000;
+! }
+  
+  static struct font_encoding_mapping microsoft_symbol[]=
+! {{FONT_ENCODING_TRUETYPE,3,0,eight_bit_to_microsoft_symbol,0,0,0}, 
+   /* You never know */
+!  {FONT_ENCODING_TRUETYPE,3,1,eight_bit_to_microsoft_symbol,0,0,0}, 
+   {0,0,0,0,0,0,0}};
+  
+  static struct font_encoding_mapping apple_roman[]=
+--- 518,531 ----
+    {0,0,0,0,0,0,0}
+  };
+  
+! /* Microsoft Symbol is treated specially in ftenc.c, where we add
+!  * usFirstCharIndex-0x20 to the glyph index before applying the
+!  * cmap. */
+  
+  static struct font_encoding_mapping microsoft_symbol[]=
+! {{FONT_ENCODING_TRUETYPE,3,0,0,0,0,0}, 
+   /* You never know */
+!  {FONT_ENCODING_TRUETYPE,3,1,0,0,0,0}, 
+   {0,0,0,0,0,0,0}};
+  
+  static struct font_encoding_mapping apple_roman[]=
