@@ -22,16 +22,16 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
-Version:	4.3.99.4
+Version:	4.3.99.5
 Release:	0.1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
-# Source0-md5: 6751fa3697ae97726c7b73163de08fee
+# Source0-md5:	d01d01a7abd4f0764e20ef493f76a3b2
 #Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-2.tgz
 #Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-3.tgz
 Source3:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
-# Source3-md5: 0a15b1c374256b5cad7961807baa3896
+# Source3-md5:	0a15b1c374256b5cad7961807baa3896
 Source4:	xdm.pamd
 Source5:	xserver.pamd
 Source6:	xdm.init
