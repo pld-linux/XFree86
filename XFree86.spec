@@ -1749,7 +1749,7 @@ fi
 %{_includedir}/X11/bitmaps
 %{_includedir}/X11/pixmaps
 
-%ghost /var/log/XFree86.0.log
+%attr(640,root,root) %ghost /var/log/XFree86.0.log
 
 %{_applnkdir}/Utilities/*
 %{_applnkdir}/Terminals/*
