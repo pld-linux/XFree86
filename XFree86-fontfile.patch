@@ -1,0 +1,173 @@
+diff -uNrp xc/lib/font/fontfile.orig/dirfile.c xc/lib/font/fontfile/dirfile.c
+--- xc/lib/font/fontfile.orig/dirfile.c	2003-04-10 13:03:53.000000000 +0200
++++ xc/lib/font/fontfile/dirfile.c	2004-02-12 11:22:14.000000000 +0100
+@@ -68,6 +68,9 @@ FontFileReadDirectory (char *directory, 
+ 
+     FontDirectoryPtr	dir = NullFontDirectory;
+ 
++    if (strlen(directory) + 1 + sizeof(FontDirFile) > sizeof(dir_file))
++	return BadFontPath;
++
+ #ifdef FONTDIRATTRIB
+     /* Check for font directory attributes */
+ #ifndef __UNIXOS2__
+@@ -159,6 +162,9 @@ FontFileDirectoryChanged(FontDirectoryPt
+     char	dir_file[MAXFONTFILENAMELEN];
+     struct stat	statb;
+ 
++    if (strlen(dir->directory) + sizeof(FontDirFile) > sizeof(dir_file))
++	return FALSE;
++
+     strcpy (dir_file, dir->directory);
+     strcat (dir_file, FontDirFile);
+     if (stat (dir_file, &statb) == -1)
+@@ -207,6 +213,8 @@ AddFileNameAliases(FontDirectoryPtr dir)
+ 	    continue;
+ 	
+ 	len = strlen (fileName) - renderer->fileSuffixLen;
++	if (len >= sizeof(copy))
++	    continue;
+ 	CopyISOLatin1Lowered (copy, fileName, len);
+ 	copy[len] = '\0';
+ 	name.name = copy;
+@@ -256,9 +264,13 @@ ReadFontAlias(char *directory, Bool isFi
+     int			status = Successful;
+     struct stat		statb;
+ 
++    if (strlen(directory) >= sizeof(alias_file))
++	return BadFontPath;
+     dir = *pdir;
+     strcpy(alias_file, directory);
+     if (!isFile) {
++	if (strlen(directory) + 1 + sizeof(FontAliasFile) > sizeof(alias_file))
++	    return BadFontPath;
+ 	if (directory[strlen(directory) - 1] != '/')
+ 	    strcat(alias_file, "/");
+ 	strcat(alias_file, FontAliasFile);
+@@ -291,6 +303,10 @@ ReadFontAlias(char *directory, Bool isFi
+ 	    status = AllocError;
+ 	    break;
+ 	case NAME:
++	    if (strlen(lexToken) >= sizeof(alias)) {
++		status = BadFontPath;
++		break;
++	    }
+ 	    strcpy(alias, lexToken);
+ 	    token = lexAlias(file, &lexToken);
+ 	    switch (token) {
+@@ -307,6 +323,10 @@ ReadFontAlias(char *directory, Bool isFi
+ 		status = AllocError;
+ 		break;
+ 	    case NAME:
++		if (strlen(lexToken) >= sizeof(font_name)) {
++		    status = BadFontPath;
++		    break;
++		}
+ 		CopyISOLatin1Lowered(alias, alias, strlen(alias));
+ 		CopyISOLatin1Lowered(font_name, lexToken, strlen(lexToken));
+ 		if (!FontFileAddFontAlias (dir, alias, font_name))
+diff -uNrp xc/lib/font/fontfile.orig/encparse.c xc/lib/font/fontfile/encparse.c
+--- xc/lib/font/fontfile.orig/encparse.c	2003-12-19 05:45:49.000000000 +0100
++++ xc/lib/font/fontfile/encparse.c	2004-02-12 11:22:14.000000000 +0100
+@@ -837,6 +837,7 @@ FontEncReallyReallyLoad(const char *char
+     char file_name[MAXFONTFILENAMELEN], encoding_name[MAXFONTNAMELEN],
+         buf[MAXFONTFILENAMELEN];
+     int count, n;
++    static char format[24] = "";
+     
+     /* As we don't really expect to open encodings that often, we don't
+        take the trouble of caching encodings directories. */
+@@ -852,8 +853,12 @@ FontEncReallyReallyLoad(const char *char
+     }
+ 
+     encoding = NULL;
++    if (!format[0]) {
++	sprintf(format, "%%%ds %%%d[^\n]\n", sizeof(encoding_name) - 1,
++		sizeof(file_name) - 1);
++    }
+     for(;;) {
+-        count = fscanf(file, "%s %[^\n]\n", encoding_name, file_name);
++        count = fscanf(file, format, encoding_name, file_name);
+         if(count == EOF)
+             break;
+         if(count != 2)
+diff -uNrp xc/lib/font/fontfile.orig/fontfile.c xc/lib/font/fontfile/fontfile.c
+--- xc/lib/font/fontfile.orig/fontfile.c	2003-12-03 05:58:58.000000000 +0100
++++ xc/lib/font/fontfile/fontfile.c	2004-02-12 12:01:07.727501240 +0100
+@@ -423,11 +423,16 @@ FontFileOpenFont (pointer client, FontPa
+ 		    vals.ranges = ranges;
+ 		    vals.nranges = nranges;
+ 
+-		    strcpy (fileName, dir->directory);
+-		    strcat (fileName, scalable->fileName);
+-		    ret = (*scalable->renderer->OpenScalable) (fpe, pFont,
++		    if (strlen(dir->directory) + strlen(scalable->fileName) >= sizeof(fileName))
++			ret = BadFontName;
++		    else
++		    {
++			strcpy(fileName, dir->directory);
++			strcat(fileName, scalable->fileName);
++			ret = (*scalable->renderer->OpenScalable) (fpe, pFont,
+ 			   flags, entry, fileName, &vals, format, fmask,
+ 			   non_cachable_font);
++		    }
+ 
+ 		    /* In case rasterizer does something bad because of
+ 		       charset subsetting... */
+@@ -498,6 +503,8 @@ FontFileOpenBitmapNCF (FontPathElementPt
+     bitmap = &entry->u.bitmap;
+     if(!bitmap || !bitmap->renderer->OpenBitmap)
+         return BadFontName;
++    if (strlen(dir->directory) + strlen(bitmap->fileName) >= sizeof(fileName))
++	return BadFontName;
+     strcpy (fileName, dir->directory);
+     strcat (fileName, bitmap->fileName);
+     ret = (*bitmap->renderer->OpenBitmap) 
+@@ -533,6 +540,8 @@ FontFileGetInfoBitmap (FontPathElementPt
+     bitmap = &entry->u.bitmap;
+     if (!bitmap || !bitmap->renderer->GetInfoBitmap)
+ 	return BadFontName;
++    if (strlen(dir->directory) + strlen(bitmap->fileName) >= sizeof(fileName))
++	return BadFontName;
+     strcpy (fileName, dir->directory);
+     strcat (fileName, bitmap->fileName);
+     ret = (*bitmap->renderer->GetInfoBitmap) (fpe, pFontInfo, entry, fileName);
+@@ -872,10 +881,15 @@ FontFileListOneFontWithInfo (pointer cli
+ 	    bc = &entry->u.bc;
+ 	    entry = bc->entry;
+ 	    /* Make a new scaled instance */
+-    	    strcpy (fileName, dir->directory);
+-    	    strcat (fileName, scalable->fileName);
+-	    ret = (*scalable->renderer->GetInfoScalable)
++	    if (strlen(dir->directory) + strlen(scalable->fileName) >= sizeof(fileName))
++		ret = BadFontName;
++	    else
++	    {
++		strcpy(fileName, dir->directory);
++		strcat(fileName, scalable->fileName);
++		ret = (*scalable->renderer->GetInfoScalable)
+ 		    (fpe, *pFontInfo, entry, tmpName, fileName, &bc->vals);
++	    }
+ 	    break;
+ #endif
+ 	default:
+@@ -980,10 +994,15 @@ FontFileListOneFontWithInfo (pointer cli
+ 		    vals.nranges = nranges;
+ 		    
+ 		    /* Make a new scaled instance */
+-	    	    strcpy (fileName, dir->directory);
+-	    	    strcat (fileName, scalable->fileName);
+-	    	    ret = (*scalable->renderer->GetInfoScalable)
+-			(fpe, *pFontInfo, entry, &tmpName, fileName, &vals);
++		    if (strlen(dir->directory) + strlen(scalable->fileName) >= sizeof(fileName))
++			ret = BadFontName;
++		    else
++		    {
++	    		strcpy (fileName, dir->directory);
++	    		strcat (fileName, scalable->fileName);
++	    		ret = (*scalable->renderer->GetInfoScalable)
++			    (fpe, *pFontInfo, entry, &tmpName, fileName, &vals);
++		    }
+ 		    if (ranges) xfree(ranges);
+ 		}
+ 	    }
