@@ -73,6 +73,8 @@ Source45:	xmag.desktop
 Source46:	xcalc.png
 Source47:	xload.png
 Source48:	xmag.png
+Source49:	http://oss.sgi.com/projects/ogl-sample/ABI/glext.h
+# Source49-md5:	bf9b05a66798796b53ed1a050049b2ee
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -1932,6 +1934,10 @@ ln -sf %{_bindir} $RPM_BUILD_ROOT/usr/bin/X11
 rm -f $RPM_BUILD_ROOT%{_libdir}/libGL*.so
 ln -sf libGL.so.1 $RPM_BUILD_ROOT%{_libdir}/libGL.so
 ln -sf libGLU.so.1 $RPM_BUILD_ROOT%{_libdir}/libGLU.so
+
+# get the most current OpenGL extensions
+rm -f $RPM_BUILD_ROOT%{_includedir}/GL/glext.h
+cp %{SOURCE49} $RPM_BUILD_ROOT%{_includedir}/GL/glext.h
 
 # collect Xserver headers
 install -d $RPM_BUILD_ROOT%{_includedir}/X11/Xserver
