@@ -3198,9 +3198,6 @@ fi
 %attr(755,root,root) %{_libdir}/X11/xdm
 %attr(755,root,root) %{_bindir}/xdm
 %attr(755,root,root) %{_bindir}/chooser
-%ifarch alpha
-%attr(755,root,root) %{_libdir}/libXdmGreet.so*
-%endif
 %{_mandir}/man1/xdm.1*
 
 %dir /etc/X11/xdm
