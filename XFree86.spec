@@ -1,6 +1,8 @@
 
 # TODO:
 # - separate XFS to be standalone - is it possible without duplicated files?
+# - there should be imake and XFree86-devel BuildRequires but it's a little 
+#   strange idea. It's waiting for the right way execution (c) wrobell ;)
 
 #
 # Conditional build:
@@ -142,7 +144,6 @@ BuildRequires:	tcl-devel
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
 BuildRequires:	unzip
-BuildRequires:	imake
 %ifarch %{ix86} alpha
 %{!?_without_tdfx:BuildRequires:	Glide3-DRI-devel}
 %endif
