@@ -913,6 +913,7 @@ Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name} = %{version}
 Requires:	pam >= 0.66
+Requires:	rc-scripts
 Obsoletes:	XFree86-xdm
 
 %description -n xdm
@@ -925,6 +926,7 @@ Summary:	Font server for XFree86
 Summary(pl):	Serwer fontów do XFree86
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
+Requires:	rc-scripts
 Obsoletes:	xfsft XFree86-xfs
 
 %description -n xfs
