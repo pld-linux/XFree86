@@ -111,13 +111,12 @@ Patch45:	%{name}-VidMode-nocrashafterfailure.patch
 Patch46:	%{name}-spencode-nowarning.patch
 # Small (maybe buggy) patch to resolve problems with totem 0.97.0
 Patch47:	%{name}-lock.patch
-Patch48:	%{name}-savage-20030505.patch
+#Patch48:	%{name}-savage-20030505.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	bison
 BuildRequires:	expat-devel
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
-BuildRequires:	gcc-c++
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	ncurses-devel
@@ -358,7 +357,7 @@ Xft jest bibliotek± s³u¿±c± do renderowania fontów dla X Window.
 Summary:	X Font Rendering library
 Summary(pl):	Biblioteka do renderowania fontów
 Group:		X11/Development/Libraries
-Requires:	%{name}-xft >= %{version}
+Requires:	%{name}-xft = %{version}
 Requires:	%{name}-fontconfig-devel
 Provides:	Xft-devel = 2.1-2
 Obsoletes:	XFree86-xft2-devel
@@ -380,7 +379,7 @@ programów korzystaj±cych z biblioteki Xft.
 Summary:	X Font Rendering library
 Summary(pl):	Biblioteka do renderowania fontów
 Group:		X11/Development/Libraries
-Requires:	%{name}-xft-devel >= %{version}
+Requires:	%{name}-xft-devel = %{version}
 Provides:	Xft-static = 2.1-2
 Obsoletes:	XFree86-xft2-static
 Obsoletes:	Xft-static
@@ -417,7 +416,7 @@ systemie i wybierania ich w zale¿no¶ci od potrzeb aplikacji.
 Summary:	Font configuration and customization library
 Summary(pl):	Biblioteka do konfigurowania fontów
 Group:		Development/Libraries
-Requires:	%{name}-fontconfig-realpkg >= %{version}
+Requires:	%{name}-fontconfig-realpkg = %{version}
 Requires:	freetype-devel
 Provides:	fontconfig-devel = 1.0.1
 Provides:	%{name}-fontconfig-devel-realpkg = %{version}
@@ -441,7 +440,7 @@ programów korzystaj±cych z biblioteki fontconfig.
 Summary:	Font configuration and customization library
 Summary(pl):	Biblioteka do konfigurowania fontów
 Group:		Development/Libraries
-Requires:	%{name}-fontconfig-devel-realpkg >= %{version}
+Requires:	%{name}-fontconfig-devel-realpkg = %{version}
 Provides:	fontconfig-static = 1.0.1
 Obsoletes:	fontconfig-static
 
@@ -878,6 +877,19 @@ XFree86-devel Í¦ÓÔÉÔØ Â¦ÂÌ¦ÏÔÅËÉ, ÈÅÄÅÒÉ ÔÁ ÄÏËÕÍÅÎÔÁÃ¦À, ÎÅÏÂÈ¦ÄÎ¦
 
 ÷ÓÔÁÎÏ×¦ÔØ XFree86-devel ÑËÝÏ ×É ÚÂÉÒÁ¤ÔÅÓØ ÒÏÚÒÏÂÌÑÔÉ ÐÒÏÇÒÁÍÉ, ÑË¦
 ÂÕÄÕÔØ ÐÒÁÃÀ×ÁÔÉ ÑË X-ËÌ¦¤ÎÔÉ.
+
+%package Xserver-devel
+Summary:	Header files for XFree86 Xserver drivers/extensions development
+Summary(pl):	Pliki nag³ówkowe do tworzenia sterowników/rozszerzeñ X serwera XFree86
+Group:		X11/Development/Libraries
+Requires:	%{name}-devel = %{version}
+
+%description Xserver-devel
+Header files for XFree86 Xserver drivers and extensions development.
+
+%description Xserver-devel -l pl
+Pliki nag³ówkowe do tworzenia sterowników i rozszerzeñ X serwera
+XFree86.
 
 %package driver-apm
 Summary:	Alliance Promotion video driver
@@ -2030,7 +2042,6 @@ install -d $RPM_BUILD_ROOT/etc/{X11/fs,pam.d,rc.d/init.d,security/console.apps,s
 #	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/drivers
 #install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_dri.o \
 #	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/dri
-
 %endif
 
 # setting default X
@@ -2049,6 +2060,14 @@ ln -sf %{_bindir} $RPM_BUILD_ROOT/usr/bin/X11
 rm -f $RPM_BUILD_ROOT%{_libdir}/libGL*.so
 ln -sf libGL.so.1 $RPM_BUILD_ROOT%{_libdir}/libGL.so
 ln -sf libGLU.so.1 $RPM_BUILD_ROOT%{_libdir}/libGLU.so
+
+# collect Xserver headers
+install -d $RPM_BUILD_ROOT%{_includedir}/X11/Xserver
+cd xc/programs/Xserver
+# don't change to single install - there are symlinked "duplicates"
+install include/*.h $RPM_BUILD_ROOT%{_includedir}/X11/Xserver
+install hw/xfree86/{common,os-support}/*.h $RPM_BUILD_ROOT%{_includedir}/X11/Xserver
+cd -
 
 # set up PLD xdm config
 rm -f $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/{*Console,Xaccess,Xsession,Xsetup*}
@@ -2104,7 +2123,7 @@ mv -f $RPM_BUILD_ROOT%{_mandir}/man4/{mouse.4,mouse-x.4}
 echo '%defattr(644,root,root,755)' > XFree86-libs.lang
 for lang in af az bg bg_BG.cp1251 br ca cs da de el en_GB eo es et eu fi \
 	fr ga gl he hr hu is it ja ko lt mi mk nl nn no pl pt pt_BR ro ru sk \
-	sl sr sv ta th tr uk wa zh_CN zh_CN.GB2312 zh_TW.Big5 ; do
+	sl sr sv ta th tr uk wa zh_CN zh_TW ; do
 	install -d $RPM_BUILD_ROOT%{_datadir}/locale/${lang}/LC_MESSAGES
 	echo "%lang(${lang}) %{_datadir}/locale/${lang}" >> XFree86-libs.lang
 done
@@ -2518,6 +2537,39 @@ fi
 %defattr(644,root,root,755)
 %{_libdir}/libfontconfig.a
 
+%files render
+%defattr(644,root,root,755)
+%{_includedir}/X11/extensions/render.h
+%{_includedir}/X11/extensions/renderproto.h
+
+%files xrender
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXrender.so.*.*
+
+%files xrender-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXrender.so
+%{_includedir}/X11/extensions/Xrender.h
+
+%files xrender-static
+%defattr(644,root,root,755)
+%{_libdir}/libXrender.a
+
+%files xcursor
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXcursor.so.*.*
+
+%files xcursor-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/xcursor-config
+%attr(755,root,root) %{_libdir}/libXcursor.so
+%{_includedir}/X11/Xcursor
+%{_pkgconfigdir}/xcursor.pc
+
+%files xcursor-static
+%defattr(644,root,root,755)
+%{_libdir}/libXcursor.a
+
 %files OpenGL-core
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/glxgears
@@ -2597,7 +2649,6 @@ fi
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/bdftopcf
-#%attr(755,root,root) %{_bindir}/xcursor-config
 %attr(755,root,root) %{_libdir}/libX[1Ta-eg-t]*.so
 %attr(755,root,root) %{_libdir}/libXfont*.so
 %attr(755,root,root) %{_libdir}/libI*.so
@@ -2648,6 +2699,10 @@ fi
 
 %{_mandir}/man3/[A-EH-Z]*
 %exclude %{_mandir}/man3/Xft.3*
+
+%files Xserver-devel
+%defattr(644,root,root,755)
+%{_includedir}/X11/Xserver
 
 # Devel: sparc sparc64
 %ifarch %{ix86}
@@ -3290,44 +3345,9 @@ fi
 %attr(755,root,root) %{_bindir}/fstobdf
 %attr(755,root,root) %{_bindir}/mkcfm
 %attr(755,root,root) %{_bindir}/xfsinfo
-#%attr(755,root,root) %{_bindir}/xftcache
 
 %{_mandir}/man1/xfs.1*
 %{_mandir}/man1/fslsfonts.1*
 %{_mandir}/man1/fstobdf.1*
 %{_mandir}/man1/mkcfm.1*
 %{_mandir}/man1/xfsinfo.1*
-#%%{_mandir}/man1/xftcache.1*
-
-%files render
-%defattr(644,root,root,755)
-%{_includedir}/X11/extensions/render.h
-%{_includedir}/X11/extensions/renderproto.h
-
-%files xrender
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libXrender.so.*.*
-
-%files xrender-devel
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libXrender.so
-%{_includedir}/X11/extensions/Xrender.h
-
-%files xrender-static
-%defattr(644,root,root,755)
-%{_libdir}/libXrender.a
-
-%files xcursor
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libXcursor.so.*.*
-
-%files xcursor-devel
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/xcursor-config
-%attr(755,root,root) %{_libdir}/libXcursor.so
-%{_includedir}/X11/Xcursor
-%{_pkgconfigdir}/xcursor.pc
-
-%files xcursor-static
-%defattr(644,root,root,755)
-%{_libdir}/libXcursor.a
