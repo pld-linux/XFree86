@@ -3,6 +3,8 @@ Summary(de):	Xfree86 Window-System-Server und grundlegende Programme
 Summary(fr):	Serveurs du système XFree86 et programmes de base
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
+Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
+Summary(es):	Programas básicos y servidores para el sistema de ventanas XFree86
 Name:		XFree86
 Version:	4.1.0
 Release:	2
@@ -10,6 +12,10 @@ License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
+Group(fr):	X11/XFree86
+Group(tr):	X11/XFree86
+Group(pt_BR):	X11/XFree86
+Group(es):	X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.1.0/source/X410src-1.tgz
 Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source2:	xdm.pamd
@@ -142,6 +148,28 @@ olan temel yazýtiplerini, programlarý ve belgeleri sunar. Ekran
 kartýnýzý sürmek için gerekli olan X sunucusu bu pakete dahil
 deðildir.
 
+%description -l pt_BR
+X Window é uma interface gráfica completa com múltiplas janelas, múltiplos
+clientes e diferentes estilos de janelas. É usado na maioria das plataformas
+Unix, e clientes também podem rodar em outros sistemas de janelas populares.  O
+protocolo X permite que aplicações possam rodar tanto na máquina local como
+através da rede, provendo flexibilidade em implementações cliente/servidor.
+
+Este pacote contém as fontes básicas, programas e documentação para uma estação
+de trabalho X. Ele não fornece um servidor X que acessa seu hardware de vídeo --
+estes são disponibilizados em outro pacote.
+
+%description -l es
+X Window es una interface gráfica completa con múltiples ventanas, múltiples
+clientes y diferentes estilos de ventanas. Se usa en la mayoría de las
+plataformas Unix, y los clientes también pueden ejecutar en otros sistemas de
+ventanas populares.  El protocolo X permite que las aplicaciones puedan
+ejecutarse tanto en la máquina local como a través de la red, y proveer
+flexibilidad en implementaciones cliente/servidor.  Este paquete contiene las
+fuentes básicas, programas y documentación para una estación de trabajo X. No
+ofrece un servidor X que acceda tu hardware de vídeo -- estos son puestos a
+disposición  en otro paquete.
+
 %package modules
 Summary:	Modules with X servers extensions
 Summary(pl):	Wspólne modu³y rozszerzeñ dla wszystkich X serwerów
@@ -160,9 +188,14 @@ Summary:	X11R6 shared libraries
 Summary(de):	X11R6 shared Libraries
 Summary(pl):	Biblioteki dzielone dla X11R6
 Summary(fr):	Bibliothèques partagées X11R6
+Summary(pt_BR):	Bibliotecas compartilhadas X11R6
+Summary(es):	Bibliotecas compartidas X11R6
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
+Group(fr):	X11/XFree86
+Group(pt_BR):	X11/XFree86
+Group(es):	X11/XFree86
 Prereq:		grep
 Prereq:		/sbin/ldconfig
 Obsoletes:	xpm
@@ -173,10 +206,18 @@ Obsoletes:	X11R6.1-libs
 %endif
 
 %description libs
-XFree86-libs contains the shared libraries that most X programs need
-to run properly. These shared libraries are in a separate package in
-order to reduce the disk space needed to run X applications on a
-machine without an X server (i.e, over a network).
+XFree86-libs contains the shared libraries that most X programs
+need to run properly. These shared libraries are in a separate package in
+order to reduce the disk space needed to run X applications on a machine
+without an X server (i.e, over a network).
+
+If you are installing the X Window System on your machine, you will need to
+install XFree86-libs.  You will also need to install the XFree86 package,
+the XFree86-75dpi-fonts package or the XFree86-100dpi-fonts package
+(depending upon your monitor's resolution), the Xconfigurator package and
+the X11R6-contrib package.  And, finally, if you are going to be developing
+applications that run as X clients, you will also need to install
+XFree86-devel.
 
 %description -l de libs
 Dieses Paket enthält die zur gemeinsamen Nutzung vorgesehenen
@@ -202,6 +243,18 @@ Bu paket X programlarýnýn düzgün çalýþabilmeleri için gereken
 kitaplýklarý içerir. Bunlar, X programlarýný (sunucu olsun olmasýn)
 çalýþtýrmak için gerekli disk alanýný azaltmak için ayrý bir paket
 olarak sunulmuþtur.
+
+%description -l pt_BR libs
+Este pacote contém bibliotecas compartilhadas que a maioria dos programas X
+precisam para rodar corretamente. Eles estão em um pacote separado para reduzir
+o espaço em disco necessário para rodar aplicações X em uma máquina sem um
+servidor X (através da rede).
+
+%description -l es libs
+Este paquete contiene bibliotecas compartidas que la mayoría de los programas X
+necesitan para ejecutarse correctamente. Están en un paquete a parte, para
+reducir el espacio en disco necesario para ejecutar aplicaciones X en una
+máquina sin un servidor X (a través de la red).
 
 %package devel
 Summary:	X11R6 headers and programming man pages
@@ -1524,7 +1577,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/Xmark
 %attr(755,root,root) %{_bindir}/appres
 %attr(755,root,root) %{_bindir}/atobm
-%attr(755,root,root) %{_bindir}/bdftopcf
 %attr(755,root,root) %{_bindir}/bitmap
 %attr(755,root,root) %{_bindir}/bmtoa
 %attr(755,root,root) %{_bindir}/cxpm
@@ -1841,6 +1893,7 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/gccmakedep
+%attr(755,root,root) %{_bindir}/bdftopcf
 %attr(755,root,root) %{_libdir}/libX*.so
 %attr(755,root,root) %{_libdir}/libI*.so
 %ifnarch alpha
