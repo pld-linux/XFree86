@@ -8,7 +8,7 @@
 #
 
 %define		_sver	%(echo %{version} | tr -d .)
-%define		_synaptics_ver	0.12.0
+%define		_synaptics_ver	0.12.1
 
 Summary:	XFree86 Window System servers and basic programs
 Summary(de):	XFree86 Window-System-Server und grundlegende Programme
@@ -23,13 +23,13 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
-Version:	4.3.99.15
-Release:	0.2
+Version:	4.3.99.16
+Release:	0.1
 Epoch:		1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
-# Source0-md5:	ae7ec191348888bc9f83318e55a009e1
+# Source0-md5:	9060c02f9e07620b8595e4d3da77a4b3
 #Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-2.tgz
 #Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-3.tgz
 Source3:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
@@ -63,7 +63,7 @@ Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-X
 #Source39:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
 # http://w1.894.telia.com/~u89404340/touchpad/index.html
 Source40:	http://w1.894.telia.com/~u89404340/touchpad/files/synaptics-%{_synaptics_ver}.tar.bz2
-# Source40-md5:	f89f285c15d39679b9c403f6bbddedef
+# Source40-md5:	7106431c76d363f11c3cc29d66c19b85
 Source41:	http://www.linux.org.uk/~alan/S3.zip
 # Source41-md5:	8b754fc6bbded60b683563b945e384b0
 Source42:	twm-xsession.desktop
@@ -100,7 +100,6 @@ Patch21:	%{name}-r128-busmstr2.patch
 Patch22:	%{name}-neomagic_swcursor.patch
 Patch23:	%{name}-mga-busmstr.patch
 Patch24:	%{name}-agpgart-load.patch
-Patch25:	%{name}-xterm-fix.patch
 Patch26:	%{name}-HasFreetype2.patch
 Patch27:	%{name}-config-s3.patch
 Patch28:	%{name}-sparc_pci_domains.patch
@@ -1774,7 +1773,6 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch22 -p1
 %patch23 -p1
 %patch24 -p1
-%patch25 -p1
 %patch26 -p1
 %patch27 -p1
 %ifarch sparc sparc64
