@@ -24,7 +24,7 @@ Summary(uk):	âÁÚÏ×¦ ÛÒÉÆÔÉ, ÐÒÏÇÒÁÍÉ ÔÁ ÄÏËÕÍÅÎÔÁÃ¦Ñ ÄÌÑ ÒÏÂÏÞÏ§ ÓÔÁÎÃ¦§ Ð¦Ä X
 Summary(zh_CN):	XFree86 ´°¿ÚÏµÍ³·þÎñÆ÷ºÍ»ù±¾³ÌÐò
 Name:		XFree86
 Version:	4.2.99.4
-Release:	0.20030124.1
+Release:	0.20030124.2
 License:	MIT
 Group:		X11/XFree86
 #Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
@@ -384,6 +384,112 @@ Font rendering library.
 
 %description xft1 -l pl
 Biblioteka wy¶wietlaj±ca fonty.
+
+%package xft2
+Summary:        X Font rendering library
+Summary(pl):    Biblioteka do renderowania fontów
+Group:          X11/XFree86
+Requires:       %{name}-libs = %{version}
+Provides:	Xft = 2.1
+Obsoletes:	XFree86-xft
+Obsoletes:	Xft
+
+%description xft2
+Xft is a font rendering library for X.
+
+%description xft2 -l pl
+Xft jest bibliotek± s³u¿±c± do renderowania fontów dla X Window.
+
+%package xft2-devel
+Summary:        X Font Rendering library
+Summary(pl):    Biblioteka do renderowania fontów
+Group:          X11/Development/Libraries
+Requires:       %{name}-xft2 = %{version}
+Requires:       fontconfig-devel
+Provides:	Xft-devel = 2.1
+Obsoletes:      XFree86-xft-devel
+Obsoletes:	Xft-devel
+
+%description xft2-devel
+Xft is a font rendering library for X.
+
+This package contains the header files needed to develop programs that
+use these Xft.
+
+%description xft2-devel -l pl
+Xft jest bibliotek± s³u¿±c± do renderowania fontów dla X Window.
+
+Ten pakiet zawiera pliki nag³ówkowe potrzebne do kompilowania
+programów korzystaj±cych z biblioteki Xft.
+
+%package xft2-static
+Summary:        X Font Rendering library
+Summary(pl):    Biblioteka do renderowania fontów
+Group:          X11/Development/Libraries
+Requires:       %{name}-xft2-devel = %{version}
+
+%description xft2-static
+Xft is a font rendering library for X.
+
+This package contains static libraries.
+
+%description xft2-static -l pl
+Xft jest bibliotek± s³u¿±c± do renderowania fontów dla X Window.
+
+Ten pakiet zawiera biblioteki statyczne.
+
+%package -n fontconfig
+Summary:        Font configuration and customization library
+Summary(pl):    Biblioteka do konfigurowania fontów
+Requires:	%{name}-libs = %{version}
+Group:          Libraries
+
+%description -n fontconfig
+Fontconfig is designed to locate fonts within the system and select
+them according to requirements specified by applications.
+
+%description -n fontconfig -l pl
+Fontconfig jest biblioteka przeznaczon± do lokalizowania fontów w
+systemie i wybierania ich w zale¿no¶ci od potrzeb aplikacji.
+
+%package -n fontconfig-devel
+Summary:        Font configuration and customization library
+Summary(pl):    Biblioteka do konfigurowania fontów
+Group:          Development/Libraries
+Requires:       fontconfig = %{version}
+Requires:       freetype-devel
+
+%description -n fontconfig-devel
+Fontconfig is designed to locate fonts within the system and select
+them according to requirements specified by applications.
+
+This package contains the header files needed to develop programs that
+use these fontconfig.
+
+%description -n fontconfig-devel -l pl
+Fontconfig jest biblioteka przeznaczon± do lokalizowania fontów w
+systemie i wybierania ich w zale¿no¶ci od potrzeb aplikacji.
+
+Ten pakiet zawiera pliki nag³ówkowe potrzebne do kompilowania
+programów korzystaj±cych z biblioteki fontconfig.
+
+%package -n fontconfig-static
+Summary:        Font configuration and customization library
+Summary(pl):    Biblioteka do konfigurowania fontów
+Group:          Development/Libraries
+Requires:       fontconfig-devel = %{version}
+
+%description -n fontconfig-static
+Fontconfig is designed to locate fonts within the system and select
+them according to requirements specified by applications.
+
+This package contains static libraries.
+
+%description -n fontconfig-static -l pl
+Fontconfig jest biblioteka przeznaczon± do lokalizowania fontów w
+systemie i wybierania ich w zale¿no¶ci od potrzeb aplikacji.
+
+Ten pakiet zawiera biblioteki statyczne.
 
 %package XIE
 Summary:	XIE extension library
@@ -1975,6 +2081,12 @@ rm -rf $RPM_BUILD_ROOT
 %post	xft1 -p /sbin/ldconfig
 %postun	xft1 -p /sbin/ldconfig
 
+%post   xft2 -p /sbin/ldconfig
+%postun xft2 -p /sbin/ldconfig
+
+%post   -n fontconfig -p /sbin/ldconfig
+%postun -n fontconfig -p /sbin/ldconfig
+
 %post	OpenGL-libs -p /sbin/ldconfig
 %postun	OpenGL-libs -p /sbin/ldconfig
 
@@ -2324,6 +2436,43 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libXft.so.1.1
 
+%files xft2
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXft.so.2.0
+
+%files xft2-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/xft-config
+%{_includedir}/X11/Xft
+%{_libdir}/libXft.so
+%{_mandir}/man3/Xft.3*
+%{_pkgconfigdir}/xft.pc
+
+%files xft2-static
+%defattr(644,root,root,755)
+%{_libdir}/libXft.a
+
+%files -n fontconfig
+%defattr(644,root,root,755)
+%dir %{_sysconfdir}/fonts
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/fonts/fonts.conf
+%{_sysconfdir}/fonts/fonts.dtd
+%attr(755,root,root) %{_bindir}/fc-*
+%attr(755,root,root) %{_libdir}/libfontconfig.so.1.0
+%{_mandir}/man1/fc-*.1*
+
+%files -n fontconfig-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/fontconfig-config
+%{_includedir}/fontconfig
+%{_libdir}/libfontconfig.so
+%{_pkgconfigdir}/fontconfig.pc
+%{_mandir}/man3/fontconfig.3*
+
+%files -n fontconfig-static
+%defattr(644,root,root,755)
+%{_libdir}/libfontconfig.a
+
 %files XIE
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libXIE.so.*.*
@@ -2454,6 +2603,7 @@ fi
 %{_pkgconfigdir}/xcursor.pc
 
 %{_mandir}/man3/[A-EH-Z]*
+%exclude %{_mandir}/man3/Xft.3*
 
 %ifnarch sparc sparc64 alpha ppc
 %files driver-apm
