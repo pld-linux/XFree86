@@ -155,6 +155,7 @@ BuildRequires:	unzip
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
 BuildRequires:	imake
+BuildRequires:	XFree86-devel
 Requires:	%{name}-libs = %{epoch}:%{version}
 Requires:	xauth
 Requires:	pam >= 0.77.3
@@ -173,7 +174,9 @@ Obsoletes:	X11R6.1
 %define		_themesdir	/usr/share/themes
 %define		_wmpropsdir	/usr/share/wm-properties
 %define		_xsessdir	/usr/share/xsessions
-%define		_appdefsdir	%{_libdir}/X11/app-defaults
+%define		_libx11dir	%{_prefix}/lib/X11
+%define		_appdefsdir	%{_libx11dir}/app-defaults
+
 
 # avoid Mesa dependency in XFree86-OpenGL-libs
 # Glide3 (libglide3.so.3) can be provided by Glide_V3-DRI or Glide_V5-DRI
@@ -1882,7 +1885,7 @@ rm -rf xc/fonts
 #	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 %endif
 
-%ifarch %{ix86} mips ppc arm amd64
+%ifarch %{ix86} mips ppc arm
 olddir=$(pwd)
 cd LinuxDriver/2D
 chmod u+w Imakefile
@@ -1933,7 +1936,8 @@ install -d $RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,security/console.apps,sysconfi
 	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_iconsdir}/mini,%{_pixmapsdir}/mini} \
 	$RPM_BUILD_ROOT{%{_wmpropsdir},%{_soundsdir},%{_themesdir}/{Default,ThinIce}} \
-	$RPM_BUILD_ROOT%{_xsessdir}
+	$RPM_BUILD_ROOT%{_xsessdir} \
+	$RPM_BUILD_ROOT%{_pkgconfigdir}
 
 %{__make} -C xc	install	install.man \
 	DESTDIR="$RPM_BUILD_ROOT" \
@@ -1961,10 +1965,15 @@ install synaptics/synaptics_drv.o $RPM_BUILD_ROOT%{_libdir}/modules/input
 #	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/dri
 %endif
 
-%ifarch %{ix86} mips ppc arm amd64
+%ifarch %{ix86} mips ppc arm
 install -d $RPM_BUILD_ROOT%{_libdir}/modules.s3/drivers
 install LinuxDriver/2D/savage_drv.o $RPM_BUILD_ROOT%{_libdir}/modules.s3/drivers
 %endif
+
+# fix pkgconfig path
+if [ "%{_pkgconfigdir}" != "/usr/lib/pkgconfig" ] ; then
+	mv $RPM_BUILD_ROOT/usr/lib/pkgconfig/* $RPM_BUILD_ROOT%{_pkgconfigdir}
+fi
 
 # setting default X
 rm -f $RPM_BUILD_ROOT%{_bindir}/X
@@ -1975,7 +1984,7 @@ ln -sf %{_bindir}/XFree86 $RPM_BUILD_ROOT%{_sysconfdir}/X11/X
 
 # add X11 links in /usr/bin, /usr/lib /usr/include
 ln -sf %{_includedir}/X11 $RPM_BUILD_ROOT/usr/include/X11
-ln -sf %{_libdir}/X11 $RPM_BUILD_ROOT/usr/lib/X11
+ln -sf %{_libx11dir} $RPM_BUILD_ROOT/usr/lib/X11
 ln -sf %{_bindir} $RPM_BUILD_ROOT/usr/bin/X11
 
 # fix libGL*.so links
@@ -2028,17 +2037,17 @@ install %{SOURCE42} $RPM_BUILD_ROOT%{_xsessdir}/twm.desktop
 :> $RPM_BUILD_ROOT/etc/security/blacklist.xserver
 :> $RPM_BUILD_ROOT/etc/security/blacklist.xdm
 
-ln -sf %{_fontsdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
+ln -sf %{_fontsdir} $RPM_BUILD_ROOT%{_libx11dir}/fonts
 
 # do not duplicate xkbcomp program
-rm -f $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
+rm -f $RPM_BUILD_ROOT%{_libx11dir}/xkb/xkbcomp
 ln -sf %{_bindir}/xkbcomp $RPM_BUILD_ROOT%{_sysconfdir}/X11/xkb/xkbcomp
 
-ln -sf /usr/share/doc/%{name}-%{version} $RPM_BUILD_ROOT%{_libdir}/X11/doc
+ln -sf /usr/share/doc/%{name}-%{version} $RPM_BUILD_ROOT%{_libx11dir}/doc
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
+rm -f $RPM_BUILD_ROOT%{_libx11dir}/config/host.def
 
-:> $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
+:> $RPM_BUILD_ROOT%{_libx11dir}/config/host.def
 :> $RPM_BUILD_ROOT%{_sysconfdir}/X11/XF86Config
 
 rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/html
@@ -2181,7 +2190,7 @@ fi
 %defattr(644,root,root,755)
 %ifnarch sparc sparc64
 %doc %{_docdir}/%{name}-%{version}
-%doc %{_libdir}/X11/doc
+%doc %{_libx11dir}/doc
 %endif
 
 %{_appdefsdir}/UXTerm
@@ -2198,12 +2207,12 @@ fi
 %lang(pl) %{_appdefsdir}/pl/XTerm
 %{_appdefsdir}/XTerm-color
 
-%attr(755,root,root) %{_libdir}/X11/lbxproxy
-%attr(755,root,root) %{_libdir}/X11/proxymngr
-%attr(755,root,root) %{_libdir}/X11/rstart
-%attr(755,root,root) %{_libdir}/X11/fonts
-%attr(755,root,root) %{_libdir}/X11/xinit
-%attr(755,root,root) %{_libdir}/X11/xsm
+%attr(755,root,root) %{_libx11dir}/lbxproxy
+%attr(755,root,root) %{_libx11dir}/proxymngr
+%attr(755,root,root) %{_libx11dir}/rstart
+%attr(755,root,root) %{_libx11dir}/fonts
+%attr(755,root,root) %{_libx11dir}/xinit
+%attr(755,root,root) %{_libx11dir}/xsm
 
 %dir /etc/X11/xinit
 %dir /etc/X11/lbxproxy
@@ -2224,8 +2233,8 @@ fi
 %dir /etc/X11/xsm
 /etc/X11/xsm/*
 
-%dir %{_libdir}/X11/x11perfcomp
-%attr(755,root,root) %{_libdir}/X11/x11perfcomp/*
+%dir %{_libx11dir}/x11perfcomp
+%attr(755,root,root) %{_libx11dir}/x11perfcomp/*
 
 %attr(755,root,root) %{_bindir}/Xmark
 %attr(755,root,root) %{_bindir}/appres
@@ -2255,7 +2264,7 @@ fi
 %attr(755,root,root) %{_bindir}/smproxy
 %attr(755,root,root) %{_bindir}/startx
 %attr(755,root,root) %{_bindir}/sxpm
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 amd64
 %attr(755,root,root) %{_bindir}/synclient
 %endif
 %attr(755,root,root) %{_bindir}/uxterm
@@ -2396,8 +2405,8 @@ fi
 /usr/lib/X11
 %dir %{_bindir}
 %dir %{_libdir}
-%dir %{_libdir}/X11
-%{_libdir}/X11/rgb.txt
+%dir %{_libx11dir}
+%{_libx11dir}/rgb.txt
 
 %files DPS
 %defattr(644,root,root,755)
@@ -2437,7 +2446,7 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libGL.so.*.*
 %attr(755,root,root) %{_libdir}/libGL.so
-%attr(755,root,root) /usr/lib/libGL.so*
+%attr(755,root,root) /usr/%{_lib}/libGL.so*
 
 %files OpenGL-devel
 %defattr(644,root,root,755)
@@ -2497,9 +2506,9 @@ fi
 %{_mandir}/man5/XF86Config.5*
 %{_mandir}/man5/getconfig.5*
 
-%{_libdir}/X11/Cards
-%{_libdir}/X11/Options
-%{_libdir}/X11/getconfig
+%{_libx11dir}/Cards
+%{_libx11dir}/Options
+%{_libx11dir}/getconfig
 
 %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/X11/XF86Config
 %attr(640,root,root) %config %verify(not md5 size mtime) /etc/pam.d/xserver
@@ -2560,7 +2569,7 @@ fi
 %{_includedir}/X11/extensions/*.h
 %{_includedir}/X11/fonts
 %{_includedir}/xf86*.h
-%{_libdir}/X11/config
+%{_libx11dir}/config
 
 %exclude %{_includedir}/X11/extensions/Xrender.h
 %exclude %{_includedir}/X11/extensions/render.h
@@ -2642,7 +2651,7 @@ fi
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86} amd64
+%ifarch %{ix86}
 %files driver-i740
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i740_drv.o
@@ -2650,7 +2659,7 @@ fi
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86} amd64
+%ifarch %{ix86}
 %files driver-i810
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i810_drv.o
@@ -2693,7 +2702,7 @@ fi
 %{_mandir}/man4/newport.4*
 %endif
 
-%ifarch %{ix86} amd64
+%ifarch %{ix86}
 %files driver-nsc
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/nsc_drv.o
@@ -2782,7 +2791,7 @@ fi
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86} mips alpha ppc arm amd64
+%ifarch %{ix86} mips alpha ppc arm
 %files driver-savage
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/savage_drv.o
@@ -2802,7 +2811,7 @@ fi
 %{_mandir}/man4/siliconmotion*
 %endif
 
-%ifarch %{ix86} mips ppc arm amd64
+%ifarch %{ix86} mips ppc arm
 %files driver-sis
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
@@ -2894,7 +2903,7 @@ fi
 %{_mandir}/man4/tseng*
 %endif
 
-%ifarch %{ix86} amd64
+%ifarch %{ix86}
 %files driver-via
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/via_drv.o
@@ -2902,7 +2911,7 @@ fi
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86} amd64
+%ifarch %{ix86}
 %files driver-vmware
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/vmware_drv.o
@@ -2915,8 +2924,8 @@ fi
 %dir %{_themesdir}
 %dir %{_themesdir}/Default
 %dir %{_themesdir}/ThinIce
-%{_libdir}/X11/XErrorDB
-%{_libdir}/X11/XKeysymDB
+%{_libx11dir}/XErrorDB
+%{_libx11dir}/XKeysymDB
 %dir %{_appdefsdir}
 %lang(cs) %dir %{_appdefsdir}/cs
 %lang(da) %dir %{_appdefsdir}/da
@@ -2932,7 +2941,7 @@ fi
 %lang(sk) %dir %{_appdefsdir}/sk
 %lang(zh_CN) %dir %{_appdefsdir}/zh_CN.gb2312
 %lang(zh_TW) %dir %{_appdefsdir}/zh_TW.big5
-%{_libdir}/X11/locale
+%{_libx11dir}/locale
 %dir %{_includedir}
 %dir %{_includedir}/X11
 /usr/include/X11
@@ -2981,7 +2990,7 @@ fi
 %files modules
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/xkbcomp
-%{_libdir}/X11/xkb
+%{_libx11dir}/xkb
 %{_sysconfdir}/X11/xkb
 /var/lib/xkb
 %dir %{_libdir}/modules
@@ -2992,7 +3001,9 @@ fi
 %endif
 %attr(755,root,root) %{_libdir}/modules/*.a
 %attr(755,root,root) %{_libdir}/modules/codeconv
+%ifnarch amd64
 %attr(755,root,root) %{_libdir}/modules/drivers/linux
+%endif
 %ifarch %{ix86} sparc sparc64 alpha ppc arm amd64
 %attr(755,root,root) %{_libdir}/modules/drivers/vga_drv.o
 %endif
@@ -3008,7 +3019,7 @@ fi
 %attr(755,root,root) %{_libdir}/modules/fonts
 %attr(755,root,root) %{_libdir}/modules/input
 %attr(755,root,root) %{_libdir}/modules/linux
-%attr(755,root,root) %{_libdir}/X11/xserver
+%attr(755,root,root) %{_libx11dir}/xserver
 %dir /etc/X11/xserver
 /etc/X11/xserver/SecurityPolicy
 #%%{_mandir}/man1/xtr*
@@ -3025,7 +3036,9 @@ fi
 %{_mandir}/man4/palmax.4*
 %{_mandir}/man4/penmount.4*
 %{_mandir}/man4/tek4957.4*
+%ifnarch amd64
 %{_mandir}/man4/v4l*
+%endif
 %ifarch %{ix86} sparc sparc64 alpha ppc arm amd64
 %{_mandir}/man4/vga*
 %endif
@@ -3118,8 +3131,8 @@ fi
 %attr(755,root,root) %{_bindir}/rman
 %attr(755,root,root) %{_bindir}/xtrap*
 %attr(755,root,root) %{_bindir}/texteroids
-%{_libdir}/X11/xedit
-%{_libdir}/X11/xman.help
+%{_libx11dir}/xedit
+%{_libx11dir}/xman.help
 %{_mandir}/man1/beforelight.1*
 %{_mandir}/man1/ico.1*
 %{_mandir}/man1/listres.1*
@@ -3233,7 +3246,7 @@ fi
 %attr(755,root,root) %{_bindir}/twm
 %dir %{_sysconfdir}/X11/twm
 %config %{_sysconfdir}/X11/twm/system.twmrc
-%attr(755,root,root) %{_libdir}/X11/twm
+%attr(755,root,root) %{_libx11dir}/twm
 %{_mandir}/man1/twm.1*
 
 %files -n xauth
@@ -3251,7 +3264,7 @@ fi
 
 %{_appdefsdir}/Chooser
 
-%attr(755,root,root) %{_libdir}/X11/xdm
+%attr(755,root,root) %{_libx11dir}/xdm
 %attr(755,root,root) %{_bindir}/xdm
 %attr(755,root,root) %{_bindir}/chooser
 %{_mandir}/man1/xdm.1*
@@ -3274,7 +3287,7 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/xfs
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/xfs
 %dir %{_sysconfdir}/X11/fs
-%attr(755,root,root) %{_libdir}/X11/fs
+%attr(755,root,root) %{_libx11dir}/fs
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/X11/fs/config
 
 %attr(755,root,root) %{_bindir}/xfs
