@@ -1038,7 +1038,7 @@ X11R6-contrib in older releases.
 %patch23 -p1
 %patch24 -p1
 %patch25 -p1
-%patch26 -p0
+%patch26 -p1
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
