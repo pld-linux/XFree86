@@ -20,9 +20,9 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.99.903
-Release:	1
+Release:	0.1
 Epoch:		1
-License:	MIT
+License:	XFree86 1.1
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
 # Source0-md5:	9864cd3f5443849d13694d9b2a7b1e72
