@@ -2443,13 +2443,10 @@ fi
 %endif
 
 
-%ifnarch alpha
 %files driver-ati
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/ati*_drv.o
-%endif
 
-%ifnarch alpha
 %files driver-r128
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/r128*_drv.o
@@ -2457,15 +2454,12 @@ fi
 %attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
 %endif
 %{_mandir}/man4/r128*
-%endif
 
-%ifnarch alpha
 %files driver-radeon
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/radeon*_drv.o
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
-%endif
 %endif
 
 
@@ -2518,14 +2512,14 @@ fi
 #%{_mandir}/man4/s3*
 %endif
 
-%ifnarch sparc sparc64 alpha
+%ifnarch sparc sparc64
 %files driver-savage
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/savage_drv.o
 %{_mandir}/man4/savage*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+%ifnarch sparc sparc64 ppc
 %files driver-siliconmotion
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/siliconmotion_drv.o
