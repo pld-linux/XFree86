@@ -1377,11 +1377,15 @@ fi
 %post fonts
 cd %{_fontdir}/misc
 %{_bindir}/mkfontdir
+cd %{_fontdir}/Type1
+/usr/bin/type1inst -nogs -nolog
 
 %postun fonts
 cd %{_fontdir}/misc
 umask 022
 %{_bindir}/mkfontdir
+cd %{_fontdir}/Type1
+/usr/bin/type1inst -nogs -nolog
 
 %post 75dpi-fonts
 cd %{_fontdir}/75dpi
