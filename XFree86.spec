@@ -1596,7 +1596,7 @@ user-defined macro functions, click-to-type and pointerdriven keyboard
 focus, and user-specified key and pointer button bindings.
 
 %description -n twm -l pl
-Twm jest mened¿erem okien dla X Window System. Daje belki tytu³owe,
+Twm jest zarz±dc± okien dla X Window System. Daje belki tytu³owe,
 ramki okien, parê form zarz±dzania ikonami, definiowalne makra,
 ustawianie focusu klikniêciem lub po³o¿eniem wska¼nika myszy,
 definiowalne przypisania klawiszy i przycisków myszy.
@@ -1629,7 +1629,7 @@ logowania lub udostêpnienia innym u¿ytkownikom).
 
 %package -n xdm
 Summary:	xdm - X Display Manager with support for XDMCP, host chooser
-Summary(pl):	XDM - display mened¿er z obs³ug± XDMCP i wybieraniem hostów
+Summary(pl):	XDM - zarz±dca ekranów z obs³ug± XDMCP i wybieraniem hostów
 Summary(ru):	íÅÎÅÄÖÅÒ ÄÉÓĞÌÅÑ X
 Summary(uk):	íÅÎÅÄÖÅÒ ÄÉÓĞÌÅÀ X
 Group:		X11/XFree86
