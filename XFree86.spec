@@ -452,6 +452,7 @@ Summary:	XFree86 Fonts
 Summary(pl):	Fonty dla systemu XFree86 
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
+Requires:	type1inst
 Prereq:		%{_bindir}/mkfontdir
 
 %description fonts
