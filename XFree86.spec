@@ -1490,11 +1490,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %doc %{_libdir}/X11/XF86Config.eg
 %doc %{_libdir}/X11/XF86Config.98
-%doc %{_libdir}/X11/Cards
-
-%ifarch ix86 alpha sparc
 %{_libdir}/X11/Cards
-%endif
 
 %config(noreplace) %verify(not md5 mtime size) /etc/X11/XF86Config
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xserver
