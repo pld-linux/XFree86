@@ -301,6 +301,7 @@ Summary(wa):	Usteye grafike po-z apontyî li sistinme X11
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-VGA16 = %{version}
+Requires:	twm
 
 %description XF86Setup
 XF86Setup is a graphical user interface configuration tool for setting up
