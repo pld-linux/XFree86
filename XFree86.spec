@@ -879,11 +879,11 @@ X11R6-contrib in older releases.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-#%patch5 -p0
+%patch5 -p0
 # Not ready yet
 #%patch6 -p0
-#%patch7 -p1
-#%patch8 -p1
+%patch7 -p1
+%patch8 -p1
 #%patch9 -p1
 #%patch10 -p1
 #%patch11 -p1
