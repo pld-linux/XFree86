@@ -23,7 +23,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.0
-Release:	1.4
+Release:	2
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-1.tgz
@@ -109,6 +109,8 @@ Patch46:	%{name}-spencode-nowarning.patch
 # Small (maybe buggy) patch to resolve problems with totem 0.97.0
 Patch47:	%{name}-lock.patch
 Patch48:	%{name}-savage-20030505.patch
+Patch49:	%{name}-xterm-can-2003-0063.patch
+Patch50:	ftp://ftp.xfree86.org:/pub/XFree86/4.3.0/fixes/4.3.0-4.3.0.1.diff.gz
 BuildRequires:	bison
 BuildRequires:	expat-devel
 BuildRequires:	flex
@@ -1963,6 +1965,8 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch46 -p1
 %patch47 -p0
 %patch48 -p1
+%patch49 -p1
+%patch50 -p0
 
 rm -f xc/config/cf/host.def
 
@@ -2005,7 +2009,7 @@ install -d $RPM_BUILD_ROOT/etc/{X11/fs,pam.d,rc.d/init.d,security/console.apps,s
 	$RPM_BUILD_ROOT%{_applnkdir}/{Amusements,Editors,Utilities,Terminals} \
 	$RPM_BUILD_ROOT{%{_pixmapsdir}/mini,%{_wmpropsdir},%{_soundsdir},%{_themesdir}/Default}
 
-%{__make} -C xc	install	install.man \
+%{__make} -C xc install install.man \
 	DESTDIR="$RPM_BUILD_ROOT" \
 	DOCDIR="/usr/share/doc/%{name}-%{version}" \
 	INSTBINFLAGS="-m 755" \
