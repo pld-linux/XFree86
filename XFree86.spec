@@ -23,7 +23,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.99.5
-Release:	0.1
+Release:	1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
@@ -2523,6 +2523,7 @@ fi
 %attr(755,root,root) %{_bindir}/glxgears
 %attr(755,root,root) %{_libdir}/libGL.so.*.*
 %attr(755,root,root) %{_libdir}/libGL.so
+%attr(755,root,root) /usr/lib/libGL.so*
 %attr(755,root,root) %{_libdir}/modules/extensions/libglx.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libGLcore.a
 %{_mandir}/man1/glxgears.1x*
@@ -2533,6 +2534,7 @@ fi
 %attr(755,root,root) %{_libdir}/libOSMesa*.so
 %{_libdir}/libGLw.a
 %dir %{_includedir}/GL
+%dir /usr/include/GL
 %attr(644,root,root) %{_includedir}/GL/*
 %exclude %{_includedir}/GL/gl.h
 %exclude %{_includedir}/GL/glx.h
