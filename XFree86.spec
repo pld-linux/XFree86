@@ -24,7 +24,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.99.11
-Release:	0.3
+Release:	0.4
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
@@ -2597,6 +2597,7 @@ fi
 %files driver-nv
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/nv_drv.o
+%attr(755,root,root) %{_libdir}/modules/drivers/riva128.o
 %{_mandir}/man4/nv*
 %endif
 
