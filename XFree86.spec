@@ -7,7 +7,7 @@ Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Summary(es):	Programas básicos y servidores para el sistema de ventanas XFree86
 Name:		XFree86
 Version:	4.1.0
-Release:	5
+Release:	6
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -89,6 +89,7 @@ BuildRequires:	Glide2x_SDK
 %endif
 Requires:	xauth
 Requires:	XFree86-fonts-ISO8859-1 = %{version}
+Requires:	XFree86-libs = %{version}
 Prereq:		XFree86-libs
 Obsoletes:	xpm-progs
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
@@ -1210,6 +1211,7 @@ Group(de):	X11/Fenstermanager
 Group(es):	X11/Administraadores De Ventanas
 Group(fr):	X11/Gestionnaires De Fenêtres
 Group(pl):	X11/Zarz±dcy Okien
+Requires:	XFree86-libs = %{version}
 
 %description -n twm
 Twm is a window manager for the X Window System. It provides
@@ -1262,7 +1264,8 @@ Summary:	Various tools for XFree86
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
-Requires:	%{name} = %{version}
+Requires:	%{name} >= %{version}
+Requires:	XFree86-libs = %{version}
 Obsoletes:	X11R6-contrib
 
 %description tools
