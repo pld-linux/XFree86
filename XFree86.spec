@@ -17,7 +17,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.2.1
-Release:	9.2
+Release:	9.3
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
@@ -48,6 +48,7 @@ Source34:	xclipboard.png
 Source35:	xclock.png
 Source36:	oclock.png
 Source37:	xconsole.png
+Source38:	http://www.winischhofer/sis/sis_drv_src_141202-1.tar.gz
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -1814,7 +1815,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %{!?_without_tdfx:%patch51 -p0}
 #%patch52 -p1
 #%patch53 -p1
-%patch54 -p1
+#%patch54 -p1
 %patch55 -p0
 %patch56 -p1
 %{!?debug:%patch57 -p1}
@@ -1827,6 +1828,10 @@ rm -f xc/config/cf/host.def
 cd xc/programs/Xserver/hw/xfree86/drivers
 bzcat %{SOURCE2} | tar x
 # ati.2 directory
+
+# New SiS drivers
+cd sis
+zcat %{SOURCE38} | tar x
 
 #--- %build --------------------------
 
