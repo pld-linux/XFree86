@@ -1,0 +1,55 @@
+--- xc/programs/Xserver/hw/xfree86/drivers/tdfx/tdfx_driver.c.tdfx-enable-interlaced-modes	Sun Feb  3 07:28:12 2002
++++ xc/programs/Xserver/hw/xfree86/drivers/tdfx/tdfx_driver.c	Sun Feb  3 08:38:10 2002
+@@ -960,7 +960,18 @@
+   clockRanges->minClock= 12000; /* !!! What's the min clock? !!! */
+   clockRanges->maxClock=pTDFX->MaxClock;
+   clockRanges->clockIndex = -1;
+-  clockRanges->interlaceAllowed = FALSE;
++  switch (pTDFX->ChipType) {
++    case PCI_CHIP_BANSHEE:
++      clockRanges->interlaceAllowed = FALSE;
++      break;
++    case PCI_CHIP_VOODOO3:
++    case PCI_CHIP_VOODOO5:
++      clockRanges->interlaceAllowed = TRUE;
++      break;
++    default:
++      clockRanges->interlaceAllowed = FALSE;
++      break;
++  }    
+   clockRanges->doubleScanAllowed = TRUE;
+ 
+   /*
+@@ -1836,7 +1847,6 @@
+ {
+   int heightInTiles;            /* Height of buffer in tiles */
+ 
+-
+   /* Calculate tile height stuff */
+   heightInTiles = yres >> 5;
+   
+@@ -2394,9 +2404,21 @@
+   TDFXTRACE("TDFXValidMode start\n");
+   if ((mode->HDisplay>2048) || (mode->VDisplay>1536)) 
+     return MODE_BAD;
+-  /* Banshee doesn't support interlace. Does V3? */
+-  if (mode->Flags&V_INTERLACE) 
+-    return MODE_BAD;
++  /* Banshee doesn't support interlace, but Voodoo 3 and higher do. */
++  if (mode->Flags&V_INTERLACE) {
++    switch (pTDFX->ChipType) {
++      case PCI_CHIP_BANSHEE:
++        return MODE_BAD;
++        break;
++      case PCI_CHIP_VOODOO3:
++      case PCI_CHIP_VOODOO5:
++        return MODE_GOOD;
++        break;
++      default:
++        return MODE_BAD;
++        break;
++    }
++  }
+   /* In clock doubled mode widths must be divisible by 16 instead of 8 */
+   if ((mode->Clock>TDFX2XCUTOFF) && (mode->HDisplay%16))
+     return MODE_BAD;

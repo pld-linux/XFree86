@@ -1,0 +1,11 @@
+--- xc/programs/Xserver/hw/xfree86/drivers/tdfx/tdfx_driver.c.should-be-2048-not-2046	Sun Feb  3 00:57:24 2002
++++ xc/programs/Xserver/hw/xfree86/drivers/tdfx/tdfx_driver.c	Sun Feb  3 00:57:45 2002
+@@ -2392,7 +2392,7 @@
+ static int
+ TDFXValidMode(int scrnIndex, DisplayModePtr mode, Bool verbose, int flags) {
+   TDFXTRACE("TDFXValidMode start\n");
+-  if ((mode->HDisplay>2046) || (mode->VDisplay>1536)) 
++  if ((mode->HDisplay>2048) || (mode->VDisplay>1536)) 
+     return MODE_BAD;
+   /* Banshee doesn't support interlace. Does V3? */
+   if (mode->Flags&V_INTERLACE) 
