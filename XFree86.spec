@@ -65,7 +65,7 @@ Patch31:	%{name}-alpha_GLX_align_fix.patch
 Patch32:	%{name}-XftConfig_in_correct_place.patch
 Patch33:	%{name}-PEX+XIE.patch
 Patch34:	%{name}-ati.old-rename.patch
-Patch35:	%{name}-xman-paths.patch
+Patch35:	%{name}-xman-manpaths.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1387,7 +1387,7 @@ serwerów lokalnych lub zdalnych.
 %patch31 -p1
 %patch32 -p1
 %patch33 -p1
-%patch34 -p1
+%patch35 -p1
 
 rm -f xc/config/cf/host.def
 
