@@ -10,7 +10,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Name:		XFree86
 Version:	4.2.0
-Release:	2.7
+Release:	2.8
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/%{version}/source/X%{_sver}src-1.tgz
@@ -64,8 +64,7 @@ Patch30:	%{name}-dri_directory_mode_fix.patch
 Patch31:	%{name}-alpha_GLX_align_fix.patch
 Patch32:	%{name}-XftConfig_in_correct_place.patch
 Patch33:	%{name}-PEX+XIE.patch
-Patch34:	%{name}-ati.old-rename.patch
-Patch35:	%{name}-xman-manpaths.patch
+Patch34:	%{name}-xman-manpaths.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -592,6 +591,7 @@ Requires:       %{name}-modules = %{version}-%{release}
 Requires:       %{name}-Xserver = %{version}-%{release}
 Requires:	%{name}-driver-ati = %{version}-%{release}
 Requires:       OpenGL
+Conflicts:	XFree86-driver-nvidia
 Obsoletes:      XFree86-Rage128
 
 %description driver-r128
@@ -608,6 +608,7 @@ Requires:       %{name}-modules = %{version}-%{release}
 Requires:       %{name}-Xserver = %{version}-%{release}
 Requires:	%{name}-driver-ati = %{version}-%{release}
 Requires:       OpenGL
+Conflicts:	XFree86-driver-nvidia
 
 %description driver-radeon
 ATI Radeon video driver.
@@ -704,6 +705,7 @@ Group:		X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
+Conflicts:	XFree86-driver-nvidia
 Obsoletes:	XFree86-3DLabs
 
 %description driver-glint
@@ -747,6 +749,7 @@ Group:		X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
+Conflicts:	XFree86-driver-nvidia
 Obsoletes:	XFree86-i810
 
 %description driver-i810
@@ -762,6 +765,7 @@ Group:		X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
+Conflicts:	XFree86-driver-nvidia
 Obsoletes:	XFree86-mga
 
 %description driver-mga
@@ -980,6 +984,7 @@ Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
 Requires:	Glide3-DRI
+Conflicts:	XFree86-driver-nvidia
 Obsoletes:	XFree86-3dfx
 
 %description driver-tdfx
@@ -1394,10 +1399,7 @@ rm -f xc/config/cf/host.def
 # New ATI drivers
 cd xc/programs/Xserver/hw/xfree86/drivers
 bzcat %{SOURCE16} | tar x
-mv ati ati.old
-mv ati.2 ati
-cd ati.old
-%patch34 -p1
+# ati.2 directory
 
 #--- %build --------------------------
 
@@ -1409,8 +1411,8 @@ cd ati.old
 	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 
 %ifnarch alpha
-%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.old" Makefiles
-%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.old" all \
+%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" Makefiles
+%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" all \
 	"BOOTSTRAPCFLAGS=%{rpmcflags}" \
 	"CCOPTIONS=%{rpmcflags}" \
 	"CXXOPTIONS=%{rpmcflags}" \
@@ -1442,14 +1444,9 @@ install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysc
 		install install.man
 
 %ifnarch alpha
-install xc/programs/Xserver/hw/xfree86/drivers/ati.old/ati_drv.o \
-	$RPM_BUILD_ROOT%{_libdir}/modules/drivers/ati_old_drv.o 
-install xc/programs/Xserver/hw/xfree86/drivers/ati.old/atimisc_drv.o \
-	$RPM_BUILD_ROOT%{_libdir}/modules/drivers/atimisc_old_drv.o
-install xc/programs/Xserver/hw/xfree86/drivers/ati.old/r128_drv.o \
-	$RPM_BUILD_ROOT%{_libdir}/modules/drivers/r128_old_drv.o
-install xc/programs/Xserver/hw/xfree86/drivers/ati.old/radeon_drv.o \
-	$RPM_BUILD_ROOT%{_libdir}/modules/drivers/radeon_old_drv.o
+install -d $RPM_BUILD_ROOT%{_libdir}/modules/drivers/ati.2/
+install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_drv.o \
+	$RPM_BUILD_ROOT%{_libdir}/modules/drivers/ati.2/
 %endif
 
 # setting default X
@@ -2112,6 +2109,8 @@ fi
 %files driver-ati
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/ati*_drv.o
+%dir %{_libdir}/modules/drivers/ati.2
+%attr(755,root,root) %{_libdir}/modules/drivers/ati.2/ati*_drv.o
 %attr(755,root,root) %{_libdir}/modules/multimedia/*.o
 %endif
 
