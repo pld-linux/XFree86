@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
 Version:	4.0.3
-Release:	1
+Release:	2
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -53,13 +53,14 @@ Patch23:	%{name}-XF86CardDrivers-cfg.patch
 Patch24:	%{name}-pic.patch
 Patch25:	%{name}-time.patch
 Patch26:	ftp://ftp.xfree86.org/pub/XFree86/4.0.3/patches/4.0.2-4.0.3.diff.gz
-BuildRequires:	flex
 BuildRequires:	bison
+BuildRequires:	flex
+BuildRequires:	freetype-devel >= 2.0.0
 BuildRequires:	ncurses-devel
-BuildRequires:	zlib-devel
-BuildRequires:	utempter-devel
-BuildRequires:	tcl-devel
 BuildRequires:	pam-devel
+BuildRequires:	tcl-devel
+BuildRequires:	utempter-devel
+BuildRequires:	zlib-devel
 %ifarch %{ix86} alpha
 BuildRequires:	Glide_V3-DRI-devel >= 3.10-7
 %endif
