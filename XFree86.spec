@@ -20,7 +20,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.99.902
-Release:	1.1
+Release:	1.2
 Epoch:		1
 License:	MIT
 Group:		X11/XFree86
@@ -2747,7 +2747,7 @@ fi
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86} mips alpha ppc arm
+%ifarch %{ix86} mips alpha ppc arm amd64
 %files driver-savage
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/savage_drv.o
@@ -2762,7 +2762,7 @@ fi
 %{_mandir}/man4/siliconmotion*
 %endif
 
-%ifarch %{ix86} mips ppc arm
+%ifarch %{ix86} mips ppc arm amd64
 %files driver-sis
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
