@@ -1,14 +1,3 @@
---- XFree86-4.3.99.15/xc/lib/XRes/Imakefile.orig	2003-11-02 05:43:10.000000000 +0100
-+++ XFree86-4.3.99.15/xc/lib/XRes/Imakefile	2003-11-03 07:56:18.646373856 +0100
-@@ -28,7 +28,7 @@
- MANSUFFIX=$(LIBMANSUFFIX)
- InstallManPage(LibName,$(LIBMANDIR))
- #if ExpandManNames
--InstallManPageAliases(LibName,$(MANDIR),XResQueryExtension XResQueryVersion XResQueryClients XResQueryClientResources XResQueryClientPixmapBytes)
-+InstallManPageAliases(LibName,$(LIBMANDIR),XResQueryExtension XResQueryVersion XResQueryClients XResQueryClientResources XResQueryClientPixmapBytes)
- #endif
- 
- DependTarget()
 --- XFree86-4.3.99.15/xc/lib/Xfontcache/Imakefile.orig	2003-11-02 05:43:16.000000000 +0100
 +++ XFree86-4.3.99.15/xc/lib/Xfontcache/Imakefile	2003-11-03 07:58:44.399216056 +0100
 @@ -36,7 +36,7 @@
@@ -20,14 +9,3 @@
  #endif
  
  DependTarget()
---- XFree86-4.3.99.15/xc/lib/Xss/Imakefile.orig	2003-11-02 05:43:20.000000000 +0100
-+++ XFree86-4.3.99.15/xc/lib/Xss/Imakefile	2003-11-03 07:56:38.534350424 +0100
-@@ -31,7 +31,7 @@
- MANSUFFIX=$(LIBMANSUFFIX)
- InstallManPage(LibName,$(LIBMANDIR))
- #if ExpandManNames
--InstallManPageAliases(LibName,$(MANDIR), XScreenSaverQueryExtension \	@@\
-+InstallManPageAliases(LibName,$(LIBMANDIR), XScreenSaverQueryExtension \	@@\
- 	XScreenSaverQueryVersion \ 					@@\
- 	XScreenSaverAllocInfo \						@@\
- 	XScreenSaverQueryInfo \						@@\
