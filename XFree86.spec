@@ -65,7 +65,7 @@ BuildRequires:	utempter-devel
 BuildRequires:	tcl-devel
 Requires:	pam
 Requires:	xauth
-Exclusivearch:	i386 i486 i586 i686 alpha sparc m68k armv4l
+Exclusivearch:	%{ix86} alpha sparc m68k armv4l
 Buildroot:	/tmp/%{name}-%{version}-root/
 
 %ifarch sparc
@@ -1642,7 +1642,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/Xnest
 %{_mandir}/man1/Xnest.1*
 
-%ifarch i386 i486 i586 i686 alpha
+%ifarch %{ix86} alpha
 
 %files SVGA
 %defattr(644,root,root,755)
@@ -1651,7 +1651,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/XF86Config.5*
 %endif
 
-%ifarch i386 i486 i586 i686 sparc
+%ifarch %{ix86} sparc
 
 %files VGA16
 %defattr(644,root,root,755)
@@ -1660,7 +1660,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/XF86Config.5*
 %endif
 
-%ifarch i386 i486 i586 i686
+%ifarch %{ix86}
 
 %files W32
 %defattr(644,root,root,755)
@@ -1670,7 +1670,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/XF86Config.5*
 %endif
 
-%ifarch i386 i486 i586 i686 alpha
+%ifarch %{ix86} alpha
 
 %files Mono
 %defattr(644,root,root,755)
@@ -1679,7 +1679,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/XF86Config.5*
 %endif
 
-%ifarch i386 i486 i586 i686 alpha
+%ifarch %{ix86} alpha
 
 %files S3
 %defattr(644,root,root,755)
@@ -1689,7 +1689,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/XF86Config.5*
 %endif
 
-%ifarch i386 i486 i586 i686 alpha
+%ifarch %{ix86} alpha
 
 %files S3V
 %defattr(644,root,root,755)
@@ -1699,7 +1699,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/XF86Config.5*
 %endif
 
-%ifarch i386 i486 i586 i686
+%ifarch %{ix86}
 
 %files 8514
 %defattr(644,root,root,755)
@@ -1709,7 +1709,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/XF86Config.5*
 %endif
 
-%ifarch i386 i486 i586 i686
+%ifarch %{ix86}
 
 %files Mach8
 %defattr(644,root,root,755)
@@ -1719,7 +1719,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/XF86Config.5*
 %endif
 
-%ifarch i386 i486 i586 i686
+%ifarch %{ix86}
 
 %files Mach32
 %defattr(644,root,root,755)
@@ -1736,7 +1736,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/XF86_Accel.1*
 %{_mandir}/man5/XF86Config.5*
 
-%ifarch i386 i486 i586 i686 alpha
+%ifarch %{ix86} alpha
 
 %files P9000
 %defattr(644,root,root,755)
@@ -1746,7 +1746,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/XF86Config.5*
 %endif
 
-%ifarch i386 i486 i586 i686
+%ifarch %{ix86}
 
 %files AGX
 %defattr(644,root,root,755)
@@ -1756,7 +1756,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/XF86Config.5*
 %endif
 
-%ifarch i386 i486 i586 i686
+%ifarch %{ix86}
 
 %files I128
 %defattr(644,root,root,755)
@@ -1804,7 +1804,7 @@ rm -rf $RPM_BUILD_ROOT
 /var/state/xkb
 %endif
 
-%ifarch i386 i486 i586 i686
+%ifarch %{ix86}
 
 %files 3DLabs
 %attr(755,root,root) %{_bindir}/XF86_3DLabs
