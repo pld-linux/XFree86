@@ -69,6 +69,7 @@ Source51:	xload.png
 Source52:	xmag.png
 Source53:	http://oss.sgi.com/projects/ogl-sample/ABI/glext.h
 # NoSource53-md5: a5738dcfa20119fa3e06ce479ca94acf
+Source54:	XFree86-xrender.pc
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -1948,6 +1949,9 @@ install %{SOURCE34} %{SOURCE35} %{SOURCE36} %{SOURCE37} %{SOURCE38} \
 
 bzip2 -dc %{SOURCE42} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 
+# install Xrender pkgconfig metadata
+install %{SOURCE54} $RPM_BUILD_ROOT%{_pkgconfigdir}/xrender.pc
+
 # twm desktop file for gdm/kdm support
 install %{SOURCE46} $RPM_BUILD_ROOT%{_xsessdir}/twm.desktop
 
@@ -2498,6 +2502,7 @@ fi
 %{_libx11dir}/config
 %{_pkgconfigdir}/xcursor.pc
 %{_pkgconfigdir}/xft.pc
+%{_pkgconfigdir}/xrender.pc
 %{_mandir}/man1/bdftopcf.1*
 %{_mandir}/man3/[A-FH-Z]*
 
