@@ -23,7 +23,7 @@ Summary(uk):	‚¡⁄œ◊¶ €“…∆‘…, –“œ«“¡Õ… ‘¡ ƒœÀ’Õ≈Œ‘¡√¶— ƒÃ— “œ¬œﬁœß ”‘¡Œ√¶ß –¶ƒ X
 Summary(zh_CN):	XFree86 ¥∞ø⁄œµÕ≥∑˛ŒÒ∆˜∫Õª˘±æ≥Ã–Ú
 Name:		XFree86
 Version:	4.3.0
-Release:	1.4
+Release:	1.5
 License:	MIT
 Group:		X11/XFree86
 # Source0-md5:	4f241a4f867363f40efa2b00dca292af
@@ -138,7 +138,7 @@ BuildRequires:	ed
 %endif
 Requires:	xauth
 Requires:	%{name}-libs = %{version}
-Requires:	%{name}-xft = %{version}
+Requires:	%{name}-xft
 ExclusiveArch:	%{ix86} alpha sparc m68k armv4l noarch ppc
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	xpm-progs
@@ -387,7 +387,7 @@ Summary:	X Font rendering library
 Summary(pl):	Biblioteka do renderowania fontÛw
 Group:		X11/XFree86
 Requires:	%{name}-libs = %{version}
-Requires:	%{name}-fontconfig = %{version}
+Requires:	%{name}-fontconfig
 Provides:	Xft = 2.1-2
 Obsoletes:	XFree86-xft2
 Obsoletes:	Xft
@@ -402,7 +402,7 @@ Xft jest bibliotek± s≥uø±c± do renderowania fontÛw dla X Window.
 Summary:	X Font Rendering library
 Summary(pl):	Biblioteka do renderowania fontÛw
 Group:		X11/Development/Libraries
-Requires:	%{name}-xft = %{version}
+Requires:	%{name}-xft
 Requires:	%{name}-fontconfig-devel
 Provides:	Xft-devel = 2.1-2
 Obsoletes:	XFree86-xft2-devel
@@ -424,7 +424,7 @@ programÛw korzystaj±cych z biblioteki Xft.
 Summary:	X Font Rendering library
 Summary(pl):	Biblioteka do renderowania fontÛw
 Group:		X11/Development/Libraries
-Requires:	%{name}-xft-devel = %{version}
+Requires:	%{name}-xft-devel
 Provides:	Xft-static = 2.1-2
 Obsoletes:	XFree86-xft2-static
 Obsoletes:	Xft-static
@@ -461,7 +461,7 @@ systemie i wybierania ich w zaleøno∂ci od potrzeb aplikacji.
 Summary:	Font configuration and customization library
 Summary(pl):	Biblioteka do konfigurowania fontÛw
 Group:		Development/Libraries
-Requires:	%{name}-fontconfig-realpkg = %{version}
+Requires:	%{name}-fontconfig-realpkg
 Requires:	freetype-devel
 Provides:	fontconfig-devel = 1.0.1
 Provides:	%{name}-fontconfig-devel-realpkg = %{version}
@@ -485,7 +485,7 @@ programÛw korzystaj±cych z biblioteki fontconfig.
 Summary:	Font configuration and customization library
 Summary(pl):	Biblioteka do konfigurowania fontÛw
 Group:		Development/Libraries
-Requires:	%{name}-fontconfig-devel-realpkg = %{version}
+Requires:	%{name}-fontconfig-devel-realpkg
 Provides:	fontconfig-static = 1.0.1
 Obsoletes:	fontconfig-static
 
