@@ -16,7 +16,7 @@ Group(fr):	X11/XFree86
 Group(pl):	X11/XFree86
 Group(pt_BR):	X11/XFree86
 Group(tr):	X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.1.0/source/X410src-1.tgz
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
 Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source2:	xdm.pamd
 Source3:	xserver.pamd
@@ -31,8 +31,7 @@ Source11:	xclipboard.desktop
 Source12:	xconsole.desktop
 Source13:	xterm.desktop
 Source14:	xlogo64.png
-Source15:	http://papico.crl.go.jp/pub/linux/linuxppc/users/ajoshi/s3/s3-0.3.52.tgz
-Source16:	%{name}-non-english-Xman-pages.tar.bz2
+Source15:	%{name}-non-english-Xman-pages.tar.bz2
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -67,12 +66,6 @@ Patch30:	%{name}-dri_directory_mode_fix.patch
 Patch31:	%{name}-alpha_GLX_align_fix.patch
 Patch32:	%{name}-XftConfig_in_correct_place.patch
 Patch33:        %{name}-compaq-alpha-megapatch.patch
-#Patch21:	%{name}-defmodes-1400.patch
-#Patch28:	%{name}-libXfont-put-eof.patch
-#Patch30:	%{name}-stolen_from_HEAD.patch
-#Patch33:	%{name}-cirrus_driver_fix.patch
-#Patch36:	%{name}-manpage_link_fixes.patch
-#Patch38:	%{name}-i740.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1377,7 +1370,7 @@ serwerów lokalnych lub zdalnych.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p0
-# Not ready yet
+# not ready yet
 #%patch6 -p0
 %patch7 -p1
 %patch8 -p1
@@ -1400,9 +1393,12 @@ serwerów lokalnych lub zdalnych.
 %patch25 -p1
 %patch26 -p1
 %patch27 -p1
+%ifarch sparc sparc64
 # needs updating (14 rejects)
 #%patch28 -p1
-# is it needed now? could someone else look at it (rejects)
+%endif
+# don't see what exatly it is doing, is it needed now?
+# could someone else look at it (rejects)
 #%patch29 -p1
 %patch30 -p1
 %patch31 -p1
@@ -1410,8 +1406,8 @@ serwerów lokalnych lub zdalnych.
 %ifarch alpha
 %patch33 -p0
 %endif
+
 rm -f xc/config/cf/host.def
-tar zx -f %{SOURCE15} -C xc/programs/Xserver/hw/xfree86/drivers/
 
 #--- %build --------------------------
 
@@ -1484,7 +1480,7 @@ install %{SOURCE13} $RPM_BUILD_ROOT%{_applnkdir}/Terminals
 
 install %{SOURCE14} $RPM_BUILD_ROOT%{_datadir}/pixmaps
 
-bzip2 -dc %{SOURCE16} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
+bzip2 -dc %{SOURCE15} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 
 > $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 > $RPM_BUILD_ROOT/etc/security/blacklist.xserver
