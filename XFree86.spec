@@ -64,6 +64,7 @@ Patch30:	%{name}-dri_directory_mode_fix.patch
 Patch31:	%{name}-alpha_GLX_align_fix.patch
 Patch32:	%{name}-XftConfig_in_correct_place.patch
 Patch33:	%{name}-PEX+XIE.patch
+Patch34:	%{name}-ati.old-rename.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -576,13 +577,43 @@ Group:		X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-ATI XFree86-Mach32 XFree86-Mach64
-Obsoletes:	XFree86-driver-r128 XFree86-driver-radeon
 
 %description driver-ati
-ATI video driver (including Rage128 and Radeon).
+ATI video driver.
 
 %description driver-ati -l pl
-Sterownik do kart ATI (w³±czaj±c Rage128 and Radeon).
+Sterownik do kart ATI.
+
+%package driver-r128
+Summary:        ATI Rage 128 video driver
+Summary(pl):    Sterownik do kart ATI Rage 128
+Group:          X11/XFree86
+Requires:       %{name}-modules = %{version}-%{release}
+Requires:       %{name}-Xserver = %{version}-%{release}
+Requires:	%{name}-driver-ati = %{version}-%{release}
+Requires:       OpenGL
+Obsoletes:      XFree86-Rage128
+
+%description driver-r128
+ATI Rage 128 video driver.
+
+%description driver-r128 -l pl
+Sterownik do kart ATI Rage 128.
+
+%package driver-radeon
+Summary:        ATI Radeon video driver
+Summary(pl):    Sterownik do kart ATI Radeon
+Group:          X11/XFree86
+Requires:       %{name}-modules = %{version}-%{release}
+Requires:       %{name}-Xserver = %{version}-%{release}
+Requires:	%{name}-driver-ati = %{version}-%{release}
+Requires:       OpenGL
+
+%description driver-radeon
+ATI Radeon video driver.
+
+%description driver-radeon -l pl
+Sterownik do kart ATI Radeon.
 
 %package driver-chips
 Summary:	Chips and Technologies video driver
@@ -1362,6 +1393,8 @@ cd xc/programs/Xserver/hw/xfree86/drivers
 bzcat %{SOURCE16} | tar x
 mv ati ati.old
 mv ati.2 ati
+cd ati.old
+%patch34 -p1
 
 #--- %build --------------------------
 
@@ -1408,6 +1441,12 @@ install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysc
 %ifnarch alpha
 install xc/programs/Xserver/hw/xfree86/drivers/ati.old/ati_drv.o \
 	$RPM_BUILD_ROOT%{_libdir}/modules/drivers/ati_old_drv.o 
+install xc/programs/Xserver/hw/xfree86/drivers/ati.old/atimisc_drv.o \
+	$RPM_BUILD_ROOT%{_libdir}/modules/drivers/atimisc_old_drv.o
+install xc/programs/Xserver/hw/xfree86/drivers/ati.old/r128_drv.o \
+	$RPM_BUILD_ROOT%{_libdir}/modules/drivers/r128_old_drv.o
+install xc/programs/Xserver/hw/xfree86/drivers/ati.old/radeon_drv.o \
+	$RPM_BUILD_ROOT%{_libdir}/modules/drivers/radeon_old_drv.o
 %endif
 
 # setting default X
@@ -2068,16 +2107,26 @@ fi
 %files driver-ati
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/ati*_drv.o
+%attr(755,root,root) %{_libdir}/modules/multimedia/*.o
+%endif
+
+%ifnarch alpha
+%files driver-r128
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/r128*_drv.o
 %ifnarch sparc sparc64
-%attr(755,root,root) %{_libdir}/modules/drivers/r128_drv.o
 %attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
+%endif
 %{_mandir}/man4/r128*
 %endif
-%attr(755,root,root) %{_libdir}/modules/drivers/radeon_drv.o
+
+%ifnarch alpha
+%files driver-radeon
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/radeon*_drv.o
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
 %endif
-%attr(755,root,root) %{_libdir}/modules/multimedia/*.o
 %endif
 
 %ifnarch sparc sparc64 ppc
