@@ -219,19 +219,6 @@ diff -urN xc.orig/config/cf/linux.cf xc/config/cf/linux.cf
  #endif
  
  #ifndef XF86OSCardDrivers
-@@ -936,10 +936,10 @@
- #endif
- 
- #ifndef LinkGLToUsrLib
--# define LinkGLToUsrLib		YES
-+# define LinkGLToUsrLib		NO
- #endif
- # ifndef LinkGLToUsrInclude
--# define LinkGLToUsrInclude	YES
-+# define LinkGLToUsrInclude	NO
- #endif
- 
- 
 diff -urN xc.orig/config/cf/site.def xc/config/cf/site.def
 --- xc.orig/config/cf/site.def	Mon Dec 30 15:52:31 2002
 +++ xc/config/cf/site.def	Mon Dec 30 16:02:13 2002
