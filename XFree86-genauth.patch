@@ -1,0 +1,62 @@
+--- xc/programs/xdm/genauth.c.orig	2003-09-25 13:06:32.000000000 +0200
++++ xc/programs/xdm/genauth.c	2003-10-01 11:54:11.000000000 +0200
+@@ -26,7 +26,7 @@
+ from The Open Group.
+ 
+ */
+-/* $XFree86: xc/programs/xdm/genauth.c,v 3.18 2003/09/17 05:48:32 herrb Exp $ */
++/* $XFree86: xc/programs/xdm/genauth.c,v 3.19 2003/09/29 20:25:53 herrb Exp $ */
+ 
+ /*
+  * xdm - display manager daemon
+@@ -45,7 +45,7 @@
+ #include <time.h>
+ #define Time_t time_t
+ 
+-#if !defined(ARC4_RANDOM) && !defined(DEV_RANDOM) && !defined(HASXDMAUTH)
++#ifdef HASXDMAUTH
+ static unsigned char	key[8];
+ #endif
+ 
+@@ -59,7 +59,10 @@
+ 
+ typedef struct auth_ks_struct { auth_cblock _; } auth_wrapper_schedule[16];
+ 
+-extern void _XdmcpWrapperToOddParity();
++extern int _XdmcpAuthSetup(unsigned char *, auth_wrapper_schedule);
++extern int _XdmcpAuthDoIt(unsigned char *, unsigned char *, 
++    auth_wrapper_schedule, int);
++extern void _XdmcpWrapperToOddParity(unsigned char *, unsigned char *);
+ 
+ static void
+ longtochars (long l, unsigned char *c)
+@@ -352,7 +355,7 @@
+     sum[1] = arc4random();
+     *(u_char *)sum = 0;
+ 
+-    _XdmcpWrapperToOddParity(sum, key);
++    _XdmcpWrapperToOddParity((unsigned char *)sum, key);
+ #else
+     unsigned char   tmpkey[8];
+ 
+@@ -374,8 +377,9 @@
+     }
+ #endif    
+     /*  Try some pseudo-random number genrator daemon next */
+-    if (prngdSocket != NULL || prngdPort != NULL) {
+-	    if (get_prngd_bytes(tmpkey, len, prngdPort, prngdSocket) == 0) {
++    if (prngdSocket != NULL || prngdPort != 0) {
++	    if (get_prngd_bytes(tmpkey, sizeof(tmpkey), prngdPort, 
++		    prngdSocket) == 0) {
+ 		    tmpkey[0] = 0;
+ 		    _XdmcpWrapperToOddParity(tmpkey, key);
+ 		    return;
+@@ -402,7 +406,7 @@
+ GenerateAuthData (char *auth, int len)
+ {
+ #ifdef HASXDMAUTH
+-    int		    bit;
++    int		    i, bit;
+     auth_wrapper_schedule    schedule;
+     unsigned char	    data[8];
+     static int	    xdmcpAuthInited;
