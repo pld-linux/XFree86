@@ -1,0 +1,44 @@
+diff -u xc/programs/Xserver/hw/xfree86/drivers/i740/i740_driver.c:1.30 xc/programs/Xserver/hw/xfree86/drivers
+/i740/i740_driver.c:1.30.2.1
+--- XFree86-4.1.0/xc/programs/Xserver/hw/xfree86/drivers/i740/i740_driver.c:1.30        Tue May 15 12:19:38 2
+001
++++ XFree86-4.1.0/xc/programs/Xserver/hw/xfree86/drivers/i740/i740_driver.c     Sun Jul  1 00:12:55 2001
+@@ -25,7 +25,7 @@
+ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+ **************************************************************************/
+-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/i740/i740_driver.c,v 1.28 2001/01/21 21:19:27 tsi Exp $
+*/
++/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/i740/i740_driver.c,v 1.30 2001/05/15 10:19:38 eich Exp $
+ */
+
+ /*
+  * Authors:
+@@ -540,6 +540,13 @@
+   }
+   xf86PrintDepthBpp(pScrn);
+
++  /* Process the options */
++  xf86CollectOptions(pScrn, NULL);
++  if (!(pI740->Options = xalloc(sizeof(I740Options))))
++    return FALSE;
++  memcpy(pI740->Options, I740Options, sizeof(I740Options));
++  xf86ProcessOptions(pScrn->scrnIndex, pScrn->options, pI740->Options);
++
+   pScrn->rgbBits=8;
+   if (xf86ReturnOptValBool(pI740->Options, OPTION_DAC_6BIT, FALSE))
+     pScrn->rgbBits=6;
+@@ -563,13 +570,6 @@
+
+   hwp = VGAHWPTR(pScrn);
+   pI740->cpp = pScrn->bitsPerPixel/8;
+-
+-  /* Process the options */
+-  xf86CollectOptions(pScrn, NULL);
+-  if (!(pI740->Options = xalloc(sizeof(I740Options))))
+-    return FALSE;
+-  memcpy(pI740->Options, I740Options, sizeof(I740Options));
+-  xf86ProcessOptions(pScrn->scrnIndex, pScrn->options, pI740->Options);
+
+   /* 6-BIT dac isn't reasonable for modes with > 8bpp */
+   if (xf86ReturnOptValBool(pI740->Options, OPTION_DAC_6BIT, FALSE) &&
