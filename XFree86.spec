@@ -52,6 +52,7 @@ Patch22:	%{name}-parallelmake.patch
 Patch23:	%{name}-portuguese.patch
 Patch24:	%{name}-XF86CardDrivers-cfg.patch
 Patch25:	%{name}-pic.patch
+Patch26:	%{name}-time.patch
 BuildRequires:	flex
 BuildRequires:	bison
 BuildRequires:	ncurses-devel
@@ -1038,6 +1039,7 @@ X11R6-contrib in older releases.
 %patch23 -p1
 %patch24 -p1
 %patch25 -p1
+%patch26 -p1
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
