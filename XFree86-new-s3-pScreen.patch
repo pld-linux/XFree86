@@ -1,0 +1,47 @@
+--- XFree86-4.3.99.16/LinuxDriver/2D/savage_video.c.orig	2003-11-24 01:54:37.000000000 +0100
++++ XFree86-4.3.99.16/LinuxDriver/2D/savage_video.c	2003-11-25 00:45:41.793649736 +0100
+@@ -600,7 +600,7 @@
+ 
+     SavageClipVideo(
+         &dstBox, &x1, &x2, &y1, &y2,
+-        REGION_EXTENTS(pScreen, clipBoxes), width, height);
++        REGION_EXTENTS(pScrn->pScreen, clipBoxes), width, height);
+ 
+     if ((x1 >= x2) || (y1 >= y2))
+         return Success;
+@@ -701,7 +701,7 @@
+ 
+     /* update cliplist */
+     if (!RegionsEqual(&pPriv->clip, clipBoxes)) {
+-        REGION_COPY(pScreen, &pPriv->clip, clipBoxes);
++        REGION_COPY(pScrn->pScreen, &pPriv->clip, clipBoxes);
+         /* draw these */
+         xf86XVFillKeyHelper(pScrn->pScreen, pPriv->colorKey, clipBoxes);
+     }
+@@ -2146,7 +2146,7 @@
+ 
+ #if 1
+         SavageClipVideo(&dstBox, &x1, &x2, &y1, &y2,
+-                        REGION_EXTENTS(pScreen, clipBoxes), width, height);
++                        REGION_EXTENTS(pScrn->pScreen, clipBoxes), width, height);
+ 
+ 
+         drw_w = dstBox.x2 - dstBox.x1;
+@@ -2339,7 +2339,7 @@
+ 
+             /* update cliplist */
+             if(!RegionsEqual(&pPriv->clip, clipBoxes)) {
+-                REGION_COPY(pScreen, &pPriv->clip, clipBoxes);
++                REGION_COPY(pScrn->pScreen, &pPriv->clip, clipBoxes);
+                 /* draw these */
+                 XAAFillSolidRects(pScrn, pPriv->colorKey, GXcopy, ~0,
+                                   REGION_NUM_RECTS(clipBoxes),
+@@ -2724,7 +2724,7 @@
+     dstBox.y2 = drw_y + drw_h;
+ 
+     SavageClipVideo(&dstBox, &x1, &x2, &y1, &y2,
+-                	REGION_EXTENTS(pScreen, clipBoxes), 
++                	REGION_EXTENTS(pScrn->pScreen, clipBoxes), 
+                     surface->width, surface->height);
+ 
+     if((x1 >= x2) || (y1 >= y2))
