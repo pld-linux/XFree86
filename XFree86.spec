@@ -49,6 +49,7 @@ Patch19:	%{name}-xdm-fixes.patch
 Patch20:	%{name}-imake-kernel-version.patch
 
 BuildRequires:	flex
+BuildRequires:	bison
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
 BuildRequires:	utempter-devel
