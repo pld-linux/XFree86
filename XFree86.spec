@@ -4,13 +4,13 @@ Summary(fr):	Serveurs du système XFree86 et programmes de base
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
-Version:	3.3.4
-Release:	2
+Version:	3.3.5
+Release:	1
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/3.3.3/source/X334src-1.tgz
-Source1:	ftp://ftp.xfree86.org/pub/XFree86/3.3.3/source/X334src-2.tgz
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/3.3.5/source/X335src-1.tgz
+Source1:	ftp://ftp.xfree86.org/pub/XFree86/3.3.5/source/X335src-2.tgz
 Source2:	xdm.pamd
 Source3:	xdm.initd
 Source4:	xfs.initd
@@ -20,57 +20,44 @@ Source7:	XTerm.ad-pl
 Patch0:		XFree86-rh.patch
 Patch1:		XFree86-rhxdm.patch
 Patch2:		XFree86-fsstnd.patch
-Patch3:		XFree86-nopam.patch
-Patch4:		XFree86-pamconsole.patch
-Patch5:		XFree86-alpha-sockets.patch
+Patch3:		XFree86-alpha-sockets.patch
 # sparc patches from ultrapenguin
-Patch6:		XFree86-sparc.patch
-Patch7:		XFree86-ffb.patch.gz
-# enable FBDev device on alpha / intel
-Patch8:		XFree86-fbdev.patch
-# fix xinput problems with threads / GTK+ -- Owen Taylor's fix
-Patch9:		XFree86-xinput.patch
+Patch4:		XFree86-sparc.patch
+Patch5:		XFree86-ffb.patch.gz
 # more sun patches from ultrapenguin
-Patch10:	XFree86-suncards.patch
-Patch11:	XFree86-sparc2.patch
-Patch12:	XFree86-creator2.patch.gz
-Patch13:	XFree86-newcreator.patch
-Patch14:	XFree86-sparc3.patch.gz
+Patch6:		XFree86-suncards.patch
+Patch7:		XFree86-sparc2.patch
+Patch8:		XFree86-creator2.patch.gz
+Patch9:		XFree86-newcreator.patch
+Patch10:	XFree86-sparc3.patch.gz
 # the following was causing problems with RagePRO based ATI
 # chipsets, but this has been fixed
-Patch15:	XFree86-mach64.patch.gz
-Patch16:	XFree86-creator4.patch.gz
-Patch17:	XFree86-jay.patch
-Patch18:	XFree86-86setup.patch
-Patch19:	XFree86-czskkbd.patch
-Patch20:	XFree86-is_keyboard.patch
+Patch11:	XFree86-mach64.patch.gz
+Patch12:	XFree86-creator4.patch.gz
 # use glibc 2.1 routines for utmp, doesn't require xterm to be setuid
-Patch21:	XFree86-nosuidxterm.patch
-Patch22:	XFree86-joy.patch
-Patch23:	XFree86-arm.patch
-Patch24:	XFree86-xfsft.patch
-Patch25:	XFree86-ru_SU.patch
-Patch26:	XFree86-startx_xauth.patch
-Patch27:	XFree86-xfsredhat.patch
-Patch28:	XFree86-mgafix.patch
+Patch13:	XFree86-nosuidxterm.patch
+Patch14:	XFree86-joy.patch
+Patch15:	XFree86-xfsft.patch
+Patch16:	XFree86-ru_SU.patch
+Patch17:	XFree86-startx_xauth.patch
+Patch18:	XFree86-xfsredhat.patch
 # the following patch is incomplete..broken..and thus commented out.
-Patch29:	XFree86-alphadga.patch
+Patch19:	XFree86-alphadga.patch
 # link xterm with libncurses instead libtermcap
-Patch30:	XFree86-ncurses.patch
+Patch20:	XFree86-ncurses.patch
 # Compile X serwers againsty system installed libz.so
-Patch31:	XFree86-HasZlib.patch
+Patch21:	XFree86-HasZlib.patch
 # Man dir in /usr/X11R6/man or %{_mandir}
-Patch32:	XFree86-fhs.patch
-Patch33:	XFree86-voodoo-Rush.patch
-Patch34:	XFree86-G200dga.patch
-Patch35:	XFree86-ffbcrash.patch
-Patch36:	XFree86-ru_sparc.patch
-Patch37:	XFree86-xinitrace.patch
-Patch38:	XFree86-xterm-color.patch
-Patch39:	XFree86-xdm+pam_env.patch
-Patch40:	XFree86-XF86Config-path.patch
-Patch41:	XFree86-XF86Setup-fonts.patch
-Patch42:	XFree86-polish_kbd.patch
+Patch22:	XFree86-fhs.patch
+Patch23:	XFree86-voodoo-Rush.patch
+Patch24:	XFree86-ffbcrash.patch
+Patch25:	XFree86-ru_sparc.patch
+Patch26:	XFree86-xinitrace.patch
+Patch27:	XFree86-xterm-color.patch
+Patch28:	XFree86-xdm+pam_env.patch
+Patch29:	XFree86-XF86Config-path.patch
+Patch30:	XFree86-XF86Setup-fonts.patch
+Patch31:	XFree86-polish_kbd.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -1065,12 +1052,12 @@ Fonty rastrowe czcionkami w cyrylicy.
 %patch0  -p1
 %patch1  -p1
 %patch2  -p1
-%patch3  -p1
-%patch4  -p1
 # the following patch is in CVS diff format, needs POSIXLY_CORRECT env var.
 #export POSIXLY_CORRECT=1
-#%patch5 -p1 -b .alpha-sockets
+#%patch3 -p1 -b .alpha-sockets
 #unset POSIXLY_CORRECT
+%patch4  -p1
+%patch5  -p1
 %patch6  -p1
 %patch7  -p1
 %patch8  -p1
@@ -1083,31 +1070,20 @@ Fonty rastrowe czcionkami w cyrylicy.
 %patch15 -p1
 %patch16 -p1
 %patch17 -p1
-#%patch18 -p1
-%patch19 -p1
+%patch18 -p1
+#%patch19 -p1 -b .alphadga
 %patch20 -p1
 %patch21 -p1
 %patch22 -p1
-%patch23 -p1
+%patch23 -p0
 %patch24 -p1
 %patch25 -p1
 %patch26 -p1
 %patch27 -p1
 %patch28 -p1
-#%patch29 -p1 -b .alphadga
+%patch29 -p1
 %patch30 -p1
-%patch31 -p1
-%patch32 -p1
-%patch33 -p0
-%patch34 -p1
-%patch35 -p1
-%patch36 -p1
-%patch37 -p1
-%patch38 -p1
-%patch39 -p1
-%patch40 -p1
-%patch41 -p1
-%patch42 -p1
+#%patch31 -p1
 
 ## Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
