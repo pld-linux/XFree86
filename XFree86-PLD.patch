@@ -1,7 +1,7 @@
 diff -urN xc.orig/Makefile xc/Makefile
 --- xc.orig/Makefile	Mon Dec 30 15:54:17 2002
 +++ xc/Makefile	Mon Dec 30 16:02:13 2002
-@@ -8,10 +8,10 @@
+@@ -8,7 +8,7 @@
  # or add "MAKE = make" to this file.
  
  RELEASE = "Release 6.6"
@@ -9,11 +9,7 @@ diff -urN xc.orig/Makefile xc/Makefile
 +SHELL = /bin/sh -e
  RM = rm -f
  MV = mv
--WORLDOPTS = -k
-+WORLDOPTS =
- WIN32WORLDOPTS = -i
- TOP = .
- CURRENT_DIR = .
+ WORLDOPTS =
 diff -urN xc.orig/config/cf/Imake.cf xc/config/cf/Imake.cf
 --- xc.orig/config/cf/Imake.cf	Mon Dec 30 15:52:30 2002
 +++ xc/config/cf/Imake.cf	Mon Dec 30 16:02:13 2002
@@ -312,69 +308,6 @@ diff -urN xc.orig/config/cf/xf86site.def xc/config/cf/xf86site.def
  
  /*
   * If you have Tk (which is required to build XF86Setup), uncomment this
-@@ -413,8 +412,8 @@
-  *     default.
-  *   - XF86Setup is not built or supported with XFree86 4.x
-  *
--#define HasTk			YES
-  */
-+#define HasTk			YES
- 
- /*
-  * Set the paths and names for your Tk library if they don't match the
-@@ -427,25 +426,25 @@
-  *
-  * Some Linux releases need TkLibDir set to /usr/X11R6/lib
-  *
--#define TkLibDir		/usr/local/lib
--#define TkIncDir		/usr/local/include
--#define TkLibName		tk
-  */
-+#define TkLibDir		/usr/lib
-+#define TkIncDir		/usr/include
-+#define TkLibName		tk
- 
- /*
-  * By default, XF86Setup is linked with a static Tk library.  To change
-  * that, uncomment the following line.
-  *
--#define XF86SetupUsesStaticTk	NO
-  */
-+#define XF86SetupUsesStaticTk	NO
- 
- /*
-  * If you have Tcl (which is required to build XF86Setup), uncomment this
-  * Note: version 7.4 or 7.5 is required, and XF86Setup links it statically by
-  * default.
-  *
--#define HasTcl			YES
-  */
-+#define HasTcl			YES
- 
- /*
-  * Set the paths and names for your Tcl library if they don't match the
-@@ -455,17 +454,17 @@
-  *
-  * Some Linux releases need TclIncDir set to /usr/include/tcl.
-  *
--#define TclLibDir		/usr/local/lib
--#define TclIncDir		/usr/local/include
--#define TclLibName		tcl
-  */
-+#define TclLibDir		/usr/lib
-+#define TclIncDir		/usr/include
-+#define TclLibName		tcl
- 
- /*
-  * By default, XF86Setup is linked with a static Tcl library.  To change
-  * that, uncomment the following line.
-  *
--#define XF86SetupUsesStaticTcl	NO
-  */
-+#define XF86SetupUsesStaticTcl	NO
- 
- /*
-  * Build a server that dynamically loads the modules by setting
 @@ -677,8 +676,8 @@
   * To forceably build static libraries in addition to shared libraries,
   * uncomment this.
@@ -437,39 +370,6 @@ diff -urN xc.orig/config/imake/imake.c xc/config/imake/imake.c
    /* what's the definitive way to tell what any particular distribution is? */
  
    fprintf (inFile, "%s\n", "#define DefaultLinuxDistribution LinuxUnknown");
-diff -urN xc.orig/programs/Xserver/hw/xfree86/XF86Setup/Imakefile xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile
---- xc.orig/programs/Xserver/hw/xfree86/XF86Setup/Imakefile	Mon Dec 30 15:53:38 2002
-+++ xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile	Mon Dec 30 16:02:13 2002
-@@ -118,7 +118,7 @@
- 
-  XCONFIG_DEFINES = $(EXT_DEFINES) -DXF86SETUP \
- 		   '-DPROJECTROOT="$(PROJECTROOT)"' \
--		   '-DSERVER_CONFIG_FILE="$(LIBDIR)/$(XCONFIGFILE)"' \
-+		   '-DSERVER_CONFIG_FILE="/etc/X11/$(XCONFIGFILE)"' \
- 		   $(SITE_FONT_PATH) $(SITE_RGB_DB) \
- 		   -DNO_WRAPPERS
- 
-diff -urN xc.orig/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl
---- xc.orig/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl	Mon Dec 30 15:53:38 2002
-+++ xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl	Mon Dec 30 16:02:13 2002
-@@ -38,7 +38,7 @@
- 	set devid [lindex $DeviceIDs $idx]
-         global Device_$devid
-         set server [set Device_${devid}(Server)]
--	set linkname $Xwinhome/bin/X
-+	set linkname /etc/X11/X
- 	set lastlink $linkname
- 	for {set nlinks 0} \
- 		{[file exists $linkname] && [file type $linkname]=="link" \
-@@ -74,7 +74,7 @@
- 	    set CWD [pwd]
- 	    cd $linkdir
- 	    catch "unlink X" ret
--	    if [catch "link $Xwinhome/bin/XF86_$server X" ret] {
-+	    if [catch "link ../../usr/X11R6/bin/XF86_$server X" ret] {
- 		mesg $messages(phase5.4) okay
- 	    } else {
- 		mesg $messages(phase5.5) okay
 diff -urN xc.orig/programs/Xserver/hw/xfree86/xf86cfg/Imakefile xc/programs/Xserver/hw/xfree86/xf86cfg/Imakefile
 --- xc.orig/programs/Xserver/hw/xfree86/xf86cfg/Imakefile	Mon Dec 30 15:53:56 2002
 +++ xc/programs/Xserver/hw/xfree86/xf86cfg/Imakefile	Mon Dec 30 16:02:13 2002
