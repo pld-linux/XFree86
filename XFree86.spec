@@ -2084,6 +2084,7 @@ fi
 %{_libdir}/X11/app-defaults/XTerm
 %lang(pl) %{_libdir}/X11/app-defaults/pl/XTerm
 %{_libdir}/X11/app-defaults/XTerm-color
+%dir %{_icondir}
 %{_icondir}/*
 
 %attr(755,root,root) %{_libdir}/X11/lbxproxy
