@@ -1,0 +1,24 @@
+diff -urN xc.orig/programs/xkbcomp/symbols/level3 xc/programs/xkbcomp/symbols/level3
+--- xc.orig/programs/xkbcomp/symbols/level3	2003-05-25 13:06:13.000000000 +0200
++++ xc/programs/xkbcomp/symbols/level3	2003-08-30 21:30:17.000000000 +0200
+@@ -15,8 +15,8 @@
+ partial modifier_keys
+ xkb_symbols "ralt_switch" {
+   key <RALT> {
+-    type[Group1]="ONE_LEVEL",
+-    symbols[Group1] = [ ISO_Level3_Shift ]
++    type[Group1]="TWO_LEVEL",
++    symbols[Group1] = [ ISO_Level3_Shift, ISO_Level3_Shift ]
+     };
+ };
+ 
+diff -urN xc.orig/programs/xkbcomp/symbols/pc/pl xc/programs/xkbcomp/symbols/pc/pl
+--- xc.orig/programs/xkbcomp/symbols/pc/pl	2003-04-25 13:09:44.000000000 +0200
++++ xc/programs/xkbcomp/symbols/pc/pl	2003-08-30 21:29:21.000000000 +0200
+@@ -21,5 +21,5 @@
+     key <AB03>	{ [         c,          C,       cacute,       Cacute ]	};
+     key <AB06>	{ [         n,          N,       nacute,       Nacute ]	};
+ 
+-    include "level3(ralt_switch_multikey)"
++    include "level3(ralt_switch)"
+ };
