@@ -11,7 +11,7 @@
 %define		_synaptics_ver	0.11.3p11
 
 Summary:	XFree86 Window System servers and basic programs
-Summary(de):	Xfree86 Window-System-Server und grundlegende Programme
+Summary(de):	XFree86 Window-System-Server und grundlegende Programme
 Summary(es):	Programas básicos y servidores para el sistema de ventanas XFree86
 Summary(fr):	Serveurs du système XFree86 et programmes de base
 Summary(ja):	XFree86 window system ¤Î¥µ¡¼¥Ð¤È´ðËÜÅª¤Ê¥×¥í¥°¥é¥à
@@ -333,6 +333,7 @@ Summary:	OpenGL support for X11R6
 Summary(pl):	Wsparcie OpenGL dla systemu X11R6
 Group:		X11/Libraries
 Requires:	%{name}-libs = %{version}
+Requires:	XFree86-OpenGL-libGL
 Obsoletes:	XFree86-driver-nvidia
 
 %description OpenGL-core
@@ -340,6 +341,19 @@ OpenGL support for X11R6 system.
 
 %description OpenGL-core -l pl
 Wsparcie OpenGL dla systemu X11R6.
+
+%package OpenGL-libGL
+Summary:	OpenGL support for X11R6 - GL library
+Summary(pl):	Wsparcie OpenGL dla systemu X11R6 - biblioteka GL
+Group:		X11/Libraries
+Requires:	XFree86-OpenGL-core = %{version}
+Obsoletes:	XFree86-driver-firegl
+
+%description OpenGL-core
+OpenGL support for X11R6 system - GL library.
+
+%description OpenGL-core -l pl
+Wsparcie OpenGL dla systemu X11R6 - biblioteka GL.
 
 %package OpenGL-devel
 Summary:	OpenGL for X11R6 development
@@ -1844,7 +1858,7 @@ done
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/{X11/fs,pam.d,rc.d/init.d,security/console.apps,sysconfig} \
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/{X11/fs,pam.d,rc.d/init.d,security/console.apps,sysconfig} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/{cs,da,de,es,fr,hu,it,ja,ko,nl,pl,pt,ru,sk,zh_CN.gb2312,zh_TW.big5} \
 	$RPM_BUILD_ROOT%{_datadir}/misc \
 	$RPM_BUILD_ROOT%{_sbindir} \
@@ -1990,6 +2004,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %post   OpenGL-core -p /sbin/ldconfig
 %postun OpenGL-core -p /sbin/ldconfig
+
+%post   OpenGL-libGL -p /sbin/ldconfig
+%postun OpenGL-libGL -p /sbin/ldconfig
 
 %post   OpenGL-libs -p /sbin/ldconfig
 %postun OpenGL-libs -p /sbin/ldconfig
@@ -2340,12 +2357,15 @@ fi
 %files OpenGL-core
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/glxgears
-%attr(755,root,root) %{_libdir}/libGL.so.*.*
-%attr(755,root,root) %{_libdir}/libGL.so
-%attr(755,root,root) /usr/lib/libGL.so*
 %attr(755,root,root) %{_libdir}/modules/extensions/libglx.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libGLcore.a
 %{_mandir}/man1/glxgears.1x*
+
+%files OpenGL-libGL
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libGL.so.*.*
+%attr(755,root,root) %{_libdir}/libGL.so
+%attr(755,root,root) /usr/lib/libGL.so*
 
 %files OpenGL-devel
 %defattr(644,root,root,755)
