@@ -8,7 +8,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(wa):	Sierveus di håynaedje XFree86 eyèt maisses programes
 Name: 		XFree86
 Version:	3.3.5
-Release:	19
+Release:	20
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
