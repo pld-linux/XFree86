@@ -2014,6 +2014,7 @@ rm -rf xc/fonts
 #	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 %endif
 
+%ifnarch sparc sparc64
 %{__make} -S -C synaptics clean all \
 	TOP=$(pwd)/../xc \
         CC="%{__cc}" \
@@ -2029,6 +2030,8 @@ cd synaptics
 for f in COMPATIBILITY FEATURES INSTALL NEWS PARAMETER; do
 	cp -f ${f} ${f}.synaptics
 done
+
+%endif
 
 #--- %install ------------------------
 
@@ -2057,7 +2060,9 @@ install -d $RPM_BUILD_ROOT/etc/{X11/fs,pam.d,rc.d/init.d,security/console.apps,s
 	ICONDIR="%{_icondir}" \
 	LINUXDIR="%{_kernelsrcdir}"
 
+%ifnarch sparc sparc64
 install synaptics/synaptics_drv.o $RPM_BUILD_ROOT%{_libdir}/modules/input/
+%endif
 
 %ifnarch alpha
 #install -d $RPM_BUILD_ROOT%{_libdir}/modules.gatos/{drivers,dri}
@@ -2151,8 +2156,10 @@ for lang in af az bg bg_BG.cp1251 br ca cs da de el en_GB eo es et eu fi \
 	echo "%lang(${lang}) %{_datadir}/locale/${lang}" >> XFree86-libs.lang
 done
 
+%ifnarch sparc sparc64
 install synaptics/synclient   $RPM_BUILD_ROOT%{_bindir}
 install synaptics/*.synaptics $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/
+%endif
 
 %ifnarch sparc sparc64
 gzip -9nf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
@@ -2363,7 +2370,9 @@ fi
 %attr(755,root,root) %{_bindir}/smproxy
 %attr(755,root,root) %{_bindir}/startx
 %attr(755,root,root) %{_bindir}/sxpm
+%ifnarch sparc sparc64
 %attr(755,root,root) %{_bindir}/synclient
+%endif
 %attr(755,root,root) %{_bindir}/uxterm
 %attr(755,root,root) %{_bindir}/xcmsdb
 %attr(755,root,root) %{_bindir}/xconsole
