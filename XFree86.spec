@@ -2584,7 +2584,7 @@ fi
 %files driver-fbdev
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/fbdev_drv.o
-%{_mandir}/man4/fbdev*
+%{_mandir}/man4/fbdev.4*
 %endif
 
 %ifarch %{ix86}
@@ -2985,6 +2985,7 @@ fi
 %{_mandir}/man4/citron*
 %{_mandir}/man4/dmc.4*
 %{_mandir}/man4/dynapro*
+%{_mandir}/man4/fbdevhw.4*
 %{_mandir}/man4/fpit.4*
 %{_mandir}/man4/js_x.4*
 %{_mandir}/man4/kbd.4*
