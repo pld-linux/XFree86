@@ -2537,75 +2537,75 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libXft.so.1.1
 
-%files xft
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libXft.so.2.1
+#%files xft
+#%defattr(644,root,root,755)
+#%attr(755,root,root) %{_libdir}/libXft.so.2.1
 
-%files xft-devel
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/xft-config
-%{_includedir}/X11/Xft
-%{_libdir}/libXft.so
-%{_mandir}/man3/Xft.3*
-%{_pkgconfigdir}/xft.pc
+#%files xft-devel
+#%defattr(644,root,root,755)
+#%attr(755,root,root) %{_bindir}/xft-config
+#%{_includedir}/X11/Xft
+#%{_libdir}/libXft.so
+#%{_mandir}/man3/Xft.3*
+#%{_pkgconfigdir}/xft.pc
 
-%files xft-static
-%defattr(644,root,root,755)
-%{_libdir}/libXft.a
+#%files xft-static
+#%defattr(644,root,root,755)
+#%{_libdir}/libXft.a
 
-%files fontconfig
-%defattr(644,root,root,755)
-%dir %{_sysconfdir}/fonts
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/fonts/fonts.conf
-%{_sysconfdir}/fonts/fonts.dtd
-%attr(755,root,root) %{_bindir}/fc-*
-%attr(755,root,root) %{_libdir}/libfontconfig.so.1.0
-%{_mandir}/man1/fc-*.1*
+#%files fontconfig
+#%defattr(644,root,root,755)
+#%dir %{_sysconfdir}/fonts
+#%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/fonts/fonts.conf
+#%{_sysconfdir}/fonts/fonts.dtd
+#%attr(755,root,root) %{_bindir}/fc-*
+#%attr(755,root,root) %{_libdir}/libfontconfig.so.1.0
+#%{_mandir}/man1/fc-*.1*
 
-%files fontconfig-devel
-%defattr(644,root,root,755)
-#%attr(755,root,root) %{_bindir}/fontconfig-config
-%{_includedir}/fontconfig
-%{_libdir}/libfontconfig.so
-#%{_pkgconfigdir}/fontconfig.pc
-%{_mandir}/man3/fontconfig.3*
+#%files fontconfig-devel
+#%defattr(644,root,root,755)
+##%attr(755,root,root) %{_bindir}/fontconfig-config
+#%{_includedir}/fontconfig
+#%{_libdir}/libfontconfig.so
+##%{_pkgconfigdir}/fontconfig.pc
+#%{_mandir}/man3/fontconfig.3*
 
-%files fontconfig-static
-%defattr(644,root,root,755)
-%{_libdir}/libfontconfig.a
+#%files fontconfig-static
+#%defattr(644,root,root,755)
+#%{_libdir}/libfontconfig.a
 
-%files render
-%defattr(644,root,root,755)
-%{_includedir}/X11/extensions/render.h
-%{_includedir}/X11/extensions/renderproto.h
+#%files render
+#%defattr(644,root,root,755)
+#%{_includedir}/X11/extensions/render.h
+#%{_includedir}/X11/extensions/renderproto.h
 
-%files xrender
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libXrender.so.*.*
+#%files xrender
+#%defattr(644,root,root,755)
+#%attr(755,root,root) %{_libdir}/libXrender.so.*.*
 
-%files xrender-devel
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libXrender.so
-%{_includedir}/X11/extensions/Xrender.h
+#%files xrender-devel
+#%defattr(644,root,root,755)
+#%attr(755,root,root) %{_libdir}/libXrender.so
+#%{_includedir}/X11/extensions/Xrender.h
 
-%files xrender-static
-%defattr(644,root,root,755)
-%{_libdir}/libXrender.a
+#%files xrender-static
+#%defattr(644,root,root,755)
+#%{_libdir}/libXrender.a
 
-%files xcursor
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libXcursor.so.*.*
+#%files xcursor
+#%defattr(644,root,root,755)
+#%attr(755,root,root) %{_libdir}/libXcursor.so.*.*
 
-%files xcursor-devel
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/xcursor-config
-%attr(755,root,root) %{_libdir}/libXcursor.so
-%{_includedir}/X11/Xcursor
-%{_pkgconfigdir}/xcursor.pc
+#%files xcursor-devel
+#%defattr(644,root,root,755)
+#%attr(755,root,root) %{_bindir}/xcursor-config
+#%attr(755,root,root) %{_libdir}/libXcursor.so
+#%{_includedir}/X11/Xcursor
+#%{_pkgconfigdir}/xcursor.pc
 
-%files xcursor-static
-%defattr(644,root,root,755)
-%{_libdir}/libXcursor.a
+#%files xcursor-static
+#%defattr(644,root,root,755)
+#%{_libdir}/libXcursor.a
 
 %files OpenGL-core
 %defattr(644,root,root,755)
