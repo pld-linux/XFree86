@@ -1231,13 +1231,13 @@ else
        echo "Run \"/etc/rc.d/init.d/xdm start\" to start xdm." >&2
 fi
 		
-%postun -n xfs
+%preun -n xfs
 if [ "$1" = "0" ]; then
 	/etc/rc.d/init.d/xfs stop >&2
 	/sbin/chkconfig --del xfs
 fi
 
-%postun -n xdm
+%preun -n xdm
 if [ "$1" = "0" ]; then
 	/etc/rc.d/init.d/xdm stop >&2
 	/sbin/chkconfig --del xdm
