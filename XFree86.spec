@@ -83,10 +83,9 @@ Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	X11R6.1
 %endif
 
-%define		_fontdir	/usr/share/fonts
 %define		_prefix		/usr/X11R6
-%define		_mandir		/usr/X11R6/man
-%define		_appnkldir	%{_datadir}/applnk
+%define		_mandir		%{_prefix}/man
+%define		_wmpropsdir	%{_datadir}/wm-properties
 
 # avoid Mesa dependency in XFree86-OpenGL-libs
 %define		_noautoreqdep	libGL.so.1
@@ -1136,8 +1135,8 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console
 	$RPM_BUILD_ROOT/usr/include \
 	$RPM_BUILD_ROOT/usr/bin \
 	$RPM_BUILD_ROOT/usr/lib \
-	$RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties \
-	$RPM_BUILD_ROOT{%{_appnkldir}/Utilities,%{_pixmapsdir}/mini}
+	$RPM_BUILD_ROOT%{_wmpropsdir} \
+	$RPM_BUILD_ROOT{%{_applnkdir}/Utilities,%{_pixmapsdir}/mini}
 
 %{__make} -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -1183,10 +1182,10 @@ install %{SOURCE8} $RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/pl/XTerm
 install %{SOURCE9} $RPM_BUILD_ROOT/etc/sysconfig/xdm
 install %{SOURCE10} $RPM_BUILD_ROOT/etc/sysconfig/xfs
 
-install %{SOURCE11} $RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties/twm.desktop
-install %{SOURCE12} $RPM_BUILD_ROOT%{_appnkldir}/Utilities
-install %{SOURCE13} $RPM_BUILD_ROOT%{_appnkldir}/Utilities
-install %{SOURCE14} $RPM_BUILD_ROOT%{_appnkldir}
+install %{SOURCE11} $RPM_BUILD_ROOT%{_wmpropsdir}/twm.desktop
+install %{SOURCE12} $RPM_BUILD_ROOT%{_applnkdir}/Utilities
+install %{SOURCE13} $RPM_BUILD_ROOT%{_applnkdir}/Utilities
+install %{SOURCE14} $RPM_BUILD_ROOT%{_applnkdir}
 
 install %{SOURCE15} $RPM_BUILD_ROOT%{_datadir}/pixmaps
 
@@ -1194,7 +1193,7 @@ touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xdm
 
-ln -sf %{_fontdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
+ln -sf %{_fontsdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
 
 # do not duplicate xkbcomp program
 rm -f $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
@@ -1451,8 +1450,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/X11/bitmaps
 %{_includedir}/X11/pixmaps
 
-%{_appnkldir}/Utilities/*.desktop
-%{_appnkldir}/*.desktop
+%{_applnkdir}/Utilities/*.desktop
+%{_applnkdir}/*.desktop
 %{_pixmapsdir}/x*
 
 %{_mandir}/man1/Xmark.1*
@@ -1605,7 +1604,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n twm
 %defattr(644,root,root,755)
-%{_datadir}/gnome/wm-properties/twm.desktop
+%{_wmpropsdir}/twm.desktop
 %attr(755,root,root) %{_bindir}/twm
 %dir /etc/X11/twm
 %config /etc/X11/twm/system.twmrc
@@ -1645,6 +1644,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_bindir}
 /usr/bin/X11
 %dir %{_datadir}/locale
+%dir %{_wmpropsdir}
 %dir %{_pixmapsdir}
 %dir %{_pixmapsdir}/mini
 %attr(755,root,root) %{_libdir}/libX*.so.*.*
