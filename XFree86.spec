@@ -244,6 +244,18 @@ Group(pl):	X11/XFree86/Serwery
 %description I128
 X server for the #9 Imagine 128 board.
 
+%description -l de I128
+X-Server für die Steckkarte #9 Imagine 128
+
+%description -l fr I128
+Serveur X pour les cartes #9 Imagine 128.
+
+%description -l pl I128
+X serwer do kart #9 Imagine 128.
+
+%description -l tr I128
+#9 Imagine kartý için X sunucusu.
+
 %package S3V
 Summary:	XFree86 S3 Virge server
 Summary(de):	Xfree86 S3 Virge-Server
@@ -256,14 +268,26 @@ Group(pl):	X11/XFree86/Serwery
 %description S3V
 X server for cards built around the S3 Virge chipset.
 
+%description -l de S3V
+X-Server für Grafikkarten mit dem S3 Virge-Chipsatz.
+
+%description -l fr S3V
+Serveur X pour les cartes construites autour du circuit S3 Virge
+
+%description -l pl S3V
+X serwer dla kart opartych na S3 Virge.
+
+%description -l tr S3V
+XFree86 S3 Virge sunucusu
+
 %package Mach64
-Summary:     XFree86 Mach64 server
-Group:       X11/XFree86/Servers
-Group(pl):   X11/XFree86/Serwery
-Summary(de): Xfree86 Mach64-Server
-Summary(fr): Serveur Mach64 de XFree86
-Summary(pl): XFree86 serwer dla kart Mach64
-Summary(tr): XFree86 Mach64 sunucusu
+Summary:	XFree86 Mach64 server
+Summary(de):	Xfree86 Mach64-Server
+Summary(fr):	Serveur Mach64 de XFree86
+Summary(pl):	XFree86 serwer dla kart Mach64
+Summary(tr):	XFree86 Mach64 sunucusu
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description Mach64
 X server for ATI Mach64 based cards such as the Graphics Xpression, GUP Turbo,
@@ -272,84 +296,164 @@ cards which newer versions of XFree86 (which were only available as BETA
 releases at the time of this release) may fix. Look at http://www.xfree86.org
 for information on updating this server.
 
+%description -l de Mach64
+X-Server für ATI Mach64-Karten wie Graphics Xpression, GUP Turbo,
+und WinTurbo. Dieser Server verursacht gelegentlich Probleme mit Mach64-Karten,
+die aber von einer neueren Version von XFree86 (der als Beta-Version verfügbar ist)
+gelöst werden könnten. Unter
+http://www.xfree86.org finden Sie Informationen zum Aktualisieren dieses Servers.
+
+%description -l fr Mach64
+Serveur X pour les cartes basées sur l'ATI Mach64, comme les cartes GUP Turbo,
+Graphics Xpression et WinTurbo. Ce serveur est connu pour avoir des problèmes
+avec certaines cartes Mach64 que les versions plus récentes d'XFree86 corrigent
+(elles ne sont encore qu'en version BETA au moment de cette distribution).
+Consultez http://www.xfree86.org pour les informations de mise à jour du serveur.
+
+%description -l pl Mach64
+X serwer dla kart opartych na uk³adzie ATI Mach64 jak np. Graphics
+Xpression,
+GUP Turbo, a tak¿e WinTurbo. Serwer jest znany z problemów z niektórymi
+kartami Mach64, które jednak mog± byæ ju¿ poprawione w nowszej wersji
+XFree86 (osi±galna wy³±cznie jako wersja BETA). Spójrz na stronê
+http://www.xfree86.org/ gdzie znajdziesz informacje nt. nowszych wersji
+XFree86.
+
+%description -l tr Mach64
+ATI Mach64 tabanlý kartlar için X sunucusu. Graphics Xpression, GUP Turbo ve
+WinTurbo gibi kartlarý destekler. Bazý Mach64 kartlarýn yeni XFree86 ile
+sorun yaþadýklarý bilinmektedir. Bu sorunla ilgili son bilgilere ulaþmak için
+lütfen http://www.xfree86.org adresine bakýn.
+
 %package Sun
-Summary:     XFree86 Sun server (monochrome and 8-bit color SBUS framebuffers)
-Group:       X11/XFree86/Servers
-Group(pl):   X11/XFree86/Serwery
-Obsoletes:   X11R6.1-Sun
-Summary(pl): Serwer XFree86 Sun (dla framebuffera)
+Summary:	XFree86 Sun server (monochrome and 8-bit color SBUS framebuffers)
+Summary(pl):	Serwer XFree86 Sun (dla framebuffera)
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
+Obsoletes:	X11R6.1-Sun
 
 %description Sun
 To run X Windows programs requires an X server for your specific hardware.
 This package includes the X server for Sun computers with monochrome and
 8-bit color SBUS framebuffers.
 
+%description -l pl Sun
+Aby uruchomiæ X Window System potrzebujesz X serwera dostosowanego do
+Twojego sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun z
+monochromatycznymi lub te¿ 8-bitowymi kolorowymi framebufferami SBUS.
+
 %package SunMono
-Summary:     XFree86 Sun server for monochrome SBUS framebuffers only
-Group:       X11/XFree86/Servers
-Group(pl):   X11/XFree86/Serwery
-Obsoletes:   X11R6.1-SunMono
-Summary(pl): Serwer XFree86 Sun (tylko dla monitorów monochromatycznych)
+Summary:	XFree86 Sun server for monochrome SBUS framebuffers only
+Summary(pl):	Serwer XFree86 Sun (tylko dla monitorów monochromatycznych)
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
+Obsoletes:	X11R6.1-SunMono
 
 %description SunMono
 To run X Windows programs requires an X server for your specific hardware.
 This package includes the X server for Sun computers with monochrome
 SBUS framebuffers only.
 
+%description -l pl SunMono
+Aby uruchomiæ X Window System potrzebujesz X serwera dostosowanego do
+Twojego sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun z
+wy³±cznie monochromatycznymi framebufferami SBUS.
+
 %package Sun24
-Summary:     XFree86 Sun server for all supported SBUS framebuffers
-Group:       X11/XFree86/Servers
-Group(pl):   X11/XFree86/Serwery
-Obsoletes:   X11R6.1-Sun24
-Summary(pl): Serwer XFree86 Sun (dla wszystkich SBUS framebufferów)
+Summary:	XFree86 Sun server for all supported SBUS framebuffers
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
+Obsoletes:	X11R6.1-Sun24
+Summary(pl):	Serwer XFree86 Sun (dla wszystkich SBUS framebufferów)
  
 %description Sun24
 To run X Windows programs requires an X server for your specific hardware.
 This package includes the X server for Sun computers with all supported
 SBUS framebuffers.
 
+%description -l pl Sun24
+Aby uruchomiæ X Window System potrzebujesz X serwera dostosowanego do
+Twojego sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun dla
+wszystkich wspieranych framebufferów SBUS.
+
 %package Xvfb
-Summary:     XFree86 Xvfb server
-Group:       X11/XFree86/Servers
-Group(pl):   X11/XFree86/Serwery
-Summary(pl): Serwer XFree86 Xvfb
-
-%package 3DLabs
-Summary:     XFree86 3DLabs server
-Group:       X11/XFree86/Servers
-Group(pl):   X11/XFree86/Serwery
-Summary(pl): Serwer XFree86 3DLabs
-
-%description 3DLabs
-XFree86 3DLabs server
-
-%description -l pl 3DLabs
-XFree86 3DLabs server
+Summary:	XFree86 Xvfb server
+Summary(pl):	Serwer XFree86 Xvfb
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description Xvfb
-X server which runs in a X window.
+Xvfb (X Virtual Frame Buffer) is an X Windows System server that is capable
+of running on machines with no display hardware and no physical input
+devices.  Xvfb emulates a dumb framebuffer using virtual memory.  Xvfb
+doesn't open any devices, but behaves otherwise as an X display.  Xvfb is
+normally used for testing servers.  Using Xvfb, the mfb or cfb code for any
+depth can be exercised without using real hardware that supports the desired
+depths.  Xvfb has also been used to test X clients against unusual depths
+and screen configurations, to do batch processing with Xvfb as a background
+rendering engine, to do load testing, to help with porting an X server to a
+new platform, and to provide an unobtrusive way of running applications
+which really don't need an X server but insist on having one.
+
+If you need to test your X server or your X clients, you may want to install
+Xvfb for that purpose.
+
+%description -l pl Xvfb
+
+%package 3DLabs
+Summary:	XFree86 3DLabs server
+Summary(pl):	Serwer XFree86 3DLabs
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
+
+%description 3DLabs
+X server for cards built around 3D Labs GLINT and Permedia chipsets,
+including GLINT 500TX with IBM RGB526 RAMDAC, GLINT MX with IBM RGB526 and
+IBM RGB640 RAMDAC, Permedia with IBM RGB526 RAMDAC and the Permedia 2
+(classic, 2a, 2v).
+
+%description -l pl 3DLabs
+XFree86 3DLabs server.
 
 %package Xnest
-Summary:     XFree86 Xnest server
-Group:       X11/XFree86/Servers
-Group(pl):   X11/XFree86/Serwery
-Summary(pl): Serwer XFree86 Xnest
+Summary:	XFree86 Xnest server
+Summary(pl):	Serwer XFree86 Xnest
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description Xnest
-X server which runs in a X window.
+Xnest is an X Window System server which runs in an X window. Xnest is a
+'nested' window server, actually a client of the real X server, which
+manages windows and graphics requests for Xnest, while Xnest manages the
+windows and graphics requests for its own clients.
+
+%description -l pl Xnest
 
 %package 8514
-Summary:     XFree86 8514 server
-Group:       X11/XFree86/Servers
-Group(pl):   X11/XFree86/Serwery
-Summary(de): XFree86 8514 Server
-Summary(fr): serveur 8514 pour XFree86.
-Summary(pl): XFree86 serwer dla kart 8514
-Summary(tr): XFree86 8514 sunucusu
+Summary:	XFree86 8514 server
+Summary(de):	XFree86 8514 Server
+Summary(fr):	serveur 8514 pour XFree86.
+Summary(pl):	XFree86 serwer dla kart 8514
+Summary(tr):	XFree86 8514 sunucusu
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description 8514
 X server for older IBM 8514 cards and compatibles from companies such as
 ATI.
+
+%description -l de 8514
+X-Server für ältere IBM 8514- und kompatible Karten, z.B. von ATI.
+
+%description -l fr 8514
+Serveur X pour les vieilles cartes IBM 8514 et compatibles comme lesATI.
+
+%description -l pl 8514
+X serwer dla starszych kart IBM 8514 oraz kompatybilnych robionych przez
+inne firmy takie jak np. ATI.
+
+%description -l tr 8514
+Eski IBM 8514 ve uyumlu kartlar (ATI gibi) için sunucu.
 
 %package AGX
 Summary:     XFree86 AGX server
@@ -481,9 +585,14 @@ Group(pl):   X11/XFree86/Serwery
 Summary(pl): XFree86 serwer dla kart TGA
 
 %description TGA
-Eight bit X server for Digital TGA boards based on the DC21040 chips. These
-adapters are very popular in Alpha workstations and are included with Alpha
-UDB (Multia) machines.
+The XFree86-TGA package contains an 8-bit X server for Digital TGA boards
+based on the DC21040 chip. These adapters are very popular in Alpha
+workstations and are included with Alpha UDB (Multia) machines.
+
+If you are installing the X Window System and your system uses a Digital TGA
+board based on the DC21040 chip, you'll need to install the XFree86-TGA
+package.
+
 
 %package -n xdm
 Summary:     XDM
@@ -522,9 +631,6 @@ Generischer monochromer (Schwarzweiß-) Server für VGA-Karten, der
 praktisch mit allen VGA-ähnlichen Karten mit beschränkter Auflösung
 funktioniert.
 
-%description -l de 8514
-X-Server für ältere IBM 8514- und kompatible Karten, z.B. von ATI.
-
 %description -l de P9000
 X-Server für Karten auf Basis des Weitek P9000-Chip, wie die meisten 
 Diamond Viper und Orchid P9000-Karten.
@@ -550,22 +656,9 @@ Genoa 8500VL, den meisten Actix-Karten sowie Spider VLB Plus und außerdem
 mit vielen anderen Chips und Karten. Es lohnt sich, diesen Server 
 auszuprobieren, wenn Sie Probleme haben.
 
-%description -l de S3V
-X-Server für Grafikkarten mit dem S3 Virge-Chipsatz.
-
-%description -l de Mach64
-X-Server für ATI Mach64-Karten wie Graphics Xpression, GUP Turbo,
-und WinTurbo. Dieser Server verursacht gelegentlich Probleme mit Mach64-Karten,
-die aber von einer neueren Version von XFree86 (der als Beta-Version verfügbar ist)
-gelöst werden könnten. Unter
-http://www.xfree86.org finden Sie Informationen zum Aktualisieren dieses Servers.
-
 %description -l de Mach8
 X-Server für Karten auf der Basis des ATI Mach8-Chips, einschließlich
 des ATI 8514 Ultra und des Graphics Ultra.
-
-%description -l de I128
-X-Server für die Steckkarte #9 Imagine 128
 
 %description -l de -n xdm
 %description -l de -n xauth
@@ -589,9 +682,6 @@ et la ViewTop PCI.
 %description -l fr Mono
 Serveur générique monochrome (2 couleurs) pour les cartes VGA, fonctionne avec
 pratiquement toutes les cartes VGA ayant des résolutions limitées.
-
-%description -l fr 8514
-Serveur X pour les vieilles cartes IBM 8514 et compatibles comme lesATI.
 
 %description -l fr P9000
 Serveur X pour les cartes construites autour des circuits P9000 de
@@ -617,22 +707,9 @@ Kelvins, STB Nitros et Horizons, Genoa 8500VL, la plupart des Actix
 et la Spider VLB Plus. Fonctionne aussi pour de nombreux autres circuits
 et cartes. Essayez ce serveur si vous avez des problèmes.
 
-%description -l fr S3V
-Serveur X pour les cartes construites autour du circuit S3 Virge
-
-%description -l fr Mach64
-Serveur X pour les cartes basées sur l'ATI Mach64, comme les cartes GUP Turbo,
-Graphics Xpression et WinTurbo. Ce serveur est connu pour avoir des problèmes
-avec certaines cartes Mach64 que les versions plus récentes d'XFree86 corrigent
-(elles ne sont encore qu'en version BETA au moment de cette distribution).
-Consultez http://www.xfree86.org pour les informations de mise à jour du serveur.
-
 %description -l fr Mach8
 Serveur X pour les cartes basées sur les chips ATI Mach8, dont les cartes
 ATI 8514 Ultra et Graphics Ultra.
-
-%description -l fr I128
-Serveur X pour les cartes #9 Imagine 128.
 
 %description -l fr -n xdm
 
@@ -648,9 +725,6 @@ gibi kartlarýn kullandýðý ET4000/W32 tabanlý kartlar için X sunucusu.
 %description -l tr Mono
 Mono (2 renk) VGA kartlarý için genel X sunucusu. Kýsýtlý bir çözünürlük
 altýnda birçok VGA kart ile çalýþýr.
-
-%description -l tr 8514
-Eski IBM 8514 ve uyumlu kartlar (ATI gibi) için sunucu.
 
 %description -l tr P9000
 Diamond Viper ve Orchid P9000 gibi Weitek P9000 tabanlý kartlar için X
@@ -675,43 +749,13 @@ zamanda Diamond Speedstar, Orchid Kelvins, STB Nitros / Horizons, Genoa
 8500VL, çoðu Actix kartlarý, Spider VLB Plus gibi kartlar ve birçok diðer
 kart ile de çalýþýr. Herhangi bir sorun yaþarsanýz bu sunucuyu deneyin.
 
-%description -l tr S3V
-XFree86 S3 Virge sunucusu
-
-%description -l tr Mach64
-ATI Mach64 tabanlý kartlar için X sunucusu. Graphics Xpression, GUP Turbo ve
-WinTurbo gibi kartlarý destekler. Bazý Mach64 kartlarýn yeni XFree86 ile
-sorun yaþadýklarý bilinmektedir. Bu sorunla ilgili son bilgilere ulaþmak için
-lütfen http://www.xfree86.org adresine bakýn.
-
 %description -l tr Mach8
 ATI 8514 Ultra ve Graphics Ultra gibi ATI Mach8 tabanlý kartlar için X
 sunucusu.
 
-%description -l tr I128
-#9 Imagine kartý için X sunucusu.
-
 %description -l tr -n xdm
 %description -l tr -n xfs
 %description -l tr -n xauth
-
-%description -l pl I128
-
-%description -l pl S3V
-
-%description -l pl Mach64
-
-%description -l pl Sun
-
-%description -l pl SunMono
-
-%description -l pl Sun24
-
-%description -l pl Xvfb
-
-%description -l pl Xnest
-
-%description -l pl 8514
 
 %description -l pl AGX
 
@@ -906,7 +950,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/X11R6/lib/X11/etc
 %attr(-,root,root) /usr/X11R6/lib/X11/etc/*
 
-%attr(4711,root,root) /usr/X11R6/bin/Xwrapper
+%attr(4755,root,root) /usr/X11R6/bin/Xwrapper
 
 %attr(755,root,root) /usr/X11R6/bin/X
 %attr(755,root,root) /usr/X11R6/bin/Xprt
@@ -979,7 +1023,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/X11R6/bin/xsetroot
 %attr(755,root,root) /usr/X11R6/bin/xsm
 %attr(755,root,root) /usr/X11R6/bin/xstdcmap
-%attr(711,root,root) /usr/X11R6/bin/xterm
+%attr(755,root,root) /usr/X11R6/bin/xterm
 %attr(755,root,root) /usr/X11R6/bin/resize
 %attr(755,root,root) /usr/X11R6/bin/xvidtune
 %attr(755,root,root) /usr/X11R6/bin/xwd
@@ -1095,7 +1139,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n xauth
 %defattr(644,root,root,755)
-%attr(711,root,root) /usr/X11R6/bin/xauth
+%attr(755,root,root) /usr/X11R6/bin/xauth
 /usr/X11R6/man/man1/xauth.1.*
 
 %files libs
@@ -1136,8 +1180,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/X11R6/lib/X11/config
 /usr/X11R6/lib/X11/config/*
 
-%attr(711,root,root) /usr/X11R6/bin/imake
-%attr(711,root,root) /usr/X11R6/bin/makedepend
+%attr(755,root,root) /usr/X11R6/bin/imake
+%attr(755,root,root) /usr/X11R6/bin/makedepend
 %attr(755,root,root) /usr/X11R6/bin/xmkmf
 
 /usr/X11R6/man/man1/imake.1.*
@@ -1156,14 +1200,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files Xnest
 %defattr(644,root,root,755)
-%attr(711,root,root) /usr/X11R6/bin/Xnest
+%attr(755,root,root) /usr/X11R6/bin/Xnest
 /usr/X11R6/man/man1/Xnest.1.*
 
 %ifarch i386 alpha
 
 %files SVGA
 %defattr(644,root,root,755)
-%attr(711,root,root) /usr/X11R6/bin/XF86_SVGA
+%attr(755,root,root) /usr/X11R6/bin/XF86_SVGA
 /usr/X11R6/man/man1/XF86_SVGA.1.*
 /usr/X11R6/man/man5/XF86Config.5.*
 %endif
@@ -1172,7 +1216,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files VGA16
 %defattr(644,root,root,755)
-%attr(711,root,root) /usr/X11R6/bin/XF86_VGA16
+%attr(755,root,root) /usr/X11R6/bin/XF86_VGA16
 /usr/X11R6/man/man1/XF86_VGA16.1.*
 /usr/X11R6/man/man5/XF86Config.5.*
 %endif
@@ -1181,7 +1225,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files W32
 %defattr(644,root,root,755)
-%attr(711,root,root) /usr/X11R6/bin/XF86_W32
+%attr(755,root,root) /usr/X11R6/bin/XF86_W32
 /usr/X11R6/man/man1/XF86_W32.1.*
 /usr/X11R6/man/man1/XF86_Accel.1.*
 /usr/X11R6/man/man5/XF86Config.5.*
@@ -1191,7 +1235,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files Mono
 %defattr(644,root,root,755)
-%attr(711,root,root) /usr/X11R6/bin/XF86_Mono
+%attr(755,root,root) /usr/X11R6/bin/XF86_Mono
 /usr/X11R6/man/man1/XF86_Mono.1.*
 /usr/X11R6/man/man5/XF86Config.5.*
 %endif
@@ -1200,7 +1244,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files S3
 %defattr(644,root,root,755)
-%attr(711,root,root) /usr/X11R6/bin/XF86_S3
+%attr(755,root,root) /usr/X11R6/bin/XF86_S3
 /usr/X11R6/man/man1/XF86_S3.1.*
 /usr/X11R6/man/man1/XF86_Accel.1.*
 /usr/X11R6/man/man5/XF86Config.5.*
@@ -1210,7 +1254,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files S3V
 %defattr(644,root,root,755)
-%attr(711,root,root) /usr/X11R6/bin/XF86_S3V
+%attr(755,root,root) /usr/X11R6/bin/XF86_S3V
 /usr/X11R6/man/man1/XF86_S3.1.*
 /usr/X11R6/man/man1/XF86_Accel.1.*
 /usr/X11R6/man/man5/XF86Config.5.*
@@ -1220,7 +1264,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files 8514
 %defattr(644,root,root,755)
-%attr(711,root,root) /usr/X11R6/bin/XF86_8514
+%attr(755,root,root) /usr/X11R6/bin/XF86_8514
 /usr/X11R6/man/man1/XF86_8514.1.*
 /usr/X11R6/man/man1/XF86_Accel.1.*
 /usr/X11R6/man/man5/XF86Config.5.*
@@ -1230,7 +1274,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files Mach8
 %defattr(644,root,root,755)
-%attr(711,root,root) /usr/X11R6/bin/XF86_Mach8
+%attr(755,root,root) /usr/X11R6/bin/XF86_Mach8
 /usr/X11R6/man/man1/XF86_Mach8.1.*
 /usr/X11R6/man/man1/XF86_Accel.1.*
 /usr/X11R6/man/man5/XF86Config.5.*
@@ -1240,7 +1284,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files Mach32
 %defattr(644,root,root,755)
-%attr(711,root,root) /usr/X11R6/bin/XF86_Mach32
+%attr(755,root,root) /usr/X11R6/bin/XF86_Mach32
 /usr/X11R6/man/man1/XF86_Mach32.1.*
 /usr/X11R6/man/man1/XF86_Accel.1.*
 /usr/X11R6/man/man5/XF86Config.5.*
@@ -1248,7 +1292,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files Mach64
 %defattr(644, root, root, 755)
-%attr(711,root,root) /usr/X11R6/bin/XF86_Mach64
+%attr(755,root,root) /usr/X11R6/bin/XF86_Mach64
 /usr/X11R6/man/man1/XF86_Mach64.1.*
 /usr/X11R6/man/man1/XF86_Accel.1.*
 /usr/X11R6/man/man5/XF86Config.5.*
@@ -1257,7 +1301,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files P9000
 %defattr(644, root, root, 755)
-%attr(711,root,root) /usr/X11R6/bin/XF86_P9000
+%attr(755,root,root) /usr/X11R6/bin/XF86_P9000
 /usr/X11R6/man/man1/XF86_P9000.1.*
 /usr/X11R6/man/man1/XF86_Accel.1.*
 /usr/X11R6/man/man5/XF86Config.5.*
@@ -1267,7 +1311,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files AGX
 %defattr(644, root, root, 755)
-%attr(711,root,root) /usr/X11R6/bin/XF86_AGX
+%attr(755,root,root) /usr/X11R6/bin/XF86_AGX
 /usr/X11R6/man/man1/XF86_AGX.1.*
 /usr/X11R6/man/man1/XF86_Accel.1.*
 /usr/X11R6/man/man5/XF86Config.5.*
@@ -1277,7 +1321,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files I128
 %defattr(644, root, root, 755)
-%attr(711,root,root) /usr/X11R6/bin/XF86_I128
+%attr(755,root,root) /usr/X11R6/bin/XF86_I128
 /usr/X11R6/man/man1/XF86_I128.1.*
 /usr/X11R6/man/man1/XF86_Accel.1.*
 /usr/X11R6/man/man5/XF86Config.5.*
@@ -1287,7 +1331,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files TGA
 %defattr(644, root, root, 755)
-%attr(711,root,root) /usr/X11R6/bin/XF86_TGA
+%attr(755,root,root) /usr/X11R6/bin/XF86_TGA
 /usr/X11R6/man/man5/XF86Config.5.*
 %endif
 
@@ -1295,7 +1339,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files Sun
 %defattr(644,root,root,755)
-%attr(711,root,root) /usr/X11R6/bin/Xsun
+%attr(755,root,root) /usr/X11R6/bin/Xsun
 %attr(-,root,root) /usr/X11R6/lib/X11/xkb
 %endif
 
@@ -1303,7 +1347,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files SunMono
 %defattr(644, root, root, 755)
-%attr(711,root,root) /usr/X11R6/bin/XsunMono
+%attr(755,root,root) /usr/X11R6/bin/XsunMono
 %attr(-,root,root) /usr/X11R6/lib/X11/xkb
 %endif
 
@@ -1311,14 +1355,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files Sun24
 %defattr(644, root, root, 755)
-%attr(711,root,root) /usr/X11R6/bin/Xsun24
+%attr(755,root,root) /usr/X11R6/bin/Xsun24
 %attr(-,root,root) /usr/X11R6/lib/X11/xkb
 %endif
 
 %ifarch i386 
 
 %files 3DLabs
-%attr(711,root,root) /usr/X11R6/bin/XF86_3DLabs
+%attr(755,root,root) /usr/X11R6/bin/XF86_3DLabs
 %endif
 
 %files FBDev
