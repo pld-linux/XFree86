@@ -82,6 +82,7 @@ Patch46:	XFree86-xinitrace.patch
 BuildPrereq:	ncurses-devel
 BuildPrereq:	zlib-devel
 BuildPrereq:	utempter-devel
+BuildPrereq:	tcl-devel
 Exclusivearch:	i386 i486 i586 i686 alpha sparc m68k armv4l
 Buildroot:	/tmp/%{name}-%{version}-root/
 
