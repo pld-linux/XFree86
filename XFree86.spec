@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
 Version:	4.0.2
-Release:	2
+Release:	3
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -1149,7 +1149,13 @@ gunzip $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
 
 %endif
 
-#--- %post{un}, %preun, %verifyscript -
+#--- %post{un}, %preun, %verifyscript, %trigge ----------
+
+%triggerpostun modules -- XFree86-modules < 4.0.2
+if [ -d /usr/X11R6/lib/X11/xkb ]; then
+	rm -rf /usr/X11R6/lib/X11/xkb
+	ln -sf ../../../../etc/X11/ /usr/X11R6/lib/X11/xkb
+fi
 
 %post libs
 grep "^%{_libdir}$" /etc/ld.so.conf >/dev/null 2>&1
@@ -1860,7 +1866,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files driver-sunbw2
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/sunbw2_drv.a
+%attr(755,root,root) %{_libdir}/modules/drivers/sunbw2_drv.o
 %{_mandir}/man4/sunbw2*
 
 %endif
@@ -1868,7 +1874,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files driver-suncg14
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/suncg14_drv.a
+%attr(755,root,root) %{_libdir}/modules/drivers/suncg14_drv.o
 %{_mandir}/man4/suncg14*
 
 %endif
@@ -1876,7 +1882,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files driver-suncg3
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/suncg3_drv.a
+%attr(755,root,root) %{_libdir}/modules/drivers/suncg3_drv.o
 %{_mandir}/man4/suncg3*
 
 %endif
@@ -1884,7 +1890,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files driver-suncg6
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/suncg6_drv.a
+%attr(755,root,root) %{_libdir}/modules/drivers/suncg6_drv.o
 %{_mandir}/man4/suncg6*
 
 %endif
@@ -1892,7 +1898,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files driver-sunffb
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/sunffb_drv.a
+%attr(755,root,root) %{_libdir}/modules/drivers/sunffb_drv.o
 %attr(755,root,root) %{_libdir}/modules/dri/ffb_dri.so
 %{_mandir}/man4/sunffb*
 
@@ -1901,7 +1907,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files driver-sunleo
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/sunleo_drv.a
+%attr(755,root,root) %{_libdir}/modules/drivers/sunleo_drv.o
 %{_mandir}/man4/sunleo*
 
 %endif
@@ -1909,7 +1915,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files driver-suntcx
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/suntcx_drv.a
+%attr(755,root,root) %{_libdir}/modules/drivers/suntcx_drv.o
 %{_mandir}/man4/suntcx*
 
 %endif
