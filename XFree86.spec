@@ -1110,6 +1110,37 @@ ln -sf ../../../../../var/state/xkb \
 ln -sf ../../../share/doc/%{name}-%{version} \
 	$RPM_BUILD_ROOT/usr/X11R6/lib/X11/doc
 
+# Add 3dfx cards to xf86config database
+sed -e s/END// < $RPM_BUILD_ROOT/usr/X11R6/lib/X11/Cards > $RPM_BUILD_ROOT/usr/X11R6/lib/X11/Cards.tmp
+/bin/mv $RPM_BUILD_ROOT/usr/X11R6/lib/X11/Cards.tmp $RPM_BUILD_ROOT/usr/X11R6/lib/X11/Cards
+cat >> $RPM_BUILD_ROOT/usr/X11R6/lib/X11/Cards <<_EOT_
+
+# 3dfx based cards
+
+NAME 3dfx Banshee
+SERVER SVGA
+NOCLOCKPROBE
+
+NAME 3dfx Voodoo3 2000
+SERVER SVGA
+NOCLOCKPROBE
+
+NAME 3dfx Voodoo3 3000
+SERVER SVGA
+NOCLOCKPROBE
+
+NAME 3dfx Voodoo3 3500
+SERVER SVGA
+NOCLOCKPROBE
+
+NAME 3dfx Voodoo3 4000
+SERVER SVGA
+NOCLOCKPROBE
+
+END
+
+_EOT_
+
 gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/share/man/man[135]/* \
 	$RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
 
@@ -1140,39 +1171,6 @@ fi
 %postun -n xfs
 if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del xfs
-fi
-
-%post XF86Setup
-if ! grep "# 3dfx based cards" /usr/X11R6/lib/X11/Cards > /dev/null; then
-	sed -e s/END// < /usr/X11R6/lib/X11/Cards > /usr/X11R6/lib/X11/Cards.tmp
-	/bin/mv /usr/X11R6/lib/X11/Cards.tmp /usr/X11R6/lib/X11/Cards
-	cat >> /usr/X11R6/lib/X11/Cards <<_EOT_
-
-# 3dfx based cards
-
-NAME 3dfx Banshee
-SERVER SVGA
-NOCLOCKPROBE
-
-NAME 3dfx Voodoo3 2000
-SERVER SVGA
-NOCLOCKPROBE
-
-NAME 3dfx Voodoo3 3000
-SERVER SVGA
-NOCLOCKPROBE
-
-NAME 3dfx Voodoo3 3500
-SERVER SVGA
-NOCLOCKPROBE
-
-NAME 3dfx Voodoo3 4000
-SERVER SVGA
-NOCLOCKPROBE
-
-END
-
-_EOT_
 fi
 
 %clean
