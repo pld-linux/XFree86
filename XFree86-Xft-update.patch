@@ -1,0 +1,3030 @@
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/Imakefile xc/lib/Xft/Imakefile
+--- XFree86-4.0.2.orig/xc/lib/Xft/Imakefile	Sat Dec 16 12:33:01 2000
++++ XFree86-4.0.2/xc/lib/Xft/Imakefile	Fri Jan 19 20:25:58 2001
+@@ -1,4 +1,4 @@
+-XCOMM $XFree86: xc/lib/Xft/Imakefile,v 1.8 2000/12/15 17:12:52 keithp Exp $
++XCOMM $XFree86: xc/lib/Xft/Imakefile,v 1.9 2001/01/02 02:46:50 keithp Exp $
+ 
+ #define DoNormalLib NormalLibXft
+ #define DoSharedLib SharedLibXft
+@@ -33,8 +33,8 @@
+ 
+ #ifdef Freetype2Dir
+ FT_HEADERS = XftFreetype.h
+-   FT_SRCS = xftdir.c xftfreetype.c xftglyphs.c xftrender.c
+-   FT_OBJS = xftdir.o xftfreetype.o xftglyphs.o xftrender.o
++   FT_SRCS = xftcache.c xftdir.c xftfreetype.c xftglyphs.c xftrender.c
++   FT_OBJS = xftcache.o xftdir.o xftfreetype.o xftglyphs.o xftrender.o
+ #endif
+ 
+ HEADERS = Xft.h $(FT_HEADERS)
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/Xft.h xc/lib/Xft/Xft.h
+--- XFree86-4.0.2.orig/xc/lib/Xft/Xft.h	Fri Dec  8 02:51:26 2000
++++ XFree86-4.0.2/xc/lib/Xft/Xft.h	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/Xft.h,v 1.13 2000/12/08 07:51:26 keithp Exp $
++ * $XFree86: xc/lib/Xft/Xft.h,v 1.16 2001/01/02 02:46:50 keithp Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -57,6 +57,7 @@
+ /* defaults from resources */
+ #define XFT_SCALE	    "scale"	/* double */
+ #define XFT_RENDER	    "render"	/* Bool */
++#define XFT_MINSPACE	    "minspace"	/* Bool use minimum line spacing */
+ 
+ /* specific to FreeType rasterizer */
+ #define XFT_CHAR_WIDTH	    "charwidth"	/* Int */
+@@ -254,6 +255,16 @@
+ 		 int		y,
+ 		 XftChar32	*string,
+ 		 int		len);
++
++void
++XftDrawStringUtf8 (XftDraw	*d,
++		   XftColor	*color,
++		   XftFont	*font,
++		   int		x, 
++		   int		y,
++		   XftChar8	*string,
++		   int		len);
++
+ void
+ XftDrawRect (XftDraw	    *d,
+ 	     XftColor	    *color,
+@@ -290,6 +301,13 @@
+ 		  int		len,
+ 		  XGlyphInfo	*extents);
+     
++void
++XftTextExtentsUtf8 (Display	*dpy,
++		    XftFont	*font,
++		    XftChar8	*string, 
++		    int		len,
++		    XGlyphInfo	*extents);
++
+ /* xftfont.c */
+ XftPattern *
+ XftFontMatch (Display *dpy, int screen, XftPattern *pattern, XftResult *result);
+@@ -379,6 +397,9 @@
+ XftPattern *
+ XftNameParse (const char *name);
+ 
++Bool
++XftNameUnparse (XftPattern *pat, char *dest, int len);
++
+ /* xftpat.c */
+ XftPattern *
+ XftPatternCreate (void);
+@@ -442,12 +463,26 @@
+ 
+ /* xftstr.c */
+ 
++int
++XftUtf8ToUcs4 (XftChar8    *src_orig,
++	       XftChar32   *dst,
++	       int	    len);
++
++Bool
++XftUtf8Len (XftChar8	*string,
++	    int		len,
++	    int		*nchar,
++	    int		*wchar);
++
+ /* xftxlfd.c */
+ XftPattern *
+ XftXlfdParse (const char *xlfd_orig, Bool ignore_scalable, Bool complete);
+     
+ XFontStruct *
+ XftCoreOpen (Display *dpy, XftPattern *pattern);
++
++void
++XftCoreClose (Display *dpy, XFontStruct *font);
+ 
+ _XFUNCPROTOEND
+ 
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/XftFreetype.h xc/lib/Xft/XftFreetype.h
+--- XFree86-4.0.2.orig/xc/lib/Xft/XftFreetype.h	Sat Dec 16 12:33:01 2000
++++ XFree86-4.0.2/xc/lib/Xft/XftFreetype.h	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/XftFreetype.h,v 1.7 2000/12/15 17:12:52 keithp Exp $
++ * $XFree86: xc/lib/Xft/XftFreetype.h,v 1.12 2001/01/02 02:46:50 keithp Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -38,15 +38,15 @@
+     GlyphSet		glyphset;
+     int			min_char;
+     int			max_char;
+-    int			size;
++    FT_F26Dot6		size;
+     int			ascent;
+     int			descent;
+     int			height;
+     int			max_advance_width;
+-    Bool		monospace;
++    int			spacing;
+     int			rgba;
+     Bool		antialias;
+-    Bool		encoded;    /* use charmap */
++    int			charmap;    /* -1 for unencoded */
+     XRenderPictFormat	*format;
+     XGlyphInfo		**realized;
+     int			nrealized;
+@@ -54,13 +54,32 @@
+ 
+ _XFUNCPROTOBEGIN
+ 
++/* xftdir.c */
++Bool
++XftDirScan (XftFontSet *set, const char *dir, Bool force);
++
++Bool
++XftDirSave (XftFontSet *set, const char *dir);
++
+ /* xftfreetype.c */
++XftPattern *
++XftFreeTypeQuery (const char *file, int id, int *count);
++
++Bool
++XftFreeTypeSetFace (FT_Face face, FT_F26Dot6 size, int charmap);
++
+ XftFontStruct *
+ XftFreeTypeOpen (Display *dpy, XftPattern *pattern);
+ 
+ void
+ XftFreeTypeClose (Display *dpy, XftFontStruct *font);
+ 
++XftFontStruct *
++XftFreeTypeGet (XftFont *font);
++
++Bool
++XftInitFtLibrary(void);
++
+ /* xftglyphs.c */
+ void
+ XftGlyphLoad (Display		*dpy,
+@@ -104,6 +123,13 @@
+ 		   XftChar32 *string, int len);
+ 
+ void
++XftRenderStringUtf8 (Display *dpy, Picture src, 
++		     XftFontStruct *font, Picture dst,
++		     int srcx, int srcy,
++		     int x, int y,
++		     XftChar8 *string, int len);
++
++void
+ XftRenderExtents8 (Display	    *dpy,
+ 		   XftFontStruct    *font,
+ 		   XftChar8	    *string, 
+@@ -123,6 +149,13 @@
+ 		    XftChar32	    *string, 
+ 		    int		    len,
+ 		    XGlyphInfo	    *extents);
++
++void
++XftRenderExtentsUtf8 (Display	    *dpy,
++		      XftFontStruct *font,
++		      XftChar8	    *string, 
++		      int	    len,
++		      XGlyphInfo    *extents);
+ 
+ XftFontStruct *
+ XftFreeTypeGet (XftFont *font);
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftcache.c xc/lib/Xft/xftcache.c
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftcache.c	Wed Dec 31 19:00:00 1969
++++ XFree86-4.0.2/xc/lib/Xft/xftcache.c	Fri Jan 19 20:25:58 2001
+@@ -0,0 +1,608 @@
++/*
++ * $XFree86: xc/lib/Xft/xftcache.c,v 1.1 2001/01/02 02:46:51 keithp Exp $
++ *
++ * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
++ *
++ * Permission to use, copy, modify, distribute, and sell this software and its
++ * documentation for any purpose is hereby granted without fee, provided that
++ * the above copyright notice appear in all copies and that both that
++ * copyright notice and this permission notice appear in supporting
++ * documentation, and that the name of Keith Packard not be used in
++ * advertising or publicity pertaining to distribution of the software without
++ * specific, written prior permission.  Keith Packard makes no
++ * representations about the suitability of this software for any purpose.  It
++ * is provided "as is" without express or implied warranty.
++ *
++ * KEITH PACKARD DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
++ * INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
++ * EVENT SHALL KEITH PACKARD BE LIABLE FOR ANY SPECIAL, INDIRECT OR
++ * CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
++ * DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
++ * TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
++ * PERFORMANCE OF THIS SOFTWARE.
++ */
++
++#include <stdlib.h>
++#include <stdio.h>
++#include <unistd.h>
++#include <string.h>
++#include <ctype.h>
++#include <errno.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include "xftint.h"
++
++typedef struct _XftFileCacheEnt {
++    struct _XftFileCacheEnt *next;
++    unsigned int	    hash;
++    char		    *file;
++    int			    id;
++    time_t		    time;
++    char		    *name;
++    Bool		    referenced;
++} XftFileCacheEnt;
++
++#define HASH_SIZE   509
++
++typedef struct _XftFileCache {
++    XftFileCacheEnt	*ents[HASH_SIZE];
++    Bool		updated;
++    int			entries;
++    int			referenced;
++} XftFileCache;
++
++static XftFileCache	_XftFileCache;
++
++static unsigned int
++_XftFileCacheHash (char *string)
++{
++    unsigned int    h = 0;
++    char	    c;
++
++    while ((c = *string++))
++	h = (h << 1) ^ c;
++    return h;
++}
++
++char *
++XftFileCacheFind (char *file, int id, int *count)
++{
++    XftFileCache    *cache;
++    unsigned int    hash;
++    char	    *match;
++    XftFileCacheEnt *c, *name;
++    int		    maxid;
++    struct stat	    statb;
++    
++    cache = &_XftFileCache;
++    match = file;
++    
++    hash = _XftFileCacheHash (match);
++    name = 0;
++    maxid = -1;
++    for (c = cache->ents[hash % HASH_SIZE]; c; c = c->next)
++    {
++	if (c->hash == hash && !strcmp (match, c->file))
++	{
++	    if (c->id > maxid)
++		maxid = c->id;
++	    if (c->id == id)
++	    {
++		if (stat (file, &statb) < 0)
++		{
++		    if (_XftFontDebug () & XFT_DBG_CACHE)
++			printf (" file missing\n");
++		    return 0;
++		}
++		if (statb.st_mtime != c->time)
++		{
++		    if (_XftFontDebug () & XFT_DBG_CACHE)
++			printf (" timestamp mismatch (was %d is %d)\n",
++				(int) c->time, (int) statb.st_mtime);
++		    return 0;
++		}
++		if (!c->referenced)
++		{
++		    cache->referenced++;
++		    c->referenced = True;
++		}
++		name = c;
++	    }
++	}
++    }
++    if (!name)
++	return 0;
++    *count = maxid;
++    return name->name;
++}
++
++/*
++ * Cache file syntax is quite simple:
++ *
++ * "file_name" id time "font_name" \n
++ */
++ 
++static Bool
++_XftFileCacheReadString (FILE *f, char *dest, int len)
++{
++    int	    c;
++    Bool    escape;
++
++    while ((c = getc (f)) != EOF)
++	if (c == '"')
++	    break;
++    if (c == EOF)
++	return False;
++    if (len == 0)
++	return False;
++    
++    escape = False;
++    while ((c = getc (f)) != EOF)
++    {
++	if (!escape)
++	{
++	    switch (c) {
++	    case '"':
++		*dest++ = '\0';
++		return True;
++	    case '\\':
++		escape = True;
++		continue;
++	    }
++	}
++        if (--len <= 1)
++	    return False;
++	*dest++ = c;
++	escape = False;
++    }
++    return False;
++}
++
++static Bool
++_XftFileCacheReadUlong (FILE *f, unsigned long *dest)
++{
++    unsigned long   t;
++    int		    c;
++
++    while ((c = getc (f)) != EOF)
++    {
++	if (!isspace (c))
++	    break;
++    }
++    if (c == EOF)
++	return False;
++    t = 0;
++    for (;;)
++    {
++	if (c == EOF || isspace (c))
++	    break;
++	if (!isdigit (c))
++	    return False;
++	t = t * 10 + (c - '0');
++	c = getc (f);
++    }
++    *dest = t;
++    return True;
++}
++
++static Bool
++_XftFileCacheReadInt (FILE *f, int *dest)
++{
++    unsigned long   t;
++    Bool	    ret;
++
++    ret = _XftFileCacheReadUlong (f, &t);
++    if (ret)
++	*dest = (int) t;
++    return ret;
++}
++
++static Bool
++_XftFileCacheReadTime (FILE *f, time_t *dest)
++{
++    unsigned long   t;
++    Bool	    ret;
++
++    ret = _XftFileCacheReadUlong (f, &t);
++    if (ret)
++	*dest = (time_t) t;
++    return ret;
++}
++
++static Bool
++_XftFileCacheAdd (XftFileCache	*cache,
++		  char		*file,
++		  int		id,
++		  time_t	time,
++		  char		*name,
++		  Bool		replace)
++{
++    XftFileCacheEnt    *c;
++    XftFileCacheEnt    **prev, *old;
++    unsigned int    hash;
++
++    if (_XftFontDebug () & XFT_DBG_CACHE)
++    {
++	printf ("%s face %s/%d as %s\n", replace ? "Replace" : "Add",
++		file, id, name);
++    }
++    hash = _XftFileCacheHash (file);
++    for (prev = &cache->ents[hash % HASH_SIZE]; 
++	 (old = *prev);
++	 prev = &(*prev)->next)
++    {
++	if (old->hash == hash && old->id == id && !strcmp (old->file, file))
++	    break;
++    }
++    if (*prev)
++    {
++	if (!replace)
++	    return False;
++
++	old = *prev;
++	if (old->referenced)
++	    cache->referenced--;
++	*prev = old->next;
++	free (old);
++	cache->entries--;
++    }
++	
++    c = malloc (sizeof (XftFileCacheEnt) +
++		strlen (file) + 1 +
++		strlen (name) + 1);
++    if (!c)
++	return False;
++    c->next = *prev;
++    *prev = c;
++    c->hash = hash;
++    c->file = (char *) (c + 1);
++    c->id = id;
++    c->name = c->file + strlen (file) + 1;
++    strcpy (c->file, file);
++    c->time = time;
++    c->referenced = replace;
++    strcpy (c->name, name);
++    cache->entries++;
++    return True;
++}
++
++void
++XftFileCacheDispose (void)
++{
++    XftFileCache    *cache;
++    XftFileCacheEnt *c, *next;
++    int		    h;
++
++    cache = &_XftFileCache;
++    
++    for (h = 0; h < HASH_SIZE; h++)
++    {
++	for (c = cache->ents[h]; c; c = next)
++	{
++	    next = c->next;
++	    free (c);
++	}
++	cache->ents[h] = 0;
++    }
++    cache->entries = 0;
++    cache->referenced = 0;
++    cache->updated = False;
++}
++
++void
++XftFileCacheLoad (char *cache_file)
++{
++    XftFileCache    *cache;
++    FILE	    *f;
++    char	    file[8192];
++    int		    id;
++    time_t	    time;
++    char	    name[8192];
++
++    f = fopen (cache_file, "r");
++    if (!f)
++	return;
++
++    cache = &_XftFileCache;
++
++    cache->updated = False;
++    while (_XftFileCacheReadString (f, file, sizeof (file)) &&
++	   _XftFileCacheReadInt (f, &id) &&
++	   _XftFileCacheReadTime (f, &time) &&
++	   _XftFileCacheReadString (f, name, sizeof (name)))
++    {
++	(void) _XftFileCacheAdd (cache, file, id, time, name, False);
++    }
++    fclose (f);
++}
++
++Bool
++XftFileCacheUpdate (char *file, int id, char *name)
++{
++    XftFileCache    *cache;
++    char	    *match;
++    struct stat	    statb;
++    Bool	    ret;
++
++    cache = &_XftFileCache;
++    match = file;
++
++    if (stat (file, &statb) < 0)
++	return False;
++    ret = _XftFileCacheAdd (cache, match, id, 
++			    statb.st_mtime, name, True);
++    if (ret)
++	cache->updated = True;
++    return ret;
++}
++
++static Bool
++_XftFileCacheWriteString (FILE *f, char *string)
++{
++    char    c;
++
++    if (putc ('"', f) == EOF)
++	return False;
++    while ((c = *string++))
++    {
++	switch (c) {
++	case '"':
++	case '\\':
++	    if (putc ('\\', f) == EOF)
++		return False;
++	    /* fall through */
++	default:
++	    if (putc (c, f) == EOF)
++		return False;
++	}
++    }
++    if (putc ('"', f) == EOF)
++	return False;
++    return True;
++}
++
++static Bool
++_XftFileCacheWriteUlong (FILE *f, unsigned long t)
++{
++    int	    pow;
++    unsigned long   temp, digit;
++
++    temp = t;
++    pow = 1;
++    while (temp >= 10)
++    {
++	temp /= 10;
++	pow *= 10;
++    }
++    temp = t;
++    while (pow)
++    {
++	digit = temp / pow;
++	if (putc ((char) digit + '0', f) == EOF)
++	    return False;
++	temp = temp - pow * digit;
++	pow = pow / 10;
++    }
++    return True;
++}
++
++static Bool
++_XftFileCacheWriteInt (FILE *f, int i)
++{
++    return _XftFileCacheWriteUlong (f, (unsigned long) i);
++}
++
++static Bool
++_XftFileCacheWriteTime (FILE *f, time_t t)
++{
++    return _XftFileCacheWriteUlong (f, (unsigned long) t);
++}
++
++Bool
++XftFileCacheSave (char *cache_file)
++{
++    XftFileCache    *cache;
++    char	    *lck;
++    char	    *tmp;
++    FILE	    *f;
++    int		    h;
++    XftFileCacheEnt *c;
++
++    cache = &_XftFileCache;
++
++    if (!cache->updated && cache->referenced == cache->entries)
++	return True;
++    
++    lck = malloc (strlen (cache_file)*2 + 4);
++    if (!lck)
++	goto bail0;
++    tmp = lck + strlen (cache_file) + 2;
++    strcpy (lck, cache_file);
++    strcat (lck, "L");
++    strcpy (tmp, cache_file);
++    strcat (tmp, "T");
++    if (link (lck, cache_file) < 0 && errno != ENOENT)
++	goto bail1;
++    if (access (tmp, F_OK) == 0)
++	goto bail2;
++    f = fopen (tmp, "w");
++    if (!f)
++	goto bail2;
++
++    for (h = 0; h < HASH_SIZE; h++)
++    {
++	for (c = cache->ents[h]; c; c = c->next)
++	{
++	    if (!c->referenced)
++		continue;
++	    if (!_XftFileCacheWriteString (f, c->file))
++		goto bail4;
++	    if (putc (' ', f) == EOF)
++		goto bail4;
++	    if (!_XftFileCacheWriteInt (f, c->id))
++		goto bail4;
++	    if (putc (' ', f) == EOF)
++		goto bail4;
++	    if (!_XftFileCacheWriteTime (f, c->time))
++		goto bail4;
++	    if (putc (' ', f) == EOF)
++		goto bail4;
++	    if (!_XftFileCacheWriteString (f, c->name))
++		goto bail4;
++	    if (putc ('\n', f) == EOF)
++		goto bail4;
++	}
++    }
++
++    if (fclose (f) == EOF)
++	goto bail3;
++    
++    if (rename (tmp, cache_file) < 0)
++	goto bail3;
++    
++    unlink (lck);
++    cache->updated = False;
++    return True;
++
++bail4:
++    fclose (f);
++bail3:
++    unlink (tmp);
++bail2:
++    unlink (lck);
++bail1:
++    free (lck);
++bail0:
++    return False;
++}
++
++Bool
++XftFileCacheReadDir (XftFontSet *set, const char *cache_file)
++{
++    XftPattern	    *font;
++    FILE	    *f;
++    char	    *path;
++    char	    *base;
++    char	    file[8192];
++    int		    id;
++    char	    name[8192];
++    Bool	    ret = False;
++
++    if (_XftFontDebug () & XFT_DBG_CACHE)
++    {
++	printf ("XftFileCacheReadDir cache_file \"%s\"\n", cache_file);
++    }
++    
++    f = fopen (cache_file, "r");
++    if (!f)
++    {
++	if (_XftFontDebug () & XFT_DBG_CACHE)
++	{
++	    printf (" no cache file\n");
++	}
++	goto bail0;
++    }
++
++    base = strrchr (cache_file, '/');
++    if (!base)
++	goto bail1;
++    base++;
++    path = malloc (base - cache_file + 8192 + 1);
++    if (!path)
++	goto bail1;
++    memcpy (path, cache_file, base - cache_file);
++    base = path + (base - cache_file);
++    
++    while (_XftFileCacheReadString (f, file, sizeof (file)) &&
++	   _XftFileCacheReadInt (f, &id) &&
++	   _XftFileCacheReadString (f, name, sizeof (name)))
++    {
++	font = XftNameParse (name);
++	if (font)
++	{
++	    strcpy (base, file);
++	    if (_XftFontDebug () & XFT_DBG_CACHEV)
++	    {
++		printf (" dir cache file \"%s\"\n", file);
++	    }
++	    XftPatternAddString (font, XFT_FILE, path);
++	    if (!XftFontSetAdd (set, font))
++		goto bail2;
++	}
++    }
++    if (_XftFontDebug () & XFT_DBG_CACHE)
++    {
++	printf (" cache loaded\n");
++    }
++    
++    ret = True;
++bail2:
++    free (path);
++bail1:
++    fclose (f);
++bail0:
++    return ret;
++}
++
++Bool
++XftFileCacheWriteDir (XftFontSet *set, const char *cache_file)
++{
++    XftPattern	    *font;
++    FILE	    *f;
++    char	    name[8192];
++    char	    *file, *base;
++    int		    n;
++    int		    id;
++
++    if (_XftFontDebug () & XFT_DBG_CACHE)
++	printf ("XftFileCacheWriteDir cache_file \"%s\"\n", cache_file);
++    
++    f = fopen (cache_file, "w");
++    if (!f)
++    {
++	if (_XftFontDebug () & XFT_DBG_CACHE)
++	    printf (" can't create \"%s\"\n", cache_file);
++	goto bail0;
++    }
++    for (n = 0; n < set->nfont; n++)
++    {
++	font = set->fonts[n];
++	if (XftPatternGetString (font, XFT_FILE, 0, &file) != XftResultMatch)
++	    goto bail1;
++	base = strrchr (file, '/');
++	if (base)
++	    base = base + 1;
++	else
++	    base = file;
++	if (XftPatternGetInteger (font, XFT_INDEX, 0, &id) != XftResultMatch)
++	    goto bail1;
++	if (!XftNameUnparse (font, name, sizeof (name)))
++	    goto bail1;
++	if (_XftFontDebug () & XFT_DBG_CACHEV)
++	    printf (" write file \"%s\"\n", base);
++	if (!_XftFileCacheWriteString (f, base))
++	    goto bail1;
++	if (putc (' ', f) == EOF)
++	    goto bail1;
++	if (!_XftFileCacheWriteInt (f, id))
++	    goto bail1;
++        if (putc (' ', f) == EOF)
++	    goto bail1;
++	if (!_XftFileCacheWriteString (f, name))
++	    goto bail1;
++	if (putc ('\n', f) == EOF)
++	    goto bail1;
++    }
++    if (fclose (f) == EOF)
++	goto bail0;
++    
++    if (_XftFontDebug () & XFT_DBG_CACHE)
++	printf (" cache written\n");
++    return True;
++    
++bail1:
++    fclose (f);
++bail0:
++    unlink (cache_file);
++    return False;
++}
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftcfg.c xc/lib/Xft/xftcfg.c
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftcfg.c	Tue Dec 19 08:12:29 2000
++++ XFree86-4.0.2/xc/lib/Xft/xftcfg.c	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/xftcfg.c,v 1.7 2000/12/17 09:11:37 keithp Exp $
++ * $XFree86: xc/lib/Xft/xftcfg.c,v 1.8 2001/01/02 02:46:51 keithp Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -35,6 +35,9 @@
+ char		**XftConfigDirs = XftConfigDefaultDirs;
+ static int	XftConfigNdirs;
+ 
++char		XftConfigDefaultCache[] = "~/.xftcache";
++char		*XftConfigCache = 0;
++
+ static XftSubst	*XftSubsts;
+ /* #define XFT_DEBUG_EDIT */
+ 
+@@ -51,6 +54,8 @@
+ 	if (!h)
+ 	    return False;
+ 	dir = (char *) malloc (strlen (h) + strlen (d));
++	if (!dir)
++	    return False;
+ 	strcpy (dir, h);
+ 	strcat (dir, d+1);
+     }
+@@ -78,6 +83,41 @@
+ 	free (XftConfigDirs);
+     XftConfigDirs = dirs;
+     return True;
++}
++
++Bool
++XftConfigSetCache (char *c)
++{
++    char    *new;
++    char    *h;
++
++    if (*c == '~')
++    {
++	h = getenv ("HOME");
++	if (!h)
++	    return False;
++	new = (char *) malloc (strlen (h) + strlen (c));
++	if (!new)
++	    return False;
++	strcpy (new, h);
++	strcat (new, c+1);
++    }
++    else
++    {
++	new = _XftSaveString (c);
++    }
++    if (XftConfigCache)
++	free (XftConfigCache);
++    XftConfigCache = new;
++    return True;
++}
++
++char *
++XftConfigGetCache (void)
++{
++    if (!XftConfigCache)
++	XftConfigSetCache (XftConfigDefaultCache);
++    return XftConfigCache;
+ }
+ 
+ static int XftSubstsMaxObjects;
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftcore.c xc/lib/Xft/xftcore.c
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftcore.c	Fri Dec  8 02:51:27 2000
++++ XFree86-4.0.2/xc/lib/Xft/xftcore.c	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/xftcore.c,v 1.4 2000/12/08 07:51:27 keithp Exp $
++ * $XFree86: xc/lib/Xft/xftcore.c,v 1.5 2000/12/20 00:28:44 keithp Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -65,6 +65,37 @@
+     return xc;
+ }
+ 
++XChar2b *
++XftCoreConvertUtf8 (XftChar8	*string,
++		    int		len,
++		    XChar2b	xcloc[XFT_CORE_N16LOCAL],
++		    int		*nchar)
++{
++    XChar2b	*xc;
++    XftChar32	c;
++    int		i;
++    int		n, width;
++    int		clen;
++    
++    if (!XftUtf8Len (string, len, &n, &width))
++	return 0;
++    
++    if (n < XFT_CORE_N16LOCAL)
++	xc = xcloc;
++    else
++	xc = (XChar2b *) malloc (n * sizeof (XChar2b));
++    for (i = 0; i < n; i++)
++    {
++	clen = XftUtf8ToUcs4 (string, &c, len);
++	xc[i].byte1 = c & 0xff;
++	xc[i].byte2 = (c >> 8) & 0xff;
++	string += clen;
++	len -= clen;
++    }
++    *nchar = n;
++    return xc;
++}
++
+ void
+ XftCoreExtents8 (Display	*dpy,
+ 		 XFontStruct	*fs,
+@@ -109,6 +140,8 @@
+     xc = XftCoreConvert16 (string, len, xcloc);
+     XTextExtents16 (fs, xc, len, &direction,
+ 		    &ascent, &descent, &overall);
++    if (xc != xcloc)
++	free (xc);
+     if (overall.lbearing < overall.rbearing)
+     {
+ 	extents->x = overall.lbearing;
+@@ -140,6 +173,42 @@
+     xc = XftCoreConvert32 (string, len, xcloc);
+     XTextExtents16 (fs, xc, len, &direction,
+ 		    &ascent, &descent, &overall);
++    if (xc != xcloc)
++	free (xc);
++    if (overall.lbearing < overall.rbearing)
++    {
++	extents->x = overall.lbearing;
++	extents->width = overall.rbearing - overall.lbearing;
++    }
++    else
++    {
++	extents->x = overall.rbearing;
++	extents->width = overall.lbearing - overall.rbearing;
++    }
++    extents->y = -overall.ascent;
++    extents->height = overall.ascent + overall.descent;
++    extents->xOff = overall.width;
++    extents->yOff = 0;
++}
++
++void
++XftCoreExtentsUtf8 (Display	    *dpy,
++		    XFontStruct	    *fs,
++		    XftChar8	    *string, 
++		    int		    len,
++		    XGlyphInfo	    *extents)
++{
++    int		direction;
++    int		ascent, descent;
++    XCharStruct overall;
++    XChar2b	*xc, xcloc[XFT_CORE_N16LOCAL];
++    int		n;
++
++    xc = XftCoreConvertUtf8 (string, len, xcloc, &n);
++    XTextExtents16 (fs, xc, n, &direction,
++		    &ascent, &descent, &overall);
++    if (xc != xcloc)
++	free (xc);
+     if (overall.lbearing < overall.rbearing)
+     {
+ 	extents->x = overall.lbearing;
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftdir.c xc/lib/Xft/xftdir.c
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftdir.c	Wed Nov 29 03:39:21 2000
++++ XFree86-4.0.2/xc/lib/Xft/xftdir.c	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/xftdir.c,v 1.1 2000/11/29 08:39:21 keithp Exp $
++ * $XFree86: xc/lib/Xft/xftdir.c,v 1.2 2001/01/02 02:46:51 keithp Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -29,38 +29,73 @@
+ #include "xftint.h"
+ 
+ Bool
+-XftDirScan (XftFontSet *set, const char *dir)
++XftDirScan (XftFontSet *set, const char *dir, Bool force)
+ {
+     DIR		    *d;
+     struct dirent   *e;
+     char	    *file;
+     char	    *base;
+     XftPattern	    *font;
++    char	    *name;
+     int		    count;
+     Bool	    ret = True;
+     int		    id;
+ 
+-    d = opendir (dir);
+-    if (!d)
+-	return False;
+     file = (char *) malloc (strlen (dir) + 1 + 256 + 1);
+     if (!file)
+-    {
+-	closedir (d);
+ 	return False;
+-    }
++
+     strcpy (file, dir);
+     strcat (file, "/");
+     base = file + strlen (file);
++    if (!force)
++    {
++	strcpy (base, "XftCache");
++	
++	if (XftFileCacheReadDir (set, file))
++	{
++	    free (file);
++	    return True;
++	}
++    }
++    
++    d = opendir (dir);
++    if (!d)
++    {
++	free (file);
++	return False;
++    }
+     while (ret && (e = readdir (d)))
+     {
+ 	if (e->d_name[0] != '.')
+ 	{
+-	    strcpy (base, e->d_name);
+ 	    id = 0;
++	    strcpy (base, e->d_name);
+ 	    do
+ 	    {
+-		font = XftFreeTypeQuery (file, id, &count);
++		if (!force)
++		    name = XftFileCacheFind (file, id, &count);
++		else
++		    name = 0;
++		if (name)
++		{
++		    font = XftNameParse (name);
++		    if (font)
++			XftPatternAddString (font, XFT_FILE, file);
++		}
++		else
++		{
++		    font = XftFreeTypeQuery (file, id, &count);
++		    if (font && !force)
++		    {
++			char	unparse[8192];
++
++			if (XftNameUnparse (font, unparse, sizeof (unparse)))
++			{
++			    (void) XftFileCacheUpdate (file, id, unparse);
++			}
++		    }
++		}
+ 		if (font)
+ 		{
+ 		    if (!XftFontSetAdd (set, font))
+@@ -75,4 +110,23 @@
+     return ret;
+ }
+ 
+-	    
++Bool
++XftDirSave (XftFontSet *set, const char *dir)
++{
++    char	    *file;
++    char	    *base;
++    Bool	    ret;
++    
++    file = (char *) malloc (strlen (dir) + 1 + 256 + 1);
++    if (!file)
++	return False;
++
++    strcpy (file, dir);
++    strcat (file, "/");
++    base = file + strlen (file);
++    strcpy (base, "XftCache");
++    ret = XftFileCacheWriteDir (set, file);
++    free (file);
++    return ret;
++}
++
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftdpy.c xc/lib/Xft/xftdpy.c
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftdpy.c	Tue Dec 19 08:12:29 2000
++++ XFree86-4.0.2/xc/lib/Xft/xftdpy.c	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/xftdpy.c,v 1.4 2000/12/17 08:30:45 keithp Exp $
++ * $XFree86: xc/lib/Xft/xftdpy.c,v 1.5 2000/12/20 00:20:48 keithp Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -22,6 +22,7 @@
+  * PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
++#include <stdio.h>
+ #include <stdlib.h>
+ #include <ctype.h>
+ #include <X11/Xlibint.h>
+@@ -81,6 +82,34 @@
+     info->defaults = 0;
+     info->coreFonts = 0;
+     info->hasRender = XRenderFindVisualFormat (dpy, DefaultVisual (dpy, DefaultScreen (dpy))) != 0;
++    if (_XftFontDebug () & XFT_DBG_RENDER)
++    {
++	Visual		    *visual = DefaultVisual (dpy, DefaultScreen (dpy));
++	XRenderPictFormat   *format = XRenderFindVisualFormat (dpy, visual);
++	
++	printf ("XftDisplayInfoGet Default visual 0x%x ", 
++		(int) visual->visualid);
++	if (format)
++	{
++	    if (format->type == PictTypeDirect)
++	    {
++		printf ("format %d,%d,%d,%d\n",
++			format->direct.alpha,
++			format->direct.red,
++			format->direct.green,
++			format->direct.blue);
++	    }
++	    else
++	    {
++		printf ("format indexed\n");
++	    }
++	}
++	else
++	    printf ("No Render format for default visual\n");
++	
++	printf ("XftDisplayInfoGet initialized, hasRender set to \"%s\"\n",
++		info->hasRender ? "True" : "False");
++    }
+     
+     info->next = _XftDisplayInfo;
+     _XftDisplayInfo = info;
+@@ -89,6 +118,10 @@
+ bail1:
+     free (info);
+ bail0:
++    if (_XftFontDebug () & XFT_DBG_RENDER)
++    {
++	printf ("XftDisplayInfoGet failed to initialize, Xft unhappy\n");
++    }
+     return 0;
+ }
+ 
+@@ -209,6 +242,8 @@
+ 	goto bail1;
+     if (!_XftDefaultInitBool (dpy, pat, XFT_ANTIALIAS))
+ 	goto bail1;
++    if (!_XftDefaultInitBool (dpy, pat, XFT_MINSPACE))
++	goto bail1;
+     
+     return pat;
+     
+@@ -343,6 +378,12 @@
+ 	XftPatternAddInteger (pattern, XFT_RGBA,
+ 			      XftDefaultGetInteger (dpy, XFT_RGBA, screen, 
+ 						    XFT_RGBA_NONE));
++    }
++    if (XftPatternGet (pattern, XFT_MINSPACE, 0, &v) == XftResultNoMatch)
++    {
++	XftPatternAddBool (pattern, XFT_MINSPACE,
++			   XftDefaultGetBool (dpy, XFT_MINSPACE, screen,
++					      False));
+     }
+     if (XftPatternGet (pattern, XFT_PIXEL_SIZE, 0, &v) == XftResultNoMatch)
+     {
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftdraw.c xc/lib/Xft/xftdraw.c
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftdraw.c	Sat Dec 16 12:33:01 2000
++++ XFree86-4.0.2/xc/lib/Xft/xftdraw.c	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/xftdraw.c,v 1.10 2000/12/15 17:12:52 keithp Exp $
++ * $XFree86: xc/lib/Xft/xftdraw.c,v 1.12 2000/12/20 00:28:44 keithp Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -22,6 +22,7 @@
+  * PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
++#include <stdio.h>
+ #include <stdlib.h>
+ #include "xftint.h"
+ #include <X11/Xutil.h>
+@@ -200,6 +201,14 @@
+ 	return False;
+     if (memcmp (&color->color, &draw->render.fg_color, sizeof (XRenderColor)))
+     {
++	if (_XftFontDebug () & XFT_DBG_DRAW)
++	{
++	    printf ("Switching to color %04x,%04x,%04x,%04x\n",
++		    color->color.alpha,
++		    color->color.red,
++		    color->color.green,
++		    color->color.blue);
++	}
+ 	XRenderFillRectangle (draw->dpy, PictOpSrc, draw->render.fg_pict,
+ 			      &color->color, 0, 0, 1, 1);
+ 	draw->render.fg_color = color->color;
+@@ -255,6 +264,10 @@
+ 		XftChar8	*string,
+ 		int		len)
+ {
++    if (_XftFontDebug () & XFT_DBG_DRAW)
++    {
++	printf ("DrawString \"%*.*s\"\n", len, len, string);
++    }
+     if (font->core)
+     {
+ 	XftDrawCorePrepare (draw, color, font);
+@@ -331,6 +344,41 @@
+     }
+ #endif
+ }
++
++void
++XftDrawStringUtf8 (XftDraw	*draw,
++		   XftColor	*color,
++		   XftFont	*font,
++		   int		x,
++		   int		y,
++		   XftChar8	*string,
++		   int		len)
++{
++    if (font->core)
++    {
++	XChar2b	    *xc;
++	XChar2b	    xcloc[XFT_CORE_N16LOCAL];
++	int	    n;
++	
++	XftDrawCorePrepare (draw, color, font);
++	xc = XftCoreConvertUtf8 (string, len, xcloc, &n);
++	if (xc)
++	{
++	    XDrawString16 (draw->dpy, draw->drawable, draw->core.draw_gc, x, y, 
++			   xc, n);
++	}
++	if (xc != xcloc)
++	    free (xc);
++    }
++#ifdef FREETYPE2
++    else if (XftDrawRenderPrepare (draw, color, font))
++    {
++	XftRenderStringUtf8 (draw->dpy, draw->render.fg_pict, font->u.ft.font,
++			     draw->render.pict, 0, 0, x, y, string, len);
++    }
++#endif
++}
++
+ 
+ void
+ XftDrawRect (XftDraw	    *draw,
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftextent.c xc/lib/Xft/xftextent.c
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftextent.c	Sat Dec 16 12:33:01 2000
++++ XFree86-4.0.2/xc/lib/Xft/xftextent.c	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/xftextent.c,v 1.4 2000/12/15 17:12:52 keithp Exp $
++ * $XFree86: xc/lib/Xft/xftextent.c,v 1.5 2000/12/20 00:28:44 keithp Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -22,6 +22,7 @@
+  * PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
++#include <stdlib.h>
+ #include "xftint.h"
+ 
+ void
+@@ -79,4 +80,110 @@
+ 	XftRenderExtents32 (dpy, font->u.ft.font, string, len, extents);
+     }
+ #endif
++}
++
++void
++XftTextExtentsUtf8 (Display	*dpy,
++		    XftFont	*font,
++		    XftChar8	*string, 
++		    int		len,
++		    XGlyphInfo	*extents)
++{
++    XftChar8	*src;
++    XftChar32	c;
++    XftChar32	lbuf[4096];
++    XftChar32	*dst;
++    XftChar8	*dst8;
++    XftChar16	*dst16;
++    XftChar32	*dst32;
++    int		rlen, clen;
++    int		width = 1;
++    int		n;
++
++    /* compute needed width */
++    src = string;
++    rlen = len;
++    n = 0;
++    while (rlen)
++    {
++	clen = XftUtf8ToUcs4 (src, &c, rlen);
++	if (clen <= 0)	/* malformed UTF8 string */
++	{
++	    memset (extents, 0, sizeof (XGlyphInfo));
++	    return;
++	}
++	if (c >= 0x10000)
++	    width = 4;
++	else if (c >= 0x100)
++	{
++	    if (width == 1)
++		width = 2;
++	}
++	src += clen;
++	rlen -= clen;
++	n++;
++    }
++    dst = lbuf;
++    if (n * width > sizeof (lbuf))
++    {
++	dst = (XftChar32 *) malloc (n * width);
++	if (!dst)
++	{
++	    memset (extents, 0, sizeof (XGlyphInfo));
++	    return;
++	}
++    }
++    
++    switch (width) {
++    case 4:
++	src = string;
++	rlen = len;
++	dst32 = dst;
++	while (rlen)
++	{
++	    clen = XftUtf8ToUcs4 (src, &c, rlen);
++	    if (clen <= 0)	/* malformed UTF8 string */
++		return;
++	    *dst32++ = c;
++	    src += clen;
++	    rlen -= clen;
++	}
++	dst32 = dst;
++	XftTextExtents32 (dpy, font, dst32, n, extents);
++	break;
++    case 2:
++	src = string;
++	rlen = len;
++	dst16 = (XftChar16 *) dst;
++	while (rlen)
++	{
++	    clen = XftUtf8ToUcs4 (src, &c, rlen);
++	    if (clen <= 0)	/* malformed UTF8 string */
++		return;
++	    *dst16++ = c;
++	    src += clen;
++	    rlen -= clen;
++	}
++	dst16 = (XftChar16 *) dst;
++	XftTextExtents16 (dpy, font, dst16, n, extents);
++	break;
++    case 1:
++	src = string;
++	rlen = len;
++	dst8 = (XftChar8 *) dst;
++	while (rlen)
++	{
++	    clen = XftUtf8ToUcs4 (src, &c, rlen);
++	    if (clen <= 0)	/* malformed UTF8 string */
++		return;
++	    *dst8++ = c;
++	    src += clen;
++	    rlen -= clen;
++	}
++	dst8 = (XftChar8 *) dst;
++	XftTextExtents8 (dpy, font, dst8, n, extents);
++	break;
++    }
++    if (dst != lbuf)
++	free (dst);
+ }
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftfont.c xc/lib/Xft/xftfont.c
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftfont.c	Sat Dec 16 12:33:01 2000
++++ XFree86-4.0.2/xc/lib/Xft/xftfont.c	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/xftfont.c,v 1.7 2000/12/15 17:12:53 keithp Exp $
++ * $XFree86: xc/lib/Xft/xftfont.c,v 1.8 2000/12/20 00:20:48 keithp Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -22,9 +22,9 @@
+  * PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
++#include <stdio.h>
+ #include <stdlib.h>
+ #include "xftint.h"
+-#include <stdio.h>
+ 
+ XftPattern *
+ XftFontMatch (Display *dpy, int screen, XftPattern *pattern, XftResult *result)
+@@ -43,8 +43,24 @@
+     new = XftPatternDuplicate (pattern);
+     if (!new)
+ 	return 0;
++
++    if (_XftFontDebug () & XFT_DBG_OPENV)
++    {
++	printf ("XftFontMatch pattern ");
++	XftPatternPrint (new);
++    }
+     XftConfigSubstitute (new);
++    if (_XftFontDebug () & XFT_DBG_OPENV)
++    {
++	printf ("XftFontMatch after XftConfig substitutions ");
++	XftPatternPrint (new);
++    }
+     XftDefaultSubstitute (dpy, screen, new);
++    if (_XftFontDebug () & XFT_DBG_OPENV)
++    {
++	printf ("XftFontMatch after X resource substitutions ");
++	XftPatternPrint (new);
++    }
+     nsets = 0;
+     
+ #ifdef FREETYPE2
+@@ -52,6 +68,11 @@
+     core = True;
+     (void) XftPatternGetBool (new, XFT_RENDER, 0, &render);
+     (void) XftPatternGetBool (new, XFT_CORE, 0, &core);
++    if (_XftFontDebug () & XFT_DBG_OPENV)
++    {
++	printf ("XftFontMatch: use core fonts \"%s\", use render fonts \"%s\"\n",
++		core ? "True" : "False", render ? "True" : "False");
++    }
+ 
+     if (render)
+     {
+@@ -133,10 +154,17 @@
+ 
+     if (!initialized)
+     {
++	char	*e;
++	
+ 	initialized = 1;
+-	debug = getenv ("XFT_DEBUG") != 0;
+-	if (debug)
+-	    printf ("XFT_DEBUG found\n");
++	e = getenv ("XFT_DEBUG");
++	if (e)
++	{
++	    printf ("XFT_DEBUG=%s\n", e);
++	    debug = atoi (e);
++	    if (debug <= 0)
++		debug = 1;
++	}
+     }
+     return debug;
+ }
+@@ -155,12 +183,12 @@
+     va_end (va);
+     if (!pat)
+     {
+-	if (_XftFontDebug ())
++	if (_XftFontDebug () & XFT_DBG_OPEN)
+ 	    printf ("XftFontOpen: Invalid pattern argument\n");
+ 	return 0;
+     }
+     match = XftFontMatch (dpy, screen, pat, &result);
+-    if (_XftFontDebug ())
++    if (_XftFontDebug () & XFT_DBG_OPEN)
+     {
+ 	printf ("Pattern ");
+ 	XftPatternPrint (pat);
+@@ -179,7 +207,7 @@
+     font = XftFontOpenPattern (dpy, match);
+     if (!font)
+     {
+-	if (_XftFontDebug ())
++	if (_XftFontDebug () & XFT_DBG_OPEN)
+ 	    printf ("No Font\n");
+ 	XftPatternDestroy (match);
+     }
+@@ -196,7 +224,7 @@
+     XftFont   *font;
+ 
+     pat = XftNameParse (name);
+-    if (_XftFontDebug ())
++    if (_XftFontDebug () & XFT_DBG_OPEN)
+     {
+ 	printf ("XftFontOpenName \"%s\": ", name);
+ 	if (pat)
+@@ -208,7 +236,7 @@
+     if (!pat)
+ 	return 0;
+     match = XftFontMatch (dpy, screen, pat, &result);
+-    if (_XftFontDebug ())
++    if (_XftFontDebug () & XFT_DBG_OPEN)
+     {
+ 	if (match)
+ 	{
+@@ -238,7 +266,7 @@
+     XftFont   *font;
+ 
+     pat = XftXlfdParse (xlfd, False, False);
+-    if (_XftFontDebug ())
++    if (_XftFontDebug () & XFT_DBG_OPEN)
+     {
+ 	printf ("XftFontOpenXlfd \"%s\": ", xlfd);
+ 	if (pat)
+@@ -250,7 +278,7 @@
+     if (!pat)
+ 	return 0;
+     match = XftFontMatch (dpy, screen, pat, &result);
+-    if (_XftFontDebug ())
++    if (_XftFontDebug () & XFT_DBG_OPEN)
+     {
+ 	if (match)
+ 	{
+@@ -275,7 +303,7 @@
+ XftFontClose (Display *dpy, XftFont *font)
+ {
+     if (font->core)
+-	XFreeFont (dpy, font->u.core.font);
++	XftCoreClose (dpy, font->u.core.font);
+ #ifdef FREETYPE2
+     else
+ 	XftFreeTypeClose (dpy, font->u.ft.font);
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftfreetype.c xc/lib/Xft/xftfreetype.c
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftfreetype.c	Sat Dec 16 12:33:01 2000
++++ XFree86-4.0.2/xc/lib/Xft/xftfreetype.c	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/xftfreetype.c,v 1.5 2000/12/15 17:12:53 keithp Exp $
++ * $XFree86: xc/lib/Xft/xftfreetype.c,v 1.9 2001/01/02 02:46:51 keithp Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -23,6 +23,7 @@
+  */
+ 
+ #include <stdlib.h>
++#include <stdio.h>
+ #include "xftint.h"
+ 
+ FT_Library  _XftFTlibrary;
+@@ -32,9 +33,10 @@
+     FT_Encoding	encoding;
+ } XftFtEncoding;
+ 
+-XftFtEncoding	xftFtEncoding[] = {
++static XftFtEncoding xftFtEncoding[] = {
+     { "iso10646-1",	    ft_encoding_unicode, },
+     { "iso8859-1",	    ft_encoding_unicode, },
++    { "apple-roman",	    ft_encoding_apple_roman },
+     { "adobe-fontspecific", ft_encoding_symbol,  },
+     { "glyphs-fontspecific",ft_encoding_none,	 },
+ };
+@@ -74,7 +76,7 @@
+ 
+     slant = XFT_SLANT_ROMAN;
+     if (face->style_flags & FT_STYLE_FLAG_ITALIC)
+-	slant = (XFT_SLANT_ITALIC + XFT_SLANT_OBLIQUE) / 2;
++	slant = XFT_SLANT_ITALIC;
+ 
+     if (!XftPatternAddInteger (pat, XFT_SLANT, slant))
+ 	goto bail1;
+@@ -98,6 +100,10 @@
+     if (!XftPatternAddInteger (pat, XFT_INDEX, id))
+ 	goto bail1;
+     
++    if ((face->face_flags & FT_FACE_FLAG_FIXED_WIDTH) != 0)
++	if (!XftPatternAddInteger (pat, XFT_SPACING, XFT_MONO))
++	    goto bail1;
++    
+     if (!(face->face_flags & FT_FACE_FLAG_SCALABLE))
+     {
+ 	for (i = 0; i < face->num_fixed_sizes; i++)
+@@ -142,41 +148,185 @@
+     return 0;
+ }
+ 
++/*
++ * List of all open files (each face in a file is managed separately)
++ */
++typedef struct _XftFtFile {
++    struct _XftFtFile	*next;
++    int			ref;
++    
++    char		*file;
++    int			id;
++
++    FT_Face		face;
++    FT_F26Dot6		size;
++    int			charmap;
++} XftFtFile;
++
++static XftFtFile *_XftFtFiles;
++
++static XftFtFile *
++_XftFreeTypeOpenFile (char *file, int id)
++{
++    XftFtFile	*f;
++    FT_Face	face;
++
++    for (f = _XftFtFiles; f; f = f->next)
++    {
++	if (!strcmp (f->file, file) && f->id == id)
++	{
++	    ++f->ref;
++	    if (_XftFontDebug () & XFT_DBG_REF)
++		printf ("FontFile %s/%d matches existing (%d)\n",
++			file, id, f->ref);
++	    return f;
++	}
++    }
++    if (FT_New_Face (_XftFTlibrary, file, id, &face))
++	return 0;
++    
++    f = malloc (sizeof (XftFtFile) + strlen (file) + 1);
++    if (!f)
++	return 0;
++    
++    if (_XftFontDebug () & XFT_DBG_REF)
++    	printf ("FontFile %s/%d matches new\n",
++		file, id);
++    f->next = _XftFtFiles;
++    _XftFtFiles = f;
++    f->ref = 1;
++    
++    f->file = (char *) (f+1);
++    strcpy (f->file, file);
++    f->id = id;
++    
++    f->face = face;
++    f->size = 0;
++    f->charmap = -1;
++    return f;
++}
++
++Bool
++XftFreeTypeSetFace (FT_Face face, FT_F26Dot6 size, int charmap)
++{
++    XftFtFile	*f, **prev;
++    
++    for (prev = &_XftFtFiles; (f = *prev); prev = &f->next)
++    {
++	if (f->face == face)
++	{
++	    /* LRU */
++	    if (prev != &_XftFtFiles)
++	    {
++		*prev = f->next;
++		f->next = _XftFtFiles;
++		_XftFtFiles = f;
++	    }
++	    if (f->size != size)
++	    {
++		if (_XftFontDebug() & XFT_DBG_GLYPH)
++		    printf ("Set face size to %d (%d)\n", 
++			    (int) (size >> 6), (int) size);
++		if (FT_Set_Char_Size (face, size, size, 0, 0))
++		    return False;
++		f->size = size;
++	    }
++	    if (f->charmap != charmap && charmap != -1)
++	    {
++		if (_XftFontDebug() & XFT_DBG_GLYPH)
++		    printf ("Set face charmap to %d\n", charmap);
++		if (FT_Set_Charmap (face, face->charmaps[charmap]))
++		    return False;
++		f->charmap = charmap;
++	    }
++	    break;
++	}
++    }
++    return True;
++}
++
++static void
++_XftFreeTypeCloseFile (XftFtFile *f)
++{
++    XftFtFile	**prev;
++    
++    if (--f->ref != 0)
++	return;
++    for (prev = &_XftFtFiles; *prev; prev = &(*prev)->next)
++    {
++	if (*prev == f)
++	{
++	    *prev = f->next;
++	    break;
++	}
++    }
++    FT_Done_Face (f->face);
++    free (f);
++}
++
++/*
++ * Cache of all glyphsets
++ */
++typedef struct _XftFtGlyphSet {
++    struct _XftFtGlyphSet   *next;
++    int			    ref;
++    
++    XftFtFile		    *file;
++    Bool		    minspace;
++    int			    char_width;
++    
++    XftFontStruct	    font;
++} XftFtGlyphSet;
++
++static XftFtGlyphSet *_XftFtGlyphSets;
++
+ XftFontStruct *
+ XftFreeTypeOpen (Display *dpy, XftPattern *pattern)
+ {
+-    char	    *file;
++    XftFtFile	    *file;
++    FT_Face	    face;
++    XftFtGlyphSet   *gs;
++    char	    *filename;
+     int		    id;
+-    double	    size;
++    double	    dsize;
++    FT_F26Dot6	    size;
+     int		    rgba;
+     int		    spacing;
+     int		    char_width;
+     Bool	    antialias;
+-    Bool	    encoded;
++    Bool	    minspace;
+     char	    *encoding_name;
+-    FT_Face	    face;
+     XftFontStruct   *font;
+     int		    j;
+     FT_Encoding	    encoding;
+     int		    charmap;
+-    int		    error;
+ 
+-    int		    height, ascent, descent;
+     int		    extra;
+-    int		    div;
+-    
++    int		    height, ascent, descent;
+     XRenderPictFormat	pf, *format;
+     
+-    if (XftPatternGetString (pattern, XFT_FILE, 0, &file) != XftResultMatch)
++    /*
++     * Open the file
++     */
++    if (XftPatternGetString (pattern, XFT_FILE, 0, &filename) != XftResultMatch)
+ 	goto bail0;
+     
+     if (XftPatternGetInteger (pattern, XFT_INDEX, 0, &id) != XftResultMatch)
+ 	goto bail0;
+     
++    file = _XftFreeTypeOpenFile (filename, id);
++    if (!file)
++	goto bail0;
++    
++    face = file->face;
++
++    /*
++     * Extract the glyphset information from the pattern
++     */
+     if (XftPatternGetString (pattern, XFT_ENCODING, 0, &encoding_name) != XftResultMatch)
+ 	goto bail0;
+     
+-    if (XftPatternGetDouble (pattern, XFT_PIXEL_SIZE, 0, &size) != XftResultMatch)
++    if (XftPatternGetDouble (pattern, XFT_PIXEL_SIZE, 0, &dsize) != XftResultMatch)
+ 	goto bail0;
+     
+     switch (XftPatternGetInteger (pattern, XFT_RGBA, 0, &rgba)) {
+@@ -199,11 +349,101 @@
+ 	goto bail0;
+     }
+     
++    switch (XftPatternGetBool (pattern, XFT_MINSPACE, 0, &minspace)) {
++    case XftResultNoMatch:
++	minspace = False;
++	break;
++    case XftResultMatch:
++	break;
++    default:
++	goto bail0;
++    }
++    
++    switch (XftPatternGetInteger (pattern, XFT_SPACING, 0, &spacing)) {
++    case XftResultNoMatch:
++	spacing = XFT_PROPORTIONAL;
++	break;
++    case XftResultMatch:
++	break;
++    default:
++	goto bail1;
++    }
++    
+     if (XftPatternGetInteger (pattern, XFT_CHAR_WIDTH, 
+ 			      0, &char_width) != XftResultMatch)
+     {
+ 	char_width = 0;
+     }
++    else if (char_width)
++	spacing = XFT_MONO;
++
++    encoding = face->charmaps[0]->encoding;
++    
++    for (j = 0; j < NUM_FT_ENCODINGS; j++)
++	if (!strcmp (encoding_name, xftFtEncoding[j].name))
++	{
++	    encoding = xftFtEncoding[j].encoding;
++	    break;
++	}
++    
++    size = (FT_F26Dot6) (dsize * 64.0);
++    
++    if (encoding == ft_encoding_none)
++	charmap = -1;
++    else
++    {
++	for (charmap = 0; charmap < face->num_charmaps; charmap++)
++	    if (face->charmaps[charmap]->encoding == encoding)
++		break;
++
++	if (charmap == face->num_charmaps)
++	    goto bail1;
++    }
++
++    
++    /*
++     * Match an existing glyphset
++     */
++    for (gs = _XftFtGlyphSets; gs; gs = gs->next)
++    {
++	if (gs->file == file &&
++	    gs->minspace == minspace &&
++	    gs->char_width == char_width &&
++	    gs->font.size == size &&
++	    gs->font.spacing == spacing &&
++	    gs->font.charmap == charmap &&
++	    gs->font.rgba == rgba &&
++	    gs->font.antialias == antialias)
++	{
++	    ++gs->ref;
++	    if (_XftFontDebug () & XFT_DBG_REF)
++	    {
++		printf ("Face size %g matches existing (%d)\n",
++			dsize, gs->ref);
++	    }
++	    return &gs->font;
++	}
++    }
++    
++    if (_XftFontDebug () & XFT_DBG_REF)
++    {
++	printf ("Face size %g matches new\n",
++		dsize);
++    }
++    /*
++     * No existing glyphset, create another
++     */
++    gs = malloc (sizeof (XftFtGlyphSet));
++    if (!gs)
++	goto bail1;
++
++    gs->ref = 1;
++    
++    gs->file = file;
++    gs->minspace = minspace;
++    gs->char_width = char_width;
++
++    font = &gs->font;
+     
+     if (antialias)
+     {
+@@ -261,106 +501,60 @@
+     }
+     
+     if (!format)
+-	goto bail0;
++	goto bail2;
+     
+-    if (FT_New_Face (_XftFTlibrary, file, id, &face))
+-	goto bail0;
++    font->size = size;
+ 
+-    font = (XftFontStruct *) malloc (sizeof (XftFontStruct));
+-    if (!font)
+-	goto bail1;
+-    
+-    font->size = (FT_F26Dot6) (size * 64.0);
+-    
+-    if ( FT_Set_Char_Size (face, font->size, font->size, 0, 0) )
++    if (!XftFreeTypeSetFace (face, size, charmap))
+ 	goto bail2;
+ 
+-    encoding = face->charmaps[0]->encoding;
+-    
+-    for (j = 0; j < NUM_FT_ENCODINGS; j++)
+-	if (!strcmp (encoding_name, xftFtEncoding[j].name))
+-	{
+-	    encoding = xftFtEncoding[j].encoding;
+-	    break;
+-	}
+-    
+-    if (encoding == ft_encoding_none)
+-	encoded = False;
+-    else
++    descent = -(face->size->metrics.descender >> 6);
++    ascent = face->size->metrics.ascender >> 6;
++    if (minspace)
+     {
+-	encoded = True;
+-	for (charmap = 0; charmap < face->num_charmaps; charmap++)
+-	    if (face->charmaps[charmap]->encoding == encoding)
+-		break;
+-
+-	if (charmap == face->num_charmaps)
+-	    goto bail2;
+-
+-	error = FT_Set_Charmap(face,
+-			       face->charmaps[charmap]);
+-
+-	if (error)
+-	    goto bail2;
++	height = ascent + descent;
+     }
+-    
+-    height = face->height;
+-    ascent = face->ascender;
+-    descent = face->descender;
+-    if (descent < 0) descent = - descent;
+-    extra = (height - (ascent + descent));
+-    if (extra > 0)
++    else
+     {
+-	ascent = ascent + extra / 2;
+-	descent = height - ascent;
++	height = face->size->metrics.height >> 6;
++	extra = (height - (ascent + descent));
++	if (extra > 0)
++	{
++	    ascent = ascent + extra / 2;
++	    descent = height - ascent;
++	}
++	else if (extra < 0)
++	    height = ascent + descent;
+     }
+-    else if (extra < 0)
+-	height = ascent + descent;
+-    div = face->units_per_EM;
+-    if (height > div * 5)
+-	div *= 10;
+-    
+-    div = face->units_per_EM;
+-    if (height > div * 5)
+-	div *= 10;
+-    
+-    font->descent = descent * font->size / (64 * div);
+-    font->ascent = ascent * font->size / (64 * div);
+-    font->height = height * font->size / (64 * div);
+-    font->max_advance_width = face->max_advance_width * font->size / (64 * div);
++    font->ascent = ascent;
++    font->descent = descent;
++    font->height = height;
+     
+-    font->monospace = (face->face_flags & FT_FACE_FLAG_FIXED_WIDTH) != 0;
+     if (char_width)
+-    {
+ 	font->max_advance_width = char_width;
+-	font->monospace = True;
+-    }
+-    switch (XftPatternGetInteger (pattern, XFT_SPACING, 0, &spacing)) {
+-    case XftResultNoMatch:
+-	break;
+-    case XftResultMatch:
+-	if (spacing != XFT_PROPORTIONAL)
+-	    font->monospace = True;
+-	break;
+-    default:
+-	goto bail2;
+-    }
++    else
++	font->max_advance_width = face->size->metrics.max_advance >> 6;
++    
++    gs->next = _XftFtGlyphSets;
++    _XftFtGlyphSets = gs;
+     
+     font->glyphset = XRenderCreateGlyphSet (dpy, format);
+ 
++    font->spacing = spacing;
+     font->format = format;
+     font->realized =0;
+     font->nrealized = 0;
+     font->rgba = rgba;
+     font->antialias = antialias;
+-    font->encoded = encoded;
++    font->charmap = charmap;
+     font->face = face;
+ 
+     return font;
+     
+ bail2:
+-    free (font);
++    free (gs);
+ bail1:
+-    FT_Done_Face (font->face);
++    _XftFreeTypeCloseFile (file);
+ bail0:
+     return 0;
+ }
+@@ -368,10 +562,26 @@
+ void
+ XftFreeTypeClose (Display *dpy, XftFontStruct *font)
+ {
+-    XRenderFreeGlyphSet (dpy, font->glyphset);
+-    if (font->realized)
+-	free (font->realized);
+-    FT_Done_Face (font->face);
++    XftFtGlyphSet   *gs, **prev;
++
++    for (prev = &_XftFtGlyphSets; (gs = *prev); prev = &gs->next)
++    {
++	if (&gs->font == font)
++	{
++	    if (--gs->ref == 0)
++	    {
++		XRenderFreeGlyphSet (dpy, font->glyphset);
++		if (font->realized)
++		    free (font->realized);
++		
++		_XftFreeTypeCloseFile (gs->file);
++
++		*prev = gs->next;
++		free (gs);
++	    }
++	    break;
++	}
++    }
+ }
+ 		  
+ XftFontStruct *
+@@ -388,6 +598,7 @@
+ XftInitFtLibrary (void)
+ {
+     char    **d;
++    char    *cache;
+     
+     if (_XftFTlibrary)
+ 	return True;
+@@ -396,16 +607,21 @@
+     _XftFontSet = XftFontSetCreate ();
+     if (!_XftFontSet)
+ 	return False;
++    cache = XftConfigGetCache ();
++    if (cache)
++	XftFileCacheLoad (cache);
+     for (d = XftConfigDirs; d && *d; d++)
+     {
+ #ifdef XFT_DEBUG_FONTSET
+ 	printf ("scan dir %s\n", *d);
+ #endif
+-	XftDirScan (_XftFontSet, *d);
++	XftDirScan (_XftFontSet, *d, False);
+     }
+ #ifdef XFT_DEBUG_FONTSET
+     XftPrintFontSet (_XftFontSet);
+ #endif
++    if (cache)
++	XftFileCacheSave (cache);
++    XftFileCacheDispose ();
+     return True;
+ }
+-
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftglyphs.c xc/lib/Xft/xftglyphs.c
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftglyphs.c	Sat Dec 16 12:33:01 2000
++++ XFree86-4.0.2/xc/lib/Xft/xftglyphs.c	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/xftglyphs.c,v 1.6 2000/12/15 17:12:53 keithp Exp $
++ * $XFree86: xc/lib/Xft/xftglyphs.c,v 1.8 2000/12/22 02:25:41 keithp Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -22,6 +22,7 @@
+  * PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
++#include <stdio.h>
+ #include <stdlib.h>
+ #include "xftint.h"
+ #include <freetype/ftoutln.h>
+@@ -73,6 +74,9 @@
+     FT_Bitmap	    ftbit;
+     FT_Matrix	    matrix;
+ 
++    if (!XftFreeTypeSetFace (font->face, font->size, font->charmap))
++	return ;
++
+     if (font->antialias && font->rgba)
+     {
+ 	matrix.xx = 0x30000L;
+@@ -87,11 +91,16 @@
+ 	if (!gi)
+ 	    continue;
+ 	
+-	if (font->encoded)
++	if (font->charmap != -1)
+ 	{
+ 	    glyphindex = FT_Get_Char_Index (font->face, charcode);
+ 	    if (!glyphindex)
++	    {
++		if (_XftFontDebug() & XFT_DBG_GLYPH)
++		    printf ("glyph (%c) %d missing\n",
++			    (int) charcode, (int) charcode);
+ 		continue;
++	    }
+ 	}
+ 	else
+ 	    glyphindex = (FT_UInt) charcode;
+@@ -112,7 +121,7 @@
+ 	/*
+ 	 * Try to keep monospace fonts ink-inside
+ 	 */
+-	if (font->monospace)
++	if (font->spacing != XFT_PROPORTIONAL)
+ 	{
+ 	    if (TRUNC(right) > font->max_advance_width)
+ 	    {
+@@ -192,39 +201,42 @@
+ 		    }
+ 		}
+ 	    }
+-#if 0
++	    if (_XftFontDebug() & XFT_DBG_GLYPH)
+ 	    {
+-		int		x, y;
+-		unsigned char	*line;
+-
+-		line = bufBitmap;
+-		printf ("\nchar 0x%x (%c):\n", (int) charcode, (char) charcode);
+-		for (y = 0; y < height; y++)
++		printf ("char 0x%x (%c):\n", (int) charcode, (char) charcode);
++		if (_XftFontDebug() & XFT_DBG_GLYPHV)
+ 		{
+-		    if (font->antialias) 
+-		    {
+-			static char    den[] = { " .:;=+*#" };
+-			for (x = 0; x < pitch; x++)
+-			    printf ("%c", den[line[x] >> 5]);
+-		    }
+-		    else
++		    int		x, y;
++		    unsigned char	*line;
++
++		    line = bufBitmap;
++		    for (y = 0; y < height; y++)
+ 		    {
+-			for (x = 0; x < pitch * 8; x++)
++			if (font->antialias) 
+ 			{
+-			    printf ("%c", line[x>>3] & (1 << (x & 7)) ? '#' : ' ');
++			    static char    den[] = { " .:;=+*#" };
++			    for (x = 0; x < pitch; x++)
++				printf ("%c", den[line[x] >> 5]);
+ 			}
++			else
++			{
++			    for (x = 0; x < pitch * 8; x++)
++			    {
++				printf ("%c", line[x>>3] & (1 << (x & 7)) ? '#' : ' ');
++			    }
++			}
++			printf ("\n");
++			line += pitch;
+ 		    }
+ 		    printf ("\n");
+-		    line += pitch;
+ 		}
+ 	    }
+-#endif
+ 	}
+ 	else
+ 	{
+-#if 0
+-	    printf ("glyph (%c) %d missing\n", (int) charcode, (int) charcode);
+-#endif
++	    if (_XftFontDebug() & XFT_DBG_GLYPH)
++		printf ("glyph (%c) %d no outline\n",
++			(int) charcode, (int) charcode);
+ 	    continue;
+ 	}
+ 	
+@@ -232,7 +244,7 @@
+ 	gi->height = height;
+ 	gi->x = -TRUNC(left);
+ 	gi->y = TRUNC(top);
+-	if (font->monospace)
++	if (font->spacing != XFT_PROPORTIONAL)
+ 	    gi->xOff = font->max_advance_width;
+ 	else
+ 	    gi->xOff = TRUNC(ROUND(glyph->metrics.horiAdvance));
+@@ -368,7 +380,10 @@
+ 			XftFontStruct	*font,
+ 			XftChar32	glyph)
+ {
+-    if (font->encoded)
++    if (font->charmap != -1)
++    {
++	FT_Set_Charmap (font->face, font->face->charmaps[font->charmap]);
+ 	glyph = (XftChar32) FT_Get_Char_Index (font->face, (FT_ULong) glyph);
++    }
+     return glyph && glyph <= font->face->num_glyphs;
+ }
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftgram.y xc/lib/Xft/xftgram.y
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftgram.y	Thu Nov 30 18:30:00 2000
++++ XFree86-4.0.2/xc/lib/Xft/xftgram.y	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/xftgram.y,v 1.2 2000/11/30 23:30:00 dawes Exp $
++ * $XFree86: xc/lib/Xft/xftgram.y,v 1.3 2001/01/02 02:46:51 keithp Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -47,7 +47,8 @@
+ %token <dval>	DOUBLE
+ %token <sval>	STRING NAME
+ %token <ival>	ANY ALL
+-%token <ival>	DIR INCLUDE INCLUDEIF MATCH EDIT TOK_TRUE TOK_FALSE TOK_NIL
++%token <ival>	DIR CACHE INCLUDE INCLUDEIF MATCH EDIT
++%token <ival>	TOK_TRUE TOK_FALSE TOK_NIL
+ %token <ival>	EQUAL SEMI
+ 
+ %type  <eval>	expr
+@@ -75,6 +76,8 @@
+ 	;
+ config	:   DIR STRING
+ 		{ XftConfigAddDir ($2); }
++	|   CACHE STRING
++		{ XftConfigSetCache ($2); }
+ 	|   INCLUDE STRING
+ 		{ XftConfigPushInput ($2, True); }
+ 	|   INCLUDEIF STRING
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftint.h xc/lib/Xft/xftint.h
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftint.h	Sat Dec 16 12:33:01 2000
++++ XFree86-4.0.2/xc/lib/Xft/xftint.h	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/xftint.h,v 1.15 2000/12/15 17:12:53 keithp Exp $
++ * $XFree86: xc/lib/Xft/xftint.h,v 1.20 2001/01/02 02:46:51 keithp Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -84,6 +84,16 @@
+ #define XFT_DEFAULT_PATH "/usr/X11R6/lib/X11/XftConfig"
+ #endif
+ 
++#define XFT_DBG_OPEN	1
++#define XFT_DBG_OPENV	2
++#define XFT_DBG_RENDER	4
++#define XFT_DBG_DRAW	8
++#define XFT_DBG_REF	16
++#define XFT_DBG_GLYPH	32
++#define XFT_DBG_GLYPHV	64
++#define XFT_DBG_CACHE	128
++#define XFT_DBG_CACHEV	256
++
+ typedef enum _XftOp {
+     XftOpInteger, XftOpDouble, XftOpString, XftOpBool, XftOpNil,
+     XftOpField,
+@@ -191,11 +201,40 @@
+ }
+ 
+ 
++/* xftcache.c */
++
++char *
++XftFileCacheFind (char *file, int id, int *count);
++
++void
++XftFileCacheDispose (void);
++
++void
++XftFileCacheLoad (char *cache);
++
++Bool
++XftFileCacheUpdate (char *file, int id, char *name);
++
++Bool
++XftFileCacheSave (char *cache);
++
++Bool
++XftFileCacheReadDir (XftFontSet *set, const char *cache_file);
++
++Bool
++XftFileCacheWriteDir (XftFontSet *set, const char *cache_file);
++    
+ /* xftcfg.c */
+ Bool
+ XftConfigAddDir (char *d);
+ 
+ Bool
++XftConfigSetCache (char *c);
++
++char *
++XftConfigGetCache (void);
++
++Bool
+ XftConfigAddEdit (XftTest *test, XftEdit *edit);
+ 
+ Bool
+@@ -217,6 +256,12 @@
+ 		  int		    len,
+ 		  XChar2b	    xcloc[XFT_CORE_N16LOCAL]);
+ 
++XChar2b *
++XftCoreConvertUtf8 (XftChar8	*string,
++		    int		len,
++		    XChar2b	xcloc[XFT_CORE_N16LOCAL],
++		    int		*nchar);
++
+ void
+ XftCoreExtents8 (Display	*dpy,
+ 		 XFontStruct	*fs,
+@@ -238,6 +283,13 @@
+ 		  int		    len,
+ 		  XGlyphInfo	    *extents);
+ 
++void
++XftCoreExtentsUtf8 (Display	    *dpy,
++		    XFontStruct	    *fs,
++		    XftChar8	    *string, 
++		    int		    len,
++		    XGlyphInfo	    *extents);
++
+ Bool
+ XftCoreGlyphExists (Display	    *dpy,
+ 		    XFontStruct	    *fs,
+@@ -259,10 +311,6 @@
+ void
+ XftSubstPrint (XftSubst *subst);
+ 
+-/* xftdir.c */
+-Bool
+-XftDirScan (XftFontSet *set, const char *dir);
+-
+ /* xftdpy.c */
+ int
+ XftDefaultParseBool (char *v);
+@@ -295,12 +343,7 @@
+ int
+ _XftFontDebug (void);
+     
+-/* xftfreetype.c */
+-XftPattern *
+-XftFreeTypeQuery (const char *file, int id, int *count);
+-
+ /* xftfs.c */
+-/* xftglyphs.c */
+ /* xftgram.y */
+ int
+ XftConfigparse (void);
+@@ -349,7 +392,7 @@
+ 
+ /* xftinit.c */
+ Bool
+-XftInitFtLibrary (void);
++XftInit (char *config);
+ 
+ /* xftlex.l */
+ extern int	XftConfigLineno;
+@@ -365,9 +408,6 @@
+ XftConfigPushInput (char *s, Bool complain);
+ 
+ /* xftlist.c */
+-XftObjectSet *
+-_XftObjectSetVapBuild (const char *first, va_list *vap);
+-
+ Bool
+ XftListValueCompare (XftValue	v1,
+ 		     XftValue	v2);
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftlex.l xc/lib/Xft/xftlex.l
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftlex.l	Sat Dec 16 12:33:01 2000
++++ XFree86-4.0.2/xc/lib/Xft/xftlex.l	Fri Jan 19 20:25:58 2001
+@@ -1,6 +1,6 @@
+ %{
+ /*
+- * $XFree86: xc/lib/Xft/xftlex.l,v 1.3 2000/12/15 22:48:39 dawes Exp $
++ * $XFree86: xc/lib/Xft/xftlex.l,v 1.4 2001/01/02 02:46:51 keithp Exp $
+  *
+  * Copyright (c) 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -97,6 +97,7 @@
+ "/\052"		_XftConfigSkipComment();
+ ^#		_XftConfigSkipLine();
+ dir		return DIR;
++cache		return CACHE;
+ include		return INCLUDE;
+ includeif	return INCLUDEIF;
+ match		return MATCH;
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftname.c xc/lib/Xft/xftname.c
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftname.c	Sat Dec 16 12:33:00 2000
++++ XFree86-4.0.2/xc/lib/Xft/xftname.c	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/xftname.c,v 1.5 2000/12/14 23:03:56 keithp Exp $
++ * $XFree86: xc/lib/Xft/xftname.c,v 1.8 2001/01/02 02:46:51 keithp Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -26,13 +26,14 @@
+ #include <ctype.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <stdio.h>
+ 
+ typedef struct _XftObjectType {
+     const char	*object;
+     XftType	type;
+ } XftObjectType;
+ 
+-const XftObjectType _XftObjectTypes[] = {
++static const XftObjectType _XftObjectTypes[] = {
+     { XFT_FAMILY,	XftTypeString, },
+     { XFT_STYLE,	XftTypeString, },
+     { XFT_SLANT,	XftTypeInteger, },
+@@ -53,6 +54,9 @@
+     { XFT_RGBA,		XftTypeInteger, },
+     { XFT_SCALE,	XftTypeDouble, },
+     { XFT_RENDER,	XftTypeBool, },
++    { XFT_MINSPACE,	XftTypeBool, },
++    { XFT_CHAR_WIDTH,	XftTypeInteger },
++    { XFT_CHAR_HEIGHT,	XftTypeInteger },
+ };
+ 
+ #define NUM_OBJECT_TYPES    (sizeof _XftObjectTypes / sizeof _XftObjectTypes[0])
+@@ -152,9 +156,17 @@
+ {
+     char    c;
+     
+-    while (*cur && !strchr (delim, *cur))
++    while ((c = *cur))
+     {
+-	c = *cur++;
++	if (c == '\\')
++	{
++	    ++cur;
++	    if (!(c = *cur))
++		break;
++	}
++	else if (strchr (delim, c))
++	    break;
++	++cur;
+ 	*save++ = c;
+     }
+     *save = 0;
+@@ -211,10 +223,10 @@
+     }
+     while (delim == ':')
+     {
+-	name = _XftNameFindNext (name, "=-:", save, &delim);
++	name = _XftNameFindNext (name, "=_:", save, &delim);
+ 	if (save[0])
+ 	{
+-	    if (delim == '=' || delim == '-')
++	    if (delim == '=' || delim == '_')
+ 	    {
+ 		t = XftNameGetType (save);
+ 		for (;;)
+@@ -250,4 +262,118 @@
+     free (save);
+ bail0:
+     return 0;
++}
++
++static Bool
++_XftNameUnparseString (const char *string, char *escape, char **destp, int *lenp)
++{
++    int	    len = *lenp;
++    char    *dest = *destp;
++    char    c;
++
++    while ((c = *string++))
++    {
++	if (escape && strchr (escape, c))
++	{
++	    if (len-- == 0)
++		return False;
++	    *dest++ = escape[0];
++	}
++	if (len-- == 0)
++	    return False;
++	*dest++ = c;
++    }
++    *destp = dest;
++    *lenp = len;
++    return True;
++}
++
++static Bool
++_XftNameUnparseValue (XftValue v, char *escape, char **destp, int *lenp)
++{
++    char    temp[1024];
++    
++    switch (v.type) {
++    case XftTypeVoid:
++	return True;
++    case XftTypeInteger:
++	sprintf (temp, "%d", v.u.i);
++	return _XftNameUnparseString (temp, 0, destp, lenp);
++    case XftTypeDouble:
++	sprintf (temp, "%g", v.u.d);
++	return _XftNameUnparseString (temp, 0, destp, lenp);
++    case XftTypeString:
++	return _XftNameUnparseString (v.u.s, escape, destp, lenp);
++    case XftTypeBool:
++	return _XftNameUnparseString (v.u.b ? "True" : "False", 0, destp, lenp);
++    }
++    return False;
++}
++
++static Bool
++_XftNameUnparseValueList (XftValueList *v, char *escape, char **destp, int *lenp)
++{
++    while (v)
++    {
++	if (!_XftNameUnparseValue (v->value, escape, destp, lenp))
++	    return False;
++	if ((v = v->next))
++	    if (!_XftNameUnparseString (",", 0, destp, lenp))
++		return False;
++    }
++    return True;
++}
++
++#define XFT_ESCAPE_FIXED    "\\-:,"
++#define XFT_ESCAPE_VARIABLE "\\=_:,"
++
++Bool
++XftNameUnparse (XftPattern *pat, char *dest, int len)
++{
++    int			i;
++    XftPatternElt	*e;
++    const XftObjectType *o;
++
++    e = XftPatternFind (pat, XFT_FAMILY, False);
++    if (e)
++    {
++	if (!_XftNameUnparseValueList (e->values, XFT_ESCAPE_FIXED,
++				       &dest, &len))
++	    return False;
++    }
++    e = XftPatternFind (pat, XFT_SIZE, False);
++    if (e)
++    {
++	if (!_XftNameUnparseString ("-", 0, &dest, &len))
++	    return False;
++	if (!_XftNameUnparseValueList (e->values, XFT_ESCAPE_FIXED, &dest, &len))
++	    return False;
++    }
++    for (i = 0; i < NUM_OBJECT_TYPES; i++)
++    {
++	o = &_XftObjectTypes[i];
++	if (!strcmp (o->object, XFT_FAMILY) || 
++	    !strcmp (o->object, XFT_SIZE) ||
++	    !strcmp (o->object, XFT_FILE))
++	    continue;
++	
++	e = XftPatternFind (pat, o->object, False);
++	if (e)
++	{
++	    if (!_XftNameUnparseString (":", 0, &dest, &len))
++		return False;
++	    if (!_XftNameUnparseString (o->object, XFT_ESCAPE_VARIABLE, 
++					&dest, &len))
++		return False;
++	    if (!_XftNameUnparseString ("=", 0, &dest, &len))
++		return False;
++	    if (!_XftNameUnparseValueList (e->values, XFT_ESCAPE_VARIABLE, 
++					   &dest, &len))
++		return False;
++	}
++    }
++    if (len == 0)
++	return False;
++    *dest = '\0';
++    return True;
+ }
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftrender.c xc/lib/Xft/xftrender.c
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftrender.c	Fri Dec  8 02:51:28 2000
++++ XFree86-4.0.2/xc/lib/Xft/xftrender.c	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/xftrender.c,v 1.5 2000/12/08 07:51:28 keithp Exp $
++ * $XFree86: xc/lib/Xft/xftrender.c,v 1.6 2000/12/20 00:28:45 keithp Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -22,6 +22,7 @@
+  * PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
++#include <stdlib.h>
+ #include "xftint.h"
+ 
+ void
+@@ -97,6 +98,93 @@
+ }
+ 
+ void
++XftRenderStringUtf8 (Display *dpy, Picture src, 
++		     XftFontStruct *font, Picture dst,
++		     int srcx, int srcy,
++		     int x, int y,
++		     XftChar8 *string, int len)
++{
++    XftChar8	*s;
++    XftChar32	c;
++    XftChar32	lbuf[4096];
++    XftChar32	*d;
++    XftChar8	*dst8;
++    XftChar16	*dst16;
++    XftChar32	*dst32;
++    int		rlen, clen;
++    int		width = 1;
++    int		n;
++
++    /* compute needed width */
++    if (!XftUtf8Len (string, len, &n, &width))
++	return;
++    
++    d = lbuf;
++    if (n * width > sizeof (lbuf))
++    {
++	d = (XftChar32 *) malloc (n * width);
++	if (!d)
++	    return;
++    }
++    
++    switch (width) {
++    case 4:
++	s = string;
++	rlen = len;
++	dst32 = d;
++	while (rlen)
++	{
++	    clen = XftUtf8ToUcs4 (s, &c, rlen);
++	    if (clen <= 0)	/* malformed UTF8 string */
++		return;
++	    *dst32++ = c;
++	    s += clen;
++	    rlen -= clen;
++	}
++	dst32 = d;
++	XftRenderString32 (dpy, src, font, dst, srcx, srcy, x, y,
++			 dst32, n);
++	break;
++    case 2:
++	s = string;
++	rlen = len;
++	dst16 = (XftChar16 *) d;
++	while (rlen)
++	{
++	    clen = XftUtf8ToUcs4 (s, &c, rlen);
++	    if (clen <= 0)	/* malformed UTF8 string */
++		return;
++	    *dst16++ = c;
++	    s += clen;
++	    rlen -= clen;
++	}
++	dst16 = (XftChar16 *) d;
++	XftRenderString16 (dpy, src, font, dst, srcx, srcy, x, y,
++			   dst16, n);
++	break;
++    case 1:
++	s = string;
++	rlen = len;
++	dst8 = (XftChar8 *) d;
++	while (rlen)
++	{
++	    clen = XftUtf8ToUcs4 (s, &c, rlen);
++	    if (clen <= 0)	/* malformed UTF8 string */
++		return;
++	    *dst8++ = c;
++	    s += clen;
++	    rlen -= clen;
++	}
++	dst8 = (XftChar8 *) d;
++	XftRenderString8 (dpy, src, font, dst, srcx, srcy, x, y,
++			  dst8, n);
++	break;
++    }
++    if (d != lbuf)
++	free (d);
++}
++   
++void
+ XftRenderExtents8 (Display	    *dpy,
+ 		   XftFontStruct    *font,
+ 		   XftChar8    *string, 
+@@ -273,6 +361,89 @@
+     while (len--)
+     {
+ 	c = *string++;
++	gi = c < font->nrealized ? font->realized[c] : 0;
++	if (!gi)
++	    continue;
++	if (gi->x + x < extents->x)
++	    extents->x = gi->x + x;
++	if (gi->y + y < extents->y)
++	    extents->y = gi->y + y;
++	if (gi->width + x > extents->width)
++	    extents->width = gi->width + x;
++	if (gi->height + y > extents->height)
++	    extents->height = gi->height + y;
++	x += gi->xOff;
++	y += gi->yOff;
++    }
++    extents->xOff = x;
++    extents->yOff = y;
++}
++
++void
++XftRenderExtentsUtf8 (Display	    *dpy,
++		      XftFontStruct *font,
++		      XftChar8	    *string, 
++		      int	    len,
++		      XGlyphInfo    *extents)
++{
++    unsigned int    missing[XFT_NMISSING];
++    int		    nmissing;
++    XftChar8	    *s;
++    XftChar32	    c;
++    int		    l, clen;
++    XGlyphInfo	    *gi;
++    int		    x, y;
++
++    s = string;
++    l = len;
++    nmissing = 0;
++    while (l)
++    {
++	clen = XftUtf8ToUcs4 (s, &c, l);
++	if (clen < 0)
++	    break;
++	XftGlyphCheck (dpy, font, c, missing, &nmissing);
++	s += clen;
++	l -= clen;
++    }
++    if (nmissing)
++	XftGlyphLoad (dpy, font, missing, nmissing);
++    
++    gi = 0;
++    while (len)
++    {
++	clen = XftUtf8ToUcs4 (string, &c, len);
++	if (clen < 0)
++	{
++	    len = 0;
++	    break;
++	}
++	len -= clen;
++	string += clen;
++	gi = c < font->nrealized ? font->realized[c] : 0;
++	if (gi)
++	    break;
++    }
++    if (len == 0 && !gi)
++    {
++	extents->width = 0;
++	extents->height = 0;
++	extents->x = 0;
++	extents->y = 0;
++	extents->yOff = 0;
++	extents->xOff = 0;
++	return;
++    }
++    *extents = *gi;
++    x = gi->xOff;
++    y = gi->yOff;
++    while (len)
++    {
++	clen = XftUtf8ToUcs4 (string, &c, len);
++	if (clen < 0)
++	    break;
++	len -= clen;
++	string += clen;
+ 	gi = c < font->nrealized ? font->realized[c] : 0;
+ 	if (!gi)
+ 	    continue;
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftstr.c xc/lib/Xft/xftstr.c
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftstr.c	Sat Dec 16 12:33:00 2000
++++ XFree86-4.0.2/xc/lib/Xft/xftstr.c	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/xftstr.c,v 1.2 2000/12/14 23:03:57 keithp Exp $
++ * $XFree86: xc/lib/Xft/xftstr.c,v 1.4 2000/12/20 10:24:27 keithp Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -149,4 +149,108 @@
+ 	    break;
+     }
+     return (int) c2 - (int) c1;
++}
++
++int
++XftUtf8ToUcs4 (XftChar8    *src_orig,
++	       XftChar32   *dst,
++	       int	    len)
++{
++    XftChar8	*src = src_orig;
++    XftChar8	s;
++    int		extra;
++    XftChar32	result;
++
++    if (len == 0)
++	return 0;
++    
++    s = *src++;
++    len--;
++    
++    if (!(s & 0x80))
++    {
++	result = s;
++	extra = 0;
++    } 
++    else if (!(s & 0x40))
++    {
++	return -1;
++    }
++    else if (!(s & 0x20))
++    {
++	result = s & 0x1f;
++	extra = 1;
++    }
++    else if (!(s & 0x10))
++    {
++	result = s & 0xf;
++	extra = 2;
++    }
++    else if (!(s & 0x08))
++    {
++	result = s & 0x07;
++	extra = 3;
++    }
++    else if (!(s & 0x04))
++    {
++	result = s & 0x03;
++	extra = 4;
++    }
++    else if ( ! (s & 0x02))
++    {
++	result = s & 0x01;
++	extra = 5;
++    }
++    else
++    {
++	return -1;
++    }
++    if (extra > len)
++	return -1;
++    
++    while (extra--)
++    {
++	result <<= 6;
++	s = *src++;
++	
++	if ((s & 0xc0) != 0x80)
++	    return -1;
++	
++	result |= s & 0x3f;
++    }
++    *dst = result;
++    return src - src_orig;
++}
++
++Bool
++XftUtf8Len (XftChar8	*string,
++	    int		len,
++	    int		*nchar,
++	    int		*wchar)
++{
++    int		n;
++    int		clen;
++    int		width = 1;
++    XftChar32	c;
++    
++    n = 0;
++    while (len)
++    {
++	clen = XftUtf8ToUcs4 (string, &c, len);
++	if (clen <= 0)	/* malformed UTF8 string */
++	    return False;
++	if (c >= 0x10000)
++	    width = 4;
++	else if (c >= 0x100)
++	{
++	    if (width == 1)
++		width = 2;
++	}
++	string += clen;
++	len -= clen;
++	n++;
++    }
++    *nchar = n;
++    *wchar = width;
++    return True;
+ }
+diff -urN -x CVS xc-4.0.2.orig/lib/Xft/xftxlfd.c xc/lib/Xft/xftxlfd.c
+--- XFree86-4.0.2.orig/xc/lib/Xft/xftxlfd.c	Sat Dec 16 12:33:00 2000
++++ XFree86-4.0.2/xc/lib/Xft/xftxlfd.c	Fri Jan 19 20:25:58 2001
+@@ -1,5 +1,5 @@
+ /*
+- * $XFree86: xc/lib/Xft/xftxlfd.c,v 1.5 2000/12/14 23:03:57 keithp Exp $
++ * $XFree86: xc/lib/Xft/xftxlfd.c,v 1.7 2000/12/22 05:05:16 tsi Exp $
+  *
+  * Copyright © 2000 Keith Packard, member of The XFree86 Project, Inc.
+  *
+@@ -208,9 +208,21 @@
+     return ret;
+ }
+ 
+-XFontStruct *
++typedef struct _XftCoreFont {
++    struct _XftCoreFont	*next;
++    int			ref;
++
++    XFontStruct		*font;
++    Display		*display;
++    char		*xlfd;
++} XftCoreFont;
++
++static XftCoreFont *_XftCoreFonts;
++
++XFontStruct*
+ XftCoreOpen (Display *dpy, XftPattern *pattern)
+ {
++    XftCoreFont	*cf;
+     char	*xlfd;
+     char	*xlfd_pixel = 0;
+     char	*i, *o;
+@@ -258,9 +270,66 @@
+ 	    xlfd = xlfd_pixel;
+ 	}
+     }
+-    ret = XLoadQueryFont (dpy, xlfd);
++    for (cf = _XftCoreFonts; cf; cf = cf->next)
++    {
++	if (cf->display == dpy &&
++	    !_XftStrCmpIgnoreCase (cf->xlfd, xlfd))
++	{
++	    cf->ref++;
++	    if (_XftFontDebug () & XFT_DBG_REF)
++	    {
++		printf ("Xlfd \"%s\" matches existing font (%d)\n",
++			xlfd, cf->ref);
++	    }
++	    break;
++	}
++    }
++    if (!cf)
++    {
++	ret = XLoadQueryFont (dpy, xlfd);
++	if (!ret)
++	    return 0;
++
++	cf = (XftCoreFont *) malloc (sizeof (XftCoreFont) +
++				     strlen (xlfd) + 1);
++	if (!cf)
++	{
++	    XFreeFont (dpy, ret);
++	    return 0;
++	}
++	
++        if (_XftFontDebug () & XFT_DBG_REF)
++	    printf ("Xlfd \"%s\" matches new font\n", xlfd);
++	
++	cf->next = _XftCoreFonts;
++	_XftCoreFonts = cf;
++	cf->ref = 1;
++	
++	cf->font = ret;
++	cf->xlfd = (char *) (cf + 1);
++	strcpy (cf->xlfd, xlfd);
++    }
+     if (xlfd_pixel)
+ 	free (xlfd_pixel);
+-    return ret;
++    return cf->font;
+ }
+ 
++void
++XftCoreClose (Display *dpy, XFontStruct *font)
++{
++    XftCoreFont	*cf, **prev;
++
++    for (prev = &_XftCoreFonts; (cf = *prev); prev = &cf->next)
++    {
++	if (cf->display == dpy && cf->font == font)
++	{
++	    if (--cf->ref == 0)
++	    {
++		XFreeFont (dpy, cf->font);
++		*prev = cf->next;
++		free (cf);
++	    }
++	    break;
++	}
++    }
++}
