@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	4.0
-Release:	7
+Release:	8
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
