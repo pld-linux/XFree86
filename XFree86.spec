@@ -1,48 +1,48 @@
-Summary:     XFree86 Window System servers and basic programs
-Summary(de): Xfree86 Window-System-Server und grundlegende Programme
-Summary(fr): Serveurs du système XFree86 et programmes de base
-Summary(pl): XFree86 Window System wraz z podstawowymi programami
-Summary(tr): XFree86 Pencereleme Sistemi sunucularý ve temel programlar
-Name:        XFree86
-Version:     3.3.2.3
-Release:     20
-Copyright:   MIT
-Group:       X11/XFree86
-Requires:    pam >= 0.59, xbanner
-Source0:     ftp://ftp.xfree86.org/pub/XFree86/3.3/X331src-1.tgz
-Source1:     ftp://ftp.xfree86.org/pub/XFree86/3.3/X331src-2.tgz
-Source2:     ftp://ftp.xfree86.org/pub/XFree86/3.3/X331src-3.tgz
-Source3:     ftp://ftp.xfree86.org/pub/XFree86-3.3.2/patches/cfont332.tgz
-Source4:     xdm.pamd
-Patch0:      XFree86-3.3-rh.patch
-Patch1:      XFree86-3.3-xdm.patch
-Patch2:      XFree86-3.3.2-fsstnd.patch
-Patch3:      XFree86-3.3.2-pam.patch
-Patch4:      XFree86-3.3-shlibs.patch
-Patch5:      XFree86-3.3-notiocsltc.patch
+Summary:	XFree86 Window System servers and basic programs
+Summary(de):	Xfree86 Window-System-Server und grundlegende Programme
+Summary(fr):	Serveurs du système XFree86 et programmes de base
+Summary(pl):	XFree86 Window System wraz z podstawowymi programami
+Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
+Name:		XFree86
+Version:	3.3.2.3
+Release:	20
+Copyright:	MIT
+Group:		X11/XFree86
+Requires:	pam >= 0.59, xbanner
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/3.3/X331src-1.tgz
+Source1:	ftp://ftp.xfree86.org/pub/XFree86/3.3/X331src-2.tgz
+Source2:	ftp://ftp.xfree86.org/pub/XFree86/3.3/X331src-3.tgz
+Source3:	ftp://ftp.xfree86.org/pub/XFree86-3.3.2/patches/cfont332.tgz
+Source4:	xdm.pamd
+Patch0:		XFree86-3.3-rh.patch
+Patch1:		XFree86-3.3-xdm.patch
+Patch2:		XFree86-3.3.2-fsstnd.patch
+Patch3:		XFree86-3.3.2-pam.patch
+Patch4:		XFree86-3.3-shlibs.patch
+Patch5:		XFree86-3.3-notiocsltc.patch
 
-Patch6:      XFree86-3.3-sparc.patch
-Patch7:      XFree86-3.3-creator.patch
-Patch8:      XFree86-3.3-sparc-glibc.patch
-Patch9:      XFree86-3.3-sparc2.patch
-Patch10:     XFree86-3.3-sparc3.patch
-Patch11:     XFree86-3.3-sparc4.patch
-Patch12:     XFree86-3.3-sparcpci.patch
-Patch13:     XFree86-3.3-sparc5.patch
-Patch14:     XFree86-3.3-sparcpci2.patch
-Patch15:     XFree86-3.3-sparc6.patch
-Patch16:     XFree86-3.3-sparcpex.patch
+Patch6:		XFree86-3.3-sparc.patch
+Patch7:		XFree86-3.3-creator.patch
+Patch8:		XFree86-3.3-sparc-glibc.patch
+Patch9:		XFree86-3.3-sparc2.patch
+Patch10:	XFree86-3.3-sparc3.patch
+Patch11:	XFree86-3.3-sparc4.patch
+Patch12:	XFree86-3.3-sparcpci.patch
+Patch13:	XFree86-3.3-sparc5.patch
+Patch14:	XFree86-3.3-sparcpci2.patch
+Patch15:	XFree86-3.3-sparc6.patch
+Patch16:	XFree86-3.3-sparcpex.patch
 
-Patch17:     XFree86-3.3-alpha1.patch
-Patch18:     XFree86-3.3-alpha2.patch
-Patch19:     XFree86-3.3-egcs.patch
-Patch20:     XFree86-3.3-mga1.patch
+Patch17:	XFree86-3.3-alpha1.patch
+Patch18:	XFree86-3.3-alpha2.patch
+Patch19:	XFree86-3.3-egcs.patch
+Patch20:	XFree86-3.3-mga1.patch
 
-Patch30:     ftp://fpt.xfree86.org/pub/XFree86-3.3.2/patches/3.3.1-3.3.2.diff.gz
-Patch31:     3.3.2-patch1
-Patch32:     3.3.2-patch2
-Patch33:     3.3.2-patch3
-Patch34:     XFree86-HasZlib.patch
+Patch30:	ftp://fpt.xfree86.org/pub/XFree86-3.3.2/patches/3.3.1-3.3.2.diff.gz
+Patch31:	3.3.2-patch1
+Patch32:	3.3.2-patch2
+Patch33:	3.3.2-patch3
+Patch34:	XFree86-HasZlib.patch
 Exclusivearch: i386 alpha sparc
 %ifarch sparc
 Obsoletes: X11R6.1
@@ -92,15 +92,16 @@ sunar. Ekran kartýnýzý sürmek için gerekli olan X sunucusu bu pakete dahil
 deðildir.
 
 %package 75dpi-fonts
-Summary:     X11R6 75dpi fonts - only need on server side
-Summary(de): X11RT 76 dpi-Fonts - nur auf Serverseite erforderlich
-Summary(fr): Fontes 75 dpi X11R6 - nécessaire uniquement côté serveur
-Summary(pl): X11R6 fonty 75dpi - wymagane tylko po stronie serwera
-Summary(tr): X11R6 75dpi yazýtipleri - yalnýzca sunucu tarafýnda gerekir
-Group:       X11/XFree86/fonts
-Prereq:      /usr/X11R6/bin/mkfontdir
+Summary:	X11R6 75dpi fonts - only need on server side
+Summary(de):	X11RT 76 dpi-Fonts - nur auf Serverseite erforderlich
+Summary(fr):	Fontes 75 dpi X11R6 - nécessaire uniquement côté serveur
+Summary(pl):	X11R6 fonty 75dpi - wymagane tylko po stronie serwera
+Summary(tr):	X11R6 75dpi yazýtipleri - yalnýzca sunucu tarafýnda gerekir
+Group:		X11/Fonts
+Group(pl):	X11/Fonty
+Prereq:		/usr/X11R6/bin/mkfontdir
 %ifarch sparc
-Obsoletes: X11R6.1-75dpi-fonts
+Obsoletes:	X11R6.1-75dpi-fonts
 %endif
 
 %description 75dpi-fonts
@@ -108,9 +109,9 @@ The 75dpi fonts used on most Linux systems. Users with high resolution
 displays may prefer the 100dpi fonts available in a separate package.
 
 %description -l de 75dpi-fonts
-Die 75dpi-Fonts, die auf meisten Linux-Systemen verwendet werden. Für Benutzer
-mit einer hochauflösender Darstellung sind die 100dpi-Fonts eines getrennt
-erhältlichen Pakets besser geeignet.
+Die 75dpi-Fonts, die auf meisten Linux-Systemen verwendet werden. Für
+Benutzer mit einer hochauflösender Darstellung sind die 100dpi-Fonts eines
+getrennt erhältlichen Pakets besser geeignet.
 
 %description -l fr 75dpi-fonts
 Fontes 75 dpi utilisées sur la plupart des systèmes Linux. Ceux qui ont
@@ -127,15 +128,16 @@ dostêpne w innym oddzielnym pakiecie.
 kullanýcýlar 100dpi yazýtiplerini yeðleyebilirler.
 
 %package 100dpi-fonts
-Summary:     X11R6 100dpi fonts - only need on server side
-Summary(de): X11R6 100dpi-Fonts - nur auf Server-Seite erforderlich
-Summary(fr): Fontes 100ppp pour X11R6 - nécessaires seulement coté serveur.
-Summary(pl): X11R6 fonty 100dpi - wymagane tylko po stronie serwera
-Summary(tr): X11R6 100dpi yazýtipleri - yalnýzca sunucu tarafýnda gereklidir
-Group:       X11/XFree86/fonts
-Prereq:      /usr/X11R6/bin/mkfontdir
+Summary:	X11R6 100dpi fonts - only need on server side
+Summary(de):	X11R6 100dpi-Fonts - nur auf Server-Seite erforderlich
+Summary(fr):	Fontes 100ppp pour X11R6 - nécessaires seulement coté serveur.
+Summary(pl):	X11R6 fonty 100dpi - wymagane tylko po stronie serwera
+Summary(tr):	X11R6 100dpi yazýtipleri - yalnýzca sunucu tarafýnda gereklidir
+Group:		X11/Fonts
+Group(pl):	X11/Fonty
+Prereq:		/usr/X11R6/bin/mkfontdir
 %ifarch sparc
-Obsoletes: X11R6.1-100dpi-fonts
+Obsoletes:	X11R6.1-100dpi-fonts
 %endif
 
 %description 100dpi-fonts
@@ -160,12 +162,14 @@ Yüksek çözünürlük kullanan kullanýcýlar 100dpi yazýtiplerini 75dpi olanlara
 yeðleyebilirler.
 
 #%package cyrillic-fonts
-#Summary:     X11R6 cyrillic fonts - only need on server side
-#Summary(de): X11R6 cyrillic-Fonts - nur auf Server-Seite erforderlich
-#Summary(fr): Fontes cyrillic pour X11R6 - nécessaires seulement coté serveur.
-#Summary(pl): X11R6 fonty 75dpi - wymagane tylko po stronie serwera
-#Summary(tr): X11R6 cyrillic yazýtipleri - yalnýzca sunucu tarafýnda gereklidir
-#Group:       X11/XFree86/fonts
+#Summary:	X11R6 cyrillic fonts - only need on server side
+#Summary(de):	X11R6 cyrillic-Fonts - nur auf Server-Seite erforderlich
+#Summary(fr):	Fontes cyrillic pour X11R6 - nécessaires seulement coté serveur.
+#Summary(pl):	X11R6 fonty 75dpi - wymagane tylko po stronie serwera
+#Summary(tr):	X11R6 cyrillic yazýtipleri - yalnýzca sunucu tarafýnda gereklidir
+#Group:		X11/Fonts
+#Group(pl):	X11/Fonty
+#Prereq:	/usr/X11R6/bin/mkfontdir
 
 #%description cyrillic-fonts
 #The cyrillic fonts used on most Linux systems. Users with high resolution
@@ -189,14 +193,15 @@ yeðleyebilirler.
 #yeðleyebilirler.
 
 %package libs
-Summary:     X11R6 shared libraries
-Summary(de): X11R6 shared Libraries
-Summary(pl): X11R6 biblioteki dzielone (dynamiczne)
-Summary(fr): Bibliothèques partagées X11R6
-Group:       X11/XFree86
-Prereq:      grep, /sbin/ldconfig
+Summary:	X11R6 shared libraries
+Summary(de):	X11R6 shared Libraries
+Summary(pl):	X11R6 biblioteki dzielone (dynamiczne)
+Summary(fr):	Bibliothèques partagées X11R6
+Group:		X11/Libraries
+Group(pl):	X11/Biblioteki
+Prereq:		grep, /sbin/ldconfig
 %ifarch sparc
-Obsoletes: X11R6.1-libs
+Obsoletes:	X11R6.1-libs
 %endif
 
 %description libs
@@ -228,48 +233,51 @@ içerir. Bunlar, X programlarýný (sunucu olsun olmasýn) çalýþtýrmak için
 gerekli disk alanýný azaltmak için ayrý bir paket olarak sunulmuþtur.
 
 %package devel
-Summary:     X11R6 headers and programming man pages
-Summary(de): X11R6 Headers und man pages für Programmierer
-Summary(pl): X11R6 Pliki nag³ówkowe oraz strony podrêcznika dla programistów
-Group:       X11/XFree86
+Summary:	X11R6 headers and programming man pages
+Summary(de):	X11R6 Headers und man pages für Programmierer
+Summary(pl):	X11R6 Pliki nag³ówkowe oraz strony podrêcznika dla programistów
+Group:		X11/Development/Libraries
+Group(pl):	X11/Programowanie/Biblioteki
 %ifarch sparc
-Obsoletes: X11R6.1-devel
+Obsoletes:	X11R6.1-devel
 %endif
 
 %description devel
-Header files, and documentation for developing programs that
-run as X clients. It includes the base Xlib library as well as the Xt
-and Xaw widget sets. For information on programming with these libraries,
-Red Hat recommends the series of books on X Programming produced by
-O'Reilly and Associates.
+Header files, and documentation for developing programs that run as X
+clients. It includes the base Xlib library as well as the Xt and Xaw widget
+sets. For information on programming with these libraries, Red Hat
+recommends the series of books on X Programming produced by O'Reilly and
+Associates.
 
 %description -l de devel
-Header-Dateien und Dokumentation zum Entwickeln von Programmen,
-die als X-Clients laufen. Enthält die Xlib-Library und die Widget-Sätze Xt
-und Xaw. Information zum Programmieren mit diesen Libraries finden Sie 
-in der Buchreihe zur X-Programmierung von O'Reilly and Associates.
+Header-Dateien und Dokumentation zum Entwickeln von Programmen, die als
+X-Clients laufen. Enthält die Xlib-Library und die Widget-Sätze Xt und Xaw.
+Information zum Programmieren mit diesen Libraries finden Sie in der
+Buchreihe zur X-Programmierung von O'Reilly and Associates.
 
 %description -l pl devel
-Pliki nag³ówkowe, dokumentcja dla programistów rozwijaj±cych aplikacje 
+Pliki nag³ówkowe, dokumentcja dla programistów rozwijaj±cych aplikacje
 klienckie pod X'y. Zawiera podstatwow± bibliotekê Xlib a tak¿e Xt i Xaw.
-Wiêcej informacji nt. pisania programów przy u¿yciu tych bibliotek mo¿esz 
-znale¼æ w ksi±¿kach wydawnictwa O'Reilly and Associates (X Programming) 
+Wiêcej informacji nt. pisania programów przy u¿yciu tych bibliotek mo¿esz
+znale¼æ w ksi±¿kach wydawnictwa O'Reilly and Associates (X Programming)
 polecanych przez Red Hat'a.
 
 %description -l fr devel
-Fichiers d'en-tête, et documentation pour développer des
-programmes s'exécutant en clients X. Cela comprend la Bibliothéque Xlib
-de base aussi bien que les ensembles de widgets Xt et Xaw. Pour des
-informations sur la programmation avec ces Bibliothéques, Red Hat 
-recommande la série d'ouvrages sur la programmation  X editée par
-O'Reilly and Associates.
+Fichiers d'en-tête, et documentation pour développer des programmes
+s'exécutant en clients X. Cela comprend la Bibliothéque Xlib de base aussi
+bien que les ensembles de widgets Xt et Xaw. Pour des informations sur la
+programmation avec ces Bibliothéques, Red Hat recommande la série d'ouvrages
+sur la programmation X editée par O'Reilly and Associates.
 
 %package static
-Summary:     X11R6 static libraries
-Summary(de): X11R6 statische Libraries
-Summary(pl): X11R6 biblioteki statyczne
-Summary(fr): Bibliothèques X11R6 statiques
-Group:       X11/XFree86
+Summary:	X11R6 static libraries
+Summary(de):	X11R6 statische Libraries
+Summary(pl):	X11R6 biblioteki statyczne
+Summary(fr):	Bibliothèques X11R6 statiques
+Group:		X11/XFree86
+Group:		X11/Development/Libraries
+Group(pl):	X11/Programowanie/Biblioteki
+Requires:	%{name}-devel = %{version}
 
 %description static
 X11R6 static libraries.
@@ -284,12 +292,13 @@ X11R6 biblioteki statyczne.
 Bibliothèques X11R6 statiques
 
 %package S3
-Summary:     XFree86 S3 server
-Summary(de): XFree86 S3 Server
-Summary(fr): Serveur XFree86 pour S3
-Summary(pl): XFree86 serwer dla kart opartych na uk³adzie S3
-Summary(tr): XFree86 S3 sunucularý
-Group:       X11/XFree86/Servers
+Summary:	XFree86 S3 server
+Summary(de):	XFree86 S3 Server
+Summary(fr):	Serveur XFree86 pour S3
+Summary(pl):	XFree86 serwer dla kart opartych na uk³adzie S3
+Summary(tr):	XFree86 S3 sunucularý
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description S3
 X server for cards built around chips from S3, including most #9 cards,
@@ -321,12 +330,13 @@ Fahrenheit, Mirco Crystal 8S, çoðu STB ve bazý anakarta tümleþik grafik
 hýzlandýrýcýlar bu gruba girer. S3 Virge sunucusu ayrý bir pakette yer alýr.
 
 %package I128
-Summary:     XFree86 #9 Imagine 128 Server
-Summary(de): XFree86 #9 Imagine 128 Server
-Summary(fr): Serveur Xfree86 pour #9 Imagine 128
-Summary(pl): XFree86 serwer dla kart #9 Imagine 128
-Summary(tr): XFree86 #9 Imagine 128 sunucusu
-Group:       X11/XFree86/Servers
+Summary:	XFree86 #9 Imagine 128 Server
+Summary(de):	XFree86 #9 Imagine 128 Server
+Summary(fr):	Serveur Xfree86 pour #9 Imagine 128
+Summary(pl):	XFree86 serwer dla kart #9 Imagine 128
+Summary(tr):	XFree86 #9 Imagine 128 sunucusu
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description I128
 X server for the #9 Imagine 128 board.
@@ -344,12 +354,13 @@ Serveur X pour les cartes #9 Imagine 128.
 #9 Imagine kartý için X sunucusu.
 
 %package S3V
-Summary:     XFree86 S3 Virge server
-Summary(de): Xfree86 S3 Virge-Server
-Summary(fr): Serveur XFree86 pour S3 Virge
-Summary(pl): XFree86 serwer dla kart S3 Virge
-Summary(tr): XFree86 S3 Virge sunucusu
-Group:       X11/XFree86/Servers
+Summary:	XFree86 S3 Virge server
+Summary(de):	Xfree86 S3 Virge-Server
+Summary(fr):	Serveur XFree86 pour S3 Virge
+Summary(pl):	XFree86 serwer dla kart S3 Virge
+Summary(tr):	XFree86 S3 Virge sunucusu
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description S3V
 X server for cards built around the S3 Virge chipset.
@@ -367,12 +378,13 @@ Serveur X pour les cartes construites autour du circuit S3 Virge
 XFree86 S3 Virge sunucusu
 
 %package Mach64
-Summary:     XFree86 Mach64 server
-Summary(de): Xfree86 Mach64-Server
-Summary(fr): Serveur Mach64 de XFree86
-Summary(pl): XFree86 serwer dla kart Mach64
-Summary(tr): XFree86 Mach64 sunucusu
-Group:       X11/XFree86/Servers
+Summary:	XFree86 Mach64 server
+Summary(de):	Xfree86 Mach64-Server
+Summary(fr):	Serveur Mach64 de XFree86
+Summary(pl):	XFree86 serwer dla kart Mach64
+Summary(tr):	XFree86 Mach64 sunucusu
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description Mach64
 X server for ATI Mach64 based cards such as the Graphics Xpression, GUP Turbo,
@@ -410,10 +422,11 @@ sorun yaþadýklarý bilinmektedir. Bu sorunla ilgili son bilgilere ulaþmak için
 lütfen http://www.xfree86.org adresine bakýn.
 
 %package Sun
-Summary:     XFree86 Sun server for monochrome and 8-bit color SBUS framebuffers
-Summary(pl): XFree86 Sun serwer do monochromatycznych kart i 8-bitowych kolorowych framebufferów SBUS
-Group:       X11/XFree86/Servers
-Obsoletes:   X11R6.1-Sun
+Summary:	XFree86 Sun server for monochrome and 8-bit color SBUS framebuffers
+Summary(pl):	XFree86 Sun serwer do monochromatycznych kart i 8-bitowych kolorowych framebufferów SBUS
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
+Obsoletes:	X11R6.1-Sun
 
 %description Sun
 To run X Windows programs requires an X server for your specific hardware.
@@ -426,10 +439,11 @@ sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun z
 monochromatycznymi lub te¿ 8-bitowymi kolorowymi framebufferami SBUS.
 
 %package SunMono
-Summary:     XFree86 Sun server for monochrome SBUS framebuffers only
-Summary(pl): XFree86 Sun serwer wy³±cznie do monochromatycznych framebufferów SBUS
-Group:       X11/XFree86/Servers
-Obsoletes:   X11R6.1-SunMono
+Summary:	XFree86 Sun server for monochrome SBUS framebuffers only
+Summary(pl):	XFree86 Sun serwer wy³±cznie do monochromatycznych framebufferów SBUS
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
+Obsoletes:	X11R6.1-SunMono
 
 %description SunMono
 To run X Windows programs requires an X server for your specific hardware.
@@ -442,10 +456,11 @@ sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun z wy³±cznie
 monochromatycznymi framebufferami SBUS.
 
 %package Sun24
-Summary:     XFree86 Sun server for all supported SBUS framebuffers
-Summary(pl): XFree86 serwer Sun'owski dla wszystkich wspieranych framebufferów SBUS
-Group:       X11/XFree86/Servers
-Obsoletes:   X11R6.1-Sun24
+Summary:	XFree86 Sun server for all supported SBUS framebuffers
+Summary(pl):	XFree86 serwer Sun'owski dla wszystkich wspieranych framebufferów SBUS
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
+Obsoletes:	X11R6.1-Sun24
 
 %description Sun24
 To run X Windows programs requires an X server for your specific hardware.
@@ -458,9 +473,10 @@ sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun dla wszystkich
 wspieranych framebufferów SBUS.
 
 %package Xvfb
-Summary:    XFree86 Xvfb server
-Summary(pl): Xfree86 serwer Xvfb
-Group:      X11/XFree86/Servers
+Summary:	XFree86 Xvfb server
+Summary(pl):	Xfree86 serwer Xvfb
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description Xvfb
 X server which runs in a X window.
@@ -469,9 +485,9 @@ X server which runs in a X window.
 X serwer uruchamiany w okienku pod innym X serwerem.
 
 %package Xnest
-Summary:     XFree86 Xnest server
-Summary(pl): XFree86 serwer Xnest
-Group:       X11/XFree86/Servers
+Summary:	XFree86 Xnest server
+Summary(pl):	XFree86 serwer Xnest
+Group:		X11/XFree86/Servers
 
 %description Xnest
 X server which runs in a X window.
@@ -480,12 +496,12 @@ X server which runs in a X window.
 X serwer uruchamiany w okienku pod innym X serwerem.
 
 %package 8514
-Summary:     XFree86 8514 server
-Summary(de): XFree86 8514 Server
-Summary(fr): serveur 8514 pour XFree86.
-Summary(pl): XFree86 serwer dla kart 8514
-Summary(tr): XFree86 8514 sunucusu
-Group:       X11/XFree86/Servers
+Summary:	XFree86 8514 server
+Summary(de):	XFree86 8514 Server
+Summary(fr):	serveur 8514 pour XFree86.
+Summary(pl):	XFree86 serwer dla kart 8514
+Summary(tr):	XFree86 8514 sunucusu
+Group:		X11/XFree86/Servers
 
 %description 8514
 X server for older IBM 8514 cards and compatibles from companies such as
@@ -505,12 +521,13 @@ firmy takie jak np. ATI.
 Eski IBM 8514 ve uyumlu kartlar (ATI gibi) için sunucu.
 
 %package AGX
-Summary:     XFree86 AGX server
-Summary(de): XFree86 AGX Server
-Summary(fr): serveur AGX pour XFree86.
-Summary(pl): XFree86 serwer dla kart AGX.
-Summary(tr): XFree86 AGX sunucusu
-Group:       X11/XFree86/Servers
+Summary:	XFree86 AGX server
+Summary(de):	XFree86 AGX Server
+Summary(fr):	serveur AGX pour XFree86.
+Summary(pl):	XFree86 serwer dla kart AGX.
+Summary(tr):	XFree86 AGX sunucusu
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description AGX
 X server for AGX based cards such as the Boca Vortex, Orchid Celsius,
@@ -532,12 +549,13 @@ Boca Vortex, Orchid Celsius, Spider Black Widow ve Hercules Graphite gibi AGX
 tabanlý kartlar için X sunucusu.
 
 %package Mach32
-Summary:     XFree86 Mach32 server
-Summary(de): Xfree86 Mach32-Server
-Summary(fr): Serveur XFree86 pour Mach32
-Summary(pl): XFree86 serwer dla kart Mach32
-Summary(tr): XFree86 Mach32 sunucusu
-Group:       X11/XFree86/Servers
+Summary:	XFree86 Mach32 server
+Summary(de):	Xfree86 Mach32-Server
+Summary(fr):	Serveur XFree86 pour Mach32
+Summary(pl):	XFree86 serwer dla kart Mach32
+Summary(tr):	XFree86 Mach32 sunucusu
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description Mach32
 X server for cards built around ATI's Mach32 chip, including the ATI
@@ -560,12 +578,13 @@ ATI Mach32 tabanlý ATI Graphics Ultra Pro ve Ultra Plus kartlarý için X
 sunucusu.
 
 %package Mach8
-Summary:     XFree86 Mach8 server
-Summary(de): XFree86 Mach8 Server
-Summary(fr): Serveur Mach8 pour XFree86
-Summary(pl): XFree86 serwer dla kart Mach8
-Summary(tr): XFree86 Mach8 sunucusu
-Group:       X11/XFree86/Servers
+Summary:	XFree86 Mach8 server
+Summary(de):	XFree86 Mach8 Server
+Summary(fr):	Serveur Mach8 pour XFree86
+Summary(pl):	XFree86 serwer dla kart Mach8
+Summary(tr):	XFree86 Mach8 sunucusu
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description Mach8
 X server for cards built around ATI's Mach8 chip, including the ATI
@@ -588,12 +607,13 @@ ATI 8514 Ultra ve Graphics Ultra gibi ATI Mach8 tabanlý kartlar için X
 sunucusu.
 
 %package Mono
-Summary:     XFree86 Mono server
-Summary(de): Xfree86 Mono-Server
-Summary(fr): Serveur Monochrome de XFree86
-Summary(pl): XFree86 Monochromatyczny serwer
-Summary(tr): XFree86 Mono sunucusu
-Group:       X11/XFree86/Servers
+Summary:	XFree86 Mono server
+Summary(de):	Xfree86 Mono-Server
+Summary(fr):	Serveur Monochrome de XFree86
+Summary(pl):	XFree86 Monochromatyczny serwer
+Summary(tr):	XFree86 Mono sunucusu
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description Mono
 Generic monochrome (2 color) server for VGA cards, which works on nearly
@@ -617,12 +637,13 @@ Mono (2 renk) VGA kartlarý için genel X sunucusu. Kýsýtlý bir çözünürlük
 altýnda birçok VGA kart ile çalýþýr.
 
 %package P9000
-Summary:     XFree86 P9000 server
-Summary(de): XFree86 P9000 Server
-Summary(fr): Serveur XFree86 pour P9000
-Summary(pl): XFree86 serwer dla kart P9000
-Summary(tr): XFree86 P9000 sunucusu
-Group:       X11/XFree86/Servers
+Summary:	XFree86 P9000 server
+Summary(de):	XFree86 P9000 Server
+Summary(fr):	Serveur XFree86 pour P9000
+Summary(pl):	XFree86 serwer dla kart P9000
+Summary(tr):	XFree86 P9000 sunucusu
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description P9000
 X server for cards built around the Weitek P9000 chips such as most
@@ -645,12 +666,13 @@ Diamond Viper ve Orchid P9000 gibi Weitek P9000 tabanlý kartlar için X
 sunucusu.
 
 %package SVGA
-Summary:     XFree86 SVGA server
-Summary(de): XFree86 SVGA-Server
-Summary(fr): Serveur XFree86 pour SVGA
-Summary(pl): XFree86 serwer dla kart SVGA
-Summary(tr): XFree86 SVGA sunucusu
-Group:       X11/XFree86/Servers
+Summary:	XFree86 SVGA server
+Summary(de):	XFree86 SVGA-Server
+Summary(fr):	Serveur XFree86 pour SVGA
+Summary(pl):	XFree86 serwer dla kart SVGA
+Summary(tr):	XFree86 SVGA sunucusu
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description SVGA
 X server for most simple framebuffer SVGA devices, including cards built
@@ -693,12 +715,13 @@ zamanda Diamond Speedstar, Orchid Kelvins, STB Nitros / Horizons, Genoa
 kart ile de çalýþýr. Herhangi bir sorun yaþarsanýz bu sunucuyu deneyin.
 
 %package VGA16
-Summary:     XFree86 VGA16 server
-Summary(de): XFree86 VGA16-Server
-Summary(fr): Serveur XFree86 pour VGA16
-Summary(pl): XFree86 serwer dla kart VGA16
-Summary(tr): XFree86 VGA16 sunucusu
-Group:       X11/XFree86/Servers
+Summary:	XFree86 VGA16 server
+Summary(de):	XFree86 VGA16-Server
+Summary(fr):	Serveur XFree86 pour VGA16
+Summary(pl):	XFree86 serwer dla kart VGA16
+Summary(tr):	XFree86 VGA16 sunucusu
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description VGA16
 Generic 16 color server for VGA boards. This works on nearly all VGA style
@@ -722,12 +745,13 @@ VGA kartlarý için genel 16 renk sunucusu. Çoðu VGA tipi kart ile düþük renk
 ve çözünürlükte çalýþýr.
 
 %package W32
-Summary:     XFree86 W32 server
-Summary(de): XFree86 W32 Server
-Summary(fr): Serveur XFree86 pour W32
-Summary(pl): XFree86 serwer dla kart W32
-Summary(tr): XFree86 W32 sunucusu
-Group:       X11/XFree86/Servers
+Summary:	XFree86 W32 server
+Summary(de):	XFree86 W32 Server
+Summary(fr):	Serveur XFree86 pour W32
+Summary(pl):	XFree86 serwer dla kart W32
+Summary(tr):	XFree86 W32 sunucusu
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description W32
 X server for cards built around the ET4000/W32 chips, including the
@@ -754,9 +778,10 @@ Sigma Concorde, STB LightSpeed, TechWorks Thunderbolt, ve ViewTop PCI
 gibi kartlarýn kullandýðý ET4000/W32 tabanlý kartlar için X sunucusu.
 
 %package TGA
-Summary:     XFree86 TGA server
-Summary(pl): XFree86 serwer dla kart TGA
-Group:       X11/XFree86/Servers
+Summary:	XFree86 TGA server
+Summary(pl):	XFree86 serwer dla kart TGA
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description TGA
 Eight bit X server for Digital TGA boards based on the DC21040 chips. These
@@ -769,10 +794,10 @@ DC21040. S± to bardzo popularne karty wystêpuj±ce w stacjach roboczych Alpha
 w tym Alpha UDB (Multia).
 
 #%package XF86Setup
-#Group:       X11/XFree86
-#Summary:     Graphical configuration tool for XFree86
-#Summary(pl): Graficzne narzêdzie do konfiguracji XFree86
-#Requires:    XFree86-VGA16 = %{version}
+#Summary:	Graphical configuration tool for XFree86
+#Summary(pl):	Graficzne narzêdzie do konfiguracji XFree86
+#Requires:	XFree86-VGA16 = %{version}
+#Group:		X11/XFree86
 
 #%description XF86Setup
 #XF86Setup is a graphical configuration tool for the XFree86 family of
@@ -909,7 +934,7 @@ mkfontdir /usr/X11R6/lib/X11/fonts/100dpi
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %config %doc /usr/X11R6/lib/X11/XF86Config.eg
 %docdir /usr/X11R6/lib/X11/doc
 %doc /usr/X11R6/lib/X11/Cards
@@ -981,177 +1006,177 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/lib/X11/etc/xmodmap.std
 /usr/X11R6/lib/X11/etc/postinst.sh
 /usr/X11R6/lib/X11/etc/preinst.sh
-%attr(711, root, root) /usr/X11R6/bin/Xwrapper
-%attr(755, root, root) /usr/X11R6/bin/X
-%attr(755, root, root) /usr/X11R6/bin/Xprt
-%attr(755, root, root) /usr/X11R6/bin/lbxproxy
-#%attr(755, root, root) /usr/X11R6/bin/oclock
-%attr(755, root, root) /usr/X11R6/bin/proxymngr
-%attr(755, root, root) /usr/X11R6/bin/rstartd
-%attr(755, root, root) /usr/X11R6/bin/xfindproxy
-%attr(755, root, root) /usr/X11R6/bin/xfwp
-%attr(755, root, root) /usr/X11R6/bin/xrx
-%attr(755, root, root) /usr/X11R6/bin/lndir
-%attr(755, root, root) /usr/X11R6/bin/mkdirhier
-%attr(755, root, root) /usr/X11R6/bin/gccmakedep
-%attr(755, root, root) /usr/X11R6/bin/mergelib
-%attr(755, root, root) /usr/X11R6/bin/makeg
-%attr(755, root, root) /usr/X11R6/bin/appres
-%attr(755, root, root) /usr/X11R6/bin/bdftopcf
-%attr(755, root, root) /usr/X11R6/bin/beforelight
-%attr(755, root, root) /usr/X11R6/bin/bitmap
-%attr(755, root, root) /usr/X11R6/bin/bmtoa
-%attr(755, root, root) /usr/X11R6/bin/atobm
-%attr(755, root, root) /usr/X11R6/bin/editres
-%attr(755, root, root) /usr/X11R6/bin/fsinfo
-%attr(755, root, root) /usr/X11R6/bin/fslsfonts
-%attr(755, root, root) /usr/X11R6/bin/fstobdf
-%attr(755, root, root) /usr/X11R6/bin/iceauth
-%attr(755, root, root) /usr/X11R6/bin/mkfontdir
-%attr(755, root, root) /usr/X11R6/bin/showrgb
-%attr(755, root, root) /usr/X11R6/bin/rstart
-%attr(755, root, root) /usr/X11R6/bin/smproxy
-%attr(755, root, root) /usr/X11R6/bin/twm
-%attr(755, root, root) /usr/X11R6/bin/x11perf
-%attr(755, root, root) /usr/X11R6/bin/x11perfcomp
-%attr(755, root, root) /usr/X11R6/bin/Xmark
-%attr(755, root, root) /usr/X11R6/bin/xauth
-%attr(755, root, root) /usr/X11R6/bin/xclipboard
-%attr(755, root, root) /usr/X11R6/bin/xcutsel
-%attr(755, root, root) /usr/X11R6/bin/xclock
-%attr(755, root, root) /usr/X11R6/bin/xcmsdb
-%attr(755, root, root) /usr/X11R6/bin/xconsole
-%attr(755, root, root) /usr/X11R6/bin/xdm
-%attr(755, root, root) /usr/X11R6/bin/sessreg
-%attr(755, root, root) /usr/X11R6/bin/xdpyinfo
-%attr(755, root, root) /usr/X11R6/bin/dga
-%attr(755, root, root) /usr/X11R6/bin/xfd
-%attr(755, root, root) /usr/X11R6/bin/xfs
-%attr(755, root, root) /usr/X11R6/bin/xhost
-%attr(755, root, root) /usr/X11R6/bin/xieperf
-%attr(755, root, root) /usr/X11R6/bin/xinit
-%config %attr(755, root, root) /usr/X11R6/bin/startx
-%attr(755, root, root) /usr/X11R6/bin/setxkbmap
-%attr(755, root, root) /usr/X11R6/bin/xkbcomp
-%attr(755, root, root) /usr/X11R6/bin/xkbevd
-%attr(755, root, root) /usr/X11R6/bin/xkbprint
-%attr(755, root, root) /usr/X11R6/bin/xkbvleds
-%attr(755, root, root) /usr/X11R6/bin/xkbwatch
-%attr(755, root, root) /usr/X11R6/bin/xkbbell
-%attr(755, root, root) /usr/X11R6/bin/xkill
-%attr(755, root, root) /usr/X11R6/bin/xlogo
-%attr(755, root, root) /usr/X11R6/bin/xlsatoms
-%attr(755, root, root) /usr/X11R6/bin/xlsclients
-%attr(755, root, root) /usr/X11R6/bin/xlsfonts
-%attr(755, root, root) /usr/X11R6/bin/xmag
-%attr(755, root, root) /usr/X11R6/bin/xmh
-%attr(755, root, root) /usr/X11R6/bin/xmodmap
-%attr(755, root, root) /usr/X11R6/bin/xprop
-%attr(755, root, root) /usr/X11R6/bin/xrdb
-%attr(755, root, root) /usr/X11R6/bin/xset
-%attr(755, root, root) /usr/X11R6/bin/xrefresh
-%attr(755, root, root) /usr/X11R6/bin/xsetmode
-%attr(755, root, root) /usr/X11R6/bin/xsetpointer
-%attr(755, root, root) /usr/X11R6/bin/xsetroot
-%attr(755, root, root) /usr/X11R6/bin/xsm
-%attr(755, root, root) /usr/X11R6/bin/xstdcmap
-%attr(4755, root, root) /usr/X11R6/bin/xterm
-%attr(755, root, root) /usr/X11R6/bin/resize
-%attr(755, root, root) /usr/X11R6/bin/xvidtune
-%attr(755, root, root) /usr/X11R6/bin/xwd
-%attr(755, root, root) /usr/X11R6/bin/xwininfo
-%attr(755, root, root) /usr/X11R6/bin/xwud
-%attr(755, root, root) /usr/X11R6/bin/reconfig
-%attr(755, root, root) /usr/X11R6/bin/xf86config
-%attr(755, root, root) /usr/X11R6/bin/scanpci
-%attr(755, root, root) /usr/X11R6/bin/SuperProbe
-%attr(755, root, root) /usr/X11R6/bin/xon
+%attr(755,root,root) /usr/X11R6/bin/Xwrapper
+%attr(755,root,root) /usr/X11R6/bin/X
+%attr(755,root,root) /usr/X11R6/bin/Xprt
+%attr(755,root,root) /usr/X11R6/bin/lbxproxy
+#%attr(755,root,root) /usr/X11R6/bin/oclock
+%attr(755,root,root) /usr/X11R6/bin/proxymngr
+%attr(755,root,root) /usr/X11R6/bin/rstartd
+%attr(755,root,root) /usr/X11R6/bin/xfindproxy
+%attr(755,root,root) /usr/X11R6/bin/xfwp
+%attr(755,root,root) /usr/X11R6/bin/xrx
+%attr(755,root,root) /usr/X11R6/bin/lndir
+%attr(755,root,root) /usr/X11R6/bin/mkdirhier
+%attr(755,root,root) /usr/X11R6/bin/gccmakedep
+%attr(755,root,root) /usr/X11R6/bin/mergelib
+%attr(755,root,root) /usr/X11R6/bin/makeg
+%attr(755,root,root) /usr/X11R6/bin/appres
+%attr(755,root,root) /usr/X11R6/bin/bdftopcf
+%attr(755,root,root) /usr/X11R6/bin/beforelight
+%attr(755,root,root) /usr/X11R6/bin/bitmap
+%attr(755,root,root) /usr/X11R6/bin/bmtoa
+%attr(755,root,root) /usr/X11R6/bin/atobm
+%attr(755,root,root) /usr/X11R6/bin/editres
+%attr(755,root,root) /usr/X11R6/bin/fsinfo
+%attr(755,root,root) /usr/X11R6/bin/fslsfonts
+%attr(755,root,root) /usr/X11R6/bin/fstobdf
+%attr(755,root,root) /usr/X11R6/bin/iceauth
+%attr(755,root,root) /usr/X11R6/bin/mkfontdir
+%attr(755,root,root) /usr/X11R6/bin/showrgb
+%attr(755,root,root) /usr/X11R6/bin/rstart
+%attr(755,root,root) /usr/X11R6/bin/smproxy
+%attr(755,root,root) /usr/X11R6/bin/twm
+%attr(755,root,root) /usr/X11R6/bin/x11perf
+%attr(755,root,root) /usr/X11R6/bin/x11perfcomp
+%attr(755,root,root) /usr/X11R6/bin/Xmark
+%attr(755,root,root) /usr/X11R6/bin/xauth
+%attr(755,root,root) /usr/X11R6/bin/xclipboard
+%attr(755,root,root) /usr/X11R6/bin/xcutsel
+%attr(755,root,root) /usr/X11R6/bin/xclock
+%attr(755,root,root) /usr/X11R6/bin/xcmsdb
+%attr(755,root,root) /usr/X11R6/bin/xconsole
+%attr(755,root,root) /usr/X11R6/bin/xdm
+%attr(755,root,root) /usr/X11R6/bin/sessreg
+%attr(755,root,root) /usr/X11R6/bin/xdpyinfo
+%attr(755,root,root) /usr/X11R6/bin/dga
+%attr(755,root,root) /usr/X11R6/bin/xfd
+%attr(755,root,root) /usr/X11R6/bin/xfs
+%attr(755,root,root) /usr/X11R6/bin/xhost
+%attr(755,root,root) /usr/X11R6/bin/xieperf
+%attr(755,root,root) /usr/X11R6/bin/xinit
+%config %attr(755,root,root) /usr/X11R6/bin/startx
+%attr(755,root,root) /usr/X11R6/bin/setxkbmap
+%attr(755,root,root) /usr/X11R6/bin/xkbcomp
+%attr(755,root,root) /usr/X11R6/bin/xkbevd
+%attr(755,root,root) /usr/X11R6/bin/xkbprint
+%attr(755,root,root) /usr/X11R6/bin/xkbvleds
+%attr(755,root,root) /usr/X11R6/bin/xkbwatch
+%attr(755,root,root) /usr/X11R6/bin/xkbbell
+%attr(755,root,root) /usr/X11R6/bin/xkill
+%attr(755,root,root) /usr/X11R6/bin/xlogo
+%attr(755,root,root) /usr/X11R6/bin/xlsatoms
+%attr(755,root,root) /usr/X11R6/bin/xlsclients
+%attr(755,root,root) /usr/X11R6/bin/xlsfonts
+%attr(755,root,root) /usr/X11R6/bin/xmag
+%attr(755,root,root) /usr/X11R6/bin/xmh
+%attr(755,root,root) /usr/X11R6/bin/xmodmap
+%attr(755,root,root) /usr/X11R6/bin/xprop
+%attr(755,root,root) /usr/X11R6/bin/xrdb
+%attr(755,root,root) /usr/X11R6/bin/xset
+%attr(755,root,root) /usr/X11R6/bin/xrefresh
+%attr(755,root,root) /usr/X11R6/bin/xsetmode
+%attr(755,root,root) /usr/X11R6/bin/xsetpointer
+%attr(755,root,root) /usr/X11R6/bin/xsetroot
+%attr(755,root,root) /usr/X11R6/bin/xsm
+%attr(755,root,root) /usr/X11R6/bin/xstdcmap
+%attr(4755,root,root) /usr/X11R6/bin/xterm
+%attr(755,root,root) /usr/X11R6/bin/resize
+%attr(755,root,root) /usr/X11R6/bin/xvidtune
+%attr(755,root,root) /usr/X11R6/bin/xwd
+%attr(755,root,root) /usr/X11R6/bin/xwininfo
+%attr(755,root,root) /usr/X11R6/bin/xwud
+%attr(755,root,root) /usr/X11R6/bin/reconfig
+%attr(755,root,root) /usr/X11R6/bin/xf86config
+%attr(755,root,root) /usr/X11R6/bin/scanpci
+%attr(755,root,root) /usr/X11R6/bin/SuperProbe
+%attr(755,root,root) /usr/X11R6/bin/xon
 /usr/X11R6/include/X11/bitmaps
 
-%attr(644, root,  man) /usr/X11R6/man/man1/lbxproxy.1x
-#%attr(644, root,  man) /usr/X11R6/man/man1/oclock.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/proxymngr.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xfindproxy.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xfwp.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xrx.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/lndir.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/makestrs.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/makeg.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/mkdirhier.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/appres.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/bdftopcf.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/beforelight.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/bitmap.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/bmtoa.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/atobm.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/editres.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/fsinfo.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/fslsfonts.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/fstobdf.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/iceauth.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/mkfontdir.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/showrgb.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/rstart.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/rstartd.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/smproxy.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/twm.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/x11perf.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/x11perfcomp.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xauth.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xclipboard.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xcutsel.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xclock.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xcmsdb.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xconsole.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xdm.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/sessreg.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xdpyinfo.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/dga.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xfd.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xfs.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xhost.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xieperf.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xinit.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/startx.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/setxkbmap.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xkbcomp.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xkbevd.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xkbprint.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xkill.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xlogo.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xlsatoms.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xlsclients.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xlsfonts.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xmag.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xmh.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xmodmap.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xprop.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xrdb.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xrefresh.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xset.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xsetmode.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xsetpointer.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xsetroot.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xsm.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xstdcmap.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xterm.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/resize.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xvidtune.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xwd.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xwininfo.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xwud.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/Xserver.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/XFree86.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/reconfig.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xf86config.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/SuperProbe.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xon.1x
+%attr(644,root, man) /usr/X11R6/man/man1/lbxproxy.1x
+#%attr(644,root, man) /usr/X11R6/man/man1/oclock.1x
+%attr(644,root, man) /usr/X11R6/man/man1/proxymngr.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xfindproxy.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xfwp.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xrx.1x
+%attr(644,root, man) /usr/X11R6/man/man1/lndir.1x
+%attr(644,root, man) /usr/X11R6/man/man1/makestrs.1x
+%attr(644,root, man) /usr/X11R6/man/man1/makeg.1x
+%attr(644,root, man) /usr/X11R6/man/man1/mkdirhier.1x
+%attr(644,root, man) /usr/X11R6/man/man1/appres.1x
+%attr(644,root, man) /usr/X11R6/man/man1/bdftopcf.1x
+%attr(644,root, man) /usr/X11R6/man/man1/beforelight.1x
+%attr(644,root, man) /usr/X11R6/man/man1/bitmap.1x
+%attr(644,root, man) /usr/X11R6/man/man1/bmtoa.1x
+%attr(644,root, man) /usr/X11R6/man/man1/atobm.1x
+%attr(644,root, man) /usr/X11R6/man/man1/editres.1x
+%attr(644,root, man) /usr/X11R6/man/man1/fsinfo.1x
+%attr(644,root, man) /usr/X11R6/man/man1/fslsfonts.1x
+%attr(644,root, man) /usr/X11R6/man/man1/fstobdf.1x
+%attr(644,root, man) /usr/X11R6/man/man1/iceauth.1x
+%attr(644,root, man) /usr/X11R6/man/man1/mkfontdir.1x
+%attr(644,root, man) /usr/X11R6/man/man1/showrgb.1x
+%attr(644,root, man) /usr/X11R6/man/man1/rstart.1x
+%attr(644,root, man) /usr/X11R6/man/man1/rstartd.1x
+%attr(644,root, man) /usr/X11R6/man/man1/smproxy.1x
+%attr(644,root, man) /usr/X11R6/man/man1/twm.1x
+%attr(644,root, man) /usr/X11R6/man/man1/x11perf.1x
+%attr(644,root, man) /usr/X11R6/man/man1/x11perfcomp.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xauth.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xclipboard.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xcutsel.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xclock.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xcmsdb.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xconsole.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xdm.1x
+%attr(644,root, man) /usr/X11R6/man/man1/sessreg.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xdpyinfo.1x
+%attr(644,root, man) /usr/X11R6/man/man1/dga.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xfd.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xfs.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xhost.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xieperf.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xinit.1x
+%attr(644,root, man) /usr/X11R6/man/man1/startx.1x
+%attr(644,root, man) /usr/X11R6/man/man1/setxkbmap.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xkbcomp.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xkbevd.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xkbprint.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xkill.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xlogo.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xlsatoms.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xlsclients.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xlsfonts.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xmag.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xmh.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xmodmap.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xprop.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xrdb.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xrefresh.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xset.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xsetmode.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xsetpointer.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xsetroot.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xsm.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xstdcmap.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xterm.1x
+%attr(644,root, man) /usr/X11R6/man/man1/resize.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xvidtune.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xwd.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xwininfo.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xwud.1x
+%attr(644,root, man) /usr/X11R6/man/man1/Xserver.1x
+%attr(644,root, man) /usr/X11R6/man/man1/XFree86.1x
+%attr(644,root, man) /usr/X11R6/man/man1/reconfig.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xf86config.1x
+%attr(644,root, man) /usr/X11R6/man/man1/SuperProbe.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xon.1x
 
 /usr/X11R6/lib/X11/fonts/Speedo
 /usr/X11R6/lib/X11/fonts/Type1
 %dir /usr/X11R6/lib/X11/fonts/misc
-%attr(644, root, root) /usr/X11R6/lib/X11/fonts/misc/*pcf.gz
-%attr(644, root, root) %verify(not md5 size mtime) /usr/X11R6/lib/X11/fonts/misc/fonts.*
+%attr(644,root,root) /usr/X11R6/lib/X11/fonts/misc/*pcf.gz
+%attr(644,root,root) %verify(not md5 size mtime) /usr/X11R6/lib/X11/fonts/misc/fonts.*
 
 %config /usr/X11R6/lib/X11/rgb.txt
 
@@ -1160,24 +1185,23 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %files libs
-%attr(755, root, root) /usr/X11R6/lib/lib*.so.*.*
-%attr(  -, root, root) /usr/lib/X11
+%attr(755,root,root) /usr/X11R6/lib/lib*.so.*.*
 
 %files devel
 %defattr(644, root, root, 755)
 /usr/X11R6/include
 /usr/include/X11
 %dir /usr/X11R6/man/man3
-%attr(644, root,  man) /usr/X11R6/man/man3/*
+%attr(644,root, man) /usr/X11R6/man/man3/*
 
 /usr/X11R6/lib/X11/config
-%attr(755, root, root) /usr/X11R6/bin/imake
-%attr(755, root, root) /usr/X11R6/bin/makedepend
-%attr(755, root, root) /usr/X11R6/bin/xmkmf
+%attr(755,root,root) /usr/X11R6/bin/imake
+%attr(755,root,root) /usr/X11R6/bin/makedepend
+%attr(755,root,root) /usr/X11R6/bin/xmkmf
 
-%attr(644, root,  man) /usr/X11R6/man/man1/imake.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/makedepend.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/xmkmf.1x
+%attr(644,root, man) /usr/X11R6/man/man1/imake.1x
+%attr(644,root, man) /usr/X11R6/man/man1/makedepend.1x
+%attr(644,root, man) /usr/X11R6/man/man1/xmkmf.1x
 
 /usr/X11R6/lib/lib*.so
 
@@ -1185,180 +1209,183 @@ rm -rf $RPM_BUILD_ROOT
 %attr(644, root, root) /usr/X11R6/lib/lib*.a
 
 %files Xvfb
-%attr(755, root, root) /usr/X11R6/bin/Xvfb
-%attr(644, root,  man) /usr/X11R6/man/man1/Xvfb.1x
+%attr(755,root,root) /usr/X11R6/bin/Xvfb
+%attr(644,root, man) /usr/X11R6/man/man1/Xvfb.1x
 
 %files Xnest
-%attr(755, root, root) /usr/X11R6/bin/Xnest
-%attr(644, root,  man) /usr/X11R6/man/man1/Xnest.1x
+%attr(755,root,root) /usr/X11R6/bin/Xnest
+%attr(644,root, man) /usr/X11R6/man/man1/Xnest.1x
 
 %ifarch i386 alpha
 
 %files SVGA
-%attr(755, root, root) /usr/X11R6/bin/XF86_SVGA
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_SVGA.1x
-%attr(644, root,  man) /usr/X11R6/man/man5/XF86Config.5x
+%attr(755,root,root) /usr/X11R6/bin/XF86_SVGA
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_SVGA.1x
+%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x
 
 %endif
 
 %ifarch i386 sparc
 
 %files VGA16
-%attr(755, root, root) /usr/X11R6/bin/XF86_VGA16
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_VGA16.1x
-%attr(644, root,  man) /usr/X11R6/man/man5/XF86Config.5x
+%attr(755,root,root) /usr/X11R6/bin/XF86_VGA16
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_VGA16.1x
+%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x
 
 %endif
 
 %ifarch i386
 
 %files W32
-%attr(755, root, root) /usr/X11R6/bin/XF86_W32
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_W32.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_Accel.1x
-%attr(644, root,  man) /usr/X11R6/man/man5/XF86Config.5x
+%attr(755,root,root) /usr/X11R6/bin/XF86_W32
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_W32.1x
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_Accel.1x
+%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x
 %endif
 
 %ifarch i386 alpha
 
 %files Mono
-%attr(755, root, root) /usr/X11R6/bin/XF86_Mono
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_Mono.1x
-%attr(644, root,  man) /usr/X11R6/man/man5/XF86Config.5x
+%attr(755,root,root) /usr/X11R6/bin/XF86_Mono
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_Mono.1x
+%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x
 %endif
 
 %ifarch i386 alpha
 
 %files S3
-%attr(755, root, root) /usr/X11R6/bin/XF86_S3
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_S3.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_Accel.1x
-%attr(644, root,  man) /usr/X11R6/man/man5/XF86Config.5x
+%attr(755,root,root) /usr/X11R6/bin/XF86_S3
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_S3.1x
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_Accel.1x
+%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x
 %endif
 
 %ifarch i386 alpha
 
 %files S3V
-%attr(755, root, root) /usr/X11R6/bin/XF86_S3V
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_S3.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_Accel.1x
-%attr(644, root,  man) /usr/X11R6/man/man5/XF86Config.5x
+%attr(755,root,root) /usr/X11R6/bin/XF86_S3V
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_S3.1x
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_Accel.1x
+%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x
 %endif
 
 %ifarch i386
 
 %files 8514
-%attr(755, root, root) /usr/X11R6/bin/XF86_8514
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_8514.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_Accel.1x
-%attr(644, root,  man) /usr/X11R6/man/man5/XF86Config.5x
+%attr(755,root,root) /usr/X11R6/bin/XF86_8514
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_8514.1x
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_Accel.1x
+%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x
 %endif
 
 %ifarch i386
 
 %files Mach8
-%attr(755, root, root) /usr/X11R6/bin/XF86_Mach8
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_Mach8.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_Accel.1x
-%attr(644, root,  man) /usr/X11R6/man/man5/XF86Config.5x
+%attr(755,root,root) /usr/X11R6/bin/XF86_Mach8
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_Mach8.1x
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_Accel.1x
+%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x
 %endif
 
 %ifarch i386
 
 %files Mach32
-%attr(755, root, root) /usr/X11R6/bin/XF86_Mach32
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_Mach32.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_Accel.1x
-%attr(644, root,  man) /usr/X11R6/man/man5/XF86Config.5x
+%attr(755,root,root) /usr/X11R6/bin/XF86_Mach32
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_Mach32.1x
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_Accel.1x
+%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x
 %endif
 
 %files Mach64
-%attr(755, root, root) /usr/X11R6/bin/XF86_Mach64
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_Mach64.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_Accel.1x
-%attr(644, root,  man) /usr/X11R6/man/man5/XF86Config.5x
+%attr(755,root,root) /usr/X11R6/bin/XF86_Mach64
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_Mach64.1x
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_Accel.1x
+%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x
 
 %ifarch i386 alpha
 
 %files P9000
-%attr(755, root, root) /usr/X11R6/bin/XF86_P9000
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_P9000.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_Accel.1x
-%attr(644, root,  man) /usr/X11R6/man/man5/XF86Config.5x
+%attr(755,root,root) /usr/X11R6/bin/XF86_P9000
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_P9000.1x
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_Accel.1x
+%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x
 %endif
 
 %ifarch i386
 
 %files AGX
-%attr(755, root, root) /usr/X11R6/bin/XF86_AGX
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_AGX.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_Accel.1x
-%attr(644, root,  man) /usr/X11R6/man/man5/XF86Config.5x
+%attr(755,root,root) /usr/X11R6/bin/XF86_AGX
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_AGX.1x
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_Accel.1x
+%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x
 %endif
 
 %ifarch i386
 
 %files I128
-%attr(755, root, root) /usr/X11R6/bin/XF86_I128
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_I128.1x
-%attr(644, root,  man) /usr/X11R6/man/man1/XF86_Accel.1x
-%attr(644, root,  man) /usr/X11R6/man/man5/XF86Config.5x
+%attr(755,root,root) /usr/X11R6/bin/XF86_I128
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_I128.1x
+%attr(644,root, man) /usr/X11R6/man/man1/XF86_Accel.1x
+%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x
 %endif
 
 %ifarch alpha
 
 %files TGA
-%attr(755, root, root) /usr/X11R6/bin/XF86_TGA
-%attr(644, root,  man) /usr/X11R6/man/man5/XF86Config.5x
+%attr(755,root,root) /usr/X11R6/bin/XF86_TGA
+%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x
 
 %endif
 
 %ifarch sparc
 
 %files Sun
-%attr(755, root, root) /usr/X11R6/bin/Xsun
+%attr(755,root,root) /usr/X11R6/bin/Xsun
 %endif
 
 %ifarch sparc
 
 %files SunMono
-%attr(755, root, root) /usr/X11R6/bin/XsunMono
+%attr(755,root,root) /usr/X11R6/bin/XsunMono
 
 %endif
 
 %ifarch sparc
 
 %files Sun24
-%attr(755, root, root) /usr/X11R6/bin/Xsun24
+%attr(755,root,root) /usr/X11R6/bin/Xsun24
 
 %endif
 
 %files 75dpi-fonts
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %dir /usr/X11R6/lib/X11/fonts/75dpi
 /usr/X11R6/lib/X11/fonts/75dpi/*pcf.gz
 %verify(not md5 size mtime) /usr/X11R6/lib/X11/fonts/75dpi/fonts.*
 
 %files 100dpi-fonts
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %dir /usr/X11R6/lib/X11/fonts/100dpi
 /usr/X11R6/lib/X11/fonts/100dpi/*pcf.gz
 %verify(not md5 size mtime) /usr/X11R6/lib/X11/fonts/100dpi/fonts.*
 
 #%files cyrillic-fonts
-#%defattr(644, root, root, 755)
+#%defattr(644,root,root,755)
 #%dir /usr/X11R6/lib/X11/fonts/cyrillic
 #/usr/X11R6/lib/X11/fonts/cyrillic/*pcf.gz
 #%verify(not md5 size mtime) /usr/X11R6/lib/X11/fonts/cyrillic/fonts.*
 
 #%files XF86Setup
-#%attr(755, root, root) /usr/X11R6/bin/XF86Setup
-#%attr(755, root, root) /usr/X11R6/bin/xmseconfig
+#%attr(755,root,root) /usr/X11R6/bin/XF86Setup
+#%attr(755,root,root) /usr/X11R6/bin/xmseconfig
 #/usr/X11R6/lib/X11/XF86Setup
-#%attr(644, root,  man) /usr/X11R6/man/man1/XF86Setup.1x
-#%attr(644, root,  man) /usr/X11R6/man/man1/xmseconfig.1x
+#%attr(644,root, man) /usr/X11R6/man/man1/XF86Setup.1x
+#%attr(644,root, man) /usr/X11R6/man/man1/xmseconfig.1x
 
 %changelog
+* Mon Feb  1 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
+- changed some Group and added Group(pl).
+
 * Mon Aug 16 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [3.3.2-20]
 - changed Buildroot to /tmp/%%{name}-%%{version}-root,
