@@ -3,7 +3,7 @@
 @@ -1,5 +1,23 @@
 -#!/bin/sh
 -# $XConsortium: Xsession /main/10 1995/12/18 18:21:28 gildea $
-+#!/bin/bash -login
++#!/bin/sh -l
 +# Xsession for Red Hat Linux 6.0
 +# Copyright (c) 1999 Red Hat Software, Inc.
 +
