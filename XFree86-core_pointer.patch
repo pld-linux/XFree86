@@ -5,12 +5,6 @@ retrieving revision 3.273
 diff -u -p -r3.272 -r3.273
 --- xc/programs/Xserver/hw/xfree86/common/xf86Config.c	2003/08/24 20:52:30	3.272
 +++ xc/programs/Xserver/hw/xfree86/common/xf86Config.c	2003/08/27 02:50:25	3.273
-@@ -1,4 +1,4 @@
--/* $XFree86: xc/programs/Xserver/hw/xfree86/common/xf86Config.c,v 3.271 2003/08/24 17:36:50 dawes Exp $ */
-+/* $XFree86: xc/programs/Xserver/hw/xfree86/common/xf86Config.c,v 3.272 2003/08/24 20:52:30 dawes Exp $ */
- 
- 
- /*
 @@ -1451,7 +1451,7 @@ checkCoreInputDevices(serverLayoutPtr se
  	indp[count - 1].extraOptions = xf86addNewOption(NULL, "CorePointer", NULL);
  	indp[count].identifier = NULL;
