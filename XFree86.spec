@@ -2581,7 +2581,7 @@ fi
 %{_mandir}/man4/fbdev*
 %endif
 
-%ifarch %{ix86} amd64
+%ifarch %{ix86}
 %if %{with tdfx}
 %files driver-glide
 %defattr(644,root,root,755)
@@ -2827,7 +2827,7 @@ fi
 %files driver-tdfx
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tdfx_drv.o
-%ifarch %{ix86} alpha arm ppc amd64
+%ifarch %{ix86} alpha arm ppc
 %attr(755,root,root) %{_libdir}/modules/dri/tdfx_dri.so
 %endif
 %{_mandir}/man4/tdfx*
