@@ -5,11 +5,12 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	4.0
-Release:	9
+Release:	10
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0/source/X400src-1.tgz
+Source1:	ftp://ftp.mesa3d.org/mesa/MesaLib-3.2.tar.bz2
 Source3:	xdm.pamd
 Source4:	xdm.init
 Source5:	xfs.init
@@ -28,29 +29,28 @@ Patch1:		XFree86-HasZlib.patch
 Patch2:		XFree86-DisableDebug.patch
 Patch3:		XFree86-3.9.18-Xwrapper.patch
 Patch4:		XFree86-3.9.17-PAM.patch
-Patch5:		XFree86-4.0-GLU.patch
-Patch6:		XFree86-4.0-makedepend.patch
-Patch7:		XFree86-xfsredhat.patch
-Patch8:		XFree86-xfs-fix.patch
-Patch9:		XFree86-xfs-logger.patch
-Patch10:	XFree86-xterm-utempter.patch
-Patch11:	XFree86-app_defaults_dir.patch
+Patch5:		XFree86-4.0-makedepend.patch
+Patch6:		XFree86-xfsredhat.patch
+Patch7:		XFree86-xfs-fix.patch
+Patch8:		XFree86-xfs-logger.patch
+Patch9:		XFree86-xterm-utempter.patch
+Patch10:	XFree86-app_defaults_dir.patch
 # From DRI CVS
-Patch12:	XFree86-DRI-20000616.patch.gz
+Patch11:	XFree86-DRI-20000624.patch.gz
 # from rawhide
-Patch13:	XFree86-startx_xauth.patch
-Patch14:	XFree86-alpha.patch
-Patch15:	XFree86-v4l.patch
-Patch16:	XFree86-fixemacs.patch
-Patch17:	XFree86-sparc1.patch.gz
-Patch18:	XFree86-sparc2.patch.gz
-Patch19:	XFree86-sparc3.patch.gz
-Patch20:	XFree86-sparc4.patch.gz
-Patch21:	XFree86-security.patch
-Patch22:	XFree86-shared.patch
-Patch23:	XFree86-broken-includes.patch
-Patch24:	XFree86-Xaw-unaligned.patch
-Patch25:	XFree86-libICE-skip.patch
+Patch12:	XFree86-startx_xauth.patch
+Patch13:	XFree86-alpha.patch
+Patch14:	XFree86-v4l.patch
+Patch15:	XFree86-fixemacs.patch
+Patch16:	XFree86-sparc1.patch.gz
+Patch17:	XFree86-sparc2.patch.gz
+Patch18:	XFree86-sparc3.patch.gz
+Patch19:	XFree86-sparc4.patch.gz
+Patch20:	XFree86-security.patch
+Patch21:	XFree86-shared.patch
+Patch22:	XFree86-broken-includes.patch
+Patch23:	XFree86-Xaw-unaligned.patch
+Patch24:	XFree86-libICE-skip.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -833,35 +833,34 @@ in older releases.
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c
+%setup -q -c -a1
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
+%patch5 -p0
 %patch6 -p0
 %patch7 -p0
-%patch8 -p0
-#%patch9 -p0
+#%patch8 -p0
+%patch9 -p1
 %patch10 -p1
-%patch11 -p1
-%patch12 -p0
-#%patch13 -p1
+%patch11 -p0
+#%patch12 -p1
+%patch13 -p1
 %patch14 -p1
 %patch15 -p1
-%patch16 -p1
 %ifarch sparc sparc64
-%patch17 -p0
+%patch16 -p0
+%patch17 -p1
 %patch18 -p1
-%patch19 -p1
-%patch20 -p0
+%patch19 -p0
 %endif
+%patch20 -p1
 %patch21 -p1
 %patch22 -p1
 %patch23 -p1
-%patch24 -p1
-%patch25 -p0
+%patch24 -p0
 
 rm -f xc/config/cf/host.def
 
@@ -870,14 +869,46 @@ rm -f xc/config/cf/host.def
 %build
 mv -f xc/Makefile ./
 sed 's/^WORLDOPTS.*//g' Makefile > xc/Makefile
-MAKE="make -S" ; export MAKE
-make -S -C xc World \
+%{__make} -S -C xc World \
 	"BOOTSTRAPCFLAGS=$RPM_OPT_FLAGS" \
 	"CDEBUGFLAGS=" "CCOPTIONS=$RPM_OPT_FLAGS" \
 	"CXXDEBUGFLAGS=" "CXXOPTIONS=$RPM_OPT_FLAGS" \
 	"RAWCPP=/lib/cpp" \
 	"WORLDOPTS=-S"
 
+cd Mesa*
+
+LDFLAGS="-s"; export LDFLAGS
+CFLAGS="$RPM_OPT_FLAGS"; export CFLAGS
+%configure \
+	--enable-static \
+	--enable-shared \
+	--with-ggi="no" \
+	--with-svga="no" \
+	--disable-ggi-fbdev \
+	--disable-ggi-genkgi \
+%ifarch %{ix86} \
+	--enable-x86 \
+  %ifarch i586 i686 \
+	--enable-mmx \
+	--enable-3dnow \
+  %else \
+    %ifarch k6 \
+	--enable-mmx \
+	--enable-3dnow" \
+    %else \
+	--disable-mmx \
+	--disable-3dnow \
+    %endif \
+  %endif \
+%else \
+	--disable-x86 \
+	--disable-mmx \
+	--disable-3dnow
+%endif
+
+%{__make} -C src-glu
+	
 #--- %install ------------------------
 
 %install
@@ -890,12 +921,17 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console
 	$RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties \
 	$RPM_BUILD_ROOT{%{_appnkldir}/Utilities,%{_datadir}/pixmaps}
 
-make -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
+%{__make} -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
 		"INSTBINFLAGS=-m 755" \
 		"INSTPGMFLAGS=-m 755" \
 		"RAWCPP=/lib/cpp" \
 		install install.man
+
+%{__make} -C Mesa*/src-glu install \
+	DESTDIR=$RPM_BUILD_ROOT
+
+install -m 644 Mesa*/include/GL/glu.h $RPM_BUILD_ROOT%{_includedir}/GL/
 
 strip $RPM_BUILD_ROOT%{_bindir}/* || :
 strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*
@@ -915,6 +951,11 @@ ln -s ../..%{_bindir}/XFree86 $RPM_BUILD_ROOT/etc/X11/X
 # add X11 links in /usr/bin and /usr/include
 ln -s ../X11R6/include/X11 $RPM_BUILD_ROOT/usr/include/X11
 ln -s ../X11R6/bin $RPM_BUILD_ROOT/usr/bin/X11
+
+# fix libGL*.so links
+rm -f $RPM_BUILD_ROOT%{_libdir}/libGL*.so
+ln -sf libGL.so.1 $RPM_BUILD_ROOT%{_libdir}/libGL.so
+ln -sf libGLU.so.1 $RPM_BUILD_ROOT%{_libdir}/libGLU.so
 
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/xdm
 install %{SOURCE7} $RPM_BUILD_ROOT/etc/pam.d/xserver
@@ -1229,7 +1270,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/modules/codeconv
 %attr(755,root,root) %{_libdir}/modules/drivers/linux
 %attr(755,root,root) %{_libdir}/modules/drivers/vga_drv.o
-%attr(755,root,root) %{_libdir}/modules/extensions
+%dir %{_libdir}/modules/extensions
+%attr(755,root,root) %{_libdir}/modules/extensions/libdbe.a
+%attr(755,root,root) %{_libdir}/modules/extensions/libdri.a
+%attr(755,root,root) %{_libdir}/modules/extensions/libextmod.a
+%attr(755,root,root) %{_libdir}/modules/extensions/libpex5.a
+%attr(755,root,root) %{_libdir}/modules/extensions/librecord.a
+%attr(755,root,root) %{_libdir}/modules/extensions/libxie.a
 %attr(755,root,root) %{_libdir}/modules/fonts
 %attr(755,root,root) %{_libdir}/modules/input
 %attr(755,root,root) %{_libdir}/modules/linux
@@ -1322,6 +1369,8 @@ rm -rf $RPM_BUILD_ROOT
 %files OpenGL
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libGL*.so.*.*
+%attr(755,root,root) %{_libdir}/modules/extensions/libglx.a
+%attr(755,root,root) %{_libdir}/modules/extensions/libGLcore.a
 
 %files OpenGL-devel
 %defattr(644,root,root,755)
