@@ -605,6 +605,7 @@ Summary(pl):    Sterownik do kart ATI Radeon
 Group:          X11/XFree86
 Requires:       %{name}-modules = %{version}-%{release}
 Requires:       %{name}-Xserver = %{version}-%{release}
+Requires:	XFree86-driver-ati
 Requires:       OpenGL
 Conflicts:	XFree86-driver-nvidia
 
