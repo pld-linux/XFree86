@@ -1,0 +1,5 @@
+- fixed %description in fonts,
+- added using more rpm macros,
+- added %post{un} scripts for packages with fonts with rebuilding fonts
+  databases (by runing mkfontdir directories with fonts),
+- added %verify rules for fonts.{dir,alias} files.
