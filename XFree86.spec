@@ -25,8 +25,8 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
-Version:	4.3.99.901
-Release:	0.2
+Version:	4.3.99.902
+Release:	0.1
 Epoch:		1
 License:	MIT
 Group:		X11/XFree86
@@ -131,6 +131,7 @@ Patch49:	%{name}-mandir-fix.patch
 Patch50:	%{name}-xterm-256colors.patch
 Patch51:	%{name}-new-s3-pScreen.patch
 Patch52:	%{name}-kernel_headers.patch
+Patch53:	%{name}-stdint.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	%{_bindir}/perl
 %ifarch %{ix86} alpha amd64
@@ -1847,9 +1848,10 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 tar xfz *.tar.gz
 %patch48 -p0
 %patch49 -p1
-%patch50 -p1
+%patch50 -p0
 %patch51 -p1
 %patch52 -p1
+%patch53 -p0
 
 rm -f xc/config/cf/host.def
 
