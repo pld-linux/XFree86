@@ -466,7 +466,7 @@ diff -urN xc.orig/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl xc/programs/X
  	    cd $linkdir
  	    catch "unlink X" ret
 -	    if [catch "link $Xwinhome/bin/XF86_$server X" ret] {
-+	    if [catch "link ../../usr/X11R6/bin/XF86_$server X" ret] {
++	    if [catch "link ../../usr/bin/XF86_$server X" ret] {
  		mesg $messages(phase5.4) okay
  	    } else {
  		mesg $messages(phase5.5) okay
@@ -507,30 +507,30 @@ diff -urN xc.orig/programs/xdm/resource.c xc/programs/xdm/resource.c
   */
  #ifndef DEF_SERVER_LINE 
 -#define DEF_SERVER_LINE ":0 local /usr/bin/X11/X :0"
-+#define DEF_SERVER_LINE ":0 local /usr/X11R6/bin/X :0"
++#define DEF_SERVER_LINE ":0 local /usr/bin/X :0"
  #endif
  #ifndef XRDB_PROGRAM
 -#define XRDB_PROGRAM "/usr/bin/X11/xrdb"
-+#define XRDB_PROGRAM "/usr/X11R6/X11/xrdb"
++#define XRDB_PROGRAM "/usr/X11/xrdb"
  #endif
  #ifndef DEF_SESSION
 -#define DEF_SESSION "/usr/bin/X11/xterm -ls"
-+#define DEF_SESSION "/usr/X11R6/bin/xterm -ls"
++#define DEF_SESSION "/usr/bin/xterm -ls"
  #endif
  #ifndef DEF_USER_PATH
 -#define DEF_USER_PATH ":/bin:/usr/bin:/usr/bin/X11:/usr/ucb"
-+#define DEF_USER_PATH "/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin"
++#define DEF_USER_PATH "/usr/local/bin:/bin:/usr/bin"
  #endif
  #ifndef DEF_SYSTEM_PATH
 -#define DEF_SYSTEM_PATH "/etc:/bin:/usr/bin:/usr/bin/X11:/usr/ucb"
-+#define DEF_SYSTEM_PATH "/sbin:/bin:/usr/sbin:/usr/bin:/usr/X11R6/bin"
++#define DEF_SYSTEM_PATH "/sbin:/bin:/usr/sbin:/usr/bin"
  #endif
  #ifndef DEF_SYSTEM_SHELL
  #define DEF_SYSTEM_SHELL "/bin/sh"
  #endif
  #ifndef DEF_FAILSAFE_CLIENT
 -#define DEF_FAILSAFE_CLIENT "/usr/bin/X11/xterm"
-+#define DEF_FAILSAFE_CLIENT "/usr/X11R6/bin/xterm"
++#define DEF_FAILSAFE_CLIENT "/usr/bin/xterm"
  #endif
  #ifndef DEF_XDM_CONFIG
 -#define DEF_XDM_CONFIG "/usr/lib/X11/xdm/xdm-config"
