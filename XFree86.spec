@@ -1086,7 +1086,9 @@ make -C xc World \
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/usr/X11R6/lib/X11/pl/app-defaults \
 	$RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps} \
-	$RPM_BUILD_ROOT/var/state/xkb
+	$RPM_BUILD_ROOT/var/state/xkb \
+	$RPM_BUILD_ROOT/usr/include \
+	$RPM_BUILD_ROOT/usr/bin
 
 make -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -1123,6 +1125,10 @@ for i in xdm twm fs xsm xinit; do
 	rm -rf $RPM_BUILD_ROOT/usr/X11R6/lib/X11/$i
 	ln -sf /etc/X11/$i $RPM_BUILD_ROOT/usr/X11R6/lib/X11/$i
 done
+
+# add X11 links in /usr/bin and /usr/include
+ln -s ../X11R6/include $RPM_BUILD_ROOT/usr/include/X11
+ln -s ../X11R6/bin $RPM_BUILD_ROOT/usr/bin/X11
 
 # make TrueType font dir, touch default .dir and .scale files
 install	-d $RPM_BUILD_ROOT%{_fontdir}/TrueType
@@ -1484,6 +1490,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man1/SuperProbe.1*
 /usr/X11R6/man/man1/xon.1*
 
+/usr/bin/X11
+
 %ifnarch sparc
 
 %files modules
@@ -1578,6 +1586,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man1/makedepend.1*
 /usr/X11R6/man/man1/xmkmf.1*
 /usr/X11R6/man/man3/*
+
+/usr/include/X11
 
 %files static
 %defattr(644,root,root,755)
