@@ -427,3 +427,16 @@ diff -ur XFree/xc/config/cf/xfree86.cf XFree86-4.0.1.new/xc/config/cf/xfree86.cf
  #  define BuildPexExt		YES
  # else
  #  define BuildPexExt		NO
+--- XFree86-4.0.1/xc/config/cf/Imake.cf~	Sat Jul  1 01:34:20 2000
++++ XFree86-4.0.1/xc/config/cf/Imake.cf	Tue Aug 22 21:57:06 2000
+@@ -583,6 +583,10 @@
+ #  endif
+ #  undef __i386__
+ # endif /* __i386__ */
++# ifdef alpha
++#  define AlphaArchitecture
++#  undef alpha
++# endif /* __alpha */
+ # ifdef __alpha
+ #  define AlphaArchitecture
+ #  undef __alpha
