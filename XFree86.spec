@@ -1583,6 +1583,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xwd
 %attr(755,root,root) %{_bindir}/xwud
 
+%dir %{_includedir}
+%dir %{_includedir}/X11
 %{_includedir}/X11/bitmaps
 %{_includedir}/X11/pixmaps
 
@@ -1864,8 +1866,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libfntstubs.a
 %{_libdir}/libxf86config.a
 %{_libdir}/libXinerama.a
-%dir %{_includedir}
-%dir %{_includedir}/X11
 %{_includedir}/X11/*.h
 %{_includedir}/X11/ICE
 %ifnarch alpha
