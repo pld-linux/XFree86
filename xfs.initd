@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # xfs:       Starts the X Font Server
 #

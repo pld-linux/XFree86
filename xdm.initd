@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # ver. 0.5
 
 . /etc/rc.d/init.d/functions
@@ -7,18 +7,23 @@
 case "$1" in
   start)
 	show Starting X Daemon
-	busy
-	/usr/X11R6/bin/xdm & 
-	deltext;ok
+	daemon /usr/X11R6/bin/xdm
+	touch /var/lock/subsys/xdm
 	;;
   stop)
 	show Shuting down X daemon
-	busy
-	killall -9 xdm &>/dev/null
-	deltext;ok
+	killproc xdm
+	rm -f /var/lock/subsys/xdm
+	;;
+  status)
+	status xfs
+	;;
+  restart)
+	$0 stop
+	$0 start
 	;;
   *)
-	echo "Usage: $0 {start|stop}"
+	echo "Usage: $0 {start|stop|status|restart}"
 	exit 1
 esac
 
