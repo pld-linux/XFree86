@@ -1,0 +1,58 @@
+This patch by Branden Robinson, prompted by Colin Watson (who pointed out
+that the aliases were missing).
+
+.SH NAME aliases removed from mkfontdir since InstallManPageAliases() is
+not capable of installing aliases across manpage sections.
+
+--- Xfree86-4.1.0/xc/programs/Xserver/hw/xfree86/doc/man/Imakefile~	Tue Jul 10 17:19:24 2001
++++ Xfree86-4.1.0/xc/programs/Xserver/hw/xfree86/doc/man/Imakefile	Tue Jul 10 17:19:46 2001
+@@ -26,6 +26,6 @@
+ /* XXX Check if this is up to date */
+ InstallManPageLong(XF86VM,$(MANDIR),XF86VidMode)
+ #if ExpandManNames
+-InstallManPageAliases(XF86VidMode,$(MANDIR),XF86VidModeQueryExtension XF86VidModeQueryVersion XF86VidModeGetModeLine XF86VidModeGetAllModeLines XF86VidModeDeleteModeLine XF86VidModeModModeLine XF86VidModeSwitchMode XF86VidModeSwitchToMode XF86VidModeLockModeSwitch XF86VidModeGetMonitor XF86VidModeGetViewPort XF86VidModeSetViewPort)
++InstallManPageAliases(XF86VidMode,$(MANDIR),XF86VidModeQueryExtension XF86VidModeQueryVersion XF86VidModeGetModeLine XF86VidModeGetAllModeLines XF86VidModeDeleteModeLine XF86VidModeModModeLine XF86VidModeSwitchMode XF86VidModeSwitchToMode XF86VidModeLockModeSwitch XF86VidModeGetMonitor XF86VidModeGetViewPort XF86VidModeSetViewPort XF86VidModeValidateModeLine)
+ #endif
+ 
+--- Xfree86-4.1.0/xc/doc/man/Xext/Imakefile~	Tue Jul 10 17:21:36 2001
++++ Xfree86-4.1.0/xc/doc/man/Xext/Imakefile	Tue Jul 10 17:21:56 2001
+@@ -19,7 +19,7 @@
+ InstallManPageLong(Xmbuf,$(MANDIR),XmbufQueryExtension)
+ InstallManPageAliases(XmbufQueryExtension,$(MANDIR),XmbufGetVersion XmbufCreateBuffers XmbufDestroyBuffers XmbufDisplayBuffers XmbufGetWindowAttributes XmbufChangeWindowAttributes XmbufGetBufferAttributes XmbufChangeBufferAttributes XmbufGetScreenInfo XmbufCreateStereoWindow)
+ InstallManPageLong(Xevi,$(MANDIR),XeviQueryVersion)
+-InstallManPageAliases(XeviQueryVersion,$(MANDIR),XeviGetVisualInfo)
++InstallManPageAliases(XeviQueryVersion,$(MANDIR),XeviGetVisualInfo XeviQueryExtension)
+ #else
+ InstallManPage(XShape,$(MANDIR))
+ InstallManPage(Xmbuf,$(MANDIR))
+--- Xfree86-4.1.0/xc/doc/man/Xt/Imakefile~	Tue Jul 10 17:23:05 2001
++++ Xfree86-4.1.0/xc/doc/man/Xt/Imakefile	Tue Jul 10 17:25:00 2001
+@@ -46,7 +46,7 @@
+ InstallManPageLong(XtCallCbks,$(MANDIR),XtCallCallbacks)
+ InstallManPageAliases(XtCallCallbacks,$(MANDIR),XtCallCallbackList XtHasCallbacks)
+ InstallManPageLong(XtClass,$(MANDIR),XtClass)
+-InstallManPageAliases(XtClass,$(MANDIR),XtSuperclass XtIsSubclass XtCheckSubclass XtIsObject XtIsRectObj XtIsWidget XtIsComposite XtIsConstraint XtIsShell XtIsOverrideShell XtIsWMShell XtIsVendorShell XtIsTransientShell XtIsTopLevelShell XtIsApplicationShell)
++InstallManPageAliases(XtClass,$(MANDIR),XtSuperclass XtIsSubclass XtCheckSubclass XtIsObject XtIsRectObj XtIsWidget XtIsComposite XtIsConstraint XtIsShell XtIsOverrideShell XtIsWMShell XtIsVendorShell XtIsTransientShell XtIsTopLevelShell XtIsApplicationShell XtIsSessionShell)
+ InstallManPageLong(XtConfWid,$(MANDIR),XtConfigureWidget)
+ InstallManPageAliases(XtConfigureWidget,$(MANDIR),XtMoveWidget XtResizeWidget)
+ InstallManPageLong(XtConvert,$(MANDIR),XtConvert)
+@@ -107,7 +107,7 @@
+ InstallManPageLong(XtSetSens,$(MANDIR),XtSetSensitive)
+ InstallManPageAliases(XtSetSensitive,$(MANDIR),XtIsSensitive)
+ InstallManPageLong(XtSetVal,$(MANDIR),XtSetValues)
+-InstallManPageAliases(XtSetValues,$(MANDIR),XtVaSetValues XtSetSubvalues XtGetValues XtVaGetValues XtGetSubvalues)
++InstallManPageAliases(XtSetValues,$(MANDIR),XtVaSetValues XtSetSubvalues XtGetValues XtVaGetValues XtGetSubvalues XtVaGetSubvalues XtVaSetSubvalues)
+ InstallManPageLong(XtStrCW,$(MANDIR),XtStringConversionWarning)
+ InstallManPageLong(XtDStrCW,$(MANDIR),XtDisplayStringConversionWarning)
+ InstallManPageLong(XtTransC,$(MANDIR),XtTranslateCoords)
+--- Xfree86-4.1.0/xc/programs/mkfontdir/mkfontdir.man~	Tue Jul 10 17:30:28 2001
++++ Xfree86-4.1.0/xc/programs/mkfontdir/mkfontdir.man	Tue Jul 10 17:30:49 2001
+@@ -23,7 +23,7 @@
+ .\"
+ .TH MKFONTDIR 1 __xorgversion__
+ .SH NAME
+-mkfontdir, fonts.dir, fonts.scale, fonts.alias, encodings.dir \- create an index of X font files in a directory
++mkfontdir \- create an index of X font files in a directory
+ .SH SYNOPSIS
+ .B "mkfontdir"
+ .RB [ \-x

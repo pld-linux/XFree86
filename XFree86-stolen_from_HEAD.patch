@@ -1,0 +1,175 @@
+* Alan Hourihane: fix typo in Bitmap.h (#4757)
+* Mark Vojkovich: The tdfx driver wasn't setting pScrn->fbOffset.  This
+  seems to have been preventing the V4L module from working properly.
+* Marc Aurele La France: Fix bogus handling of BUS_CNTL Mach64 register
+* Mark Vojkovich: Have fb observe the pGC->fExpose flag.
+* Paulo Cesar Pereira de Andrade: The fbdev driver uses the same DGA
+  initialization code as the vesa driver, this fix the bug the same way
+  done in the vesa driver.
+* Matthieu Herrb: shared libXft minor revision number increment
+* Mark Vojkovich: Fix bug in ProcDbeGetVisualInfo reported by HP.
+
+These diffs have been hacked on manually to make them apply to xf-4_1-branch.
+
+Index: xc/programs/bitmap/Bitmap.h
+diff -u xc/programs/bitmap/Bitmap.h:1.3 xc/programs/bitmap/Bitmap.h:1.4
+--- XFree86-4.1.0/xc/programs/bitmap/Bitmap.h:1.3	Wed Jan 17 18:44:51 2001
++++ XFree86-4.1.0/xc/programs/bitmap/Bitmap.h	Tue Jun 12 04:45:53 2001
+@@ -68,7 +68,7 @@
+  dashed              Dashed             Boolean         True
+  dashes              Dashes             Bitmap          XtUnspecifiedPixmap
+  stippled            Stippled           Boolean         True
+- stipple             Sripple            Bitmap          XtUnspecifiedPixmap
++ stipple             Stipple            Bitmap          XtUnspecifiedPixmap
+  proportional        Proportional       Boolean         True
+  axes                Axes               Boolean         True
+  button1Function     Button1Function    ButtonFunction  Set  
+Index: xc/programs/Xserver/hw/xfree86/drivers/tdfx/tdfx_driver.c
+diff -u xc/programs/Xserver/hw/xfree86/drivers/tdfx/tdfx_driver.c:1.79 xc/programs/Xserver/hw/xfree86/drivers/tdfx/tdfx_driver.c:1.80
+--- XFree86-4.1.0/xc/programs/Xserver/hw/xfree86/drivers/tdfx/tdfx_driver.c:1.79	Tue Jun  5 10:54:15 2001
++++ XFree86-4.1.0/xc/programs/Xserver/hw/xfree86/drivers/tdfx/tdfx_driver.c	Tue Jun 12 17:22:05 2001
+@@ -1897,6 +1897,8 @@
+ 					pTDFX->stride - 1)/pTDFX->stride;
+ 
+   allocateMemory(pScrn);
++
++  pScrn->fbOffset = pTDFX->fbOffset;
+ 
+ #if 0
+   if (pTDFX->numChips>1) {
+Index: xc/programs/Xserver/hw/xfree86/drivers/ati/atilock.c
+diff -u xc/programs/Xserver/hw/xfree86/drivers/ati/atilock.c:1.10 xc/programs/Xserver/hw/xfree86/drivers/ati/atilock.c:1.11
+--- XFree86-4.1.0/xc/programs/Xserver/hw/xfree86/drivers/ati/atilock.c:1.10	Sun Mar 25 00:32:07 2001
++++ XFree86-4.1.0/xc/programs/Xserver/hw/xfree86/drivers/ati/atilock.c	Tue Jun 12 21:33:31 2001
+@@ -97,12 +97,17 @@
+ 
+     {
+         /* Reset everything */
+-        pATI->LockData.bus_cntl =
+-            (inr(BUS_CNTL) & ~BUS_HOST_ERR_INT_EN) | BUS_HOST_ERR_INT;
+-        if (pATI->Chip < ATI_CHIP_264VTB)
++        pATI->LockData.bus_cntl = inr(BUS_CNTL);
++        if (pATI->Chip < ATI_CHIP_264VT4)
++        {
+             pATI->LockData.bus_cntl =
+-                (pATI->LockData.bus_cntl & ~BUS_FIFO_ERR_INT_EN) |
+-                    BUS_FIFO_ERR_INT;
++                (pATI->LockData.bus_cntl & ~BUS_HOST_ERR_INT_EN) |
++                BUS_HOST_ERR_INT;
++            if (pATI->Chip < ATI_CHIP_264VTB)
++                pATI->LockData.bus_cntl =
++                    (pATI->LockData.bus_cntl & ~BUS_FIFO_ERR_INT_EN) |
++                        BUS_FIFO_ERR_INT;
++        }
+         tmp = (pATI->LockData.bus_cntl & ~BUS_ROM_DIS) |
+             SetBits(15, BUS_FIFO_WS);
+         if (pATI->Chip >= ATI_CHIP_264VT)
+Index: xc/programs/Xserver/hw/xfree86/drivers/ati/atimach64.c
+diff -u xc/programs/Xserver/hw/xfree86/drivers/ati/atimach64.c:1.37 xc/programs/Xserver/hw/xfree86/drivers/ati/atimach64.c:1.38
+--- XFree86-4.1.0/xc/programs/Xserver/hw/xfree86/drivers/ati/atimach64.c:1.37	Thu May 24 21:44:35 2001
++++ XFree86-4.1.0/xc/programs/Xserver/hw/xfree86/drivers/ati/atimach64.c	Tue Jun 12 21:33:31 2001
+@@ -110,8 +110,10 @@
+         pATIHW->crtc_off_pitch = SetBits(pATI->displayWidth >> 3, CRTC_PITCH);
+     }
+ 
+-    bus_cntl = inr(BUS_CNTL);
+-    pATIHW->bus_cntl = (bus_cntl & ~BUS_HOST_ERR_INT_EN) | BUS_HOST_ERR_INT;
++    pATIHW->bus_cntl = bus_cntl = inr(BUS_CNTL);
++    if (pATI->Chip < ATI_CHIP_264VT4)
++        pATIHW->bus_cntl = (pATIHW->bus_cntl & ~BUS_HOST_ERR_INT_EN) |
++            BUS_HOST_ERR_INT;
+     if (pATI->Chip < ATI_CHIP_264VTB)
+     {
+         pATIHW->bus_cntl &= ~(BUS_FIFO_ERR_INT_EN | BUS_ROM_DIS);
+Index: xc/programs/Xserver/hw/xfree86/drivers/ati/atiprobe.c
+diff -u xc/programs/Xserver/hw/xfree86/drivers/ati/atiprobe.c:1.45 xc/programs/Xserver/hw/xfree86/drivers/ati/atiprobe.c:1.46
+--- XFree86-4.1.0/xc/programs/Xserver/hw/xfree86/drivers/ati/atiprobe.c:1.45	Fri May 18 15:22:28 2001
++++ XFree86-4.1.0/xc/programs/Xserver/hw/xfree86/drivers/ati/atiprobe.c	Tue Jun 12 21:33:31 2001
+@@ -558,7 +558,7 @@
+         outr(BUS_CNTL,
+              (bus_cntl & ~(BUS_HOST_ERR_INT_EN | BUS_FIFO_ERR_INT_EN)) |
+              (BUS_HOST_ERR_INT | BUS_FIFO_ERR_INT));
+-    else
++    else if (Chip < ATI_CHIP_264VT4)
+         outr(BUS_CNTL, (bus_cntl & ~BUS_HOST_ERR_INT_EN) | BUS_HOST_ERR_INT);
+ 
+     gen_test_cntl = inr(GEN_TEST_CNTL);
+@@ -969,9 +969,7 @@
+ {
+     ATIPtr pATI = *ppATI;
+ 
+-    if (*ppVGA)
+-        ATIAssignVGA(pVideo, ppVGA, pATI, p8514, ProbeFlags);
+-    else
++    if (!*ppVGA)
+     {
+         /*
+          * An ATI PCI adapter has been detected at this point, and its VGA, if
+@@ -985,8 +983,10 @@
+         if (pATI->VGAAdapter == ATI_ADAPTER_NONE)
+             return;
+ 
+-        ATIAssignVGA(pVideo, ppATI, pATI, p8514, ProbeFlags);
++        ppVGA = ppATI;
+     }
++
++    ATIAssignVGA(pVideo, ppVGA, pATI, p8514, ProbeFlags);
+ }
+ 
+ #endif /* AVOID_CPIO */
+Index: xc/programs/Xserver/fb/fbcopy.c
+diff -u xc/programs/Xserver/fb/fbcopy.c:1.9 xc/programs/Xserver/fb/fbcopy.c:1.10
+--- XFree86-4.1.0/xc/programs/Xserver/fb/fbcopy.c:1.9	Sun Jun  3 13:45:17 2001
++++ XFree86-4.1.0/xc/programs/Xserver/fb/fbcopy.c	Wed Jun 13 19:36:50 2001
+@@ -577,7 +577,7 @@
+ 		      &rgnDst, dx, dy, copyProc, bitPlane, closure);
+ 
+     /* Pixmap sources generate a NoExposed (we return NULL to do this) */
+-    if (!fastExpose)
++    if (!fastExpose && pGC->fExpose)
+ 	prgnExposed = miHandleExposures(pSrcDrawable, pDstDrawable, pGC,
+ 					origSource.x, origSource.y,
+ 					(int)origSource.width,
+Index: xc/programs/Xserver/hw/xfree86/drivers/fbdev/fbdev.c
+diff -u xc/programs/Xserver/hw/xfree86/drivers/fbdev/fbdev.c:1.33 xc/programs/Xserver/hw/xfree86/drivers/fbdev/fbdev.c:1.34
+--- XFree86-4.1.0/xc/programs/Xserver/hw/xfree86/drivers/fbdev/fbdev.c:1.33	Fri Jun 15 16:22:49 2001
++++ XFree86-4.1.0/xc/programs/Xserver/hw/xfree86/drivers/fbdev/fbdev.c	Fri Jun 15 17:29:58 2001
+@@ -870,8 +870,11 @@
+ 	fbdevHWUnmapVidmem(pScrn);
+ 	if (fPtr->shadowmem)
+ 		xfree(fPtr->shadowmem);
+-	if (fPtr->pDGAMode)
++	if (fPtr->pDGAMode) {
+ 	  xfree(fPtr->pDGAMode);
++	  fPtr->pDGAMode = NULL;
++	  fPtr->nDGAMode = 0;
++	}
+ 	pScrn->vtSema = FALSE;
+ 
+ 	pScreen->CloseScreen = fPtr->CloseScreen;
+Index: xc/config/cf/X11.tmpl
+diff -u xc/config/cf/X11.tmpl:1.119 xc/config/cf/X11.tmpl:1.120
+--- XFree86-4.1.0/xc/config/cf/X11.tmpl:1.119	Thu May 31 21:10:00 2001
++++ XFree86-4.1.0/xc/config/cf/X11.tmpl	Mon Jun 18 16:28:49 2001
+@@ -2476,7 +2476,7 @@
+           XFTLIBSRC = $(LIBSRC)/Xft
+ #if SharedLibXft
+ #ifndef SharedXftRev
+-#define SharedXftRev 1.0
++#define SharedXftRev 1.1
+ #endif
+ SharedLibReferences(XFT,Xft,$(XFTLIBSRC),SOXFTREV,SharedXftRev)
+ #else
+Index: xc/programs/Xserver/dbe/dbe.c
+diff -u xc/programs/Xserver/dbe/dbe.c:3.8 xc/programs/Xserver/dbe/dbe.c:3.9
+--- XFree86-4.1.0/xc/programs/Xserver/dbe/dbe.c:3.8	Wed Jan 17 17:36:41 2001
++++ XFree86-4.1.0/xc/programs/Xserver/dbe/dbe.c	Fri Jun 22 22:33:21 2001
+@@ -962,7 +962,7 @@
+ 
+     rep.type           = X_Reply;
+     rep.sequenceNumber = client->sequence;
+-    rep.length         = length;
++    rep.length         = length >> 2;
+     rep.m              = count;
+ 
+     if (client->swapped)

@@ -1,0 +1,442 @@
+diff -urN XFree86-4.0.orig/xc/config/cf/Imake.tmpl XFree86-4.0/xc/config/cf/Imake.tmpl
+--- XFree86-4.0.orig/xc/config/cf/Imake.tmpl	Tue Mar  7 16:54:17 2000
++++ XFree86-4.0/xc/config/cf/Imake.tmpl	Fri Mar 17 02:19:49 2000
+@@ -208,7 +208,7 @@
+ 
+ #ifndef BuildHtmlManPages
+ #ifdef RmanCmd
+-#define BuildHtmlManPages YES
++#define BuildHtmlManPages NO
+ #else
+ #define BuildHtmlManPages NO
+ #endif
+@@ -585,11 +585,7 @@
+ #define LintlibDir $(USRLIBDIR)/lint
+ #endif
+ #ifndef SystemManDirectory
+-#if SystemV4
+ #define SystemManDirectory /usr/share/man
+-#else
+-#define SystemManDirectory /usr/man
+-#endif
+ #endif
+ #ifndef ManDirectoryRoot
+ #ifdef ProjectRoot
+@@ -710,7 +706,7 @@
+ #define NoRConst NO /* YES if const for structs of funcs is bad */
+ #endif
+ #ifndef InstPgmFlags
+-#define InstPgmFlags -s
++#define InstPgmFlags
+ #endif
+ #ifndef InstBinFlags
+ #define InstBinFlags -m 0755
+diff -urN XFree86-4.0.orig/xc/config/cf/X11.tmpl XFree86-4.0/xc/config/cf/X11.tmpl
+--- XFree86-4.0.orig/xc/config/cf/X11.tmpl	Sat Mar  4 05:35:22 2000
++++ XFree86-4.0/xc/config/cf/X11.tmpl	Fri Mar 17 02:19:49 2000
+@@ -946,7 +946,7 @@
+ #define ConfigDir $(LIBDIR)/config
+ #endif
+ #ifndef DocDir
+-#define DocDir $(LIBDIR)/doc
++#define DocDir $(LIBDIR)/share/doc
+ #endif
+ #ifndef DocHtmlDir
+ #define DocHtmlDir $(DOCDIR)/html
+@@ -955,7 +955,7 @@
+ #define DocPsDir $(DOCDIR)/PostScript
+ #endif
+ #ifndef FontDir
+-#define FontDir $(LIBDIR)/fonts
++#define FontDir /usr/share/fonts
+ #endif
+ #ifndef AdmDir
+ #define AdmDir /usr/adm
+@@ -1147,7 +1147,7 @@
+         MKFONTDIR = $(CLIENTENVSETUP) $(XBUILDBINDIR)/mkfontdir
+ #endif
+ 
+-       DOCUTILSRC = $(XTOP)/doc/util
++       DOCUTILSRC = $(XTOP)/share/doc/util
+         CLIENTSRC = $(TOP)/clients
+           DEMOSRC = $(TOP)/demos
+        XDOCMACROS = $(DOCUTILSRC)/macros.t
+@@ -1161,7 +1161,7 @@
+         SERVERSRC = $(XTOP)/programs/Xserver
+        CONTRIBSRC = ContribDir
+    UNSUPPORTEDSRC = UnsupportedDir
+-           DOCSRC = $(XTOP)/doc
++           DOCSRC = $(XTOP)/share/doc
+            RGBSRC = $(XTOP)/programs/rgb
+       BDFTOPCFSRC = $(PROGRAMSRC)/bdftopcf
+      MKFONTDIRSRC = $(PROGRAMSRC)/mkfontdir
+diff -urN XFree86-4.0.orig/xc/config/cf/host.def XFree86-4.0/xc/config/cf/host.def
+--- XFree86-4.0.orig/xc/config/cf/host.def	Thu Jan  1 01:00:00 1970
++++ XFree86-4.0/xc/config/cf/host.def	Fri Mar 17 02:19:49 2000
+@@ -0,0 +1 @@
++
+diff -urN XFree86-4.0.orig/xc/config/cf/linux.cf XFree86-4.0/xc/config/cf/linux.cf
+--- XFree86-4.0.orig/xc/config/cf/linux.cf	Sat Mar  4 05:35:22 2000
++++ XFree86-4.0/xc/config/cf/linux.cf	Fri Mar 17 02:19:49 2000
+@@ -192,7 +192,7 @@
+ #  ifdef i386Architecture
+ #    if OSMajorVersion == 2
+        /* Only tested for Linux 2.2.0 through 2.2.12 */
+-#      if OSMinorVersion == 2 && OSTeenyVersion <= 12
++#      if OSMinorVersion == 2
+ #        define BuildXF86DRM        YES
+ #      else
+          /* Only tested for Linux 2.3.0 through 2.3.18 */
+@@ -537,10 +537,10 @@
+ #endif
+ 
+ #ifndef LinkGLToUsrLib
+-#define LinkGLToUsrLib	YES
++#define LinkGLToUsrLib	NO
+ #endif
+ #ifndef LinkGLToUsrInclude
+-#define LinkGLToUsrInclude	YES
++#define LinkGLToUsrInclude	NO
+ #endif
+ 
+ 
+diff -urN XFree86-4.0.orig/xc/config/cf/site.def XFree86-4.0/xc/config/cf/site.def
+--- XFree86-4.0.orig/xc/config/cf/site.def	Mon Oct  5 05:52:26 1998
++++ XFree86-4.0/xc/config/cf/site.def	Fri Mar 17 02:19:49 2000
+@@ -115,10 +115,13 @@
+ #define HasSentinel	YES
+ */
+ 
+-/*
+ #undef DefaultUserPath
+-#define DefaultUserPath /bin:/usr/bin:$(BINDIR):/usr/ucb:/usr/local/bin
+-*/
++#define DefaultUserPath /bin:/usr/bin:/usr/local/bin
++#undef DefaultSystemPath
++#define DefaultSystemPath /sbin:/usr/sbin:/bin:/usr/bin
++
++
++#define HasPam    YES
+
+ 
+ /* You do NOT need SetUID if you only run the server under xdm */
+diff -urN XFree86-4.0.orig/xc/config/cf/xf86site.def XFree86-4.0/xc/config/cf/xf86site.def
+--- XFree86-4.0.orig/xc/config/cf/xf86site.def	Tue Mar  7 16:54:18 2000
++++ XFree86-4.0/xc/config/cf/xf86site.def	Fri Mar 17 02:21:18 2000
+@@ -134,16 +134,16 @@
+  * Some Linux releases don't have a libtermcap.  In this case you may need
+  * to uncomment the following
+  *
+-#define TermcapLibrary		-lncurses
+  */
++#define TermcapLibrary		-lncurses
+ 
+ /*
+  * If you have Tk (which is required to build XF86Setup), uncomment this
+  * Note: version 4.0 or 4.1 is required, and XF86Setup links it statically by
+  * default.
+  *
+-#define HasTk			YES
+  */
++#define HasTk			YES
+ 
+ /*
+  * Set the paths and names for your Tk library if they don't match the
+@@ -156,25 +156,25 @@
+  *
+  * Some Linux releases need TkLibDir set to /usr/X11R6/lib
+  *
+-#define TkLibDir		/usr/local/lib
+-#define TkIncDir		/usr/local/include
+-#define TkLibName		tk
+  */
++#define TkLibDir		/usr/lib
++#define TkIncDir		/usr/include
++#define TkLibName		tk
+ 
+ /*
+  * By default, XF86Setup is linked with a static Tk library.  To change
+  * that, uncomment the following line.
+  *
+-#define XF86SetupUsesStaticTk	NO
+  */
++#define XF86SetupUsesStaticTk	NO
+ 
+ /*
+  * If you have Tcl (which is required to build XF86Setup), uncomment this
+  * Note: version 7.4 or 7.5 is required, and XF86Setup links it statically by
+  * default.
+  *
+-#define HasTcl			YES
+  */
++#define HasTcl			YES
+ 
+ /*
+  * Set the paths and names for your Tcl library if they don't match the
+@@ -184,17 +184,17 @@
+  *
+  * Some Linux releases need TclIncDir set to /usr/include/tcl.
+  *
+-#define TclLibDir		/usr/local/lib
+-#define TclIncDir		/usr/local/include
+-#define TclLibName		tcl
+  */
++#define TclLibDir		/usr/lib
++#define TclIncDir		/usr/include
++#define TclLibName		tcl
+ 
+ /*
+  * By default, XF86Setup is linked with a static Tcl library.  To change
+  * that, uncomment the following line.
+  *
+-#define XF86SetupUsesStaticTcl	NO
+  */
++#define XF86SetupUsesStaticTcl	NO
+ 
+ /*
+  * Build a server that dynamically loads the modules by setting
+@@ -378,8 +378,8 @@
+ /*
+  * To not build/install the Cyrillic fonts, uncomment the following
+  *
+-#define BuildCyrillicFonts	NO
+  */
++#define BuildCyrillicFonts	YES
+ 
+ /*
+  * To not build/install the Latin2 fonts, uncomment the following
+@@ -568,8 +568,8 @@
+  * To forceably build static libraries in addition to shared libraries,
+  * uncomment this.
+  *
+-#define ForceNormalLib		YES
+  */
++#define ForceNormalLib		YES
+ 
+ /*
+  * Uncomment this if your default tools (eg, gcc, ld, as, etc) are
+@@ -655,26 +655,26 @@
+  * HasGlide2 to YES and set the Glide2IncDir variable. 
+  * HasGlide2 is per default NO.
+  *
+-#define HasGlide2 YES
+  */
++#define HasGlide2 YES
+ 
+ /*
+  * Set the path to your Glide include files.
+  *
+-#define Glide2IncDir /usr/include/glide
+  */
++#define Glide2IncDir /usr/include/glide
+ 
+ /* 
+  * The 3Dfx 3D DRI driver requires glide 3.
+  *
+-#define HasGlide3 YES
+  */
++#define HasGlide3 YES
+ 
+ /*
+  * Set the path to your Glide 3 include files.
+  *
+-#define Glide3IncDir /usr/include/glide3
+  */
++#define Glide3IncDir /usr/include/glide3
+ 
+ /*
+  * If your system doesn't support vm86() mode and you have
+diff -urN XFree86-4.0.orig/xc/config/imake/imake.c XFree86-4.0/xc/config/imake/imake.c
+--- XFree86-4.0.orig/xc/config/imake/imake.c	Wed Dec 29 01:54:48 1999
++++ XFree86-4.0/xc/config/imake/imake.c	Fri Mar 17 02:19:49 2000
+@@ -934,6 +934,7 @@
+   static char* yast = "/sbin/YaST";
+   static char* redhat = "/etc/redhat-release";
+   static char* debian = "/etc/debian_version";
++  static char* pld = "/etc/pld-release";
+ 
+   fprintf (inFile, "%s\n", "#define LinuxUnknown    0");
+   fprintf (inFile, "%s\n", "#define LinuxSuSE       1");
+@@ -948,6 +949,7 @@
+   fprintf (inFile, "%s\n", "#define LinuxTurbo      10");
+   fprintf (inFile, "%s\n", "#define LinuxWare       11");
+   fprintf (inFile, "%s\n", "#define LinuxYggdrasil  12");
++  fprintf (inFile, "%s\n", "#define LinuxPLD        13");
+ 
+   if (lstat (yast, &sb) == 0) {
+     fprintf (inFile, "%s\n", "#define DefaultLinuxDistribution LinuxSuSE");
+@@ -964,6 +966,11 @@
+     fprintf (inFile, "%s\n", "#define DefaultLinuxDistName Debian");
+     /* You could also try to get the version of the Debian distrib by looking
+      * at the content of /etc/debian_version */
++    return;
++  }
++  if (lstat (pld, &sb) == 0) {
++    fprintf (inFile, "%s\n", "#define DefaultLinuxDistribution LinuxPLD");
++    fprintf (inFile, "%s\n", "#define DefaultLinuxDistName PLD");
+     return;
+   }
+   /* what's the definitive way to tell what any particular distribution is? */
+diff -urN XFree86-4.0.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile XFree86-4.0/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile
+--- XFree86-4.0.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile	Mon Sep  6 15:23:12 1999
++++ XFree86-4.0/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile	Fri Mar 17 02:19:49 2000
+@@ -118,7 +118,7 @@
+ 
+  XCONFIG_DEFINES = $(EXT_DEFINES) -DXF86SETUP \
+ 		   '-DPROJECTROOT="$(PROJECTROOT)"' \
+-		   '-DSERVER_CONFIG_FILE="$(LIBDIR)/$(XCONFIGFILE)"' \
++		   '-DSERVER_CONFIG_FILE="/etc/X11/$(XCONFIGFILE)"' \
+ 		   $(SITE_FONT_PATH) $(SITE_RGB_DB) \
+ 		   -DNO_WRAPPERS
+ 
+diff -urN XFree86-4.0.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl XFree86-4.0/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl
+--- XFree86-4.0.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl	Mon Apr  6 00:30:46 1998
++++ XFree86-4.0/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl	Fri Mar 17 02:19:49 2000
+@@ -38,7 +38,7 @@
+ 	set devid [lindex $DeviceIDs $idx]
+         global Device_$devid
+         set server [set Device_${devid}(Server)]
+-	set linkname $Xwinhome/bin/X
++	set linkname /etc/X11/X
+ 	set lastlink $linkname
+ 	for {set nlinks 0} \
+ 		{[file exists $linkname] && [file type $linkname]=="link" \
+@@ -74,7 +74,7 @@
+ 	    set CWD [pwd]
+ 	    cd $linkdir
+ 	    catch "unlink X" ret
+-	    if [catch "link $Xwinhome/bin/XF86_$server X" ret] {
++	    if [catch "link ../../usr/X11R6/bin/XF86_$server X" ret] {
+ 		mesg $messages(phase5.4) okay
+ 	    } else {
+ 		mesg $messages(phase5.5) okay
+diff -urN XFree86-4.0.orig/xc/programs/xinit/Imakefile XFree86-4.0/xc/programs/xinit/Imakefile
+--- XFree86-4.0.orig/xc/programs/xinit/Imakefile	Wed Feb  9 19:02:36 2000
++++ XFree86-4.0/xc/programs/xinit/Imakefile	Fri Mar 17 02:19:49 2000
+@@ -39,11 +39,13 @@
+ InstallNamedProg(startx,startx,$(BINDIR))
+ InstallManPage(startx,$(MANDIR))
+ 
+-#if InstallXinitConfig
+-InstallNonExecFile($(SAMPLECONFIG),$(XINITDIR))
+-#else
+-InstallNonExecFileNoClobber($(SAMPLECONFIG),$(XINITDIR))
+-#endif
++XCOMM Red Hat gets this from a different package
++XCOMM #if InstallXinitConfig
++XCOMM InstallNonExecFile($(SAMPLECONFIG),$(XINITDIR))
++XCOMM #else
++XCOMM InstallNonExecFileNoClobber($(SAMPLECONFIG),$(XINITDIR))
++XCOMM #endif
++
+ #endif
+ 
+ LinkConfDirectory(xinit,.,xinit,.)
+diff -urN XFree86-4.0.orig/xc/programs/xterm/Imakefile XFree86-4.0/xc/programs/xterm/Imakefile
+--- XFree86-4.0.orig/xc/programs/xterm/Imakefile	Sat Mar  4 05:42:24 2000
++++ XFree86-4.0/xc/programs/xterm/Imakefile	Fri Mar 17 02:19:49 2000
+@@ -36,6 +36,10 @@
+ #define XkbClientLibs /**/
+ #endif
+ 
++#if InstallXtermSetUID
++#undef InstallXtermSetUID
++#endif
++
+ #ifndef SpecialCObjectRule
+ #define SpecialCObjectRule(module,ignore,defines) \
+ module.o: ; $(CC) -c defines $(CFLAGS) module.c
+@@ -57,6 +61,8 @@
+          PTYLIB = -lpucc
+ #endif
+ 
++         PTYLIB = -lutil
++
+ #if ((LinuxCLibMajorVersion == 6) && (LinuxCLibMinorVersion < 1))
+          PTYLIB = -lutil
+ #endif
+@@ -101,7 +107,7 @@
+ 		  -DOSMINORVERSION=$(OSMINORVERSION)
+    MISC_DEFINES = /* -DALLOWLOGGING -DALLOWLOGFILEEXEC */
+     XKB_DEFINES = XkbClientDefines
+-        DEFINES = -I. $(XKB_DEFINES) $(TERMCAPDEFINES) $(FEATURE_DEFINES) $(SCROLLBAR_RIGHT) $(UTF8_OPTION)
++        DEFINES = -I. -I/usr/include/ncurses $(XKB_DEFINES) $(TERMCAPDEFINES) $(FEATURE_DEFINES) $(SCROLLBAR_RIGHT) $(UTF8_OPTION)
+ 
+ #ifdef OS2Architecture
+           MAINSRC = os2main.c
+diff -urN XFree86-4.0.orig/xc/programs/xterm/xterm.h XFree86-4.0/xc/programs/xterm/xterm.h
+--- XFree86-4.0.orig/xc/programs/xterm/xterm.h	Wed Mar  1 02:21:05 2000
++++ XFree86-4.0/xc/programs/xterm/xterm.h	Fri Mar 17 02:19:49 2000
+@@ -58,7 +58,7 @@
+ #endif
+ 
+ #ifndef DFT_TERMTYPE
+-#define DFT_TERMTYPE "xterm"
++#define DFT_TERMTYPE "xterm-color"
+ #endif
+ 
+ #ifndef X_NOT_POSIX
+--- XFree86-4.0/xc/config/cf/linux.cf~	Mon May  1 20:18:57 2000
++++ XFree86-4.0/xc/config/cf/linux.cf	Mon May  1 22:39:02 2000
+@@ -412,7 +412,7 @@
+ #define StandardCppDefines	StandardDefines
+ 
+ #define HasVarRun		YES
+-#define VarDbDirectory		/var/state
++#define VarDbDirectory		/var/lib
+ 
+ #ifndef XF86ExtraCardDrivers
+ #define XF86ExtraCardDrivers	v4l
+diff -ur XFree/xc/config/cf/linux.cf XFree86-4.0.1.new/xc/config/cf/linux.cf
+--- XFree/xc/config/cf/linux.cf	Sat Jun 24 20:15:54 2000
++++ XFree86-4.0.1.new/xc/config/cf/linux.cf	Tue Aug 22 13:54:23 2000
+@@ -180,6 +180,8 @@
+ #    endif
+ #  elif defined(SparcArchitecture)
+ #    define BuildXF86DRI              YES
++#  elif defined(AlphaArchitecture)
++#    define BuildXF86DRI              YES
+ #  else
+ #    define BuildXF86DRI              NO
+ #  endif
+diff -ur XFree/xc/config/cf/xfree86.cf XFree86-4.0.1.new/xc/config/cf/xfree86.cf
+--- XFree/xc/config/cf/xfree86.cf	Sat Jul  1 01:34:21 2000
++++ XFree86-4.0.1.new/xc/config/cf/xfree86.cf	Tue Aug 22 13:53:28 2000
+@@ -416,8 +416,11 @@
+ 
+ /* Pure PCI drivers should go first */
+ # ifndef XF86CardDrivers
+-#  define XF86CardDrivers	mga tdfx glint s3virge rendition tga \
+-				r128 vga XF86OSCardDrivers XF86ExtraCardDrivers
++#  define XF86CardDrivers	mga glint nv tga s3virge sis rendition \
++				neomagic i740 tdfx \
++				cirrus tseng trident chips apm \
++				fbdev \
++				ati r128 v4l vga XF86OSCardDrivers XF86ExtraCardDrivers
+ # endif
+ #endif
+ 
+--- XFree86-4.0.1.new/xc/config/cf/xfree86.cf~	Tue Aug 22 13:53:28 2000
++++ XFree86-4.0.1.new/xc/config/cf/xfree86.cf	Tue Aug 22 14:04:56 2000
+@@ -569,7 +569,7 @@
+  * The server-side of PEX is not 64-bit clean.
+  */
+ #if !defined(BuildPexExt)
+-# if XF86Server && !defined(AlphaArchitecture)
++# if XF86Server
+ #  define BuildPexExt		YES
+ # else
+ #  define BuildPexExt		NO
+--- XFree86-4.0.1/xc/config/cf/Imake.cf~	Sat Jul  1 01:34:20 2000
++++ XFree86-4.0.1/xc/config/cf/Imake.cf	Tue Aug 22 21:57:06 2000
+@@ -583,6 +583,10 @@
+ #  endif
+ #  undef __i386__
+ # endif /* __i386__ */
++# ifdef alpha
++#  define AlphaArchitecture
++#  undef alpha
++# endif /* __alpha */
+ # ifdef __alpha
+ #  define AlphaArchitecture
+ #  undef __alpha

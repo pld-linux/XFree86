@@ -17,13 +17,17 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.2.1
-Release:	7
+Release:	12
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
-Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
+# Source0-md5:	ad43a8e9e39703322005cd6f7145b77f
+Source1:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
+# Source1-md5:	0a15b1c374256b5cad7961807baa3896
 Source2:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
+# Source2-md5:	8d43c01d364576c195a5294279f92566
 Source3:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
+# Source3-md5:	a184106bb83cb27c6963944d9243ac3f
 Source4:	xdm.pamd
 Source5:	xserver.pamd
 Source6:	xdm.init
@@ -111,6 +115,12 @@ Patch57:	%{name}-GLcore-strip-a-workaround.patch
 # Original from: ftp://ftp.xfree86.org/pub/XFree86/4.2.1/fixes/4.2.1-mit-shm-security.patch
 Patch58:	%{name}-4.2.1-mit-shm-security.patch
 Patch59:	%{name}-disable_glide.patch
+Patch60:	%{name}-xterm-can-2003-0063.patch
+Patch61:	%{name}-xlclocale-overflow.patch
+Patch62:	%{name}-xterm-DECUDK-security-fix.patch
+Patch63:	%{name}-font-overflows.patch
+Patch64:	%{name}-bison.patch
+URL:		http://www.xfree86.org/
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1633,13 +1643,14 @@ Summary(pl):	XDM - display mened©er z obsЁug╠ XDMCP i wybieraniem hostСw
 Summary(ru):	Менеджер дисплея X
 Summary(uk):	Менеджер дисплею X
 Group:		X11/XFree86
+PreReq:		rc-scripts
+Requires(post,preun):	/sbin/chkconfig
 Requires:	%{name} = %{version}
 Requires:	pam >= 0.71
 Requires:	%{name}-libs = %{version}
 Requires:	sessreg = %{version}
 Requires:	/usr/X11R6/bin/sessreg
 Provides:	XDM
-PreReq:		chkconfig
 Obsoletes:	XFree86-xdm
 Obsoletes:	gdm
 Obsoletes:	kdm
@@ -1669,11 +1680,12 @@ Summary(uk):	Фонтсервер для X Window System
 Group:		X11/XFree86
 Requires:	%{name}-libs = %{version}
 Requires:	XFree86-fonts-base
-PreReq:		chkconfig
+PreReq:		rc-scripts
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/useradd
 Requires(pre):	/usr/sbin/groupadd
+Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
 Obsoletes:	xfsft XFree86-xfs
@@ -1781,6 +1793,11 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %{!?debug:%patch57 -p1}
 %patch58 -p0
 %{?_without_tdfx:%patch59 -p0}
+%patch60 -p1
+%patch61 -p0
+%patch62 -p0
+%patch63 -p1
+%patch64 -p1
 
 rm -f xc/config/cf/host.def
 

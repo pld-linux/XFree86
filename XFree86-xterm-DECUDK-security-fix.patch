@@ -1,0 +1,19 @@
+--- xc/programs/xterm/misc.c.xterm-DECUDK-security-fix	2001-10-23 21:21:24.000000000 -0400
++++ xc/programs/xterm/misc.c	2003-04-03 11:00:48.000000000 -0500
+@@ -1649,6 +1649,7 @@
+ 				reset_decudk();
+ 
+ 			while (*cp) {
++				char *base = cp;
+ 				char *str = (char *)malloc(strlen(cp) + 2);
+ 				unsigned key = 0;
+ 				int len = 0;
+@@ -1675,6 +1676,8 @@
+ 				}
+ 				if (*cp == ';')
+ 					cp++;
++				if (cp == base) /* badly-formed sequence - bail out */
++					break;
+ 			}
+ 		}
+ 		break;

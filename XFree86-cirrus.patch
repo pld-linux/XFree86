@@ -1,0 +1,316 @@
+Index: xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp.h
+===================================================================
+RCS file: /cvs/xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp.h,v
+retrieving revision 1.4
+retrieving revision 1.5
+diff -u -r1.4 -r1.5
+--- xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp.h	2000/12/06 15:35:15	1.4
++++ xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp.h	2001/01/22 21:09:33	1.5
+@@ -1,4 +1,4 @@
+-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp.h,v 1.4 2000/12/06 15:35:15 eich Exp $ */
++/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp.h,v 1.5 2001/01/22 21:09:33 dawes Exp $ */
+ 
+ /* (c) Itai Nahshon */
+ 
+@@ -69,6 +69,10 @@
+         CARD32 monoPattern8x8;
+ 
+         Bool                autoStart;
++
++	/* MMIO Base for BitBLT operation. This is
++	   IOBase for 5446 and 7548, IOBase+0x100 for 5480 */
++	unsigned char *	    BLTBase;
+ /* XXX For XF86Config based mem configuration */
+ 	CARD32			sr0f, sr17;
+ } AlpRec, *AlpPtr;
+Index: xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp_driver.c
+===================================================================
+RCS file: /cvs/xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp_driver.c,v
+retrieving revision 1.17
+retrieving revision 1.18
+diff -u -r1.17 -r1.18
+--- xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp_driver.c	2000/12/07 15:43:44	1.17
++++ xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp_driver.c	2001/01/21 21:19:24	1.18
+@@ -11,7 +11,7 @@
+  *    Guy DESBIEF
+  */
+ 
+-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp_driver.c,v 1.17 2000/12/07 15:43:44 tsi Exp $ */
++/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp_driver.c,v 1.18 2001/01/21 21:19:24 tsi Exp $ */
+ 
+ /* All drivers should typically include these */
+ #include "xf86.h"
+@@ -59,11 +59,9 @@
+ 
+ /* These need to be checked */
+ #if 0
+-#ifdef XFreeXDGA
+ #define _XF86DGA_SERVER_
+ #include "extensions/xf86dgastr.h"
+ #endif
+-#endif
+ 
+ #include "xf86DDC.h"
+ #include "xf86int10.h"
+@@ -112,10 +110,8 @@
+ 
+ static void AlpSetClock(CirPtr pCir, vgaHWPtr hwp, int freq);
+ 
+-#ifdef DPMSExtension
+-static void	AlpDisplayPowerManagementSet(ScrnInfoPtr pScrn,
+-											int PowerManagementMode, int flags);
+-#endif
++static void AlpDisplayPowerManagementSet(ScrnInfoPtr pScrn,
++					 int PowerManagementMode, int flags);
+ 
+ /*
+  * This is intentionally screen-independent.  It indicates the binding
+@@ -1078,10 +1074,7 @@
+ 	        AlpFreeRec(pScrn);
+ 		return FALSE;
+ 	    } 
+-	    xf86LoaderReqSymbols("fbScreenInit",NULL);
+-#ifdef RENDER
+-	    xf86LoaderReqSymbols("fbPictureInit", NULL);
+-#endif
++	    xf86LoaderReqSymbols("fbScreenInit", "fbPictureInit", NULL);
+ 	    break;
+ 	}
+ 
+@@ -1582,9 +1575,7 @@
+ 	}
+ 	if (!ret)
+ 		return FALSE;
+-#ifdef RENDER
+ 	fbPictureInit (pScreen, 0, 0);
+-#endif
+ 
+ #ifdef ALP_DEBUG
+ 	ErrorF("AlpScreenInit after depth dependent init\n");
+@@ -1716,9 +1707,7 @@
+ 	if (pScrn->bitsPerPixel > 1 && pScrn->bitsPerPixel <= 8)
+ 		vgaHWHandleColormaps(pScreen);
+ 
+-#ifdef DPMSExtension
+ 	xf86DPMSInit(pScreen, AlpDisplayPowerManagementSet, 0);
+-#endif
+ 
+ 	pScrn->memPhysBase = pCir->FbAddress;
+ 	pScrn->fbOffset = 0;
+@@ -1983,7 +1972,6 @@
+  *
+  * Sets VESA Display Power Management Signaling (DPMS) Mode.
+  */
+-#ifdef DPMSExtension
+ static void
+ AlpDisplayPowerManagementSet(ScrnInfoPtr pScrn, int PowerManagementMode,
+ 			     int flags)
+@@ -2031,7 +2019,6 @@
+ 	gr0e |= hwp->readGr(hwp, 0x0E) & ~0x06;
+ 	hwp->writeGr(hwp, 0x0E, gr0e);
+ }
+-#endif
+ 
+ #ifdef ALPPROBEI2C
+ static void AlpProbeI2C(int scrnIndex)
+Index: xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp_xaam.c
+===================================================================
+RCS file: /cvs/xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp_xaam.c,v
+retrieving revision 1.4
+retrieving revision 1.5
+diff -u -r1.4 -r1.5
+--- xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp_xaam.c	2000/12/06 15:35:15	1.4
++++ xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp_xaam.c	2001/01/22 21:09:34	1.5
+@@ -1,6 +1,6 @@
+ /* (c) Itai Nahshon */
+ 
+-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp_xaam.c,v 1.4 2000/12/06 15:35:15 eich Exp $ */
++/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/cirrus/alp_xaam.c,v 1.5 2001/01/22 21:09:34 dawes Exp $ */
+ 
+ #include "xf86.h"
+ #include "xf86_OSproc.h"
+@@ -19,21 +19,21 @@
+ #ifdef DEBUG
+ #define minb(p) \
+         ErrorF("minb(%X)\n", p),\
+-        MMIO_IN8(pCir->IOBase, (p))
++        MMIO_IN8(pCir->chip.alp->BLTBase, (p))
+ #define moutb(p,v) \
+         ErrorF("moutb(%X)\n", p),\
+-	MMIO_OUT8(pCir->IOBase, (p),(v))
++	MMIO_OUT8(pCir->chip.alp->BLTBase, (p),(v))
+ #define minl(p) \
+         ErrorF("minl(%X)\n", p),\
+-        MMIO_IN32(pCir->IOBase, (p))
++        MMIO_IN32(pCir->chip.alp->BLTBase, (p))
+ #define moutl(p,v) \
+         ErrorF("moutl(%X)\n", p),\
+-	MMIO_OUT32(pCir->IOBase, (p),(v))
++	MMIO_OUT32(pCir->chip.alp->BLTBase, (p),(v))
+ #else
+-#define minb(p) MMIO_IN8(pCir->IOBase, (p))
+-#define moutb(p,v) MMIO_OUT8(pCir->IOBase, (p),(v))
+-#define minl(p) MMIO_IN32(pCir->IOBase, (p))
+-#define moutl(p,v) MMIO_OUT32(pCir->IOBase, (p),(v))
++#define minb(p) MMIO_IN8(pCir->chip.alp->BLTBase, (p))
++#define moutb(p,v) MMIO_OUT8(pCir->chip.alp->BLTBase, (p),(v))
++#define minl(p) MMIO_IN32(pCir->chip.alp->BLTBase, (p))
++#define moutl(p,v) MMIO_OUT32(pCir->chip.alp->BLTBase, (p),(v))
+ #endif
+ 
+ #define WAIT while(minb(0x40) & pCir->chip.alp->waitMsk){};
+@@ -174,6 +174,17 @@
+ 
+ 	XAAPtr = XAACreateInfoRec();
+ 	if (!XAAPtr) return FALSE;
++
++	
++	switch (pCir->Chipset)
++	{
++	case PCI_CHIP_GD5480:
++		pCir->chip.alp->BLTBase = pCir->IOBase + 0x100;
++		break;
++	default:
++		pCir->chip.alp->BLTBase = pCir->IOBase;
++		break;
++	}
+ 
+ 	XAAPtr->SetupForScreenToScreenCopy = AlpSetupForScreenToScreenCopy;
+ 	XAAPtr->SubsequentScreenToScreenCopy = AlpSubsequentScreenToScreenCopy;
+Index: xc/programs/Xserver/hw/xfree86/drivers/cirrus/cir_driver.c
+===================================================================
+RCS file: /cvs/xc/programs/Xserver/hw/xfree86/drivers/cirrus/cir_driver.c,v
+retrieving revision 1.62
+retrieving revision 1.64
+diff -u -r1.62 -r1.64
+--- xc/programs/Xserver/hw/xfree86/drivers/cirrus/cir_driver.c	2000/12/06 15:35:15	1.62
++++ xc/programs/Xserver/hw/xfree86/drivers/cirrus/cir_driver.c	2001/01/22 21:09:34	1.64
+@@ -11,7 +11,7 @@
+  *	Guy DESBIEF
+  */
+ 
+-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/cirrus/cir_driver.c,v 1.62 2000/12/06 15:35:15 eich Exp $ */
++/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/cirrus/cir_driver.c,v 1.64 2001/01/22 21:09:34 dawes Exp $ */
+ 
+ /* All drivers should typically include these */
+ #include "xf86.h"
+@@ -65,9 +65,6 @@
+ DriverRec CIRRUS = {
+ 	VERSION,
+ 	CIR_DRIVER_NAME,
+-#if 0
+-	"Driver for Cirrus Logic GD5446, GD5480, and GD5462/4/5 cards",
+-#endif
+ 	CIRIdentify,
+ 	CIRProbe,
+ 	CIRAvailableOptions,
+@@ -128,7 +125,12 @@
+ 	"LgAvailableOptions",
+ 	NULL
+ };
+-
++static const char *vbeSymbols[] = {
++	"VBEInit",
++	"vbeDoEDID",
++	"vbeFree",
++	NULL
++};
+ 
+ #ifdef XFree86LOADER
+ 
+@@ -165,7 +167,7 @@
+ 		setupDone = TRUE;
+ 		xf86AddDriver(&CIRRUS, module, 0);
+ 
+-		LoaderRefSymLists(alpSymbols, lgSymbols, NULL);
++		LoaderRefSymLists(alpSymbols, lgSymbols, vbeSymbols, NULL);
+ 		return (pointer)1;
+ 	}
+ 	if (errmaj) *errmaj = LDR_ONCEONLY;
+@@ -399,6 +401,9 @@
+     vbeInfoPtr pVbe;
+ 
+     if (xf86LoadSubModule(pScrn, "vbe")) {
++#ifdef XFree86LOADER
++	xf86LoaderReqSymLists(vbeSymbols,NULL);
++#endif
+         pVbe = VBEInit(NULL,index);
+         ConfiguredMonitor = vbeDoEDID(pVbe, NULL);
+     }
+Index: xc/programs/Xserver/hw/xfree86/drivers/cirrus/lg_driver.c
+===================================================================
+RCS file: /cvs/xc/programs/Xserver/hw/xfree86/drivers/cirrus/lg_driver.c,v
+retrieving revision 1.33
+retrieving revision 1.35
+diff -u -r1.33 -r1.35
+--- xc/programs/Xserver/hw/xfree86/drivers/cirrus/lg_driver.c	2000/12/06 15:35:16	1.33
++++ xc/programs/Xserver/hw/xfree86/drivers/cirrus/lg_driver.c	2001/01/22 21:09:35	1.35
+@@ -13,7 +13,7 @@
+  *	David Dawes, Andrew E. Mileski, Leonard N. Zubkoff,
+  *	Guy DESBIEF, Itai Nahshon.
+  */
+-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/cirrus/lg_driver.c,v 1.33 2000/12/06 15:35:16 eich Exp $ */
++/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/cirrus/lg_driver.c,v 1.35 2001/01/22 21:09:35 dawes Exp $ */
+ 
+ #define EXPERIMENTAL
+ 
+@@ -94,10 +94,8 @@
+ static CARD16 LgSetClock(CirPtr pCir, vgaHWPtr hwp, int freq);
+ static void lg_vgaHWSetMmioFunc(vgaHWPtr hwp, CARD8 *base);
+ 
+-#ifdef DPMSExtension
+-static void	LgDisplayPowerManagementSet(ScrnInfoPtr pScrn,
+-										int PowerManagementMode, int flags);
+-#endif
++static void LgDisplayPowerManagementSet(ScrnInfoPtr pScrn,
++				        int PowerManagementMode, int flags);
+ 
+ /*
+  * This is intentionally screen-independent.  It indicates the binding
+@@ -863,10 +861,7 @@
+ 	         LgFreeRec(pScrn);
+ 		 return FALSE;
+ 	    }
+-	    xf86LoaderReqSymbols("fbScreenInit",NULL);
+-#ifdef RENDER
+-	    xf86LoaderReqSymbols("fbPictureInit", NULL);
+-#endif
++	    xf86LoaderReqSymbols("fbScreenInit", "fbPictureInit", NULL);
+ 	    break;
+ 	}
+ 
+@@ -1426,6 +1421,8 @@
+ 	if (!ret)
+ 		return FALSE;
+ 
++        fbPictureInit (pScreen, 0, 0);
++
+ #ifdef LG_DEBUG
+ 	ErrorF("LgScreenInit after depth dependent init\n");
+ #endif
+@@ -1475,9 +1472,7 @@
+ 	if (pScrn->bitsPerPixel > 1 && pScrn->bitsPerPixel <= 8)
+ 		vgaHWHandleColormaps(pScreen);
+ 
+-#ifdef DPMSExtension
+ 	xf86DPMSInit(pScreen, LgDisplayPowerManagementSet, 0);
+-#endif
+ 
+ 	pScrn->memPhysBase = pCir->FbAddress;
+ 	pScrn->fbOffset = 0;
+@@ -1799,7 +1794,6 @@
+  *
+  * Sets VESA Display Power Management Signaling (DPMS) Mode.
+  */
+-#ifdef DPMSExtension
+ static void
+ LgDisplayPowerManagementSet(ScrnInfoPtr pScrn, int PowerManagementMode,
+ 							int flags)
+@@ -1843,7 +1837,6 @@
+ 	cr1a |= hwp->readCrtc(hwp, 0x1A) & ~0x0C;
+ 	hwp->writeCrtc(hwp, 0x1A, cr1a);
+ }
+-#endif
+ 
+ #define minb(p) MMIO_IN8(hwp->MMIOBase, (p))
+ #define moutb(p,v) MMIO_OUT8(hwp->MMIOBase, (p),(v))

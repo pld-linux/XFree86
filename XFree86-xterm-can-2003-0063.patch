@@ -1,0 +1,20 @@
+--- XFree86-4.2.1/xc/programs/xterm/charproc.c.orig	Mon Jan  7 22:02:44 2002
++++ XFree86-4.2.1/xc/programs/xterm/charproc.c	Sat May 17 22:28:05 2003
+@@ -3752,11 +3752,17 @@
+ 		break;
+ 
+ 	case 21:	/* Report the window's title */
++/* This code block is disabled to fix a security issue reported
++ * in CAN-2003-0063
++ */
++#if 0
++
+ 		report_win_label(screen, 'l', &text,
+ 			XGetWMName(
+ 				screen->display,
+ 				VShellWindow,
+ 				&text));
++#endif
+ 		break;
+ 
+ 	default: /* DECSLPP (24, 25, 36, 48, 72, 144) */

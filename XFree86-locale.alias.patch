@@ -1,0 +1,289 @@
+Hi!
+
+Since end of October glibc does not canonicalize locale names returned by
+setlocale and as X looks up its locale alias without doing some obvious
+transformations like:
+s/\.iso8859\([0-9]*\)$/.ISO8859-\1/
+s/\.ISO-8859-\([0-9]*\)$/.ISO8859-\1/
+some X programs are either not localized any longer, or worse if not doing
+any error checking crash (such as rxvt).
+I think it would be good if X did these transformations (the size of its
+locale.alias could decrease quite a bit then), but I wonder if in the mean
+time a patch like this could not be used (these are just locales mentioned
+in glibc's locale.alias):
+
+--- xc/nls/locale.alias.jj	Wed Dec  6 23:00:42 2000
++++ xc/nls/locale.alias	Wed Dec 13 17:43:26 2000
+@@ -559,12 +559,14 @@ br_FR.iso885915:				br_FR.ISO8859-15
+ ca:						ca_ES.ISO8859-1
+ ca_ES:						ca_ES.ISO8859-1
+ ca_ES.iso88591:					ca_ES.ISO8859-1
++ca_ES.ISO-8859-1:				ca_ES.ISO8859-1
+ ca_ES.iso885915:				ca_ES.ISO8859-15
+ cs:						cs_CZ.ISO8859-2
+ cs_CS:						cs_CZ.ISO8859-2
+ cs_CS.ISO8859-2:				cs_CZ.ISO8859-2
+ cs_CZ:						cs_CZ.ISO8859-2
+ cs_CZ.iso88592:					cs_CZ.ISO8859-2
++cs_CZ.ISO-8859-2:				cs_CZ.ISO8859-2
+ cs_CZ.ISO_8859-2:				cs_CZ.ISO8859-2
+ XCOMM cz is old name for cs, should be deleted in the future:
+ cz:						cs_CZ.ISO8859-2
+@@ -579,8 +581,9 @@ da_DK:						da_DK.ISO8859-1
+ da_DK.88591:					da_DK.ISO8859-1
+ da_DK.88591.en:					da_DK.ISO8859-1
+ da_DK.iso88591:					da_DK.ISO8859-1
+-da_DK.ISO_8859-1:				da_DK.ISO8859-1
+ da_DK.iso885915:				da_DK.ISO8859-15
++da_DK.ISO-8859-1:				da_DK.ISO8859-1
++da_DK.ISO_8859-1:				da_DK.ISO8859-1
+ de:						de_DE.ISO8859-1
+ de_AT:						de_AT.ISO8859-1
+ de_AT.iso88591:					de_AT.ISO8859-1
+@@ -594,6 +597,7 @@ de_DE:						de_DE.ISO8859-1
+ de_DE.88591:					de_DE.ISO8859-1
+ de_DE.88591.en:					de_DE.ISO8859-1
+ de_DE.iso88591:					de_DE.ISO8859-1
++de_DE.ISO-8859-1:				de_DE.ISO8859-1
+ de_DE.ISO_8859-1:				de_DE.ISO8859-1
+ de_DE.iso885915:				de_DE.ISO8859-15
+ GER_DE.8859:					de_DE.ISO8859-1
+@@ -604,6 +608,7 @@ ee_EE.iso88594:					ee_EE.ISO8859-4
+ el:						el_GR.ISO8859-7
+ el_GR:						el_GR.ISO8859-7
+ el_GR.iso88597:					el_GR.ISO8859-7
++el_GR.ISO-8859-7:				el_GR.ISO8859-7
+ en:						en_US.ISO8859-1
+ en_AU:						en_AU.ISO8859-1
+ en_AU.iso88591:					en_AU.ISO8859-1
+@@ -651,6 +656,7 @@ es_ES:						es_ES.ISO8859-1
+ es_ES.88591:					es_ES.ISO8859-1
+ es_ES.88591.en:					es_ES.ISO8859-1
+ es_ES.iso88591:					es_ES.ISO8859-1
++es_ES.ISO-8859-1:				es_ES.ISO8859-1
+ es_ES.ISO_8859-1:				es_ES.ISO8859-1
+ es_GT:						es_GT.ISO8859-1
+ es_GT.iso88591:					es_GT.ISO8859-1
+@@ -685,6 +691,7 @@ XCOMM charset. EVS8:2000 specifies ISO88
+ et:						et_EE.ISO8859-15
+ et_EE:						et_EE.ISO8859-15
+ et_EE.iso88591:					et_EE.ISO8859-1
++et_EE.ISO-8859-1:				et_EE.ISO8859-1
+ et_EE.iso88594:					et_EE.ISO8859-4
+ et_EE.iso885913:				et_EE.ISO8859-13
+ et_EE.iso885915:				et_EE.ISO8859-15
+@@ -700,6 +707,7 @@ fi_FI:						fi_FI.ISO8859-15
+ fi_FI.88591:					fi_FI.ISO8859-1
+ fi_FI.88591.en:					fi_FI.ISO8859-1
+ fi_FI.iso88591:					fi_FI.ISO8859-1
++fi_FI.ISO-8859-1:				fi_FI.ISO8859-1
+ fi_FI.ISO_8859-1:				fi_FI.ISO8859-1
+ fi_FI.iso885915:				fi_FI.ISO8859-15
+ fo:						fo_FO.ISO8859-1
+@@ -727,6 +735,7 @@ fr_FR:						fr_FR.ISO8859-1
+ fr_FR.88591:					fr_FR.ISO8859-1
+ fr_FR.88591.en:					fr_FR.ISO8859-1
+ fr_FR.iso88591:					fr_FR.ISO8859-1
++fr_FR.ISO-8859-1:				fr_FR.ISO8859-1
+ fr_FR.ISO_8859-1:				fr_FR.ISO8859-1
+ fr_FR.iso885915:				fr_FR.ISO8859-15
+ FRE_FR.8859:					fr_FR.ISO8859-1
+@@ -744,6 +753,7 @@ gd_GB.iso885915:				gd_GB.ISO8859-15
+ gl:						gl_ES.ISO8859-1
+ gl_ES:						gl_ES.ISO8859-1
+ gl_ES.iso88591:					gl_ES.ISO8859-1
++gl_ES.ISO-8859-1:				gl_ES.ISO8859-1
+ gl_ES.iso885915:				gl_ES.ISO8859-15
+ he:						he_IL.ISO8859-8
+ he_IL:						he_IL.ISO8859-8
+@@ -758,10 +768,12 @@ hi_IN.isciidev:					hi_IN.ISCII-DEV
+ hr:						hr_HR.ISO8859-2
+ hr_HR:						hr_HR.ISO8859-2
+ hr_HR.iso88592:					hr_HR.ISO8859-2
++hr_HR.ISO-8859-2:				hr_HR.ISO8859-2
+ hr_HR.ISO_8859-2:				hr_HR.ISO8859-2
+ hu:						hu_HU.ISO8859-2
+ hu_HU:						hu_HU.ISO8859-2
+ hu_HU.iso88592:					hu_HU.ISO8859-2
++hu_HU.ISO-8859-2:				hu_HU.ISO8859-2
+ hy:						hy_AM.ARMSCII-8
+ hy_AM:						hy_AM.ARMSCII-8
+ hy_AM.armscii8:					hy_AM.ARMSCII-8
+@@ -775,6 +787,7 @@ in_ID:						id_ID.ISO8859-1
+ is:						is_IS.ISO8859-1
+ is_IS:						is_IS.ISO8859-1
+ is_IS.iso88591:					is_IS.ISO8859-1
++is_IS.ISO-8859-1:				is_IS.ISO8859-1
+ is_IS.ISO_8859-1:				is_IS.ISO8859-1
+ is_IS.iso885915:				is_IS.ISO8859-15
+ it:						it_IT.ISO8859-1
+@@ -786,6 +799,7 @@ it_IT:						it_IT.ISO8859-1
+ it_IT.88591:					it_IT.ISO8859-1
+ it_IT.88591.en:					it_IT.ISO8859-1
+ it_IT.iso88591:					it_IT.ISO8859-1
++it_IT.ISO-8859-1:				it_IT.ISO8859-1
+ it_IT.ISO_8859-1:				it_IT.ISO8859-1
+ it_IT.iso885915:				it_IT.ISO8859-15
+ iu:						iu_CA.NUNACOM-8
+@@ -796,6 +810,7 @@ XCOMM those lines should be deleted in a
+ iw:						he_IL.ISO8859-8
+ iw_IL:						he_IL.ISO8859-8
+ iw_IL.iso88598:					he_IL.ISO8859-8
++iw_IL.ISO-8859-8:				iw_IL.ISO8859-8
+ #ifndef __uxp__
+ ja_JP:						ja_JP.eucJP
+ #else /* __uxp__ */
+@@ -850,6 +865,7 @@ lt_LT:						lt_LT.ISO8859-13
+ lt_LT.iso88594:					lt_LT.ISO8859-4
+ lt_LT.ISO_8859-4:				lt_LT.ISO8859-4
+ lt_LT.iso885913:				lt_LT.ISO8859-13
++lt_LT.ISO-8859-13:				lt_LT.ISO8859-13
+ lt_LT.ISO_8859-13:				lt_LT.ISO8859-13
+ lv:						lv_LV.ISO8859-13
+ lv_LV:						lv_LV.ISO8859-13
+@@ -880,6 +896,7 @@ nl_NL:						nl_NL.ISO8859-1
+ nl_NL.88591:					nl_NL.ISO8859-1
+ nl_NL.88591.en:					nl_NL.ISO8859-1
+ nl_NL.iso88591:					nl_NL.ISO8859-1
++nl_NL.ISO-8859-1:				nl_NL.ISO8859-1
+ nl_NL.ISO_8859-1:				nl_NL.ISO8859-1
+ nl_NL.iso885915:				nl_NL.ISO8859-15
+ no:						no_NO.ISO8859-1
+@@ -893,6 +910,8 @@ nb_NO.88591:					nb_NO.ISO8859-1
+ ny_NO.88591:					ny_NO.ISO8859-1
+ no_NO.88591.en:					no_NO.ISO8859-1
+ no_NO.iso88591:					no_NO.ISO8859-1
++no_NO.ISO-8859-1:				no_NO.ISO8859-1
++nb_NO.ISO-8859-1:				nb_NO.ISO8859-1
+ no_NO.ISO_8859-1:				no_NO.ISO8859-1
+ no_NO.iso885915:				no_NO.ISO8859-15
+ nb_NO.iso885915:				nb_NO.ISO8859-15
+@@ -915,6 +934,7 @@ ph_PH.iso88591:					ph_PH.ISO8859-1
+ pl:						pl_PL.ISO8859-2
+ pl_PL:						pl_PL.ISO8859-2
+ pl_PL.iso88592:					pl_PL.ISO8859-2
++pl_PL.ISO-8859-2:				pl_PL.ISO8859-2
+ pp:						pp_AN.ISO8859-1
+ pp_AN:						pp_AN.ISO8859-1
+ pp_AN.iso88591:					pp_AN.ISO8859-1
+@@ -926,14 +946,17 @@ pt_PT:						pt_PT.ISO8859-1
+ pt_PT.88591:					pt_PT.ISO8859-1
+ pt_PT.88591.en:					pt_PT.ISO8859-1
+ pt_PT.iso88591:					pt_PT.ISO8859-1
++pt_PT.ISO-8859-1:				pt_PT.ISO8859-1
+ pt_PT.ISO_8859-1:				pt_PT.ISO8859-1
+ pt_PT.iso885915:				pt_PT.ISO8859-1
+ ro:						ro_RO.ISO8859-2
+ ro_RO:						ro_RO.ISO8859-2
+ ro_RO.iso88592:					ro_RO.ISO8859-2
++ro_RO.ISO-8859-2:				ro_RO.ISO8859-2
+ ru:						ru_RU.KOI8-R
+ ru_RU:						ru_RU.KOI8-R
+ ru_RU.iso88595:					ru_RU.ISO8859-5
++ru_RU.ISO-8859-5:				ru_RU.ISO8859-5
+ ru_RU.koi8r:					ru_RU.KOI8-R
+ ru_RU.cp1251:					ru_RU.CP1251
+ ru_RU.microsoftcp1251:				ru_RU.CP1251
+@@ -958,10 +981,12 @@ sh_SP:						sh_YU.ISO8859-2
+ sk:						sk_SK.ISO8859-2
+ sk_SK:						sk_SK.ISO8859-2
+ sk_SK.iso88592:					sk_SK.ISO8859-2
++sk_SK.ISO-8859-2:				sk_SK.ISO8859-2
+ sl:						sl_SI.ISO8859-2
+ sl_CS:						sl_CS.ISO8859-2
+ sl_SI:						sl_SI.ISO8859-2
+ sl_SI.iso88592:					sl_SI.ISO8859-2
++sl_SI.ISO-8859-2:				sl_SI.ISO8859-2
+ sp:						sp_YU.ISO8859-5
+ sp_YU:						sp_YU.ISO8859-5
+ sq:						sq_AL.ISO8859-2
+@@ -980,6 +1005,7 @@ sv_SE:						sv_SE.ISO8859-1
+ sv_SE.88591:					sv_SE.ISO8859-1
+ sv_SE.88591.en:					sv_SE.ISO8859-1
+ sv_SE.iso88591:					sv_SE.ISO8859-1
++sv_SE.ISO-8859-1:				sv_SE.ISO8859-1
+ sv_SE.ISO_8859-1:				sv_SE.ISO8859-1
+ sv_SE.iso885915:				sv_SE.ISO8859-15
+ ta:						ta_IN.TSCII-0
+@@ -998,6 +1024,7 @@ tl_PH.iso88591:					tl_PH.ISO8859-1
+ tr:						tr_TR.ISO8859-9
+ tr_TR:						tr_TR.ISO8859-9
+ tr_TR.iso88599:					tr_TR.ISO8859-9
++tr_TR.ISO-8859-9:				tr_TR.ISO8859-9
+ tt:						tt_RU.TATAR-CYR
+ tt_RU:						tt_RU.TATAR-CYR
+ tt_RU.tatarcyr:					tt_RU.TATAR-CYR
+@@ -1055,22 +1082,42 @@ spanish_spain.8859:				es_ES.ISO8859-1
+ XCOMM The following locale names are used in HPUX 9.x
+ american.iso88591:				en_US.ISO8859-1
+ arabic.iso88596:				ar_AA.ISO8859-6
++bokmal:						nb_NO.ISO8859-1
++bokmål:						nb_NO.ISO8859-1
+ bulgarian:					bg_BG.ISO8859-5
+ c-french.iso88591:				fr_CA.ISO8859-1
++catalan:					ca_ES.ISO8859-1
+ chinese-s:					zh_CN.eucCN
+ chinese-t:					zh_TW.eucTW
+ croatian:					hr_HR.ISO8859-2
+ czech:						cs_CZ.ISO8859-2
++danish:						da_DK.ISO8859-1
++dansk:						da_DK.ISO8859-1
+ danish.iso88591:				da_DK.ISO8859-1
++deutsch:					de_DE.ISO8859-1
++dutch:						nl_NL.ISO8859-1
+ dutch.iso88591:					nl_BE.ISO8859-1
++eesti:						et_EE.ISO8859-1
+ english.iso88591:				en_EN.ISO8859-1
++estonian:					et_EE.ISO8859-1
++finnish:					fi_FI.ISO8859-1
+ finnish.iso88591:				fi_FI.ISO8859-1
++français:					fr_FR.ISO8859-1
++french:						fr_FR.ISO8859-1
+ french.iso88591:				fr_CH.ISO8859-1
++galego:						gl_ES.ISO8859-1
++galician:					gl_ES.ISO8859-1
++german:						de_DE.ISO8859-1
+ german.iso88591:				de_CH.ISO8859-1
++greek:						el_GR.ISO8859-7
+ greek.iso88597:					el_GR.ISO8859-7
++hebrew:						iw_IL.ISO8859-8
+ hebrew.iso88598:				iw_IL.ISO8859-8
++hrvatski:					hr_HR.ISO8859-2
+ hungarian:					hu_HU.ISO8859-2
+ icelandic.iso88591:				is_IS.ISO8859-1
++icelandic:					is_IS.ISO8859-1
++italian:					it_IT.ISO8859-1
+ italian.iso88591:				it_IT.ISO8859-1
+ #if ! (defined(SVR4) && defined(sun))
+ japanese:					ja_JP.SJIS
+@@ -1078,17 +1125,27 @@ japanese:					ja_JP.SJIS
+ japanese:					ja_JP.eucJP
+ #endif
+ japanese.euc:					ja_JP.eucJP
++japanese.sjis:					ja_JP.SJIS
+ korean:						ko_KR.eucKR
++korean.euc:					ko_KR.eucKR
++lithuanian:					lt_LT.ISO8859-13
++norwegian:					no_NO.ISO8859-1
+ norwegian.iso88591:				no_NO.ISO8859-1
++portuguese:					pt_PT.ISO8859-1
+ polish:						pl_PL.ISO8859-2
+ portuguese.iso88591:				pt_PT.ISO8859-1
++romanian:					ro_RO.ISO8859-2
+ rumanian:					ro_RO.ISO8859-2
+ russian:					ru_RU.ISO8859-5
+ serbocroatian:					sh_YU.ISO8859-2
+ slovak:						sk_SK.ISO8859-2
+ slovene:					sl_CS.ISO8859-2
++slovenian:					sl_SI.ISO8859-2
++spanish:					es_ES.ISO8859-1
+ spanish.iso88591:				es_ES.ISO8859-1
++swedish:					sv_SE.ISO8859-1
+ swedish.iso88591:				sv_SE.ISO8859-1
++turkish:					tr_TR.ISO8859-9
+ turkish.iso88599:				tr_TR.ISO8859-9
+ univ.utf8:					en_US.UTF-8
+ XCOMM Digital Unix utf
+
+
+	Jakub
