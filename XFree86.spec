@@ -389,6 +389,7 @@ Summary:        X Font rendering library
 Summary(pl):    Biblioteka do renderowania fontów
 Group:          X11/XFree86
 Requires:       %{name}-libs = %{version}
+Requires:	%{name}-fontconfig = %{version}
 Provides:	Xft = 2.1
 Obsoletes:	XFree86-xft2
 Obsoletes:	Xft
