@@ -8,7 +8,7 @@
 #
 
 %define		_sver	%(echo %{version} | tr -d .)
-%define		_synaptics_ver	0.11.3p11
+%define		_synaptics_ver	0.11.4
 
 Summary:	XFree86 Window System servers and basic programs
 Summary(de):	XFree86 Window-System-Server und grundlegende Programme
@@ -62,7 +62,7 @@ Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-X
 #Source39:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
 # http://w1.894.telia.com/~u89404340/touchpad/index.html
 Source40:	http://w1.894.telia.com/~u89404340/touchpad/synaptics-%{_synaptics_ver}.tar.bz2
-# Source40-md5:	4dabd4c8ce8968eba6cde1dd6265c9c7
+# Source40-md5:	c07ffb03e93aefebc0570fe638939e27
 Source41:	http://www.linux.org.uk/~alan/S3.zip
 # Source41-md5:	8b754fc6bbded60b683563b945e384b0
 Patch0:		%{name}-PLD.patch
