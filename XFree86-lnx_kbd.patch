@@ -1,5 +1,47 @@
---- xc/programs/Xserver/hw/xfree86/os-support/linux/lnx_kbd.c.orig	2004-02-16 18:25:42.000000000 +0100
-+++ xc/programs/Xserver/hw/xfree86/os-support/linux/lnx_kbd.c	2004-02-16 18:29:53.875110184 +0100
+Index: xc/programs/Xserver/hw/xfree86/os-support/linux/lnx_io.c
+diff -u xc/programs/Xserver/hw/xfree86/os-support/linux/lnx_io.c:3.26 xc/programs/Xserver/hw/xfree86/os-support/linux/lnx_io.c:3.27
+--- xc/programs/Xserver/hw/xfree86/os-support/linux/lnx_io.c:3.26	Mon Nov 17 22:20:41 2003
++++ xc/programs/Xserver/hw/xfree86/os-support/linux/lnx_io.c	Wed Mar  3 18:53:41 2004
+@@ -81,7 +81,7 @@
+ #endif
+ 
+ static int
+-KDKBDREP_ioctl_ok(int rate, int delay) {
++KDKBDREP_ioctl_ok(int fd, int rate, int delay) {
+ #if defined(KDKBDREP) && !defined(__sparc__)
+      /* This ioctl is defined in <linux/kd.h> but is not
+ 	implemented anywhere - must be in some m68k patches. */
+@@ -90,7 +90,7 @@
+    /* don't change, just test */
+    kbdrep_s.rate = -1;
+    kbdrep_s.delay = -1;
+-   if (ioctl( 0, KDKBDREP, &kbdrep_s )) {
++   if (ioctl( fd, KDKBDREP, &kbdrep_s )) {
+        return 0;
+    }
+ 
+@@ -105,7 +105,7 @@
+    if (kbdrep_s.delay < 1)
+      kbdrep_s.delay = 1;
+    
+-   if (ioctl( 0, KDKBDREP, &kbdrep_s )) {
++   if (ioctl( fd, KDKBDREP, &kbdrep_s )) {
+      return 0;
+    }
+ 
+@@ -174,7 +174,7 @@
+     delay = xf86Info.kbdDelay;
+ 
+ 
+-  if(KDKBDREP_ioctl_ok(rate, delay)) 	/* m68k? */
++  if(KDKBDREP_ioctl_ok(xf86Info.consoleFd, rate, delay)) 	/* m68k? */
+     return;
+ 
+   if(KIOCSRATE_ioctl_ok(rate, delay))	/* sparc? */
+Index: xc/programs/Xserver/hw/xfree86/os-support/linux/lnx_kbd.c
+diff -u xc/programs/Xserver/hw/xfree86/os-support/linux/lnx_kbd.c:1.5 xc/programs/Xserver/hw/xfree86/os-support/linux/lnx_kbd.c:1.6
+--- xc/programs/Xserver/hw/xfree86/os-support/linux/lnx_kbd.c:1.5	Tue Nov  4 03:14:39 2003
++++ xc/programs/Xserver/hw/xfree86/os-support/linux/lnx_kbd.c	Wed Mar  3 18:53:41 2004
 @@ -108,7 +108,7 @@
  #endif
  
