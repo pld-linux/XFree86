@@ -4,6 +4,7 @@
 #
 # Conditional build:
 %bcond_without	tdfx	# disables tdfx drivers building
+%bcond_without	xlibs	# exclude external client libraries
 #
 Summary:	XFree86 Window System servers and basic programs
 Summary(de):	XFree86 Window-System-Server und grundlegende Programme
@@ -2498,61 +2499,217 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/bdftopcf
-%attr(755,root,root) %{_libdir}/libFS.so
-%attr(755,root,root) %{_libdir}/libI810XvMC.so
-%attr(755,root,root) %{_libdir}/libICE.so
-%attr(755,root,root) %{_libdir}/libSM.so
-%attr(755,root,root) %{_libdir}/libX11.so
-%attr(755,root,root) %{_libdir}/libXRes.so
-%attr(755,root,root) %{_libdir}/libXTrap.so
-%attr(755,root,root) %{_libdir}/libXaw.so
-%attr(755,root,root) %{_libdir}/libXext.so
-%attr(755,root,root) %{_libdir}/libXfont.so
-%attr(755,root,root) %{_libdir}/libXfontcache.so
-%attr(755,root,root) %{_libdir}/libXi.so
-%attr(755,root,root) %{_libdir}/libXinerama.so
-%attr(755,root,root) %{_libdir}/libXmu.so
-%attr(755,root,root) %{_libdir}/libXmuu.so
-%attr(755,root,root) %{_libdir}/libXp.so
-%attr(755,root,root) %{_libdir}/libXpm.so
-%attr(755,root,root) %{_libdir}/libXrandr.so
-%attr(755,root,root) %{_libdir}/libXss.so
-%attr(755,root,root) %{_libdir}/libXt.so
-%attr(755,root,root) %{_libdir}/libXtst.so
-%attr(755,root,root) %{_libdir}/libXv.so
-%attr(755,root,root) %{_libdir}/libXvMC.so
-%attr(755,root,root) %{_libdir}/libXxf86dga.so
-%attr(755,root,root) %{_libdir}/libXxf86misc.so
-%attr(755,root,root) %{_libdir}/libXxf86rush.so
-%attr(755,root,root) %{_libdir}/libXxf86vm.so
-%attr(755,root,root) %{_libdir}/libfontenc.so
-%attr(755,root,root) %{_libdir}/libxkbfile.so
-%attr(755,root,root) %{_libdir}/libxkbui.so
-%attr(755,root,root) %{_libdir}/libxrx.so
-%{_libdir}/libXau.a
-%{_libdir}/libXdmcp.a
+%{_bindir}/bdftopcf
+%{_includedir}/X11/PM
+%{_includedir}/X11/DECkeysym.h
+%{_includedir}/X11/HPkeysym.h
+%{_includedir}/X11/Sunkeysym.h
+%{_includedir}/X11/X10.h
+%{_includedir}/X11/XWDFile.h
+%{_includedir}/X11/ap_keysym.h
+%dir %{_includedir}/X11/extensions
+%{_includedir}/X11/extensions/XKBbells.h
+%{_includedir}/X11/extensions/XKBconfig.h
+%{_includedir}/X11/extensions/XKBfile.h
+%{_includedir}/X11/extensions/XKBrules.h
+%{_includedir}/X11/extensions/XKBui.h
+%{_includedir}/X11/extensions/XKM.h
+%{_includedir}/X11/extensions/XKMformat.h
+%{_includedir}/X11/extensions/Xinerama.h
+%{_includedir}/X11/extensions/XvMClib.h
+%{_includedir}/X11/extensions/fontcache.h
+%{_includedir}/X11/extensions/fontcacheP.h
+%{_includedir}/X11/extensions/fontcachstr.h
+%{_includedir}/X11/extensions/panoramiXext.h
+%{_includedir}/X11/extensions/panoramiXproto.h
+%{_includedir}/X11/extensions/record.h
+%{_includedir}/X11/extensions/recordstr.h
+%{_includedir}/X11/extensions/scrnsaver.h
+%{_includedir}/X11/extensions/xf86bigfont.h
+%{_includedir}/X11/extensions/xf86bigfstr.h
+%{_includedir}/X11/extensions/xf86dga.h
+%{_includedir}/X11/extensions/xf86dga1.h
+%{_includedir}/X11/extensions/xf86dga1str.h
+%{_includedir}/X11/extensions/xf86dgastr.h
+%{_includedir}/X11/extensions/xf86misc.h
+%{_includedir}/X11/extensions/xf86mscstr.h
+%{_includedir}/X11/extensions/xf86rush.h
+%{_includedir}/X11/extensions/xf86rushstr.h
+%{_includedir}/X11/extensions/xf86vmode.h
+%{_includedir}/X11/extensions/xf86vmstr.h
+%{_includedir}/X11/extensions/xtrapbits.h
+%{_includedir}/X11/extensions/xtrapddmi.h
+%{_includedir}/X11/extensions/xtrapdi.h
+%{_includedir}/X11/extensions/xtrapemacros.h
+%{_includedir}/X11/extensions/xtraplib.h
+%{_includedir}/X11/extensions/xtraplibp.h
+%{_includedir}/X11/extensions/xtrapproto.h
+%{_includedir}/xf86Optrec.h
+%{_includedir}/xf86Parser.h
+
+%{_libx11dir}/config
+
 %{_libdir}/libfntstubs.a
 %{_libdir}/liboldX.a
 %{_libdir}/libxf86config.a
-%{_includedir}/X11/*.h
+%{_libdir}/libFS.so
+%{_libdir}/libI810XvMC.so
+%{_libdir}/libXTrap.so
+%{_libdir}/libXfontcache.so
+%{_libdir}/libXinerama.so
+%{_libdir}/libXmuu.so
+%{_libdir}/libXp.so
+%{_libdir}/libXpm.so
+%{_libdir}/libXss.so
+%{_libdir}/libXtst.so
+%{_libdir}/libXvMC.so
+%{_libdir}/libXxf86dga.so
+%{_libdir}/libXxf86misc.so
+%{_libdir}/libXxf86rush.so
+%{_libdir}/libXxf86vm.so
+%{_libdir}/libfontenc.so
+%{_libdir}/libxkbfile.so
+%{_libdir}/libxkbui.so
+%{_libdir}/libxrx.so
+# TODO
+%{_mandir}/man3/[A-FH-Z]*
+%exclude %{_mandir}/man3/Xft.3*
+# xlibs part
+%if %{with xlibs}
 %{_includedir}/X11/ICE
-%{_includedir}/X11/PM
 %{_includedir}/X11/SM
 %{_includedir}/X11/Xaw
 %{_includedir}/X11/Xmu
-%dir %{_includedir}/X11/extensions
-%{_includedir}/X11/extensions/*.h
-%{_includedir}/X11/fonts
-%{_includedir}/xf86*.h
-%{_libx11dir}/config
-
-%exclude %{_includedir}/X11/extensions/Xrender.h
-%exclude %{_includedir}/X11/extensions/render.h
-%exclude %{_includedir}/X11/extensions/renderproto.h
-
-%{_mandir}/man3/[A-FH-Z]*
-%exclude %{_mandir}/man3/Xft.3*
+# Not sure about this
+%dir %{_includedir}/X11/fonts
+%{_includedir}/X11/fonts/FS.h
+%{_includedir}/X11/fonts/FSlib.h
+%{_includedir}/X11/fonts/FSproto.h
+%dir %{_includedir}/X11/fonts/codeconv
+%{_includedir}/X11/fonts/codeconv/cconvversion.h
+%{_includedir}/X11/fonts/codeconv/xttcap.h
+%{_includedir}/X11/fonts/codeconv/xttcconv.h
+%{_includedir}/X11/fonts/codeconv/xttcconvP.h
+%{_includedir}/X11/fonts/codeconv/xttcommon.h
+%{_includedir}/X11/fonts/codeconv/xttversion.h
+%{_includedir}/X11/fonts/fontenc.h
+%{_includedir}/X11/fonts/fsmasks.h
+#
+%{_includedir}/X11/Composite.h
+%{_includedir}/X11/CompositeP.h
+%{_includedir}/X11/ConstrainP.h
+%{_includedir}/X11/Constraint.h
+%{_includedir}/X11/Core.h
+%{_includedir}/X11/CoreP.h
+%{_includedir}/X11/RectObj.h
+%{_includedir}/X11/RectObjP.h
+%{_includedir}/X11/Shell.h
+%{_includedir}/X11/ShellP.h
+%{_includedir}/X11/StringDefs.h
+%{_includedir}/X11/Vendor.h
+%{_includedir}/X11/VendorP.h
+%{_includedir}/X11/X.h
+%{_includedir}/X11/XF86keysym.h
+%{_includedir}/X11/XKBlib.h
+%{_includedir}/X11/Xalloca.h
+%{_includedir}/X11/Xarch.h
+%{_includedir}/X11/Xatom.h
+%{_includedir}/X11/Xauth.h
+%{_includedir}/X11/Xcms.h
+%{_includedir}/X11/Xdefs.h
+%{_includedir}/X11/Xdmcp.h
+%{_includedir}/X11/Xfuncproto.h
+%{_includedir}/X11/Xfuncs.h
+%{_includedir}/X11/Xlib.h
+%{_includedir}/X11/Xlibint.h
+%{_includedir}/X11/Xlocale.h
+%{_includedir}/X11/Xmd.h
+%{_includedir}/X11/Xos.h
+%{_includedir}/X11/Xos_r.h
+%{_includedir}/X11/Xosdefs.h
+%{_includedir}/X11/Xpoll.h
+%{_includedir}/X11/Xproto.h
+%{_includedir}/X11/Xprotostr.h
+%{_includedir}/X11/Xresource.h
+%{_includedir}/X11/Xthreads.h
+%{_includedir}/X11/Xutil.h
+%{_includedir}/X11/cursorfont.h
+%{_includedir}/X11/keysym.h
+%{_includedir}/X11/keysymdef.h
+%{_includedir}/X11/xpm.h
+%{_includedir}/X11/extensions/MITMisc.h
+%{_includedir}/X11/extensions/Print.h
+%{_includedir}/X11/extensions/Printstr.h
+%{_includedir}/X11/extensions/XEVI.h
+%{_includedir}/X11/extensions/XEVIstr.h
+%{_includedir}/X11/extensions/XI.h
+%{_includedir}/X11/extensions/XInput.h
+%{_includedir}/X11/extensions/XIproto.h
+%{_includedir}/X11/extensions/XKB.h
+%{_includedir}/X11/extensions/XKBgeom.h
+%{_includedir}/X11/extensions/XKBproto.h
+%{_includedir}/X11/extensions/XKBsrv.h
+%{_includedir}/X11/extensions/XKBstr.h
+%{_includedir}/X11/extensions/XLbx.h
+%{_includedir}/X11/extensions/XRes.h
+%{_includedir}/X11/extensions/XResproto.h
+%{_includedir}/X11/extensions/XShm.h
+%{_includedir}/X11/extensions/XTest.h
+%{_includedir}/X11/extensions/Xag.h
+%{_includedir}/X11/extensions/Xagsrv.h
+%{_includedir}/X11/extensions/Xagstr.h
+%{_includedir}/X11/extensions/Xcup.h
+%{_includedir}/X11/extensions/Xcupstr.h
+%{_includedir}/X11/extensions/Xdbe.h
+%{_includedir}/X11/extensions/Xdbeproto.h
+%{_includedir}/X11/extensions/Xext.h
+%{_includedir}/X11/extensions/Xrandr.h
+%{_includedir}/X11/extensions/Xv.h
+%{_includedir}/X11/extensions/XvMC.h
+%{_includedir}/X11/extensions/XvMCproto.h
+%{_includedir}/X11/extensions/Xvlib.h
+%{_includedir}/X11/extensions/Xvproto.h
+%{_includedir}/X11/extensions/bigreqstr.h
+%{_includedir}/X11/extensions/dpms.h
+%{_includedir}/X11/extensions/dpmsstr.h
+%{_includedir}/X11/extensions/extutil.h
+%{_includedir}/X11/extensions/lbxbuf.h
+%{_includedir}/X11/extensions/lbxbufstr.h
+%{_includedir}/X11/extensions/lbxdeltastr.h
+%{_includedir}/X11/extensions/lbximage.h
+%{_includedir}/X11/extensions/lbxopts.h
+%{_includedir}/X11/extensions/lbxstr.h
+%{_includedir}/X11/extensions/lbxzlib.h
+%{_includedir}/X11/extensions/mitmiscstr.h
+%{_includedir}/X11/extensions/multibuf.h
+%{_includedir}/X11/extensions/multibufst.h
+%{_includedir}/X11/extensions/randr.h
+%{_includedir}/X11/extensions/randrproto.h
+%{_includedir}/X11/extensions/saver.h
+%{_includedir}/X11/extensions/saverproto.h
+%{_includedir}/X11/extensions/security.h
+%{_includedir}/X11/extensions/securstr.h
+%{_includedir}/X11/extensions/shape.h
+%{_includedir}/X11/extensions/shapestr.h
+%{_includedir}/X11/extensions/shmstr.h
+%{_includedir}/X11/extensions/sync.h
+%{_includedir}/X11/extensions/syncstr.h
+%{_includedir}/X11/extensions/xcmiscstr.h
+%{_libdir}/libXau.a
+%{_libdir}/libXdmcp.a
+%{_libdir}/libICE.so
+%{_libdir}/libSM.so
+%{_libdir}/libX11.so
+%{_libdir}/libXRes.so
+%{_libdir}/libXaw.so
+%{_libdir}/libXext.so
+%{_libdir}/libXfont.so
+%{_libdir}/libXi.so
+%{_libdir}/libXmu.so
+%{_libdir}/libXrandr.so
+%{_libdir}/libXt.so
+%{_libdir}/libXv.so
+%endif
 
 %files Xserver-devel
 %defattr(644,root,root,755)
@@ -2900,8 +3057,6 @@ fi
 %dir %{_themesdir}
 %dir %{_themesdir}/Default
 %dir %{_themesdir}/ThinIce
-%{_libx11dir}/XErrorDB
-%{_libx11dir}/XKeysymDB
 %dir %{_appdefsdir}
 %lang(cs) %dir %{_appdefsdir}/cs
 %lang(da) %dir %{_appdefsdir}/da
@@ -2917,10 +3072,8 @@ fi
 %lang(sk) %dir %{_appdefsdir}/sk
 %lang(zh_CN) %dir %{_appdefsdir}/zh_CN.gb2312
 %lang(zh_TW) %dir %{_appdefsdir}/zh_TW.big5
-%{_libx11dir}/locale
 %dir %{_includedir}
 %dir %{_includedir}/X11
-/usr/include/X11
 %dir %{_sbindir}
 %dir %{_datadir}/misc
 %dir %{_iconsdir}
@@ -2931,26 +3084,14 @@ fi
 %dir %{_xsessdir}
 %attr(755,root,root) %{_libdir}/libFS.so.*.*
 %attr(755,root,root) %{_libdir}/libI810XvMC.so.*.*
-%attr(755,root,root) %{_libdir}/libICE.so.*.*
-%attr(755,root,root) %{_libdir}/libSM.so.*.*
-%attr(755,root,root) %{_libdir}/libX11.so.*.*
-%attr(755,root,root) %{_libdir}/libXRes.so.*.*
 %attr(755,root,root) %{_libdir}/libXTrap.so.*.*
-%attr(755,root,root) %{_libdir}/libXaw.so.*.*
-%attr(755,root,root) %{_libdir}/libXext.so.*.*
-%attr(755,root,root) %{_libdir}/libXfont.so.*.*
 %attr(755,root,root) %{_libdir}/libXfontcache.so.*.*
-%attr(755,root,root) %{_libdir}/libXi.so.*.*
 %attr(755,root,root) %{_libdir}/libXinerama.so.*.*
-%attr(755,root,root) %{_libdir}/libXmu.so.*.*
 %attr(755,root,root) %{_libdir}/libXmuu.so.*.*
 %attr(755,root,root) %{_libdir}/libXp.so.*.*
 %attr(755,root,root) %{_libdir}/libXpm.so.*.*
-%attr(755,root,root) %{_libdir}/libXrandr.so.*.*
 %attr(755,root,root) %{_libdir}/libXss.so.*.*
-%attr(755,root,root) %{_libdir}/libXt.so.*.*
 %attr(755,root,root) %{_libdir}/libXtst.so.*.*
-%attr(755,root,root) %{_libdir}/libXv.so.*.*
 %attr(755,root,root) %{_libdir}/libXvMC.so.*.*
 %attr(755,root,root) %{_libdir}/libXxf86dga.so.*.*
 %attr(755,root,root) %{_libdir}/libXxf86misc.so.*.*
@@ -2960,6 +3101,25 @@ fi
 %attr(755,root,root) %{_libdir}/libxkbfile.so.*.*
 %attr(755,root,root) %{_libdir}/libxkbui.so.*.*
 %attr(755,root,root) %{_libdir}/libxrx.so.*.*
+# xlibs part
+%if %{with xlibs}
+%attr(755,root,root) %{_libdir}/libICE.so.*.*
+%attr(755,root,root) %{_libdir}/libSM.so.*.*
+%attr(755,root,root) %{_libdir}/libX11.so.*.*
+%attr(755,root,root) %{_libdir}/libXRes.so.*.*
+%attr(755,root,root) %{_libdir}/libXaw.so.*.*
+%attr(755,root,root) %{_libdir}/libXext.so.*.*
+%attr(755,root,root) %{_libdir}/libXfont.so.*.*
+%attr(755,root,root) %{_libdir}/libXi.so.*.*
+%attr(755,root,root) %{_libdir}/libXmu.so.*.*
+%attr(755,root,root) %{_libdir}/libXrandr.so.*.*
+%attr(755,root,root) %{_libdir}/libXt.so.*.*
+%attr(755,root,root) %{_libdir}/libXv.so.*.*
+%{_libx11dir}/XErrorDB
+%{_libx11dir}/XKeysymDB
+%{_libx11dir}/locale
+/usr/include/X11
+%endif
 
 %files modules
 %defattr(644,root,root,755)
