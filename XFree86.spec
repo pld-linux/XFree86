@@ -74,7 +74,7 @@ Source46:	xcalc.png
 Source47:	xload.png
 Source48:	xmag.png
 Source49:	http://oss.sgi.com/projects/ogl-sample/ABI/glext.h
-# Source49-md5:	bf9b05a66798796b53ed1a050049b2ee
+# NoSource49-md5: bf9b05a66798796b53ed1a050049b2ee
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
