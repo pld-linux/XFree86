@@ -56,7 +56,6 @@ Source34:	xclipboard.png
 Source35:	xclock.png
 Source36:	oclock.png
 Source37:	xconsole.png
-Source38:	http://www.winischhofer/sis/sis_drv_src_141202-1.tar.gz
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -1927,13 +1926,9 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 rm -f xc/config/cf/host.def
 
 # New ATI drivers
-cd xc/programs/Xserver/hw/xfree86/drivers
+# cd xc/programs/Xserver/hw/xfree86/drivers
 #%bzcat %{SOURCE2} | tar x
 # ati.2 directory
-
-# New SiS drivers
-cd sis
-zcat %{SOURCE38} | tar x
 
 #--- %build --------------------------
 
