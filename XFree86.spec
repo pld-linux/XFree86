@@ -2135,6 +2135,7 @@ fi
 %{_libdir}/X11/app-defaults/XCalc-color
 %{_libdir}/X11/app-defaults/XClipboard
 %{_libdir}/X11/app-defaults/XClock
+%{_libdir}/X11/app-defaults/XClock-color
 %{_libdir}/X11/app-defaults/XLoad
 %{_libdir}/X11/app-defaults/XLogo
 %{_libdir}/X11/app-defaults/XLogo-color
@@ -2433,6 +2434,7 @@ fi
 %defattr(644,root,root,755)
 %attr(4755,root,root) %{_bindir}/Xwrapper
 %attr(755,root,root) %{_bindir}/XFree86
+%attr(755,root,root) %{_bindir}/getconfig*
 %attr(755,root,root) %{_sysconfdir}/X11/X
 %attr(755,root,root) %{_bindir}/X
 %{_mandir}/man1/XFree86.1*
@@ -2744,7 +2746,7 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
 %ifarch %{ix86}
-#%attr(755,root,root) %{_libdir}/modules/dri/sis_dri.so
+%attr(755,root,root) %{_libdir}/modules/dri/sis_dri.so
 %endif
 %{_mandir}/man4/sis*
 %endif
