@@ -26,9 +26,13 @@ Version:	4.3.0
 Release:	1.4
 License:	MIT
 Group:		X11/XFree86
+# Source0-md5:	4f241a4f867363f40efa2b00dca292af
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-1.tgz
+# Source1-md5:	844c2ee908d21dbf8911fd13115bf8b4
 Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-2.tgz
+# Source2-md5:	b82a0443e1b7bf860e4343e6b6766cb6
 Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-3.tgz
+# Source3-md5:	0a15b1c374256b5cad7961807baa3896
 Source3:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source4:	xdm.pamd
 Source5:	xserver.pamd
@@ -54,8 +58,10 @@ Source34:	xclipboard.png
 Source35:	xclock.png
 Source36:	oclock.png
 Source37:	xconsole.png
+# Source38-md5: a184106bb83cb27c6963944d9243ac3f
 Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
-Source39:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
+# Source39-md5:	8d43c01d364576c195a5294279f92566
+Source39:	http://ep09.kernel.pl/~djrzulf/ati.2-20021001.tar.bz2
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
