@@ -1037,9 +1037,9 @@ rm -f xc/config/cf/host.def
 
 %build
 %{__make} -S -C xc World DEFAULT_OS_CPU_FROB=%{_target_cpu} \
-	"BOOTSTRAPCFLAGS=%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}" \
-	"CCOPTIONS=%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}" \
-	"CXXOPTIONS=%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}" \
+	"BOOTSTRAPCFLAGS=%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}" \
+	"CCOPTIONS=%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}" \
+	"CXXOPTIONS=%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}" \
 	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 
 cd Mesa*
