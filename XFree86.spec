@@ -21,9 +21,13 @@ Release:	9
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
-Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
+# Source0-md5:	ad43a8e9e39703322005cd6f7145b77f
+Source1:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
+# Source1-md5:	0a15b1c374256b5cad7961807baa3896
 Source2:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
+# Source2-md5:	8d43c01d364576c195a5294279f92566
 Source3:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
+# Source3-md5:	a184106bb83cb27c6963944d9243ac3f
 Source4:	xdm.pamd
 Source5:	xserver.pamd
 Source6:	xdm.init
