@@ -2002,9 +2002,6 @@ rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/html
 # resolve conflict with man-pages
 mv -f $RPM_BUILD_ROOT%{_mandir}/man4/{mouse.4,mouse-x.4}
 
-# fix mkfontscale path
-perl -pi -e "s#mkfontscale#%{_bindir}/mkfontscale#g" $RPM_BUILD_ROOT%{_bindir}/mkfontdir
-
 # directories for applications locales
 echo '%defattr(644,root,root,755)' > XFree86-libs.lang
 for lang in af az bg bg_BG.cp1251 br ca cs da de el en_GB eo es et eu fi \
