@@ -17,7 +17,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.2.1
-Release:	9.1
+Release:	9.2
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
@@ -2388,7 +2388,8 @@ fi
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/bdftopcf
-%attr(755,root,root) %{_libdir}/libX[1Ta-t]*.so
+%attr(755,root,root) %{_libdir}/libX[1Ta-eg-t]*.so
+%attr(755,root,root) %{_libdir}/libXfont*.so
 %attr(755,root,root) %{_libdir}/libI*.so
 %attr(755,root,root) %{_libdir}/libS*.so
 %attr(755,root,root) %{_libdir}/libx*.so
@@ -2741,6 +2742,7 @@ fi
 %dir %{_pixmapsdir}/mini
 %dir %{_wmpropsdir}
 %attr(755,root,root) %{_libdir}/libX[1Ta-eg-t]*.so.*.*
+%attr(755,root,root) %{_libdir}/libXfont*.so.*.*
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
 %attr(755,root,root) %{_libdir}/libS*.so.*.*
 %attr(755,root,root) %{_libdir}/libx*.so.*.*
