@@ -453,6 +453,84 @@ systemie i wybierania ich w zale¿no¶ci od potrzeb aplikacji.
 
 Ten pakiet zawiera biblioteki statyczne.
 
+%package render
+Summary:	X Render Extension
+Summary(pl):	Rozszerzenie X Render
+Group:          X11/Development
+Requires:       XFree86-devel
+
+%description render
+This package contains header files and documentation for the X render
+extension.  Library and server implementations are separate.
+
+%description render -l pl
+Pakiet zawiera pliki nag³ówkowe i dokumenetacjê dla rozszerzenia X render.
+Biblioteka i implementacja serwera znajduj± siê w osobnym pakiecie.
+
+
+%package xrender
+Summary:        X Render Extension
+Summary(pl):    Rozszerzenie X Render
+Group:          X11/Libraries
+
+%description xrender
+X render library
+
+%description xrender -l pl
+Biblioteka X render
+
+%package xrender-devel
+Summary:        X Render Extension headers
+Summary(pl):    Pliki nag³ówkowe rozszerzenia X Render
+Group:          X11/Libraries
+Requires:	%{name}-devel
+Requires:	xrender
+
+%description xrender-devel
+X render library headers
+
+%description xrender-devel -l pl
+Pliki nag³ówkowe biblioteki X render
+
+%package xrender-static
+Summary:        X Render static library
+Summary(pl):    Biblioteka statyczna X render
+Group:          X11/Libraries/Development
+Requires:	%{name}-devel
+Requires:	%{name}-xrender-devel
+
+%description xrender-static
+X render static library
+
+%description xrender-static -l pl
+Biblioteka statyczna X render
+
+
+%package xcursor
+Summary:        X cursor library
+Summary(pl):    Biblioteka X cursor
+Group:          X11/Libraries
+
+%description xcursor
+X cursor library
+
+%description xcursor -l pl
+Biblioteka X cursor
+
+%package xcursor-devel
+Summary:        X cursor library headers
+Summary(pl):    Pliki nag³ówkowe biblioteki X cursor
+Group:          X11/Libraries/Development
+Requires:	%{name}-devel
+Requires:	xcursor
+
+%description xcursor-devel
+X cursor library headers
+
+%description xcursor-devel -l pl
+Pliki nag³ówkowe biblioteki X cursor
+
+
 %package OpenGL-core
 Summary:	OpenGL support for X11R6
 Summary(pl):	Wsparcie OpenGL dla systemu X11R6
@@ -1873,6 +1951,10 @@ System. ôÁËÏÖ ×ÁÍ ÐÒÉÊÄÅÔØÓÑ ×ÓÔÁÎÏ×ÉÔÉ ÎÁÓÔÕÐÎ¦ ÐÁËÅÔÉ: XFree86,
 
 rm -f xc/config/cf/host.def
 
+#Remove fonts dir for faster build
+# only valid for snapshots
+rm -rf xc/fonts
+
 # New ATI drivers
 # cd xc/programs/Xserver/hw/xfree86/drivers
 #%bzcat %{SOURCE39} | tar x
@@ -2130,6 +2212,13 @@ if [ "$1" = "0" ]; then
 	/usr/sbin/userdel xfs 2>/dev/null
 	/usr/sbin/groupdel xfs 2>/dev/null
 fi
+
+
+%post xrender -p /sbin/ldconfig
+%postun xrender -p /sbin/ldconfig
+
+%post xcursor -p /sbin/ldconfig
+%postun xcursor -p /sbin/ldconfig
 
 #--- %files --------------------------
 
@@ -2491,7 +2580,7 @@ fi
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/bdftopcf
-%attr(755,root,root) %{_bindir}/xcursor-config
+#%attr(755,root,root) %{_bindir}/xcursor-config
 %attr(755,root,root) %{_libdir}/libX[1Ta-eg-t]*.so
 %attr(755,root,root) %{_libdir}/libXfont*.so
 %attr(755,root,root) %{_libdir}/libI*.so
@@ -2504,7 +2593,6 @@ fi
 %{_libdir}/libI810XvMC.a
 %{_libdir}/liboldX.a
 %{_libdir}/libXau.a
-%{_libdir}/libXcursor.a
 %{_libdir}/libXdmcp.a
 %{_libdir}/libxf86config.a
 %{_libdir}/libXfontcache.a
@@ -2532,10 +2620,14 @@ fi
 %{_includedir}/X11/extensions/XI.h
 %{_includedir}/X11/extensions/XI[^E]*.h
 %{_includedir}/X11/fonts
-%{_includedir}/X11/Xcursor
 %{_includedir}/xf86*.h
 %{_libdir}/X11/config
-%{_pkgconfigdir}/xcursor.pc
+
+%exclude %{_includedir}/X11/extensions/Xrender.h
+%exclude %{_includedir}/X11/extensions/render.h
+%exclude %{_includedir}/X11/extensions/renderproto.h
+%exclude %{_libdir}/libXrender.so
+%exclude %{_libdir}/libXcursor.so
 
 %{_mandir}/man3/[A-EH-Z]*
 %exclude %{_mandir}/man3/Xft.3*
@@ -2909,6 +3001,9 @@ fi
 %attr(755,root,root) %{_libdir}/libx*.so.*.*
 %attr(755,root,root) %{_libdir}/libXv.so.*.*
 
+%exclude %{_libdir}/libXrender.so.*.*
+%exclude %{_libdir}/libXcursor.so.*.*
+
 %files modules
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/xkbcomp
@@ -2998,7 +3093,6 @@ fi
 %{_libdir}/libXmuu.a
 %{_libdir}/libXp.a
 %{_libdir}/libXpm.a
-%{_libdir}/libXrender.a
 %{_libdir}/libXt.a
 %{_libdir}/libXtst.a
 
@@ -3186,3 +3280,31 @@ fi
 %{_mandir}/man1/mkcfm.1*
 %{_mandir}/man1/xfsinfo.1*
 #%%{_mandir}/man1/xftcache.1*
+
+%files render
+%defattr(644,root,root,755)
+%{_includedir}/X11/extensions/render.h
+%{_includedir}/X11/extensions/renderproto.h
+
+%files xrender
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXrender.so.*.*
+
+%files xrender-devel
+%defattr(644,root,root,755)
+%{_includedir}/X11/extensions/Xrender.h
+%{_libdir}/libXrender.so
+
+%files xrender-static
+%{_libdir}/libXrender.a
+
+%files xcursor
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXcursor.so.*.*
+
+%files xcursor-devel
+%defattr(644,root,root,755)
+%{_includedir}/X11/Xcursor
+%{_pkgconfigdir}/xcursor.pc
+%{_libdir}/libXcursor.so
+%{_libdir}/libXcursor.a
