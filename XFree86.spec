@@ -29,6 +29,7 @@ Patch1:		XFree86-HasZlib.patch
 Patch2:		XFree86-DisableDebug.patch
 Patch3:		XFree86-3.9.18-Xwrapper.patch
 Patch4:		XFree86-3.9.17-PAM.patch
+Patch5:		XFree86-3.9.18-GLU.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -630,6 +631,7 @@ Czcionki rastrowe ISO-8859-2.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 #--- %build --------------------------
 
@@ -678,13 +680,6 @@ ln -sf XFree86 $RPM_BUILD_ROOT%{_bindir}/X
 # setting ghost X in /etc/X11 -- xf86config will fix this ...
 ln -s ../..%{_bindir}/XFree86 $RPM_BUILD_ROOT/etc/X11/X
 
-for i in xdm twm fs xsm xinit; do
-	rm -rf $RPM_BUILD_ROOT/etc/X11/$i
-	cp -ar $RPM_BUILD_ROOT%{_libdir}/X11/$i $RPM_BUILD_ROOT/etc/X11
-	rm -rf $RPM_BUILD_ROOT%{_libdir}/X11/$i
-	ln -sf /etc/X11/$i $RPM_BUILD_ROOT%{_libdir}/X11/$i
-done
-
 # add X11 links in /usr/bin and /usr/include
 ln -s ../X11R6/include/X11 $RPM_BUILD_ROOT/usr/include/X11
 ln -s ../X11R6/bin $RPM_BUILD_ROOT/usr/bin/X11
@@ -717,15 +712,6 @@ touch $RPM_BUILD_ROOT/etc/security/blacklist.xdm
 
 #ln -sf ../..%{_includedir}/X11 $RPM_BUILD_ROOT%{_includedir}/X11 ##change
 ln -sf %{_fontdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
-
-# xkb 'compiled' files need to be in /var/state/xkb, so
-# /usr is NFS / read-only mountable
-mkdir -p $RPM_BUILD_ROOT/var/state/xkb
-cp -a $RPM_BUILD_ROOT%{_libdir}/X11/xkb/compiled/* \
-	$RPM_BUILD_ROOT/var/state/xkb
-rm -rf $RPM_BUILD_ROOT%{_libdir}/X11/xkb/compiled
-ln -sf ../../../../../var/state/xkb \
-	$RPM_BUILD_ROOT%{_libdir}/X11/xkb/compiled
 
 # we have libXpm from xpm package
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libXpm*
@@ -1074,6 +1060,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/security/blacklist.xdm
 %attr(754,root,root) /etc/rc.d/init.d/xdm
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/xdm
+/var/state/xdm
 
 %config %{_libdir}/X11/app-defaults/Chooser
 
@@ -1174,6 +1161,7 @@ rm -rf $RPM_BUILD_ROOT
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libGL.a
+%{_libdir}/libGLU.a
 %{_libdir}/libICE.a
 %{_libdir}/libPEX5.a
 %{_libdir}/libSM.a
