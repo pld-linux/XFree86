@@ -2102,6 +2102,9 @@ rm -rf $RPM_BUILD_ROOT
 %post	fontconfig -p /sbin/ldconfig
 %postun	fontconfig -p /sbin/ldconfig
 
+%post	OpenGL-core -p /sbin/ldconfig
+%postun	OpenGL-core -p /sbin/ldconfig
+
 %post	OpenGL-libs -p /sbin/ldconfig
 %postun	OpenGL-libs -p /sbin/ldconfig
 
