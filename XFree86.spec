@@ -2453,10 +2453,13 @@ fi
 %attr(755,root,root) %{_bindir}/X
 %{_mandir}/man1/XFree86.1*
 %{_mandir}/man1/Xserver.1*
+%{_mandir}/man1/getconfig.1*
 %{_mandir}/man5/XF86Config.5*
+%{_mandir}/man5/getconfig.5*
 
 %{_libdir}/X11/Cards
 %{_libdir}/X11/Options
+%{_libdir}/X11/getconfig
 
 %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/X11/XF86Config
 %attr(640,root,root) %config %verify(not md5 size mtime) /etc/pam.d/xserver
