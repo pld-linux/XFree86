@@ -1,5 +1,11 @@
 
-# _without_tdfx		disables tdfx build
+# TODO:
+# - separate XFS to be standalone - is it possible without duplicated files?
+
+#
+# Conditional build:
+# _without_tdfx		- disables tdfx drivers building
+#
 
 %define		_sver	%(echo %{version} | tr -d .)
 
@@ -16,14 +22,14 @@ Summary(ru):	âÁÚÏ×ÙÅ ÛÒÉÆÔÙ, ÐÒÏÇÒÁÍÍÙ É ÄÏËÕÍÅÎÔÁÃÉÑ ÄÌÑ ÒÁÂÏÞÅÊ ÓÔÁÎÃÉÉ ÐÏÄ X
 Summary(uk):	âÁÚÏ×¦ ÛÒÉÆÔÉ, ÐÒÏÇÒÁÍÉ ÔÁ ÄÏËÕÍÅÎÔÁÃ¦Ñ ÄÌÑ ÒÏÂÏÞÏ§ ÓÔÁÎÃ¦§ Ð¦Ä X
 Summary(zh_CN):	XFree86 ´°¿ÚÏµÍ³·þÎñÆ÷ºÍ»ù±¾³ÌÐò
 Name:		XFree86
-Version:	4.2.1
-Release:	7
+Version:	4.3.0
+Release:	1.4
 License:	MIT
 Group:		X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
-Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
-Source2:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
-Source3:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-1.tgz
+Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-2.tgz
+Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-3.tgz
+Source3:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source4:	xdm.pamd
 Source5:	xserver.pamd
 Source6:	xdm.init
@@ -48,6 +54,8 @@ Source34:	xclipboard.png
 Source35:	xclock.png
 Source36:	oclock.png
 Source37:	xconsole.png
+Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
+Source39:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -78,50 +86,43 @@ Patch26:	%{name}-HasFreetype2.patch
 Patch27:	%{name}-config-s3.patch
 Patch28:	%{name}-sparc_pci_domains.patch
 Patch29:	%{name}-XTerm.ad.patch
-Patch30:	%{name}-dri_directory_mode_fix.patch
-Patch31:	%{name}-alpha_GLX_align_fix.patch
-Patch32:	%{name}-XftConfig_in_correct_place.patch
-Patch33:	%{name}-PEX+XIE.patch
-Patch34:	%{name}-xman-manpaths.patch
-Patch35:	%{name}-ppc_drivers.patch
-Patch36:	ftp://ftp.xfree86.org/pub/XFree86/4.2.1/patches/4.2.0-4.2.1.diff.gz
-Patch37:	%{name}-clearrts.patch
-Patch38:	%{name}-mga020414.patch
-Patch39:	%{name}-trident-9397.patch
-Patch40:	%{name}-4.2.0-i810-driver-update-cvs-20020617.patch.bz2
-Patch41:	%{name}-nv020414.patch
-Patch42:	%{name}-fix-07-s3trio64v2gx+netfinity.patch
-Patch43:	%{name}-prosavage.patch
-Patch44:	%{name}-xtt-null-pointer.patch
-Patch45:	%{name}-i740-driver-update-cvs-20020617.patch
-Patch46:	%{name}-neomagic-Xv-support.patch
-Patch47:	%{name}-tdfx-disable-dri-on-16Mb-cards-in-hires.patch
-Patch48:	%{name}-tdfx-should-be-2048-not-2046.patch
-Patch49:	%{name}-tdfx-interlace.patch
-Patch50:	%{name}-tdfx-fix-compiler-warnings.patch
-Patch51:	%{name}-tdfx-fix-vtswitch-font-corruption.patch
-Patch52:	%{name}-sis-option-swcursor.patch
-Patch53:	%{name}-sis-unresolved-symbols.patch
-Patch54:	%{name}-sis-maxxfbmem-fixup.patch
-Patch55:	%{name}-Radeon9000.patch
-Patch56:	%{name}-Xfont-Type1-large-DoS.patch
-# "strip -g libGLcore.a" left empty object debug_xform.o, which caused GLcore
-# loading failure with "debug_xform.o: no symbols"
-Patch57:	%{name}-GLcore-strip-a-workaround.patch
-# Original from: ftp://ftp.xfree86.org/pub/XFree86/4.2.1/fixes/4.2.1-mit-shm-security.patch
-Patch58:	%{name}-4.2.1-mit-shm-security.patch
-Patch59:	%{name}-disable_glide.patch
+Patch30:	%{name}-alpha_GLX_align_fix.patch
+Patch31:	%{name}-PEX+XIE.patch
+Patch32:	%{name}-xman-manpaths.patch
+Patch33:	%{name}-clearrts.patch
+Patch34:	%{name}-fix-07-s3trio64v2gx+netfinity.patch
+Patch35:	%{name}-i740-driver-update-cvs-20020617.patch
+Patch36:	%{name}-tdfx-disable-dri-on-16Mb-cards-in-hires.patch
+Patch37:	%{name}-tdfx-interlace.patch
+Patch38:	%{name}-tdfx-fix-compiler-warnings.patch
+Patch39:	%{name}-tdfx-fix-vtswitch-font-corruption.patch
+Patch40:	%{name}-Xfont-Type1-large-DoS.patch
+# "strip -g libGLcore.a" leaves empty objects m_debug_*.o, which cause
+# warnings during GLcore loading ("m_debug_*.o: no symbols") - shut up them
+Patch41:	%{name}-GLcore-strip-a-workaround.patch
+Patch42:	%{name}-disable_glide.patch
+Patch43:	%{name}-expat.patch
+Patch44:	%{name}-pkgconfig.patch
+Patch45:	%{name}-VidMode-nocrashafterfailure.patch
+# spencode.o in libspeedo.a is empty - patch like for libGLcore.a
+Patch46:	%{name}-spencode-nowarning.patch
+# Small (maybe buggy) patch to resolve problems with totem 0.97.0
+Patch47:	%{name}-lock.patch
+Patch48:	%{name}-savage-20030505.patch
 BuildRequires:	bison
+BuildRequires:	expat-devel
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
 BuildRequires:	gcc-c++
+BuildRequires:	libpng-devel
+BuildRequires:	libstdc++-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	pam-devel
-BuildRequires:	perl
+BuildRequires:	%{_bindir}/perl
 BuildRequires:	tcl-devel
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
-BuildRequires:	libstdc++-devel
+BuildRequires:	ed
 %ifarch %{ix86} alpha
 %{!?_without_tdfx:BuildRequires:	Glide3-DRI-devel}
 %endif
@@ -131,6 +132,7 @@ BuildRequires:	libstdc++-devel
 %endif
 Requires:	xauth
 Requires:	%{name}-libs = %{version}
+Requires:	%{name}-xft = %{version}
 ExclusiveArch:	%{ix86} alpha sparc m68k armv4l noarch ppc
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	xpm-progs
@@ -142,7 +144,11 @@ Obsoletes:	X11R6.1
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
-%define		_wmpropsdir	%{_datadir}/wm-properties
+%define		_icondir	/usr/share/icons
+%define		_pixmapsdir	/usr/share/pixmaps
+%define		_soundsdir	/usr/share/sounds
+%define		_themesdir	/usr/share/themes
+%define		_wmpropsdir	/usr/share/wm-properties
 
 # avoid Mesa dependency in XFree86-OpenGL-libs
 # Glide3 (libglide3.so.3) can be provided by Glide_V3-DRI or Glide_V5-DRI
@@ -357,6 +363,138 @@ PEX extension static library.
 %description PEX-static -l pl
 Statyczna biblioteka rozszerzenia PEX.
 
+%package xft1
+Summary:	Old version of font rendering library
+Summary(pl):	Stara wersja biblioteki wy¶wietlaj±cej fonty
+Group:		X11/XFree86
+Requires:	%{name}-libs = %{version}
+Obsoletes:	XFree86-xft < 4.2.99
+
+%description xft1
+Old version of font rendering library.
+
+%description xft1 -l pl
+Stara wersja biblioteki wy¶wietlaj±cej fonty.
+
+%package xft
+Summary:	X Font rendering library
+Summary(pl):	Biblioteka do renderowania fontów
+Group:		X11/XFree86
+Requires:	%{name}-libs = %{version}
+Requires:	%{name}-fontconfig = %{version}
+Provides:	Xft = 2.1-2
+Obsoletes:	XFree86-xft2
+Obsoletes:	Xft
+
+%description xft
+Xft is a font rendering library for X.
+
+%description xft -l pl
+Xft jest bibliotek± s³u¿±c± do renderowania fontów dla X Window.
+
+%package xft-devel
+Summary:	X Font Rendering library
+Summary(pl):	Biblioteka do renderowania fontów
+Group:		X11/Development/Libraries
+Requires:	%{name}-xft = %{version}
+Requires:	%{name}-fontconfig-devel
+Provides:	Xft-devel = 2.1-2
+Obsoletes:	XFree86-xft2-devel
+Obsoletes:	Xft-devel
+
+%description xft-devel
+Xft is a font rendering library for X.
+
+This package contains the header files needed to develop programs that
+use these Xft.
+
+%description xft-devel -l pl
+Xft jest bibliotek± s³u¿±c± do renderowania fontów dla X Window.
+
+Ten pakiet zawiera pliki nag³ówkowe potrzebne do kompilowania
+programów korzystaj±cych z biblioteki Xft.
+
+%package xft-static
+Summary:	X Font Rendering library
+Summary(pl):	Biblioteka do renderowania fontów
+Group:		X11/Development/Libraries
+Requires:	%{name}-xft-devel = %{version}
+Provides:	Xft-static = 2.1-2
+Obsoletes:	XFree86-xft2-static
+Obsoletes:	Xft-static
+
+%description xft-static
+Xft is a font rendering library for X.
+
+This package contains static libraries.
+
+%description xft-static -l pl
+Xft jest bibliotek± s³u¿±c± do renderowania fontów dla X Window.
+
+Ten pakiet zawiera biblioteki statyczne.
+
+%package fontconfig
+Summary:	Font configuration and customization library
+Summary(pl):	Biblioteka do konfigurowania fontów
+Requires:	%{name}-libs = %{version}
+Group:		Libraries
+Requires(post):	/sbin/ldconfig
+Provides:	fontconfig = 1.0.1
+Provides:	%{name}-fontconfig-realpkg = %{version}
+Obsoletes:	fontconfig
+
+%description fontconfig
+Fontconfig is designed to locate fonts within the system and select
+them according to requirements specified by applications.
+
+%description fontconfig -l pl
+Fontconfig jest biblioteka przeznaczon± do lokalizowania fontów w
+systemie i wybierania ich w zale¿no¶ci od potrzeb aplikacji.
+
+%package fontconfig-devel
+Summary:	Font configuration and customization library
+Summary(pl):	Biblioteka do konfigurowania fontów
+Group:		Development/Libraries
+Requires:	%{name}-fontconfig-realpkg = %{version}
+Requires:	freetype-devel
+Provides:	fontconfig-devel = 1.0.1
+Provides:	%{name}-fontconfig-devel-realpkg = %{version}
+Obsoletes:	fontconfig-devel
+
+%description fontconfig-devel
+Fontconfig is designed to locate fonts within the system and select
+them according to requirements specified by applications.
+
+This package contains the header files needed to develop programs that
+use these fontconfig.
+
+%description fontconfig-devel -l pl
+Fontconfig jest biblioteka przeznaczon± do lokalizowania fontów w
+systemie i wybierania ich w zale¿no¶ci od potrzeb aplikacji.
+
+Ten pakiet zawiera pliki nag³ówkowe potrzebne do kompilowania
+programów korzystaj±cych z biblioteki fontconfig.
+
+%package fontconfig-static
+Summary:	Font configuration and customization library
+Summary(pl):	Biblioteka do konfigurowania fontów
+Group:		Development/Libraries
+Requires:	%{name}-fontconfig-devel-realpkg = %{version}
+Provides:	fontconfig-static = 1.0.1
+Obsoletes:	fontconfig-static
+
+%description fontconfig-static
+Fontconfig is designed to locate fonts within the system and select
+them according to requirements specified by applications.
+
+This package contains static libraries.
+
+%description fontconfig-static -l pl
+Fontconfig jest biblioteka przeznaczon± do lokalizowania fontów w
+systemie i wybierania ich w zale¿no¶ci od potrzeb aplikacji.
+
+Ten pakiet zawiera biblioteki statyczne.
+
 %package XIE
 Summary:	XIE extension library
 Summary(pl):	Biblioteka rozszerzenia XIE
@@ -400,6 +538,7 @@ Summary:	OpenGL support for X11R6
 Summary(pl):	Wsparcie OpenGL dla systemu X11R6
 Group:		X11/Libraries
 Requires:	%{name}-libs = %{version}
+Obsoletes:	XFree86-driver-nvidia
 
 %description OpenGL-core
 OpenGL support for X11R6 system.
@@ -410,9 +549,10 @@ Wsparcie OpenGL dla systemu X11R6.
 %package OpenGL-devel
 Summary:	OpenGL for X11R6 development
 Summary(pl):	Pliki nag³ówkowe OpenGL dla systemu X11R6
-Group:		X11/Libraries
+Group:		X11/Development/Libraries
 Requires:	%{name}-OpenGL-libs = %{version}
 Requires:	%{name}-devel
+Requires:       OpenGL-devel-base
 Provides:	OpenGL-devel
 Obsoletes:	Mesa-devel
 Obsoletes:	glxMesa-devel
@@ -423,6 +563,22 @@ Headers and man pages for OpenGL for X11R6.
 
 %description OpenGL-devel -l pl
 Pliki nag³ówkowe i manuale do OpenGL dla systemu X11R6.
+
+%package OpenGL-devel-base
+Summary:        OpenGL for X11R6 development (only gl?.h)
+Summary(pl):    Pliki nag³ówkowe OpenGL dla systemu X11R6 (tylko gl?.h)
+Group:          X11/Development/Libraries
+Requires:       %{name}-OpenGL-libs = %{version}
+Requires:       %{name}-devel
+Provides:       OpenGL-devel-base
+Requires:	OpenGL-devel
+
+%description OpenGL-devel-base
+Base headers (only gl?.h) for OpenGL for X11R6.
+
+%description OpenGL-devel-base -l pl
+Podstawowe pliki nag³ówkowe (tylko gl?.h) OpenGL dla systemu X11R6.
+
 
 %package OpenGL-libs
 Summary:	OpenGL libraries for X11R6
@@ -443,7 +599,7 @@ Biblioteki OpenGL dla systemu X11R6.
 %package OpenGL-static
 Summary:	X11R6 static libraries with OpenGL
 Summary(pl):	Biblioteki statyczne do X11R6 ze wsparciem dla OpenGL
-Group:		X11/Libraries
+Group:		X11/Development/Libraries
 Requires:	%{name}-OpenGL-devel = %{version}
 Provides:	OpenGL-static
 Obsoletes:	Mesa-static
@@ -504,6 +660,7 @@ Group:		X11/XFree86/Servers
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
+PreReq:		xprint-initrc
 
 %description Xprt
 Xprt provides an X server with the print extension and special DDX
@@ -650,7 +807,7 @@ Summary(pl):	Pliki nag³ówkowe X11R6
 Summary(ru):	âÉÂÌÉÏÔÅËÉ ÒÁÚÒÁÂÏÔÞÉËÁ, ÈÅÄÅÒÁ É ÄÏËÕÍÅÎÔÁÃÉÑ ÐÏ ÐÒÏÇÒÁÍÍÉÒÏ×ÁÎÉÀ X11R6
 Summary(tr):	X11R6 ile geliþtirme için gerekli dosyalar
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÉ ÐÒÏÇÒÁÍ¦ÓÔÁ, ÈÅÄÅÒÉ ÔÁ ÄÏËÕÍÅÎÔÁÃ¦Ñ ÐÏ ÐÒÏÇÒÁÍÕ×ÁÎÎÀ X11R6
-Group:		X11/Libraries
+Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{version}
 Requires:	imake = %{version}
 Obsoletes:	xpm-devel
@@ -977,6 +1134,19 @@ Intel i810/i815/i830 video driver.
 %description driver-i810 -l pl
 Sterownik do grafiki na uk³adach Intel i810/i815/i830.
 
+%package driver-imstt
+Summary:	Integrated Micro Solutions Twin Turbo 128 driver
+Summary(pl):	Sterownik do kart Integrated Micro Solutions Twin Turbo 128
+Group:		X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-imstt
+Integrated Micro Solutions Twin Turbo 128 driver.
+
+%description driver-imstt -l pl
+Sterownik do kart Integrated Micro Solutions Twin Turbo 128.
+
 %package driver-mga
 Summary:	Matrox video driver
 Summary(pl):	Sterownik do kart Matrox
@@ -1006,6 +1176,37 @@ NeoMagic video driver.
 
 %description driver-neomagic -l pl
 Sterownik do kart NeoMagic.
+
+%package driver-newport
+Summary:	Newport (XL) adapters video driver
+Summary(pl):	Sterownik do kart Newport (XL)
+Group:		X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-newport
+Newport (XL) adapters video driver (found primarily in SGI Indy and
+Indigo2 machines).
+
+%description driver-newport -l pl
+Sterownik do kart Newport (XL) (wystêpuj±cych g³ównie w komputerach
+SGI Indy i Indigo).
+
+%package driver-nsc
+Summary:	National Semiconductors GEODE family video driver
+Summary(pl):	Sterownik dla kart na uk³adach z rodziny GEODE firmy National Semiconductors
+Group:		X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-nsc
+National Semiconductors GEODE family video driver. Supports GXLV (5530
+companion chip), SC1200, SC1400 and GX2 (5535 companion chip).
+
+%description driver-nsc -l pl
+Sterownik dla kart na uk³adach z rodziny GEODE firmy National
+Semiconductors. Obs³uguje GXLV (uk³ad towarzysz±cy 5530), SC1200,
+SC1400 oraz GX2 (uk³ad towarzysz±cy 5535).
 
 %package driver-nv
 Summary:	nVidia video driver
@@ -1447,7 +1648,7 @@ Summary:	X11R6 static libraries
 Summary(pl):	Biblioteki statyczne X11R6
 Summary(ru):	óÔÁÔÉÞÅÓËÉÅ ÂÉÂÌÉÏÔÅËÉ X11R6
 Summary(uk):	óÔÁÔÉÞÎ¦ Â¦ÂÌ¦ÏÔÅËÉ X11R6
-Group:		X11/Libraries
+Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}
 %ifarch sparc sparc64
 Obsoletes:	X11R6.1-devel
@@ -1596,7 +1797,7 @@ user-defined macro functions, click-to-type and pointerdriven keyboard
 focus, and user-specified key and pointer button bindings.
 
 %description -n twm -l pl
-Twm jest mened¿erem okien dla X Window System. Daje belki tytu³owe,
+Twm jest zarz±dc± okien dla X Window System. Daje belki tytu³owe,
 ramki okien, parê form zarz±dzania ikonami, definiowalne makra,
 ustawianie focusu klikniêciem lub po³o¿eniem wska¼nika myszy,
 definiowalne przypisania klawiszy i przycisków myszy.
@@ -1629,7 +1830,7 @@ logowania lub udostêpnienia innym u¿ytkownikom).
 
 %package -n xdm
 Summary:	xdm - X Display Manager with support for XDMCP, host chooser
-Summary(pl):	XDM - display mened¿er z obs³ug± XDMCP i wybieraniem hostów
+Summary(pl):	XDM - zarz±dca ekranów z obs³ug± XDMCP i wybieraniem hostów
 Summary(ru):	íÅÎÅÄÖÅÒ ÄÉÓÐÌÅÑ X
 Summary(uk):	íÅÎÅÄÖÅÒ ÄÉÓÐÌÅÀ X
 Group:		X11/XFree86
@@ -1713,29 +1914,28 @@ System. ôÁËÏÖ ×ÁÍ ÐÒÉÊÄÅÔØÓÑ ×ÓÔÁÎÏ×ÉÔÉ ÎÁÓÔÕÐÎ¦ ÐÁËÅÔÉ: XFree86,
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c -a1
-%patch0 -p1
+%setup -q -c -b1 -b2 -a3
+%patch0 -p0
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
+%patch3 -p0
 %patch4 -p1
 %patch5 -p0
-# not ready yet
-#%patch6 -p0
+%patch6 -p0
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
-%patch11 -p0
+#%patch11 -p0	-- obsoleted???
 %patch12 -p1
 %patch13 -p1
-%patch14 -p1
+%patch14 -p0
 %patch15 -p1
-%patch16 -p1
-%patch17 -p1
+%patch16 -p0
+#%patch17 -p1	-- not ready, is it required?
 %patch18 -p1
-#%patch19 -p1
-%patch20 -p1
+#%patch19 -p1	-- maybe should be updated to allow using make -j
+%patch20 -p0
 %patch21 -p1
 %patch22 -p1
 %patch23 -p1
@@ -1744,49 +1944,34 @@ System. ôÁËÏÖ ×ÁÍ ÐÒÉÊÄÅÔØÓÑ ×ÓÔÁÎÏ×ÉÔÉ ÎÁÓÔÕÐÎ¦ ÐÁËÅÔÉ: XFree86,
 %patch26 -p1
 %patch27 -p1
 %ifarch sparc sparc64
-# needs updating (14 rejects)
-#%patch28 -p1
+#%patch28 -p1	-- needs update
 %endif
-%patch29 -p1
+%patch29 -p0
 %patch30 -p1
-%patch31 -p1
+%patch31 -p0
 %patch32 -p1
 %patch33 -p1
-%patch34 -p1
-%ifarch ppc
-%patch35
-%endif
-%{?_without_tdfx:%patch35}
-%patch36 -p0
-%patch37 -p1
-%patch38 -p1
-#%patch39 -p1
-%patch40 -p0
-%patch41 -p1
-%patch42 -p1
-%patch43 -p1
-%patch44 -p1
+#%patch34 -p1	-- seems not applied (was partially in rc1??? maybe another fix present?)
+#%patch35 -p1	-- obsoleted? (but doesn't look to be applied)
+%{!?_without_tdfx:%patch36 -p0}
+%{!?_without_tdfx:%patch37 -p1}
+#%patch38 -p0	-- causing problems IIRC (but not really needed)
+%{!?_without_tdfx:%patch39 -p0}
+%patch40 -p1
+%{!?debug:%patch41 -p1}
+%{?_without_tdfx:%patch42 -p0}
+%patch43 -p0
+%patch44 -p0
 %patch45 -p1
 %patch46 -p1
-%{!?_without_tdfx:%patch47 -p0}
-%{!?_without_tdfx:%patch48 -p0}
-%{!?_without_tdfx:%patch49 -p1}
-#%patch50 -p0
-%{!?_without_tdfx:%patch51 -p0}
-#%patch52 -p1
-#%patch53 -p1
-%patch54 -p1
-%patch55 -p0
-%patch56 -p1
-%{!?debug:%patch57 -p1}
-%patch58 -p0
-%{?_without_tdfx:%patch59 -p0}
+%patch47 -p0
+%patch48 -p1
 
 rm -f xc/config/cf/host.def
 
 # New ATI drivers
-cd xc/programs/Xserver/hw/xfree86/drivers
-bzcat %{SOURCE2} | tar x
+# cd xc/programs/Xserver/hw/xfree86/drivers
+#%bzcat %{SOURCE39} | tar x
 # ati.2 directory
 
 #--- %build --------------------------
@@ -1796,29 +1981,30 @@ bzcat %{SOURCE2} | tar x
 	"BOOTSTRAPCFLAGS=%{rpmcflags}" \
 	"CCOPTIONS=%{rpmcflags}" \
 	"CXXOPTIONS=%{rpmcflags}" \
-	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
+	"CXXDEBUGFLAGS=" "CDEBUGFLAGS=" \
+	"ICONDIR=%{_icondir}"
 
 %ifnarch alpha
-%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" Makefiles
-%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" all \
-	"BOOTSTRAPCFLAGS=%{rpmcflags}" \
-	"CCOPTIONS=%{rpmcflags}" \
-	"CXXOPTIONS=%{rpmcflags}" \
-	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
+#%%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" Makefiles
+#%%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" all \
+#	"BOOTSTRAPCFLAGS=%{rpmcflags}" \
+#	"CCOPTIONS=%{rpmcflags}" \
+#	"CXXOPTIONS=%{rpmcflags}" \
+#	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 %endif
 
 #--- %install ------------------------
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysconfig} \
+install -d $RPM_BUILD_ROOT/etc/{X11/fs,pam.d,rc.d/init.d,security/console.apps,sysconfig} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/{cs,da,de,es,fr,hu,it,ja,ko,nl,pl,pt,ru,sk,zh_CN.gb2312,zh_TW.big5} \
-	$RPM_BUILD_ROOT%{_datadir}/{misc,sounds} \
+	$RPM_BUILD_ROOT%{_datadir}/misc \
 	$RPM_BUILD_ROOT%{_sbindir} \
 	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
 	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
 	$RPM_BUILD_ROOT%{_applnkdir}/{Amusements,Editors,Utilities,Terminals} \
-	$RPM_BUILD_ROOT{%{_pixmapsdir}/mini,%{_wmpropsdir}}
+	$RPM_BUILD_ROOT{%{_pixmapsdir}/mini,%{_wmpropsdir},%{_soundsdir},%{_themesdir}/Default}
 
 %{__make} -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -1829,14 +2015,15 @@ install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysc
 		"CCOPTIONS=%{rpmcflags}" \
 		"CXXOPTIONS=%{rpmcflags}" \
 		"CXXDEBUGFLAGS=" "CDEBUGFLAGS=" \
+		"ICONDIR=%{_icondir}" \
 		install install.man
 
 %ifnarch alpha
-install -d $RPM_BUILD_ROOT%{_libdir}/modules.gatos/{drivers,dri}
-install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_drv.o \
-	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/drivers
-install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_dri.o \
-	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/dri
+#install -d $RPM_BUILD_ROOT%{_libdir}/modules.gatos/{drivers,dri}
+#install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_drv.o \
+#	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/drivers
+#install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_dri.o \
+#	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/dri
 
 %endif
 
@@ -1878,16 +2065,16 @@ install %{SOURCE22} $RPM_BUILD_ROOT%{_applnkdir}/Editors
 install %{SOURCE23} $RPM_BUILD_ROOT%{_applnkdir}/Terminals
 install %{SOURCE24}  %{SOURCE25} %{SOURCE26} %{SOURCE27} \
 		$RPM_BUILD_ROOT%{_applnkdir}/Utilities
-install %{SOURCE30} $RPM_BUILD_ROOT%{_datadir}/pixmaps
+install %{SOURCE30} $RPM_BUILD_ROOT%{_pixmapsdir}
 install %{SOURCE31} %{SOURCE32} %{SOURCE33} %{SOURCE34} %{SOURCE35} \
 	%{SOURCE36} %{SOURCE37} \
 	$RPM_BUILD_ROOT%{_pixmapsdir}
 
-bzip2 -dc %{SOURCE3} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
+bzip2 -dc %{SOURCE38} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 
-> $RPM_BUILD_ROOT/etc/security/console.apps/xserver
-> $RPM_BUILD_ROOT/etc/security/blacklist.xserver
-> $RPM_BUILD_ROOT/etc/security/blacklist.xdm
+:> $RPM_BUILD_ROOT/etc/security/console.apps/xserver
+:> $RPM_BUILD_ROOT/etc/security/blacklist.xserver
+:> $RPM_BUILD_ROOT/etc/security/blacklist.xdm
 
 ln -sf %{_fontsdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
 
@@ -1903,6 +2090,9 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
 :> $RPM_BUILD_ROOT%{_sysconfdir}/X11/XF86Config
 
 rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/html
+
+# resolve conflict with man-pages
+mv -f $RPM_BUILD_ROOT%{_mandir}/man4/{mouse.4,mouse-x.4}
 
 # directories for applications locales
 echo '%defattr(644,root,root,755)' > XFree86-libs.lang
@@ -1934,16 +2124,33 @@ rm -rf $RPM_BUILD_ROOT
 %post	XIE -p /sbin/ldconfig
 %postun	XIE -p /sbin/ldconfig
 
+%post	xft1 -p /sbin/ldconfig
+%postun	xft1 -p /sbin/ldconfig
+
+%post   xft -p /sbin/ldconfig
+%postun xft -p /sbin/ldconfig
+
+%post	fontconfig
+/sbin/ldconfig
+HOME=/root %{_bindir}/fc-cache -f 2>/dev/null
+
+%postun	fontconfig -p /sbin/ldconfig
+
+%post	OpenGL-core -p /sbin/ldconfig
+%postun	OpenGL-core -p /sbin/ldconfig
+
 %post	OpenGL-libs -p /sbin/ldconfig
 %postun	OpenGL-libs -p /sbin/ldconfig
 
 %post libs
-grep "^%{_libdir}$" /etc/ld.so.conf >/dev/null 2>&1
+umask 022
+grep -qs "^%{_libdir}$" /etc/ld.so.conf
 [ $? -ne 0 ] && echo "%{_libdir}" >> /etc/ld.so.conf
 /sbin/ldconfig
 
 %postun libs
 if [ "$1" = "0" ]; then
+	umask 022
 	grep -v "%{_libdir}" /etc/ld.so.conf > /etc/ld.so.conf.new
 	mv -f /etc/ld.so.conf.new /etc/ld.so.conf
 fi
@@ -1951,7 +2158,7 @@ fi
 
 %verifyscript libs
 echo -n "Looking for %{_libdir} in /etc/ld.so.conf... "
-if ! grep "^%{_libdir}$" /etc/ld.so.conf > /dev/null; then
+if ! grep -q "^%{_libdir}$" /etc/ld.so.conf ; then
 	echo "missing"
 	echo "%{_libdir} missing from /etc/ld.so.conf" >&2
 else
@@ -1967,7 +2174,8 @@ fi
 %post -n xdm
 /sbin/chkconfig --add xdm
 if [ -f /var/lock/subsys/xdm ]; then
-	/etc/rc.d/init.d/xdm restart >&2
+	echo "Run \"/etc/rc.d/init.d/xdm restart\" to restart xdm." >&2
+	echo "WARNING: it will terminate all sessions opened from xdm!" >&2
 else
 	echo "Run \"/etc/rc.d/init.d/xdm start\" to start xdm." >&2
 fi
@@ -2041,6 +2249,8 @@ fi
 %{_libdir}/X11/app-defaults/XTerm
 %lang(pl) %{_libdir}/X11/app-defaults/pl/XTerm
 %{_libdir}/X11/app-defaults/XTerm-color
+%dir %{_icondir}
+%{_icondir}/*
 
 %attr(755,root,root) %{_libdir}/X11/lbxproxy
 %attr(755,root,root) %{_libdir}/X11/proxymngr
@@ -2079,6 +2289,7 @@ fi
 %attr(755,root,root) %{_bindir}/cxpm
 %attr(755,root,root) %{_bindir}/dga
 %attr(755,root,root) %{_bindir}/editres
+%attr(755,root,root) %{_bindir}/gtf
 %attr(755,root,root) %{_bindir}/iceauth
 %attr(755,root,root) %{_bindir}/lbxproxy
 %attr(755,root,root) %{_bindir}/lndir
@@ -2088,6 +2299,8 @@ fi
 %attr(755,root,root) %{_bindir}/mergelib
 %attr(755,root,root) %{_bindir}/mkdirhier
 %attr(755,root,root) %{_bindir}/mkfontdir
+%attr(755,root,root) %{_bindir}/mkfontscale
+%attr(755,root,root) %{_bindir}/mkhtmlindex
 %attr(755,root,root) %{_bindir}/proxymngr
 %attr(755,root,root) %{_bindir}/resize
 %attr(755,root,root) %{_bindir}/revpath
@@ -2101,6 +2314,7 @@ fi
 %attr(755,root,root) %{_bindir}/uxterm
 %attr(755,root,root) %{_bindir}/xcmsdb
 %attr(755,root,root) %{_bindir}/xconsole
+%attr(755,root,root) %{_bindir}/xcursorgen
 %attr(755,root,root) %{_bindir}/xcutsel
 %attr(755,root,root) %{_bindir}/xdpyinfo
 %attr(755,root,root) %{_bindir}/xfindproxy
@@ -2119,6 +2333,7 @@ fi
 %attr(755,root,root) %{_bindir}/xmodmap
 %attr(755,root,root) %{_bindir}/xon
 %attr(755,root,root) %{_bindir}/xprop
+%attr(755,root,root) %{_bindir}/xrandr
 %attr(755,root,root) %{_bindir}/xrdb
 %attr(755,root,root) %{_bindir}/xrefresh
 %attr(755,root,root) %{_bindir}/xset
@@ -2150,6 +2365,7 @@ fi
 %{_mandir}/man1/cxpm.1*
 %{_mandir}/man1/dga.1*
 %{_mandir}/man1/editres.1*
+%{_mandir}/man1/gtf.1*
 %{_mandir}/man1/iceauth.1*
 %{_mandir}/man1/lbxproxy.1*
 %{_mandir}/man1/libxrx.1*
@@ -2157,8 +2373,11 @@ fi
 %{_mandir}/man1/luit.1x*
 %{_mandir}/man1/makestrs.1*
 %{_mandir}/man1/makeg.1*
+%{_mandir}/man1/mergelib.1*
 %{_mandir}/man1/mkdirhier.1*
 %{_mandir}/man1/mkfontdir.1*
+%{_mandir}/man1/mkfontscale.1*
+%{_mandir}/man1/mkhtmlindex.1*
 %{_mandir}/man1/proxymngr.1*
 %{_mandir}/man1/resize.1*
 %{_mandir}/man1/revpath.1*
@@ -2171,6 +2390,7 @@ fi
 %{_mandir}/man1/sxpm.1*
 %{_mandir}/man1/xcmsdb.1*
 %{_mandir}/man1/xconsole.1*
+%{_mandir}/man1/xcursorgen.1*
 %{_mandir}/man1/xcutsel.1*
 %{_mandir}/man1/xdpyinfo.1*
 %{_mandir}/man1/xfindproxy.1*
@@ -2185,6 +2405,7 @@ fi
 %{_mandir}/man1/xlsfonts.1*
 %{_mandir}/man1/xmodmap.1*
 %{_mandir}/man1/xprop.1*
+%{_mandir}/man1/xrandr.1*
 %{_mandir}/man1/xrdb.1*
 %{_mandir}/man1/xrefresh.1*
 %{_mandir}/man1/xset.1*
@@ -2264,9 +2485,52 @@ fi
 %{_libdir}/libPEX5.a
 %endif
 
+%files xft1
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXft.so.1.1
+
+%files xft
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXft.so.2.1
+
+%files xft-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/xft-config
+%{_includedir}/X11/Xft
+%{_libdir}/libXft.so
+%{_mandir}/man3/Xft.3*
+%{_pkgconfigdir}/xft.pc
+
+%files xft-static
+%defattr(644,root,root,755)
+%{_libdir}/libXft.a
+
+%files fontconfig
+%defattr(644,root,root,755)
+%dir %{_sysconfdir}/fonts
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/fonts/fonts.conf
+%{_sysconfdir}/fonts/fonts.dtd
+%attr(755,root,root) %{_bindir}/fc-*
+%attr(755,root,root) %{_libdir}/libfontconfig.so.1.0
+%{_mandir}/man1/fc-*.1*
+
+%files fontconfig-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/fontconfig-config
+%{_includedir}/fontconfig
+%{_libdir}/libfontconfig.so
+%{_pkgconfigdir}/fontconfig.pc
+%{_mandir}/man3/fontconfig.3*
+
+%files fontconfig-static
+%defattr(644,root,root,755)
+%{_libdir}/libfontconfig.a
+
 %files XIE
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libXIE.so.*.*
+%attr(755,root,root) %{_bindir}/xieperf
+%{_mandir}/man1/xieperf.1*
 
 %files XIE-devel
 %defattr(644,root,root,755)
@@ -2293,9 +2557,18 @@ fi
 %{_libdir}/libGLw.a
 %dir %{_includedir}/GL
 %attr(644,root,root) %{_includedir}/GL/*
+%exclude %{_includedir}/GL/gl.h
+%exclude %{_includedir}/GL/glx.h
+%exclude %{_includedir}/GL/glxtokens.h
 %{_mandir}/man3/gl[A-Z]*
 %{_mandir}/man3/glu*
 %{_mandir}/man3/GLw*
+
+%files OpenGL-devel-base
+%defattr(644,root,root,755)
+%{_includedir}/GL/gl.h
+%{_includedir}/GL/glx.h
+%{_includedir}/GL/glxtokens.h
 
 %files OpenGL-libs
 %defattr(644,root,root,755)
@@ -2345,16 +2618,20 @@ fi
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/bdftopcf
-%attr(755,root,root) %{_libdir}/libX[1Ta-t]*.so
+%attr(755,root,root) %{_bindir}/xcursor-config
+%attr(755,root,root) %{_libdir}/libX[1Ta-eg-t]*.so
+%attr(755,root,root) %{_libdir}/libXfont*.so
 %attr(755,root,root) %{_libdir}/libI*.so
 %attr(755,root,root) %{_libdir}/libS*.so
 %attr(755,root,root) %{_libdir}/libx*.so
+%attr(755,root,root) %{_libdir}/libXv.so
 %{_libdir}/libfntstubs.a
 %{_libdir}/libfontenc.a
 %{_libdir}/libFS.a
 %{_libdir}/libI810XvMC.a
 %{_libdir}/liboldX.a
 %{_libdir}/libXau.a
+%{_libdir}/libXcursor.a
 %{_libdir}/libXdmcp.a
 %{_libdir}/libxf86config.a
 %{_libdir}/libXfontcache.a
@@ -2370,12 +2647,11 @@ fi
 %{_libdir}/libXxf86misc.a
 %{_libdir}/libXxf86rush.a
 %{_libdir}/libXxf86vm.a
-%{_includedir}/X11/*.h
+%{_includedir}/X11/*.h 
 %{_includedir}/X11/ICE
 %{_includedir}/X11/PM
 %{_includedir}/X11/SM
 %{_includedir}/X11/Xaw
-%{_includedir}/X11/Xft
 %{_includedir}/X11/Xmu
 %dir %{_includedir}/X11/extensions
 %{_includedir}/X11/extensions/[^X]*.h
@@ -2383,53 +2659,60 @@ fi
 %{_includedir}/X11/extensions/XI.h
 %{_includedir}/X11/extensions/XI[^E]*.h
 %{_includedir}/X11/fonts
+%{_includedir}/X11/Xcursor
 %{_includedir}/xf86*.h
 %{_libdir}/X11/config
+%{_pkgconfigdir}/xcursor.pc
 
 %{_mandir}/man3/[A-EH-Z]*
+%exclude %{_mandir}/man3/Xft.3*
 
-%ifnarch sparc sparc64 alpha ppc
+# Devel: sparc sparc64
+%ifarch %{ix86}
 %files driver-apm
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/apm_drv.o
 %{_mandir}/man4/apm*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+# Devel: sparc sparc64
+%ifarch %{ix86}
 %files driver-ark
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/ark_drv.o
 %endif
 
-%ifnarch sparc sparc64 alpha
+# Devel: sparc sparc64
+%ifarch %{ix86} mips ppc arm
 %files driver-chips
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/chips_drv.o
 %{_mandir}/man4/chips*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+# Devel: sparc sparc64
+%ifarch %{ix86} alpha
 %files driver-cirrus
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/cirrus_*.o
 %{_mandir}/man4/cirrus*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+%ifarch %{ix86}
 %files driver-cyrix
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/cyrix_drv.o
 %{_mandir}/man4/cyrix*
 %endif
 
-%ifnarch alpha
+%ifarch %{ix86} sparc sparc64 mips ppc arm superh
 %files driver-fbdev
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/fbdev_drv.o
 %{_mandir}/man4/fbdev*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+%ifarch %{ix86}
 %{!?_without_tdfx:%files driver-glide}
 %{!?_without_tdfx:%defattr(644,root,root,755)}
 %{!?_without_tdfx:%attr(755,root,root) %{_libdir}/modules/drivers/glide_drv.o}
@@ -2439,26 +2722,29 @@ fi
 %files driver-glint
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/glint_drv.o
-%ifnarch sparc sparc64
+%ifarch %{ix86} alpha ppc arm
 %attr(755,root,root) %{_libdir}/modules/dri/gamma_dri.so
 %endif
 %{_mandir}/man4/glint*
 
-%ifnarch sparc sparc64 alpha ppc
+# Devel: sparc sparc64
+%ifarch %{ix86}
 %files driver-i128
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i128_drv.o
 %{_mandir}/man4/i128*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+# Devel: sparc sparc64
+%ifarch %{ix86}
 %files driver-i740
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i740_drv.o
 %{_mandir}/man4/i740*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+# Devel: sparc sparc64
+%ifarch %{ix86}
 %files driver-i810
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i810_drv.o
@@ -2467,28 +2753,54 @@ fi
 %{_mandir}/man4/i810*
 %endif
 
-%ifnarch sparc sparc64
+# Devel: %{ix86} sparc sparc64 ppc
+%if 0
+%files driver-imstt
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/imstt_drv.o
+%{_mandir}/man4/imstt.4*
+%endif
+
+%ifarch %{ix86} sparc sparc64 mips alpha ppc arm
 %files driver-mga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/mga_drv.o
+%ifarch %{ix86} alpha ppc arm
 %attr(755,root,root) %{_libdir}/modules/dri/mga_dri.so
+%endif
 %{_mandir}/man4/mga*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+# Devel: sparc sparc64
+%ifarch %{ix86}
 %files driver-neomagic
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/neomagic_drv.o
 %{_mandir}/man4/neomagic*
 %endif
 
-%ifnarch sparc sparc64
+# Devel: %{ix86} sparc sparc64
+%ifarch mips
+%files driver-newport
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/newport_drv.o
+%{_mandir}/man4/newport.4*
+%endif
+
+%ifarch %{ix86}
+%files driver-nsc
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/nsc_drv.o
+%{_mandir}/man4/nsc.4*
+%endif
+
+# Devel: sparc sparc64
+%ifarch %{ix86} mips alpha arm
 %files driver-nv
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/nv_drv.o
 %{_mandir}/man4/nv*
 %endif
-
 
 %files driver-ati
 %defattr(644,root,root,755)
@@ -2497,7 +2809,7 @@ fi
 %files driver-r128
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/r128*_drv.o
-%ifnarch sparc sparc64
+%ifarch %{ix86} alpha ppc arm
 %attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
 %endif
 %{_mandir}/man4/r128*
@@ -2505,80 +2817,85 @@ fi
 %files driver-radeon
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/radeon*_drv.o
-%ifnarch sparc sparc64
+%ifarch %{ix86} alpha ppc arm
 %attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
+%attr(755,root,root) %{_libdir}/modules/dri/r200_dri.so
 %endif
-
-
-%ifnarch alpha
-%files driver-ati.2
-%defattr(644,root,root,755)
-%dir %{_libdir}/modules.gatos/drivers
-%attr(755,root,root) %{_libdir}/modules.gatos/drivers/ati*_drv.o
-%attr(755,root,root) %{_libdir}/modules.gatos/drivers/[bfmt]*_drv.o
-%endif
+%{_mandir}/man4/radeon*
 
 %ifnarch alpha
-%files driver-r128.2
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules.gatos/drivers/r128*_drv.o
-%ifnarch sparc sparc64
-%attr(755,root,root) %{_libdir}/modules.gatos/dri/r128_dri.o
-%endif
-%{_mandir}/man4/r128*
+#%%files driver-ati.2
+#%defattr(644,root,root,755)
+#%dir %{_libdir}/modules.gatos/drivers
+#%attr(755,root,root) %{_libdir}/modules.gatos/drivers/ati*_drv.o
+#%attr(755,root,root) %{_libdir}/modules.gatos/drivers/[bfmt]*_drv.o
 %endif
 
 %ifnarch alpha
-%files driver-radeon.2
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules.gatos/drivers/radeon*_drv.o
-%attr(755,root,root) %{_libdir}/modules.gatos/drivers/saa7114_drv.o
-%ifnarch sparc sparc64
-%attr(755,root,root) %{_libdir}/modules.gatos/dri/radeon_dri.o
-%endif
+#%files driver-r128.2
+#%defattr(644,root,root,755)
+#%attr(755,root,root) %{_libdir}/modules.gatos/drivers/r128*_drv.o
+#%ifnarch sparc sparc64
+#%attr(755,root,root) %{_libdir}/modules.gatos/dri/r128_dri.o
+#%endif
+#%%{_mandir}/man4/r128*
 %endif
 
-%ifnarch sparc sparc64 ppc
+%ifnarch alpha
+#%files driver-radeon.2
+#%defattr(644,root,root,755)
+#%attr(755,root,root) %{_libdir}/modules.gatos/drivers/radeon*_drv.o
+#%attr(755,root,root) %{_libdir}/modules.gatos/drivers/saa7114_drv.o
+#%ifnarch sparc sparc64
+#%attr(755,root,root) %{_libdir}/modules.gatos/dri/radeon_dri.o
+#%endif
+%endif
+
+# Devel: sparc sparc64
+%ifarch %{ix86} alpha
 %files driver-rendition
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/rendition_drv.o
 %{_mandir}/man4/rendition*
 %endif
 
-%ifnarch sparc sparc64
+# Devel: sparc sparc64
+%ifarch %{ix86} mips alpha ppc arm
 %files driver-s3virge
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/s3virge_drv.o
 %{_mandir}/man4/s3virge*
 %endif
 
-%ifnarch sparc sparc64
+%ifarch %{ix86} mips alpha ppc arm
 %files driver-s3
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/s3_drv.o
-#%{_mandir}/man4/s3*
+#%%{_mandir}/man4/s3.4*
 %endif
 
-%ifnarch sparc sparc64
+# Devel: sparc sparc64
+%ifarch %{ix86} mips alpha ppc arm
 %files driver-savage
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/savage_drv.o
 %{_mandir}/man4/savage*
 %endif
 
-%ifnarch sparc sparc64 ppc
+# Devel: sparc sparc64
+%ifarch %{ix86} alpha
 %files driver-siliconmotion
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/siliconmotion_drv.o
 %{_mandir}/man4/siliconmotion*
 %endif
 
-%ifnarch sparc sparc64 alpha
+%ifarch %{ix86} mips ppc arm
 %files driver-sis
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
-%ifnarch ppc
-%attr(755,root,root) %{_libdir}/modules/dri/sis_dri.so
+%ifarch %{ix86}
+#%attr(755,root,root) %{_libdir}/modules/dri/sis_dri.so
 %endif
 %{_mandir}/man4/sis*
 %endif
@@ -2633,34 +2950,39 @@ fi
 %{_mandir}/man4/suntcx*
 %endif
 
-%ifnarch sparc sparc64 ppc
+%ifarch %{ix86} sparc sparc64 mips alpha arm
 %{!?_without_tdfx:%files driver-tdfx}
 %{!?_without_tdfx:%defattr(644,root,root,755)}
 %{!?_without_tdfx:%attr(755,root,root) %{_libdir}/modules/drivers/tdfx_drv.o}
+%ifarch %{ix86} alpha arm
 %{!?_without_tdfx:%attr(755,root,root) %{_libdir}/modules/dri/tdfx_dri.so}
+%endif
 %{!?_without_tdfx:%{_mandir}/man4/tdfx*}
 %endif
 
-%ifnarch sparc sparc64 ppc
+# Devel: sparc sparc64
+%ifarch %{ix86} alpha
 %files driver-tga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tga_drv.o
 %endif
 
-%ifnarch sparc sparc64 alpha
+# Devel: sparc sparc64
+%ifarch %{ix86} mips ppc arm
 %files driver-trident
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/trident_drv.o
 %{_mandir}/man4/trident*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+%ifarch %{ix86}
 %files driver-tseng
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tseng_drv.o
 %{_mandir}/man4/tseng*
 %endif
 
+# Devel: sparc sparc64
 %ifarch %{ix86}
 %files driver-vmware
 %defattr(644,root,root,755)
@@ -2670,6 +2992,8 @@ fi
 
 %files libs -f XFree86-libs.lang
 %defattr(644,root,root,755)
+%dir %{_themesdir}
+%dir %{_themesdir}/Default
 %{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XKeysymDB
 %dir %{_libdir}/X11/app-defaults
@@ -2690,19 +3014,20 @@ fi
 %{_libdir}/X11/locale
 %dir %{_includedir}
 %dir %{_includedir}/X11
-%dir %{_sbindir}
 /usr/include/X11
+%dir %{_sbindir}
 %dir %{_datadir}/locale
 %dir %{_datadir}/misc
-%dir %{_datadir}/sounds
 %dir %{_pixmapsdir}
 %dir %{_pixmapsdir}/mini
+%dir %{_soundsdir}
 %dir %{_wmpropsdir}
-%attr(755,root,root) %{_libdir}/libX[1Ta-t]*.so.*.*
+%attr(755,root,root) %{_libdir}/libX[1Ta-eg-t]*.so.*.*
+%attr(755,root,root) %{_libdir}/libXfont*.so.*.*
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
 %attr(755,root,root) %{_libdir}/libS*.so.*.*
 %attr(755,root,root) %{_libdir}/libx*.so.*.*
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/X11/XftConfig
+%attr(755,root,root) %{_libdir}/libXv.so.*.*
 
 %files modules
 %defattr(644,root,root,755)
@@ -2719,11 +3044,11 @@ fi
 %attr(755,root,root) %{_libdir}/modules/*.a
 %attr(755,root,root) %{_libdir}/modules/codeconv
 %attr(755,root,root) %{_libdir}/modules/drivers/linux
-%ifnarch sparc sparc64
+%ifarch %{ix86} sparc sparc64 alpha ppc arm
 %attr(755,root,root) %{_libdir}/modules/drivers/vga_drv.o
-%ifnarch alpha ppc
-%attr(755,root,root) %{_libdir}/modules/drivers/vesa_drv.o
 %endif
+%ifarch %{ix86} sparc sparc64
+%attr(755,root,root) %{_libdir}/modules/drivers/vesa_drv.o
 %endif
 %dir %{_libdir}/modules/extensions
 %attr(755,root,root) %{_libdir}/modules/extensions/libdbe.a
@@ -2737,21 +3062,26 @@ fi
 %attr(755,root,root) %{_libdir}/X11/xserver
 %dir /etc/X11/xserver
 /etc/X11/xserver/SecurityPolicy
-#%{_mandir}/man1/xtr*
+#%%{_mandir}/man1/xtr*
 %{_mandir}/man1/xkbcomp.1*
 %{_mandir}/man4/citron*
 %{_mandir}/man4/dmc.4*
 %{_mandir}/man4/dynapro*
+%{_mandir}/man4/fpit.4*
+%{_mandir}/man4/js_x.4*
+%{_mandir}/man4/kbd.4*
 %{_mandir}/man4/keyboard*
 %{_mandir}/man4/microtouch*
-%{_mandir}/man4/mouse*
+%{_mandir}/man4/mouse-x.4*
+%{_mandir}/man4/palmax.4*
 %{_mandir}/man4/penmount.4*
+%{_mandir}/man4/tek4957.4*
 %{_mandir}/man4/v4l*
-%ifnarch sparc sparc64
+%ifarch %{ix86} sparc sparc64 alpha ppc arm
 %{_mandir}/man4/vga*
-%ifnarch alpha ppc
-%{_mandir}/man4/vesa*
 %endif
+%ifarch %{ix86} sparc sparc64
+%{_mandir}/man4/vesa*
 %endif
 %{_mandir}/man4/void*
 %{_mandir}/man4/wacom*
@@ -2789,8 +3119,8 @@ fi
 %{_libdir}/libICE.a
 %{_libdir}/libSM.a
 %{_libdir}/libX11.a
+%{_libdir}/libXRes.a
 %{_libdir}/libXaw.a
-%{_libdir}/libXft.a
 %{_libdir}/libXext.a
 %{_libdir}/libXfont.a
 %{_libdir}/libXi.a
@@ -2886,6 +3216,7 @@ fi
 %{_libdir}/X11/app-defaults/Xmag
 %{_libdir}/X11/app-defaults/Xman
 %{_libdir}/X11/app-defaults/Xmessage
+%{_libdir}/X11/app-defaults/Xmessage-color
 %{_libdir}/X11/app-defaults/Xmh
 %{_libdir}/X11/app-defaults/XFontSel
 %{_libdir}/X11/app-defaults/Xditview
@@ -2896,15 +3227,21 @@ fi
 %{_applnkdir}/Utilities/xclock.desktop
 %{_applnkdir}/Editors/xedit.desktop
 %{_applnkdir}/Amusements/xeyes.desktop
+%{_pixmapsdir}/oclock*
 
 %files -n imake
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/ccmakedep
+%attr(755,root,root) %{_bindir}/cleanlinks
 %attr(755,root,root) %{_bindir}/gccmakedep
 %attr(755,root,root) %{_bindir}/imake
 %attr(755,root,root) %{_bindir}/makedepend
 %attr(755,root,root) %{_bindir}/xmkmf
 
 %{_mandir}/man1/imake.1*
+%{_mandir}/man1/ccmakedep.1*
+%{_mandir}/man1/cleanlinks.1*
+%{_mandir}/man1/gccmakedep.1*
 %{_mandir}/man1/makedepend.1*
 %{_mandir}/man1/xmkmf.1*
 
@@ -2971,11 +3308,11 @@ fi
 %attr(755,root,root) %{_bindir}/fstobdf
 %attr(755,root,root) %{_bindir}/mkcfm
 %attr(755,root,root) %{_bindir}/xfsinfo
-%attr(755,root,root) %{_bindir}/xftcache
+#%attr(755,root,root) %{_bindir}/xftcache
 
 %{_mandir}/man1/xfs.1*
 %{_mandir}/man1/fslsfonts.1*
 %{_mandir}/man1/fstobdf.1*
 %{_mandir}/man1/mkcfm.1*
 %{_mandir}/man1/xfsinfo.1*
-%{_mandir}/man1/xftcache.1*
+#%%{_mandir}/man1/xftcache.1*
