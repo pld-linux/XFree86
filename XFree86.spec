@@ -374,7 +374,7 @@ Biblioteka wy¶wietlaj±ca fonty.
 Summary:	Xft font rendering library headers
 Summary(pl):	Pliki nag³ówkowe biblioteki Xft wy¶wietlaj±cej fonty
 Group:		X11/XFree86
-Requires:	%{name}-Xft = %{version}
+Requires:	%{name}-xft = %{version}
 Requires:	%{name}-devel = %{version}
 
 %description xft-devel
@@ -387,7 +387,7 @@ Pliki nag³ówkowe biblioteki Xft wy¶wietlaj±cej fonty.
 Summary:	Xft font rendering static library
 Summary(pl):	Statyczna biblioteka Xft wy¶wietlaj±ca fonty
 Group:		X11/XFree86
-Requires:	%{name}-Xft-devel = %{version}
+Requires:	%{name}-xft-devel = %{version}
 
 %description xft-static
 Xft font rendering static library.
