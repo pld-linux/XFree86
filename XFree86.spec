@@ -7,7 +7,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Name:		XFree86
 Version:	4.1.0
-Release:	12
+Release:	13
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
