@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
 Version:	4.1.0
-Release:	3
+Release:	2
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -1273,7 +1273,7 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console
 	$RPM_BUILD_ROOT/usr/bin \
 	$RPM_BUILD_ROOT/usr/lib \
 	$RPM_BUILD_ROOT%{_wmpropsdir} \
-	$RPM_BUILD_ROOT{%{_applnkdir}/Utilities,%{_pixmapsdir}/mini,%{_pixmapsdir}/icewm}
+	$RPM_BUILD_ROOT{%{_applnkdir}/Utilities,%{_pixmapsdir}/mini}
 
 %{__make} -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -1788,7 +1788,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_wmpropsdir}
 %dir %{_pixmapsdir}
 %dir %{_pixmapsdir}/mini
-%dir %{_pixmapsdir}/icewm
 %attr(755,root,root) %{_libdir}/libX*.so.*.*
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
 %ifnarch alpha
