@@ -1285,6 +1285,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %lang(pl) %{_libdir}/X11/app-defaults/pl
 
+%dir %{_libdir}/X11/x11perfcomp
 %attr(755,root,root) %{_libdir}/X11/x11perfcomp/*
 %{_libdir}/X11/*.txt
 
