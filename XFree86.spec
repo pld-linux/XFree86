@@ -7,7 +7,7 @@ Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Summary(es):	Programas básicos y servidores para el sistema de ventanas XFree86
 Name:		XFree86
 Version:	4.1.0
-Release:	9
+Release:	10
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -1353,7 +1353,7 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console
 	$RPM_BUILD_ROOT/usr/bin \
 	$RPM_BUILD_ROOT/usr/lib \
 	$RPM_BUILD_ROOT%{_wmpropsdir} \
-	$RPM_BUILD_ROOT{%{_applnkdir}/Utilities,%{_pixmapsdir}/mini}
+	$RPM_BUILD_ROOT{%{_applnkdir}/{Utilities,Terminals},%{_pixmapsdir}/mini}
 
 %{__make} -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -1401,7 +1401,7 @@ install %{SOURCE9} $RPM_BUILD_ROOT/etc/sysconfig/xfs
 install %{SOURCE10} $RPM_BUILD_ROOT%{_wmpropsdir}/twm.desktop
 install %{SOURCE11} $RPM_BUILD_ROOT%{_applnkdir}/Utilities
 install %{SOURCE12} $RPM_BUILD_ROOT%{_applnkdir}/Utilities
-install %{SOURCE13} $RPM_BUILD_ROOT%{_applnkdir}
+install %{SOURCE13} $RPM_BUILD_ROOT%{_applnkdir}/Terminals
 
 install %{SOURCE14} $RPM_BUILD_ROOT%{_datadir}/pixmaps
 
@@ -1666,8 +1666,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/X11/bitmaps
 %{_includedir}/X11/pixmaps
 
-%{_applnkdir}/Utilities/*.desktop
-%{_applnkdir}/*.desktop
+%{_applnkdir}/Utilities/*
+%{_applnkdir}/Terminals/*
 %{_libdir}/X11/app-defaults/Xvidtune
 %{_pixmapsdir}/x*
 
