@@ -119,6 +119,7 @@ Patch60:	%{name}-xterm-can-2003-0063.patch
 Patch61:	%{name}-xlclocale-overflow.patch
 Patch62:	%{name}-xterm-DECUDK-security-fix.patch
 Patch63:	%{name}-font-overflows.patch
+Patch64:	%{name}-bison.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	bison
 BuildRequires:	flex
@@ -1796,6 +1797,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch61 -p0
 %patch62 -p0
 %patch63 -p1
+%patch64 -p1
 
 rm -f xc/config/cf/host.def
 
