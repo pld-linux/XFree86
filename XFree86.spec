@@ -502,6 +502,7 @@ Summary(pl):	Pliki nag³ówkowe X11R6
 Summary(tr):	X11R6 ile geliþtirme için gerekli dosyalar
 Group:		X11/Libraries
 Requires:	%{name}-libs = %{version}
+Requires:	imake = %{version}
 Obsoletes:	xpm-devel
 Provides:	xpm-devel
 %ifarch sparc sparc64
@@ -1237,6 +1238,26 @@ klienci X, bêdziesz musia³ zainstalowaæ równie¿ XFree86-devel.
 Ten pakiet zawiera aplikacje, które by³y w X11R6-contrib w starszych
 wersjach X.
 
+%package -n imake
+Summary:	C preprocessor interface to the make utility
+Summary(pl):	Miedzymordzie do make oparte o preprocesor C
+Group:		Development/Building
+
+%description -n imake
+Imake is used to generate Makefiles from a template, a set of cpp macro
+functions, and a per-directory input file called an Imakefile. This
+allows machine dependencies (such as compiler options, alternate command
+names, and special make rules) to be kept separate from the descriptions
+of the various items to be built.
+		     
+%description -n imake -l pl
+Imake jest u¿ywany do generowania plików Makefile na bazie szablonu,
+zbioru makr preprocesora C oraz (dla ka¿dego podkatalogu) pliku
+wej¶ciowego Imakefile. Pozwala to na oddzielenie informacji zale¿nych
+od ¶rodowiska kompilacji (takich jak opcje kompilatora, alternatywne
+nazwy komend i regu³y specjalne) od opisu ró¿nych elementów które maj±
+byæ kompilowane.
+
 %package -n sessreg
 Summary:	sessreg - manage utmp/wtmp entries for non-init clients
 Summary(pl):	Program do zarz±dzania wpisami w utmp/wtmp
@@ -1952,7 +1973,6 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/gccmakedep
 %attr(755,root,root) %{_bindir}/bdftopcf
 %attr(755,root,root) %{_libdir}/libX[1Ta-t]*.so
 %attr(755,root,root) %{_libdir}/libI*.so
@@ -1992,13 +2012,6 @@ fi
 %{_includedir}/xf86*.h
 %{_libdir}/X11/config
 
-%attr(755,root,root) %{_bindir}/imake
-%attr(755,root,root) %{_bindir}/makedepend
-%attr(755,root,root) %{_bindir}/xmkmf
-
-%{_mandir}/man1/imake.1*
-%{_mandir}/man1/makedepend.1*
-%{_mandir}/man1/xmkmf.1*
 %{_mandir}/man3/[A-EH-Z]*
 
 %ifnarch sparc sparc64 alpha ppc
@@ -2482,6 +2495,16 @@ fi
 %{_libdir}/X11/app-defaults/Xditview-chrtr
 
 %{_applnkdir}/Utilities/xclipboard.desktop
+
+%files -n imake
+%attr(755,root,root) %{_bindir}/gccmakedep
+%attr(755,root,root) %{_bindir}/imake
+%attr(755,root,root) %{_bindir}/makedepend
+%attr(755,root,root) %{_bindir}/xmkmf
+
+%{_mandir}/man1/imake.1*
+%{_mandir}/man1/makedepend.1*
+%{_mandir}/man1/xmkmf.1*
 
 %files -n sessreg
 %defattr(644,root,root,755)
