@@ -22,12 +22,12 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
-Version:	4.3.99.5
+Version:	4.3.99.6
 Release:	1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
-# Source0-md5:	d01d01a7abd4f0764e20ef493f76a3b2
+# Source0-md5:	1aba2fcb679201305a3b710efeb27de9
 #Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-2.tgz
 #Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-3.tgz
 Source3:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
@@ -57,8 +57,8 @@ Source35:	xclock.png
 Source36:	oclock.png
 Source37:	xconsole.png
 Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
-# Source38-md5: a184106bb83cb27c6963944d9243ac3f
-Source39:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
+# Source38-md5:	a184106bb83cb27c6963944d9243ac3f
+#Source39:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
 # Source39-md5: 8d43c01d364576c195a5294279f92566
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
@@ -1935,7 +1935,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
-%patch10 -p1
+%patch10 -p0
 #%patch11 -p0	-- obsoleted???
 %patch12 -p1
 %patch13 -p1
@@ -2527,10 +2527,10 @@ fi
 
 %files fontconfig-devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/fontconfig-config
+#%attr(755,root,root) %{_bindir}/fontconfig-config
 %{_includedir}/fontconfig
 %{_libdir}/libfontconfig.so
-%{_pkgconfigdir}/fontconfig.pc
+#%{_pkgconfigdir}/fontconfig.pc
 %{_mandir}/man3/fontconfig.3*
 
 %files fontconfig-static
