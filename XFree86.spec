@@ -362,6 +362,7 @@ Summary(pl):	Wsparcie OpenGL dla systemu X11R6 - biblioteka GL
 Group:		X11/Libraries
 Requires:	XFree86-OpenGL-core = %{epoch}:%{version}-%{release}
 Obsoletes:	XFree86-driver-firegl
+Obsoletes:	XFree86-driver-nvidia
 
 %description OpenGL-libGL
 OpenGL support for X11R6 system - GL library.
