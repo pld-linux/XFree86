@@ -1832,6 +1832,7 @@ rm -rf xc/fonts
 %ifarch %{ix86} mips ppc arm
 olddir=$(pwd)
 cd LinuxDriver/2D
+chmod u+w Imakefile
 echo -e ',s#$(XF86OSSRC)/vbe#$(XF86SRC)/vbe#g\n,w' | ed Imakefile
 xmkmf $olddir/xc .
 %{__make} -S savage_drv.o \
