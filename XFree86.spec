@@ -1063,9 +1063,9 @@ for i in xdm twm fs xsm xinit; do
 done
 
 # make TrueType font dir, touch default .dir and .scale files
-install	-d $RPM_BUILD_ROOT/usr/share/fonts/TrueType
-echo 0 > $RPM_BUILD_ROOT/usr/share/fonts/TrueType/fonts.dir
-echo 0 > $RPM_BUILD_ROOT/usr/share/fonts/TrueType/fonts.scale
+install	-d $RPM_BUILD_ROOT%{_datadir}/fonts/TrueType
+echo 0 > $RPM_BUILD_ROOT%{_datadir}/fonts/TrueType/fonts.dir
+echo 0 > $RPM_BUILD_ROOT%{_datadir}/fonts/TrueType/fonts.scale
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/xdm
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/pam.d/xserver
@@ -1076,7 +1076,7 @@ install %{SOURCE4} $RPM_BUILD_ROOT/etc/xfs.config
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 
 #ln -sf ../../usr/X11R6/include/X11 $RPM_BUILD_ROOT/usr/include/X11 ##change
-ln -sf /usr/share/fonts $RPM_BUILD_ROOT/usr/X11R6/lib/X11/fonts
+ln -sf %{_datadir}/fonts $RPM_BUILD_ROOT/usr/X11R6/lib/X11/fonts
 
 for n in libX11.so.6.1 libICE.so.6.3 libSM.so.6.0 libXext.so.6.3 libXt.so.6.0 \
 	 libXmu.so.6.0 libXaw.so.6.1 libXIE.so.6.0 libXi.so.6.0 \
