@@ -2676,7 +2676,7 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/xfs
 %dir %{_sysconfdir}/X11/fs
 %attr(755,root,root) %{_libdir}/X11/fs
-%config(noreplace) %{_sysconfdir}/X11/fs/config
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/X11/fs/config
 
 %attr(755,root,root) %{_bindir}/xfs
 %attr(755,root,root) %{_bindir}/fslsfonts
