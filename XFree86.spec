@@ -1534,10 +1534,10 @@ chmod 000 /var/log/XFree86.0.log
 chown root.root /var/log/XFree86.0.log
 chmod 640 /var/log/XFree86.0.log
 
-%post DPS -p /sbin/ldconfig
-%postun DPS -p /sbin/ldconfig
+%post	DPS -p /sbin/ldconfig
+%postun	DPS -p /sbin/ldconfig
 
-%post OpenGL-libs -p /sbin/ldconfig
+%post	OpenGL-libs -p /sbin/ldconfig
 %postun	OpenGL-libs -p /sbin/ldconfig
 
 %post libs
@@ -1618,7 +1618,7 @@ if [ "$1" = "0" ]; then
 fi
 
 %postun -n xfs
-if [ $1 = 0 ]; then
+if [ "$1" = "0" ]; then
 	/usr/sbin/userdel xfs 2>/dev/null
 	/usr/sbin/groupdel xfs 2>/dev/null
 fi
