@@ -85,10 +85,10 @@ Patch49:	XFree86-XF86Config-path.patch
 Patch50:	XFree86-XF86Setup-fonts.patch
 Patch51:	XFree86-IPv6.patch
 
-BuildPrereq:	ncurses-devel
-BuildPrereq:	zlib-devel
-BuildPrereq:	utempter-devel
-BuildPrereq:	tcl-devel
+BuildRequires:	ncurses-devel
+BuildRequires:	zlib-devel
+BuildRequires:	utempter-devel
+BuildRequires:	tcl-devel
 Requires:	pam
 Requires:	xauth
 Exclusivearch:	i386 i486 i586 i686 alpha sparc m68k armv4l
