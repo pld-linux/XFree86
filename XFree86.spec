@@ -12,7 +12,7 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Name:		XFree86
 Version:	4.2.0
-Release:	3.1
+Release:	3.2
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/%{version}/source/X%{_sver}src-1.tgz
@@ -68,6 +68,7 @@ Patch32:	%{name}-XftConfig_in_correct_place.patch
 Patch33:	%{name}-PEX+XIE.patch
 Patch34:	%{name}-xman-manpaths.patch
 Patch35:	%{name}-ppc_drivers.patch
+Patch36:	%{name}-4.2.0-branch-20020524.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1657,6 +1658,9 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %ifarch ppc
 %patch35
 %endif
+cd xc
+%patch36 -p0
+cd ..
 
 rm -f xc/config/cf/host.def
 
