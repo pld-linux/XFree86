@@ -50,7 +50,7 @@ Patch27:	XFree86-ncurses.patch
 Patch28:	XFree86-xterm-ptmx.patch
 Patch29:	XFree86-HasZlib.patch
 
-Exclusivearch:	i386 alpha sparc m68k armv4l
+Exclusivearch:	i386 i486 i586 i686 alpha sparc m68k armv4l
 Buildroot:      /tmp/%{name}-%{version}-root
 
 %ifarch sparc
@@ -1315,7 +1315,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/X11R6/bin/Xnest
 /usr/X11R6/man/man1/Xnest.1x.*
 
-%ifarch i386 alpha
+%ifarch i386 i486 i586 i686 alpha
 
 %files SVGA
 %defattr(644,root,root,755)
@@ -1324,7 +1324,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man5/XF86Config.5x.*
 %endif
 
-%ifarch i386 sparc
+%ifarch i386 i486 i586 i686 sparc
 
 %files VGA16
 %defattr(644,root,root,755)
@@ -1333,7 +1333,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man5/XF86Config.5x.*
 %endif
 
-%ifarch i386
+%ifarch i386 i486 i586 i686
 
 %files W32
 %defattr(644,root,root,755)
@@ -1343,7 +1343,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man5/XF86Config.5x.*
 %endif
 
-%ifarch i386 alpha
+%ifarch i386 i486 i586 i686 alpha
 
 %files Mono
 %defattr(644,root,root,755)
@@ -1352,7 +1352,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man5/XF86Config.5x.*
 %endif
 
-%ifarch i386 alpha
+%ifarch i386 i486 i586 i686 alpha
 
 %files S3
 %defattr(644,root,root,755)
@@ -1362,7 +1362,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man5/XF86Config.5x.*
 %endif
 
-%ifarch i386 alpha
+%ifarch i386 i486 i586 i686 alpha
 
 %files S3V
 %defattr(644,root,root,755)
@@ -1372,7 +1372,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man5/XF86Config.5x.*
 %endif
 
-%ifarch i386
+%ifarch i386 i486 i586 i686
 
 %files 8514
 %defattr(644,root,root,755)
@@ -1382,7 +1382,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man5/XF86Config.5x.*
 %endif
 
-%ifarch i386
+%ifarch i386 i486 i586 i686
 
 %files Mach8
 %defattr(644,root,root,755)
@@ -1392,7 +1392,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man5/XF86Config.5x.*
 %endif
 
-%ifarch i386
+%ifarch i386 i486 i586 i686
 
 %files Mach32
 %defattr(644,root,root,755)
@@ -1409,7 +1409,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man1/XF86_Accel.1x.*
 /usr/X11R6/man/man5/XF86Config.5x.*
 
-%ifarch i386 alpha
+%ifarch i386 i486 i586 i686 alpha
 
 %files P9000
 %defattr(644, root, root, 755)
@@ -1419,7 +1419,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man5/XF86Config.5x.*
 %endif
 
-%ifarch i386
+%ifarch i386 i486 i586 i686
 
 %files AGX
 %defattr(644, root, root, 755)
@@ -1429,7 +1429,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man5/XF86Config.5x.*
 %endif
 
-%ifarch i386
+%ifarch i386 i486 i586 i686
 
 %files I128
 %defattr(644, root, root, 755)
@@ -1471,7 +1471,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(-,root,root) /usr/X11R6/lib/X11/xkb
 %endif
 
-%ifarch i386 
+%ifarch i386 i486 i586 i686
 
 %files 3DLabs
 %attr(755,root,root) /usr/X11R6/bin/XF86_3DLabs
