@@ -17,7 +17,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.2.1
-Release:	8
+Release:	9
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
@@ -111,6 +111,8 @@ Patch57:	%{name}-GLcore-strip-a-workaround.patch
 # Original from: ftp://ftp.xfree86.org/pub/XFree86/4.2.1/fixes/4.2.1-mit-shm-security.patch
 Patch58:	%{name}-4.2.1-mit-shm-security.patch
 Patch59:	%{name}-disable_glide.patch
+Patch60:	%{name}-xterm-can-2003-0063.patch
+URL:		http://www.xfree86.org/
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1781,6 +1783,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %{!?debug:%patch57 -p1}
 %patch58 -p0
 %{?_without_tdfx:%patch59 -p0}
+%patch60 -p1
 
 rm -f xc/config/cf/host.def
 
