@@ -1778,7 +1778,12 @@ Group:		X11/XFree86
 Requires:	%{name}-libs = %{version}
 Requires:	XFree86-fonts-base
 PreReq:		chkconfig
-Requires(pre):	user-xfs
+Requires(pre):	/bin/id
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/usr/sbin/useradd
+Requires(pre):	/usr/sbin/groupadd
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
 Obsoletes:	xfsft XFree86-xfs
 
 %description -n xfs
@@ -2084,6 +2089,24 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del xdm
 fi
 
+%pre -n xfs
+if [ -n "`/usr/bin/getgid xfs`" ]; then
+	if [ "`/usr/bin/getgid xfs`" != "56" ]; then
+		echo "Error: group xfs doesn't have GID=56. Correct this before installing xfs." 1>&2
+		exit 1
+	fi
+else
+	/usr/sbin/groupadd -g 56 -r -f xfs
+fi
+if [ -n "`/bin/id -u xfs 2>/dev/null`" ]; then
+	if [ "`/bin/id -u xfs`" != "56" ]; then
+		echo "Error: user xfs doesn't have UID=56. Correct this before installing xfs." 1>&2
+		exit 1
+	fi
+else
+	/usr/sbin/useradd -u 56 -r -d /etc/X11/fs -s /bin/false -c "X Font Server" -g xfs xfs 1>&2
+fi
+
 %post -n xfs
 /sbin/chkconfig --add xfs
 if [ -f /var/lock/subsys/xfs ]; then
@@ -2098,6 +2121,12 @@ if [ "$1" = "0" ]; then
 		/etc/rc.d/init.d/xfs stop >&2
 	fi
 	/sbin/chkconfig --del xfs
+fi
+
+%postun -n xfs
+if [ "$1" = "0" ]; then
+	/usr/sbin/userdel xfs 2>/dev/null
+	/usr/sbin/groupdel xfs 2>/dev/null
 fi
 
 #--- %files --------------------------
