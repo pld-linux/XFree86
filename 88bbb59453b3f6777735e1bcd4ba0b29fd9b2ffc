@@ -1,0 +1,5 @@
+- fixed non-english-man-pages installing
+- pl descriptions for xdm,twm,-tools
+- Xserver does not require any fonts locally (can be remote)
+  but require /usr/X11R6/lib/X11/rgb.txt (it should be moved from base
+  to some other package...)
