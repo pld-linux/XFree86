@@ -137,11 +137,6 @@ Obsoletes:	X11R6.1
 # Glide3 (libglide3.so.3) can be provided by Glide_V3-DRI or Glide_V5-DRI
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1 libOSMesa.so.3.3 libglide3.so.3
 
-# gcc 3.2 is still broken
-%ifarch athlon
-%define		optflags	-O2 -march=athlon -mno-mmx -mno-3dnow
-%endif
-
 %description
 If you want to install the X Window System (TM) on your machine,
 you'll need to install XFree86.
