@@ -1287,7 +1287,7 @@ install -d $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
 	$RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties
 
 make -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
-		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
+		"DOCDIR=%{_defaultdocdir}/%{name}-%{version}" \
 		"INSTBINFLAGS=-m 755" \
 		"INSTPGMFLAGS=-m 755" \
 		install install.man
@@ -1365,14 +1365,8 @@ ln -sf ../../../../../var/state/xkb \
 rm -f $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
 ln -sf ../../../bin/xkbcomp $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
 
-ln -sf ../../../share/doc/%{name}-%{version} \
-	$RPM_BUILD_ROOT%{_libdir}/X11/doc
-
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[135]/* \
-	$RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
-
-# don't gzip README.* files, they are needed by XF86Setup
-gzip -dnf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
+	$RPM_BUILD_ROOT%{_defaultdocdir}/%{name}-%{version}/*
 
 #--- %post{un}, %preun, %verifyscript -
 
@@ -1483,9 +1477,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%docdir %{_docdir}/%{name}-%{version}
-%doc /%{_docdir}/%{name}-%{version}/*
-%doc %{_libdir}/X11/doc/*
+%doc %{_defaultdocdir}/%{name}-%{version}/*
 
 %doc %{_libdir}/X11/XF86Config.eg
 %doc %{_libdir}/X11/Cards
