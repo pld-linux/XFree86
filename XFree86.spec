@@ -5,41 +5,51 @@ Summary(pl):    XFree86 Window System wraz z podstawowymi programami
 Summary(tr):    XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:           XFree86
 Version:        3.3.3.1
-Release:        21
+Release:        22
 Copyright:      MIT
 Group:          X11/XFree86
 Group(pl):      X11/XFree86
-Requires:       pam >= 0.66
 Requires:       XFree86-modules
-Source:         ftp.xfree86.org:/pub/XFree86/3.3.3/source/X333src-1.tgz
-Source1:        xdm.pamd
-Source2:        xdm.initd
-Source3:        xfs.initd
-Patch0:         %{name}-3.3.3.1.patch.bz2
-Patch1:		XFree86-3.3.3-pld.patch.gz
-Patch2:		XFree86-xf86config.patch.gz
-Patch3:		XFree86-Xpath.patch.gz
-Patch4:		XFree86-3.3.3.1-pam.patch.gz
-Patch5:		XFree86-3.3-notiocsltc.patch.gz
-Patch6:		XFree86-3.3.3.1-alpha-sockets.patch.gz
-Patch7:		XFree86-3.3.3.1-sparc.patch.gz
-Patch8:		XFree86-3.3.2-ffb.patch.gz
-Patch9:		XFree86-3.3.2.3-ncurses.patch.gz
-Patch10:	XFree86-3.3.3.1-glibc.patch.gz
-Patch11:	XFree86-3.3.2.3-jay.patch.gz
-Patch12:	XFree86-3.3.3.1-alpha-at.patch.gz
-Patch13:	XFree86-3.3.3.1-czskkbd.patch.gz
-Patch14:	XFree86-3.3-iso88592xlclocale.patch.gz
-Patch15:	XFree86-3.3.3-joy.patch.gz
-Patch16:	XFree86-3.3.3-arm.patch.gz
-Patch17:	XFree86-3.3.3-ru_SU.patch.gz
-Patch18:	XFree86-3.3.3.1-alpha-vga.patch.gz
-Patch19:	XFree86-3.3.3.1-xf86fbdev.patch.gz
-Patch20:	XFree86-xdm.patch
-Patch21:	XFree86-xfsft-1.0.3.patch.gz
-Patch22:	XFree86-xfsft-card64.patch.gz
-Patch23:	xterm-ptmx-patch
-Exclusivearch:  i386 alpha sparc
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/3.3.3/source/X333src-1.tgz
+Source1:	ftp://ftp.xfree86.org/pub/XFree86/3.3.3/source/X333src-2.tgz
+Source2:        xdm.pamd
+Source3:        xdm.initd
+Source4:        xfs.initd
+Patch0:		ftp://ftp.xfree86.org/pub/XFree86/3.3.3/fixes/3.3.3-3.3.3.1.diff.gz
+# patch with main set xhanges setings
+Patch1:		XFree86-cf.patch
+Patch2:		XFree86-xdm.patch
+Patch3:		XFree86-fsstnd.patch
+# PAM patch
+Patch4:		XFree86-pam.patch
+Patch5:		XFree86-pam-SharedLibXdmGreet.patch
+Patch6:		XFree86-alpha-sockets.patch
+Patch7:		XFree86-sparc.patch
+Patch8:		XFree86-ffb.patch
+Patch9:		XFree86-fbdev.patch
+# fix xinput problems with threads / GTK+ -- Owen Taylor's fix
+Patch10:	XFree86-xinput.patch
+Patch11:	XFree86-suncards.patch
+Patch12:	XFree86-sparc2.patch
+Patch13:	XFree86-jay.patch
+Patch14:	XFree86-86setup.patch
+Patch15:	XFree86-czskkbd.patch
+Patch16:	XFree86-iso88592xlclocale.patch
+Patch17:	XFree86-utextit.patch
+Patch18:	XFree86-joy.patch
+Patch19:	XFree86-arm.patch
+Patch20:	XFree86-xfsft.patch
+Patch21:	XFree86-ru_SU.patch
+Patch22:	XFree86-startx_xauth.patch
+Patch23:	XFree86-xfsredhat.patch
+Patch24:	XFree86-alpha-at.patch
+Patch25:	XFree86-alpha-vga.patch
+Patch26:	XFree86-glibc.patch
+Patch27:	XFree86-ncurses.patch
+Patch28:	XFree86-xterm-ptmx.patch
+Patch29:	XFree86-HasZlib.patch
+
+Exclusivearch:	i386 alpha sparc m68k armv4l
 Buildroot:      /tmp/%{name}-%{version}-root
 
 %ifarch sparc
@@ -872,6 +882,7 @@ Summary(pl):	XDM
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name} = %{version}
+Requires:       pam >= 0.66
 Obsoletes:	xdm
 
 %description -n xdm
@@ -899,8 +910,8 @@ Summary(pl): XAuth
 %description -l pl -n xauth
 
 %prep
-%setup -q -c
-%patch0  -p1
+%setup -q -c -a 1
+%patch0  -p0
 %patch1  -p1
 %patch2  -p1
 %patch3  -p1
@@ -923,24 +934,28 @@ Summary(pl): XAuth
 %patch20 -p1
 %patch21 -p1
 %patch22 -p1
-(cd xc; patch -p1 $RPM_SOURCE_DIR/xterm-ptmx.patch)
+%patch23 -p1
+%patch24 -p0
+%patch25 -p1
+%patch26 -p1
+%patch27 -p1
+%patch28 -p1
+%patch29 -p1
 
-%build
 # Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
 find . -size 0 -print | xargs rm -f
 
-make -C xc \
-	    "BOOTSTRAPCFLAGS=$RPM_OPT_FLAGS" \
-	    "CDEBUGFLAGS=" "CCOPTIONS=$RPM_OPT_FLAGS" \
-	    "CXXDEBUGFLAGS=" "CXXOPTIONS=$RPM_OPT_FLAGS" \
-	    World
+%build
+make -C xc World \
+	"BOOTSTRAPCFLAGS=$RPM_OPT_FLAGS" \
+	"CDEBUGFLAGS=" "CCOPTIONS=$RPM_OPT_FLAGS" \
+	"CXXDEBUGFLAGS=" "CXXOPTIONS=$RPM_OPT_FLAGS"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/usr/{include,X11R6/{bin,lib/X11,man/{man1,man3,man5}}} \
-	$RPM_BUILD_ROOT/etc/{pam.d,rc.d/{init.d,rc3.d,rc5.d}}
-	$RPM_BUILD_ROOT/usr/include
+install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,lib/X11,man/man{1,3,5}} \
+	$RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,}
 
 make -C xc  "DESTDIR=$RPM_BUILD_ROOT" \
 	    "INSTBINFLAGS=-m 755 -s" \
@@ -950,9 +965,6 @@ make -C xc  "DESTDIR=$RPM_BUILD_ROOT" \
 # setup the default X server
 rm -f $RPM_BUILD_ROOT/usr/X11R6/bin/X
 ln -s Xwrapper $RPM_BUILD_ROOT/usr/X11R6/bin/X
-
-# libz.a > /dev/piach
-rm -f $RPM_BUILD_ROOT/usr/X11R6/lib/libz.a
 
 # Move config stuff to /etc/X11
 install -d $RPM_BUILD_ROOT/etc/X11
@@ -971,10 +983,10 @@ ln -sf ../../../../etc/X11/XF86Config \
 $RPM_BUILD_ROOT/usr/X11R6/lib/X11/XF86Config
 
 for i in xdm twm fs xsm xinit; do
-    rm -rf $RPM_BUILD_ROOT/etc/X11/$i
-    cp -ar $RPM_BUILD_ROOT/usr/X11R6/lib/X11/$i $RPM_BUILD_ROOT/etc/X11
-    rm -rf $RPM_BUILD_ROOT/usr/X11R6/lib/X11/$i
-    ln -sf /etc/X11/$i $RPM_BUILD_ROOT/usr/X11R6/lib/X11/$i
+	rm -rf $RPM_BUILD_ROOT/etc/X11/$i
+	cp -ar $RPM_BUILD_ROOT/usr/X11R6/lib/X11/$i $RPM_BUILD_ROOT/etc/X11
+	rm -rf $RPM_BUILD_ROOT/usr/X11R6/lib/X11/$i
+	ln -sf /etc/X11/$i $RPM_BUILD_ROOT/usr/X11R6/lib/X11/$i
 done
 
 # make TrueType font dir, touch default .dir and .scale files
@@ -1011,10 +1023,10 @@ fi
 %verifyscript libs
 echo -n "Looking for /usr/X11R6/lib in /etc/ld.so.conf... "
 if ! grep "^/usr/X11R6/lib$" /etc/ld.so.conf > /dev/null; then
-    echo "missing"
-    echo "/usr/X11R6/lib missing from /etc/ld.so.conf" >&2
+	echo "missing"
+	echo "/usr/X11R6/lib missing from /etc/ld.so.conf" >&2
 else
-    echo "found"
+	echo "found"
 fi
 
 %clean
@@ -1022,17 +1034,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%config /usr/X11R6/lib/X11/XF86Config.eg
 %docdir /usr/X11R6/lib/X11/doc
+
+%config /usr/X11R6/lib/X11/XF86Config.eg
 %doc /usr/X11R6/lib/X11/Cards
 
 %dir /usr/X11R6/lib
 %dir /usr/X11R6/lib/X11
 %dir /usr/X11R6/lib/X11/xserver
-
-%ifnarch sparc
-%dir /usr/X11R6/lib/modules
-%endif
 
 %dir /usr/X11R6/bin
 
@@ -1048,7 +1057,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/lib/X11/locale
 /usr/X11R6/lib/X11/lbxproxy
 /usr/X11R6/lib/X11/proxymngr
-%attr(-,root,root) %config /usr/X11R6/lib/X11/app-defaults/*
+/usr/X11R6/lib/X11/app-defaults
 
 %attr(755,root,root) /usr/X11R6/lib/X11/xinit
 
@@ -1057,17 +1066,15 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/X11R6/lib/X11/xsm
 
 /usr/X11R6/lib/X11/xserver/SecurityPolicy
-%attr(-,root,root) /usr/X11R6/lib/X11/XF86Config
 
 %attr(-,root,root) /usr/X11R6/lib/X11/rstart/*
 
 %attr(755,root,root) /usr/X11R6/lib/X11/x11perfcomp/*
 /usr/X11R6/lib/X11/*.txt
 
-/usr/X11R6/lib/X11/doc
 
 %dir /usr/X11R6/lib/X11/etc
-%attr(-,root,root) /usr/X11R6/lib/X11/etc/*
+%attr(755,root,root) /usr/X11R6/lib/X11/etc/*
 
 %attr(4755,root,root) /usr/X11R6/bin/Xwrapper
 
@@ -1154,8 +1161,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/X11R6/bin/SuperProbe
 %attr(755,root,root) /usr/X11R6/bin/xon
 
-%dir /usr/X11R6/include/X11/bitmaps
-/usr/X11R6/include/X11/bitmaps/*
+/usr/X11R6/include/X11/bitmaps
 
 /usr/X11R6/man/man1/lbxproxy.1.*
 /usr/X11R6/man/man1/proxymngr.1.*
@@ -1232,10 +1238,14 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man1/SuperProbe.1.*
 /usr/X11R6/man/man1/xon.1.*
 
+%ifnarch sparc
+
 %files modules
-%defattr(-,root,root,755)
+%defattr(755,root,root,755)
 /usr/X11R6/lib/X11/xkb
 %attr(755,root,root) /usr/X11R6/lib/modules/*
+
+%endif
 
 %files -n xdm
 %defattr(644,root,root,755)
@@ -1263,41 +1273,22 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/lib/*.so.*
+%attr(755,root,root) /usr/X11R6/lib/lib*.so.*.*
 
 %files devel
-%defattr(-,root,root,755)
+%defattr(644,root,root,755)
+%attr(755,root,root) /usr/X11R6/lib/lib*.so
 
 /usr/X11R6/include/X11/*.h
-
-%dir /usr/X11R6/include/X11/ICE
-/usr/X11R6/include/X11/ICE/*
-
-%dir /usr/X11R6/include/X11/PEX5
-/usr/X11R6/include/X11/PEX5/*
-
-%dir /usr/X11R6/include/X11/PM
-/usr/X11R6/include/X11/PM/*
-
-%dir /usr/X11R6/include/X11/SM
-/usr/X11R6/include/X11/SM/*
-
-%dir /usr/X11R6/include/X11/Xaw
-/usr/X11R6/include/X11/Xaw/*
-
-%dir /usr/X11R6/include/X11/Xmu
-/usr/X11R6/include/X11/Xmu/*
-
-%dir /usr/X11R6/include/X11/extensions
-/usr/X11R6/include/X11/extensions/*
-
-%dir /usr/X11R6/include/X11/fonts
-/usr/X11R6/include/X11/fonts/*
-
-/usr/include/X11
-
-%dir /usr/X11R6/lib/X11/config
-/usr/X11R6/lib/X11/config/*
+/usr/X11R6/include/X11/ICE
+/usr/X11R6/include/X11/PEX5
+/usr/X11R6/include/X11/PM
+/usr/X11R6/include/X11/SM
+/usr/X11R6/include/X11/Xaw
+/usr/X11R6/include/X11/Xmu
+/usr/X11R6/include/X11/extensions
+/usr/X11R6/include/X11/fonts
+/usr/X11R6/lib/X11/config
 
 %attr(755,root,root) /usr/X11R6/bin/imake
 %attr(755,root,root) /usr/X11R6/bin/makedepend
@@ -1308,9 +1299,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man1/xmkmf.1.*
 /usr/X11R6/man/man3/*
 
-/usr/X11R6/lib/*.a
-
-%attr(755,root,root) /usr/X11R6/lib/*.so
+/usr/X11R6/lib/lib*.a
 
 %files Xvfb
 %defattr(644,root,root,755)
@@ -1505,6 +1494,11 @@ rm -rf $RPM_BUILD_ROOT
 * Thu Mar 11 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [3.3.3.1-21]
 - removed man group from man pages,
+- added pl translations (by Andrzej Nakonieczny <dzemik@tuniv.szczecin.pl>),
+- added XFree86-HasZlib.patch for linking all X servers with shared libz
+  (istead static linking with this library),
+- don't buid modules subpackage on sparc,
+- "Requires: pam" moved to xdm subpackage,
 - gzipping man pages instead bzipping2.
 
 * Thu Feb 11 1999 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
