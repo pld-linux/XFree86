@@ -1268,7 +1268,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/X11R6/lib/modules
 %endif
 
-%config /etc/X11/XF86Config
+%config(noreplace) %verify(not md5 mtime size) /etc/X11/XF86Config
 %config /etc/pam.d/xserver
 %config(missingok) /etc/security/console.apps/xserver
 %config /etc/X11/twm/system.twmrc
