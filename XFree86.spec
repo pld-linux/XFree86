@@ -19,7 +19,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.4.0
-Release:	2
+Release:	3.1
 Epoch:		1
 License:	XFree86 1.1
 Group:		X11/XFree86
@@ -121,6 +121,9 @@ Patch50:	%{name}-xterm-256colors.patch
 Patch52:	%{name}-kernel_headers.patch
 Patch53:	%{name}-stdint.patch
 Patch54:	%{name}-lnx_kbd.patch
+Patch55:	%{name}-elfloader-linux-non-exec-stack.patch
+Patch56:	%{name}-exec-shield-GNU-stack.patch
+Patch57:	%{name}-libGL-exec-shield-fixes-v2.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	/usr/bin/perl
 %ifarch %{ix86} alpha amd64
@@ -1734,8 +1737,6 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 пакет(и) шрифт╕в XFree86, необх╕дн╕ для вашо╖ системи, Xconfigurator
 та XFree86-libs.
 
-#--- %prep ---------------------------
-
 %prep
 %setup -qc -a1 -a2 -a7
 %patch0 -p0
@@ -1789,6 +1790,9 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch52 -p1
 %patch53 -p0
 %patch54 -p0
+%patch55 -p0
+%patch56 -p0
+%patch57 -p0
 
 rm -f xc/config/cf/host.def
 
