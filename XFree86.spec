@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
 Version:	4.0.2
-Release:	1
+Release:	2
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -323,7 +323,7 @@ Summary(pl):	Graficzny konfigurator dla XFree86
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
-Requires:	%{name}-VGA16 = %{version}
+Requires:	%{name}-Xserver = %{version}
 
 %description setup
 Setup containst a configuration tool for the XFree86 family of
