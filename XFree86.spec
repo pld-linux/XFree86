@@ -1392,7 +1392,7 @@ serwerów lokalnych lub zdalnych.
 %patch31 -p1
 %patch32 -p1
 %patch33 -p1
-%patch35 -p1
+%patch34 -p1
 
 rm -f xc/config/cf/host.def
 
