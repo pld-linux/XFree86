@@ -1,0 +1,22 @@
+diff -urN LinuxDriver.org/2D/savage_video.c LinuxDriver/2D/savage_video.c
+--- LinuxDriver.org/2D/savage_video.c	2003-08-28 21:48:40.000000000 +0200
++++ LinuxDriver/2D/savage_video.c	2003-08-28 21:49:19.000000000 +0200
+@@ -621,18 +621,15 @@
+     
+     switch (id) {
+         case FOURCC_Y211:		/* Y211 */
+-            xf86Msg(X_INFO,"FOURCC_Y211");
+             srcPitch = width;
+             break;
+         case FOURCC_YV12:		/* YV12 */
+-            xf86Msg(X_INFO,"FOURCC_YV12");
+             srcPitch = (width + 3) & ~3;
+             srcPitch2 = ((width >> 1) + 3) & ~3;            
+             offsetV = srcPitch * height;
+             offsetU = offsetV + (srcPitch2 * (height >> 1)) ;
+             break;
+         case FOURCC_I420:
+-            xf86Msg(X_INFO,"FOURCC_I420");
+             srcPitch = (width + 3) & ~3;
+             srcPitch2 = ((width >> 1) + 3) & ~3;            
+             offsetU = srcPitch * height;
