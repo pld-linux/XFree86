@@ -5,14 +5,14 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
 Version:	4.0.1
-Release:	7
+Release:	8
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0/source/X401src-1.tgz
 Source1:	ftp://ftp.mesa3d.org/mesa/MesaLib-3.2.1.tar.bz2
-Source2:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.1.tar.bz2
+Source2:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source3:	xdm.pamd
 Source4:	xdm.init
 Source5:	xfs.init
@@ -55,6 +55,8 @@ Patch23:	%{name}-fhs.patch
 Patch24:	%{name}-xdmsecurity.patch
 Patch25:	%{name}-moresecurity.patch
 Patch26:	%{name}-xman.patch
+Patch27:	%{name}-glide3.patch
+Patch28:	%{name}-tdfxdrmfixes.patch
 
 BuildRequires:	flex
 BuildRequires:	ncurses-devel
@@ -62,7 +64,7 @@ BuildRequires:	zlib-devel
 BuildRequires:	utempter-devel
 BuildRequires:	tcl-devel
 BuildRequires:	pam-devel
-%ifnarch sparc alpha
+%ifarch %{ix86}
 BuildRequires:	Glide2x_SDK
 BuildRequires:	Glide_V3-DRI-devel >= 3.10-7
 %endif
@@ -932,7 +934,7 @@ X11R6-contrib in older releases.
 %patch8 -p1
 # XFree 4.0.1 is in sync, yet...
 #%patch9 -p0
-#%patch10 -p1
+%patch10 -p1
 %patch11 -p1
 %patch12 -p1
 %ifarch sparc sparc64
@@ -953,6 +955,8 @@ X11R6-contrib in older releases.
 %patch24 -p1
 %patch25 -p1
 %patch26 -p1
+%patch27 -p0
+%patch28 -p1
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
@@ -960,9 +964,9 @@ rm -f xc/config/cf/host.def
 %build
 %{__make} -S -C xc World \
 	"BOOTSTRAPCFLAGS=%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
-	"CDEBUGFLAGS=" "CCOPTIONS=%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
-	"CXXDEBUGFLAGS=" "CXXOPTIONS=%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
-	"RAWCPP=/lib/cpp"
+	"CCOPTIONS=%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
+	"CXXOPTIONS=%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
+	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 
 cd Mesa*
 
