@@ -92,6 +92,7 @@ BuildRequires:	Glide2x_SDK
 Requires:	xauth
 Requires:	XFree86-fonts-ISO8859-1 = %{version}
 Requires:	XFree86-libs = %{version}
+Requires(post):	fileutils
 Prereq:		XFree86-libs
 Obsoletes:	xpm-progs
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
@@ -1483,10 +1484,10 @@ install %{SOURCE14} $RPM_BUILD_ROOT%{_datadir}/pixmaps
 
 bzip2 -dc %{SOURCE16} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 
-touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
-touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
-touch $RPM_BUILD_ROOT/etc/security/blacklist.xdm
-touch $RPM_BUILD_ROOT/var/log/XFree86.0.log
+> $RPM_BUILD_ROOT/etc/security/console.apps/xserver
+> $RPM_BUILD_ROOT/etc/security/blacklist.xserver
+> $RPM_BUILD_ROOT/etc/security/blacklist.xdm
+> $RPM_BUILD_ROOT/var/log/XFree86.0.log
 
 ln -sf %{_fontsdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
 
@@ -1531,6 +1532,12 @@ if [ -d /usr/X11R6/lib/X11/xkb ]; then
 	rm -rf /usr/X11R6/lib/X11/xkb
 	ln -sf ../../../../etc/X11/xkb /usr/X11R6/lib/X11/xkb
 fi
+
+%post
+touch /var/log/XFree86.0.log
+chmod 000 /var/log/XFree86.0.log
+chown root.root /var/log/XFree86.0.log
+chmod 640 /var/log/XFree86.0.log
 
 %post libs
 grep "^%{_libdir}$" /etc/ld.so.conf >/dev/null 2>&1
