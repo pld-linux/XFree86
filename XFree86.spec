@@ -8,7 +8,7 @@
 #
 
 %define		_sver	%(echo %{version} | tr -d .)
-%define		_synaptics_ver	0.11.3p2
+%define		_synaptics_ver	0.11.3p3
 
 Summary:	XFree86 Window System servers and basic programs
 Summary(de):	Xfree86 Window-System-Server und grundlegende Programme
@@ -24,7 +24,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.99.6
-Release:	1
+Release:	2
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
@@ -63,7 +63,7 @@ Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-X
 # Source39-md5: 8d43c01d364576c195a5294279f92566
 # http://w1.894.telia.com/~u89404340/touchpad/index.html
 Source40:	http://w1.894.telia.com/~u89404340/touchpad/synaptics-%{_synaptics_ver}.tar.bz2
-# Source40-md5:	2898f128f1e40dd29f3af38ce7550aae
+# Source40-md5:	5541058365fc13ba28d2a74ed0b6fdd7
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
