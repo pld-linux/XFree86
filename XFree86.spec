@@ -17,11 +17,11 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.2.99.3
-Release:	0.1
+Release:	0.20030109.1
 License:	MIT
 Group:		X11/XFree86
 #Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
-Source0:	X42993src-1.tar.bz2
+Source0:	X42993src-1-20030109.tar.bz2
 Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source2:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
 Source3:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
@@ -113,6 +113,7 @@ Patch57:	%{name}-GLcore-strip-a-workaround.patch
 # Original from: ftp://ftp.xfree86.org/pub/XFree86/4.2.1/fixes/4.2.1-mit-shm-security.patch
 Patch58:	%{name}-4.2.1-mit-shm-security.patch
 Patch59:	%{name}-disable_glide.patch
+Patch60:	%{name}-expat.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -142,6 +143,8 @@ Obsoletes:	xterm
 Obsoletes:	X11R6.1
 %endif
 
+%define		_pixmapsdir	/usr/share/pixmaps
+%define		_icondir	/usr/share/icons
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
 %define		_wmpropsdir	%{_datadir}/wm-properties
@@ -1822,6 +1825,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #%%{!?debug:%patch57 -p1} --obsoleted
 #%patch58 -p0  --obsoleted
 %{?_without_tdfx:%patch59 -p0}
+%patch60 -p0
 
 rm -f xc/config/cf/host.def
 
@@ -1841,7 +1845,8 @@ rm -f xc/config/cf/host.def
 	"BOOTSTRAPCFLAGS=%{rpmcflags}" \
 	"CCOPTIONS=%{rpmcflags}" \
 	"CXXOPTIONS=%{rpmcflags}" \
-	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
+	"CXXDEBUGFLAGS=" "CDEBUGFLAGS=" \
+	"ICONDIR=%{_icondir}"
 
 %ifnarch alpha
 #%%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" Makefiles
@@ -1874,6 +1879,7 @@ install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysc
 		"CCOPTIONS=%{rpmcflags}" \
 		"CXXOPTIONS=%{rpmcflags}" \
 		"CXXDEBUGFLAGS=" "CDEBUGFLAGS=" \
+		"ICONDIR=%{_icondir}" \
 		install install.man
 
 %ifnarch alpha
@@ -1923,7 +1929,7 @@ install %{SOURCE22} $RPM_BUILD_ROOT%{_applnkdir}/Editors
 install %{SOURCE23} $RPM_BUILD_ROOT%{_applnkdir}/Terminals
 install %{SOURCE24}  %{SOURCE25} %{SOURCE26} %{SOURCE27} \
 		$RPM_BUILD_ROOT%{_applnkdir}/Utilities
-install %{SOURCE30} $RPM_BUILD_ROOT%{_datadir}/pixmaps
+install %{SOURCE30} $RPM_BUILD_ROOT%{_pixmapsdir}
 install %{SOURCE31} %{SOURCE32} %{SOURCE33} %{SOURCE34} %{SOURCE35} \
 	%{SOURCE36} %{SOURCE37} \
 	$RPM_BUILD_ROOT%{_pixmapsdir}
@@ -2091,7 +2097,7 @@ fi
 %{_libdir}/X11/app-defaults/XTerm
 %lang(pl) %{_libdir}/X11/app-defaults/pl/XTerm
 %{_libdir}/X11/app-defaults/XTerm-color
-%{_libdir}/X11/icons
+%{_icondir}/*
 
 %attr(755,root,root) %{_libdir}/X11/lbxproxy
 %attr(755,root,root) %{_libdir}/X11/proxymngr
@@ -2430,7 +2436,6 @@ fi
 %attr(755,root,root) %{_libdir}/libS*.so
 %attr(755,root,root) %{_libdir}/libx*.so
 %attr(755,root,root) %{_libdir}/libXv.so
-%attr(755,root,root) %{_libdir}/libexpat.so
 %{_libdir}/libfntstubs.a
 %{_libdir}/libfontenc.a
 %{_libdir}/libFS.a
@@ -2467,7 +2472,6 @@ fi
 %{_includedir}/X11/fonts
 %{_includedir}/X11/Xcursor
 %{_includedir}/xf86*.h
-%{_includedir}/expat.h
 %{_libdir}/X11/config
 
 %{_mandir}/man3/[A-EH-Z]*
@@ -2789,7 +2793,6 @@ fi
 %attr(755,root,root) %{_libdir}/libS*.so.*.*
 %attr(755,root,root) %{_libdir}/libx*.so.*.*
 %attr(755,root,root) %{_libdir}/libXv.so.*.*
-%attr(755,root,root) %{_libdir}/libexpat.so.*.*
 
 %files modules
 %defattr(644,root,root,755)
@@ -2888,7 +2891,6 @@ fi
 %{_libdir}/libXrender.a
 %{_libdir}/libXt.a
 %{_libdir}/libXtst.a
-%{_libdir}/libexpat.a
 
 %files tools
 %defattr(644,root,root,755)
