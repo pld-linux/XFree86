@@ -83,6 +83,7 @@ Patch47:	XFree86-xterm-color.patch
 Patch48:	XFree86-xdm+pam_env.patch
 Patch49:	XFree86-XF86Config-path.patch
 Patch50:	XFree86-XF86Setup-fonts.patch
+Patch51:	XFree86-IPv6.patch
 
 BuildPrereq:	ncurses-devel
 BuildPrereq:	zlib-devel
@@ -1069,6 +1070,7 @@ unset POSIXLY_CORRECT
 %patch48 -p1
 %patch49 -p1
 %patch50 -p1
+%patch51 -p1
 
 ## Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
@@ -1136,6 +1138,8 @@ install %{SOURCE4} $RPM_BUILD_ROOT/etc/X11/fs/config
 install %{SOURCE6} $RPM_BUILD_ROOT/usr/X11R6/lib/X11/app-defaults/XTerm.pl
 
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
+touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
+touch $RPM_BUILD_ROOT/etc/security/blacklist.xdm
 
 #ln -sf ../../usr/X11R6/include/X11 $RPM_BUILD_ROOT%{_includedir}/X11 ##change
 ln -sf %{_fontdir} $RPM_BUILD_ROOT/usr/X11R6/lib/X11/fonts
@@ -1222,17 +1226,30 @@ fi
 
 %post -n xfs
 /sbin/chkconfig --add xfs
+if [ -f /var/run/xfs.pid ]; then
+        /etc/rc.d/init.d/xfs restart >&2
+else
+        echo "Run \"/etc/rc.d/init.d/xfs start\" to start font server." >&2
+fi
+		
 
 %post -n xdm
 /sbin/chkconfig --add xdm
-
+if [ -f /var/run/xdm.pid ]; then
+        /etc/rc.d/init.d/xdm restart >&2
+else
+       echo "Run \"/etc/rc.d/init.d/xdm start\" to start xdm." >&2
+fi
+		
 %postun -n xfs
 if [ "$1" = "0" ]; then
+	/etc/rc.d/init.d/xfs stop >&2
 	/sbin/chkconfig --del xfs
 fi
 
 %postun -n xdm
 if [ "$1" = "0" ]; then
+	/etc/rc.d/init.d/xdm stop >&2
 	/sbin/chkconfig --del xdm
 fi
 
@@ -1270,18 +1287,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %config(noreplace) %verify(not md5 mtime size) /etc/X11/XF86Config
 %config %verify(not md5 mtime size) /etc/pam.d/xserver
+%config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xserver
 %config(missingok) /etc/security/console.apps/xserver
 %config /etc/X11/twm/system.twmrc
 %config /etc/X11/xsm/system.xsm
-%config /etc/X11/xdm/xdm-config
-%config /etc/X11/xdm/chooser
-%config /etc/X11/xdm/Xsetup_0
-%config /etc/X11/xdm/Xsession
-%config /etc/X11/xdm/Xservers
-%config /etc/X11/xdm/Xresources
-%config /etc/X11/xdm/Xaccess
-%config /etc/X11/xdm/TakeConsole
-%config /etc/X11/xdm/GiveConsole
 %ghost /etc/X11/X
 
 /usr/X11R6/lib/X11/XErrorDB
@@ -1487,8 +1496,8 @@ rm -rf $RPM_BUILD_ROOT
 %files -n xdm
 %defattr(644,root,root,755)
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xdm
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/security/blacklist.xdm
 %attr(754,root,root) /etc/rc.d/init.d/xdm
-%attr(-,root,root) /etc/X11/xdm/*
 
 %config /usr/X11R6/lib/X11/app-defaults/Chooser
 
@@ -1496,6 +1505,17 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/X11R6/bin/xdm
 %attr(755,root,root) /usr/X11R6/bin/sessreg
 /usr/X11R6/man/man1/xdm.1*
+
+%dir    /etc/X11/xdm
+%config /etc/X11/xdm/xdm-config
+%config /etc/X11/xdm/chooser
+%config /etc/X11/xdm/Xsetup_0
+%config /etc/X11/xdm/Xsession
+%config /etc/X11/xdm/Xservers
+%config /etc/X11/xdm/Xresources
+%config /etc/X11/xdm/Xaccess
+%config /etc/X11/xdm/TakeConsole
+%config /etc/X11/xdm/GiveConsole
 
 %files -n xfs
 %defattr(644,root,root,755)
