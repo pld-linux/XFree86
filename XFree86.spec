@@ -243,7 +243,6 @@ Requires:	%{name}-devel = %{version}
 Obsoletes:	X11R6.1-devel
 %endif
 Obsoletes:	xpm-static
-#Obsoletes:	Mesa-static
 
 %description static
 X11R6 static libraries.
@@ -899,37 +898,6 @@ rm -f xc/config/cf/host.def
 	"CXXOPTIONS=%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
 	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 
-cd Mesa*
-
-%configure \
-	--enable-static \
-	--enable-shared \
-	--with-ggi="no" \
-	--with-svga="no" \
-	--disable-ggi-fbdev \
-	--disable-ggi-genkgi \
-%ifarch %{ix86} \
-	--enable-x86 \
-  %ifarch i586 i686 \
-	--enable-mmx \
-	--enable-3dnow \
-  %else \
-    %ifarch k6 \
-	--enable-mmx \
-	--enable-3dnow" \
-    %else \
-	--disable-mmx \
-	--disable-3dnow \
-    %endif \
-  %endif \
-%else \
-	--disable-x86 \
-	--disable-mmx \
-	--disable-3dnow
-%endif
-
-%{__make} -C src-glu
-	
 #--- %install ------------------------
 
 %install
@@ -948,11 +916,6 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console
 		"INSTPGMFLAGS=-m 755" \
 		"RAWCPP=/lib/cpp" \
 		install install.man
-
-%{__make} -C Mesa*/src-glu install \
-	DESTDIR=$RPM_BUILD_ROOT
-
-install Mesa*/include/GL/glu.h $RPM_BUILD_ROOT%{_includedir}/GL/
 
 # setting default X
 rm -f $RPM_BUILD_ROOT%{_bindir}/X
