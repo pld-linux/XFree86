@@ -416,7 +416,9 @@ Summary:	X Font Rendering library
 Summary(pl):	Biblioteka do renderowania fontów
 Group:		X11/Development/Libraries
 Requires:	%{name}-xft-devel = %{version}
+Provides:	Xft-static = 2.1-2
 Obsoletes:	XFree86-xft2-static
+Obsoletes:	Xft-static
 
 %description xft-static
 Xft is a font rendering library for X.
@@ -475,6 +477,8 @@ Summary:	Font configuration and customization library
 Summary(pl):	Biblioteka do konfigurowania fontów
 Group:		Development/Libraries
 Requires:	%{name}-fontconfig-devel-realpkg = %{version}
+Provides:	fontconfig-static = 1.0.1
+Obsoletes:	fontconfig-static
 
 %description fontconfig-static
 Fontconfig is designed to locate fonts within the system and select
