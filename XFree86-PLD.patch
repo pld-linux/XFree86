@@ -3,7 +3,7 @@
 @@ -8,10 +8,10 @@
  # or add "MAKE = make" to this file.
  
- RELEASE = "Release 6.5"
+ RELEASE = "Release 6.6"
 -SHELL = /bin/sh
 +SHELL = /bin/sh -e
  RM = rm -f
@@ -196,14 +196,14 @@ diff -Nur XFree86-4.0.2.org/xc/config/cf/linux.cf XFree86-4.0.2/xc/config/cf/lin
 --- XFree86-4.0.2.org/xc/config/cf/linux.cf	Thu Dec 14 20:24:08 2000
 +++ XFree86-4.0.2/xc/config/cf/linux.cf	Wed Dec 20 13:45:03 2000
 @@ -286,7 +286,7 @@
-  * performance.
   */
  #if BuildXF86DRI
+ # if defined(i386Architecture)
 -#  define BuildLibGlxWithoutPIC	YES
 +#  define BuildLibGlxWithoutPIC	NO
+ # endif
  #endif
  
- /* The DRM module requires kernel services that appeared in late 2.1.x
 @@ -298,7 +298,7 @@
  #  if defined(i386Architecture) || defined(ia64Architecture)
  #    if OSMajorVersion == 2
@@ -394,15 +394,6 @@ diff -Nur XFree86-4.0.2.org/xc/config/cf/xfree86.cf XFree86-4.0.2/xc/config/cf/x
  #endif
  #ifndef XLogFile
  #define XLogFile		XFree86
-@@ -1035,7 +1035,7 @@
-  * Build SuperProbe
-  */
- #ifndef BuildSuperProbe
--# define BuildSuperProbe 		NO
-+# define BuildSuperProbe 		YES
- #endif
- 
- /*
 diff -Nur XFree86-4.0.2.org/xc/config/imake/imake.c XFree86-4.0.2/xc/config/imake/imake.c
 --- XFree86-4.0.2.org/xc/config/imake/imake.c	Wed Nov 29 17:33:50 2000
 +++ XFree86-4.0.2/xc/config/imake/imake.c	Wed Dec 20 13:41:03 2000
