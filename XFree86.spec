@@ -2309,7 +2309,6 @@ fi
 %ifnarch alpha
 %dir %{_libdir}/modules/dri
 %endif
-%dir %{_libdir}/modules/multimedia
 %dir %{_libdir}/modules/drivers
 %ifnarch sparc sparc64 ppc
 %{_libdir}/modules/*.uc
