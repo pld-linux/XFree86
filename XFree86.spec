@@ -545,6 +545,7 @@ Summary(pl):	Pliki nag³ówkowe OpenGL dla systemu X11R6
 Group:		X11/Development/Libraries
 Requires:	%{name}-OpenGL-libs = %{version}
 Requires:	%{name}-devel
+Requires:       OpenGL-devel-base
 Provides:	OpenGL-devel
 Obsoletes:	Mesa-devel
 Obsoletes:	glxMesa-devel
@@ -555,6 +556,22 @@ Headers and man pages for OpenGL for X11R6.
 
 %description OpenGL-devel -l pl
 Pliki nag³ówkowe i manuale do OpenGL dla systemu X11R6.
+
+%package OpenGL-devel-base
+Summary:        OpenGL for X11R6 development (only gl?.h)
+Summary(pl):    Pliki nag³ówkowe OpenGL dla systemu X11R6 (tylko gl?.h)
+Group:          X11/Development/Libraries
+Requires:       %{name}-OpenGL-libs = %{version}
+Requires:       %{name}-devel
+Provides:       OpenGL-devel-base
+Requires:	OpenGL-devel
+
+%description OpenGL-devel-base
+Base headers (only gl?.h) for OpenGL for X11R6.
+
+%description OpenGL-devel-base -l pl
+Podstawowe pliki nag³ówkowe (tylko gl?.h) OpenGL dla systemu X11R6.
+
 
 %package OpenGL-libs
 Summary:	OpenGL libraries for X11R6
@@ -2531,9 +2548,18 @@ fi
 %{_libdir}/libGLw.a
 %dir %{_includedir}/GL
 %attr(644,root,root) %{_includedir}/GL/*
+%exclude %{_includedir}/GL/gl.h
+%exclude %{_includedir}/GL/glx.h
+%exclude %{_includedir}/GL/glxtokens.h
 %{_mandir}/man3/gl[A-Z]*
 %{_mandir}/man3/glu*
 %{_mandir}/man3/GLw*
+
+%files OpenGL-devel-base
+%defattr(644,root,root,755)
+%{_includedir}/GL/gl.h
+%{_includedir}/GL/glx.h
+%{_includedir}/GL/glxtokens.h
 
 %files OpenGL-libs
 %defattr(644,root,root,755)
@@ -2612,7 +2638,7 @@ fi
 %{_libdir}/libXxf86misc.a
 %{_libdir}/libXxf86rush.a
 %{_libdir}/libXxf86vm.a
-%{_includedir}/X11/*.h
+%{_includedir}/X11/*.h 
 %{_includedir}/X11/ICE
 %{_includedir}/X11/PM
 %{_includedir}/X11/SM
