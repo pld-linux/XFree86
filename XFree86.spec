@@ -2150,6 +2150,8 @@ for lang in af az bg bg_BG.cp1251 br ca cs da de el en_GB eo es et eu fi \
 	echo "%lang(${lang}) %{_datadir}/locale/${lang}" >> XFree86-libs.lang
 done
 
+install synaptics/*.synaptics $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/
+
 %ifnarch sparc sparc64
 gzip -9nf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
 
@@ -2280,7 +2282,6 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc synaptics/*.synaptics
 %ifnarch sparc sparc64
 %doc %{_docdir}/%{name}-%{version}
 %doc %{_libdir}/X11/doc
