@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
 Version:	4.0.2
-Release:	5
+Release:	6
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -64,7 +64,7 @@ BuildRequires:	Glide2x_SDK
 BuildRequires:	Glide_V3-DRI-devel >= 3.10-7
 %endif
 Requires:	xauth
-Prereq:		Xfree86-libs
+Prereq:		XFree86-libs
 Obsoletes:	xpm-progs
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
 Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
