@@ -1562,7 +1562,7 @@ Xconfigurator, XFree86-xfs ÔÁ XFree86-libs. íÏÖÌÉ×Ï, ×ÁÍ ÔÒÅÂÁ
 %package -n XcursorTheme-handhelds
 Summary:	Cursors Theme "handhelds"
 Summary(pl):	Motyw kursorów "handhelds"
-Group:		X11/Themes
+Group:		X11
 Requires:	XFree86-libs
 Requires:	xcursor
 Conflicts:	XFree86 < 4.3.99.901-0.2
@@ -1576,7 +1576,7 @@ Motyw kursorów "handhelds" dla X11.
 %package -n XcursorTheme-redglass
 Summary:	Cursors theme "redglass"
 Summary(pl):	Motyw kursorów "redglass"
-Group:		X11/Themes
+Group:		X11
 Requires:	XFree86-libs
 Requires:	xcursor
 Conflicts:	XFree86 < 4.3.99.901-0.2
@@ -1590,7 +1590,7 @@ Motyw kursorów "redglass" dla X11.
 %package -n XcursorTheme-whiteglass
 Summary:	Cursors theme "whiteglass"
 Summary(pl):	Motyw kursorów "whiteglass"
-Group:		X11/Themes
+Group:		X11
 Requires:	XFree86-libs
 Requires:	xcursor
 Conflicts:	XFree86 < 4.3.99.901-0.2
