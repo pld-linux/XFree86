@@ -1075,7 +1075,7 @@ install %{SOURCE4} $RPM_BUILD_ROOT/etc/xfs.config
 
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 
-#ln -sf ../../usr/X11R6/include/X11 $RPM_BUILD_ROOT/usr/include/X11 ##change
+#ln -sf ../../usr/X11R6/include/X11 $RPM_BUILD_ROOT%{_includedir}/X11 ##change
 ln -sf %{_datadir}/fonts $RPM_BUILD_ROOT/usr/X11R6/lib/X11/fonts
 
 for n in libX11.so.6.1 libICE.so.6.3 libSM.so.6.0 libXext.so.6.3 libXt.so.6.0 \
