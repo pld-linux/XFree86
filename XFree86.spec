@@ -5,11 +5,10 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	3.3.3.1
-Release:	50
+Release:	51
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Requires:	XFree86-modules
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/3.3.3/source/X333src-1.tgz
 Source1:	xdm.pamd
 Source2:	xdm.initd
@@ -54,7 +53,7 @@ Patch27:	XFree86-startx_xauth.patch
 Patch28:	XFree86-xfsredhat.patch
 Patch29:	XFree86-mgafix.patch
 # the following patch is incomplete..broken..and thus commented out.
-#Patch30:	XFree86-alphadga.patch
+Patch30:	XFree86-alphadga.patch
 # work by VMWare, inc. to provide hardware accelerated DGA "XFree86 3.4"
 Patch31:	XFree86-dga1.1.patch
 # Patch from Ian Reid Remmler <ian@marmoset.resnet.tamu.edu> to fix mouse
@@ -70,6 +69,10 @@ Patch35:	XFree86-ncurses.patch
 Patch36:	XFree86-HasZlib.patch
 # Man dir in /usr/X11R6/share/man or %{_mandir}
 Patch37:	XFree86-fhs.patch
+Patch38:	XFree86-voodoo-Rush.patch
+Patch39:	XFree86-voodoo-Banshee.patch
+Patch40:	XFree86-NVIDIA.patch
+Patch41:	XFree86-xf86config-3dfx.patch
 
 BuildPrereq:	ncurses-devel
 BuildPrereq:	zlib-devel
@@ -140,14 +143,6 @@ paket bir X istasyonu için gerekli olan temel yazýtiplerini, programlarý ve
 belgeleri sunar. Ekran kartýnýzý sürmek için gerekli olan X sunucusu bu
 pakete dahil deðildir.
 
-%package modules
-Summary(pl):	Wspólne modu³y dla wszystkich serwerów graficznych.
-Summary:	XFree86 modules
-Group:		X11/XFree86
-Group(pl):	X11/XFree86
-
-%description -l pl modules
-
 %package libs
 Summary:	X11R6 shared libraries
 Summary(de):	X11R6 shared Libraries
@@ -207,6 +202,7 @@ Summary(pl):	Pliki nag³ówkowe dla X11R6
 Summary(tr):	X11R6 ile geliþtirme için gerekli dosyalar
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
+Requires:	%{name}-libs = %{version}
 %ifarch sparc
 Obsoletes:	X11R6.1-devel
 %endif
@@ -249,6 +245,7 @@ Summary:	X11R6 static libraries
 Summary(pl):	Biblioteki sytatyczne do X11R6
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
+Requires:	%{name}-devel = %{version}
 %ifarch sparc
 Obsoletes:	X11R6.1-devel
 %endif
@@ -1009,6 +1006,11 @@ Summary(pl):	XAuth
 %patch35 -p1 -b .ncurses
 %patch36 -p1 -b .HasZlib
 %patch37 -p1 -b .fhs
+%patch38 -p0 -b .Rush
+%patch39 -p0 -b .Banshee
+# the following patch is in CVS diff format, needs POSIXLY_CORRECT env var.
+POSIXLY_CORRECT=1 patch -p0 -b -z .NVIDIA -s < %{PATCH40}
+%patch41 -p0 -b .3dfx
 
 ## Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
@@ -1023,10 +1025,11 @@ make -C xc World \
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,lib/X11,share/man/man{1,3,5}} \
-	$RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,} \
+	$RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,security/console.apps} \
 	$RPM_BUILD_ROOT/var/state/xkb
 
 make -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
+		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
 		"INSTBINFLAGS=-m 755" \
 		"INSTPGMFLAGS=-m 755" \
 		install install.man
@@ -1071,7 +1074,7 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/xdm
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/pam.d/xserver
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/xfs.config
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/X11/fs/config
 
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 
@@ -1080,7 +1083,7 @@ ln -sf %{_datadir}/fonts $RPM_BUILD_ROOT/usr/X11R6/lib/X11/fonts
 
 for n in libX11.so.6.1 libICE.so.6.3 libSM.so.6.0 libXext.so.6.3 libXt.so.6.0 \
 	 libXmu.so.6.0 libXaw.so.6.1 libXIE.so.6.0 libXi.so.6.0 \
-	 libXtst.so.6.1; do
+	 libXtst.so.6.1 libXxf86rush.so.1.0; do
 ln -sf $n $RPM_BUILD_ROOT/usr/X11R6/lib/`echo $n | sed "s/\.so.*/\.so/"`
 done
 
@@ -1093,7 +1096,11 @@ rm -rf $RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/compiled
 ln -sf ../../../../../var/state/xkb \
 	$RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/compiled
 
-gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/share/man/man[135]/*
+ln -sf ../../../share/doc/%{name}-%{version} \
+	$RPM_BUILD_ROOT/usr/X11R6/lib/X11/doc
+
+gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/share/man/man[135]/* \
+	$RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
 
 %post libs
 grep "^/usr/X11R6/lib$" /etc/ld.so.conf >/dev/null 2>&1
@@ -1129,7 +1136,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%docdir /usr/X11R6/lib/X11/doc
+%docdir /usr/share/doc/%{name}-%{version}
 
 %config /usr/X11R6/lib/X11/XF86Config.eg
 %doc /usr/X11R6/lib/X11/Cards
@@ -1151,7 +1158,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/X11R6/bin
 
 %config /etc/X11/XF86Config
-%ghost /etc/X11/X
 %config /etc/pam.d/xserver
 %config(missingok) /etc/security/console.apps/xserver
 %config /etc/X11/twm/system.twmrc
@@ -1182,13 +1188,17 @@ rm -rf $RPM_BUILD_ROOT
 
 /usr/X11R6/lib/X11/xserver/SecurityPolicy
 
-%attr(-,root,root) /usr/X11R6/lib/X11/rstart/*
+%attr(-,root,root) /usr/X11R6/lib/X11/rstart/config
+%attr(-,root,root) /usr/X11R6/lib/X11/rstart/rstartd.real
+%attr(-,root,root) /usr/X11R6/lib/X11/rstart/commands/x
+%attr(-,root,root) /usr/X11R6/lib/X11/rstart/commands/x11
+%attr(-,root,root) /usr/X11R6/lib/X11/rstart/commands/*List*
+%attr(-,root,root) /usr/X11R6/lib/X11/rstart/commands/x11r6/*
+%attr(-,root,root) /usr/X11R6/lib/X11/rstart/contexts/*
 
 %attr(755,root,root) /usr/X11R6/lib/X11/x11perfcomp/*
 /usr/X11R6/lib/X11/*.txt
 
-
-%dir /usr/X11R6/lib/X11/etc
 %attr(755,root,root) /usr/X11R6/lib/X11/etc/*
 
 %attr(4755,root,root) /usr/X11R6/bin/Xwrapper
@@ -1353,16 +1363,6 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/share/man/man1/SuperProbe.1*
 /usr/X11R6/share/man/man1/xon.1*
 
-%ifnarch sparc
-
-%files modules
-%defattr(755,root,root,755)
-/usr/X11R6/lib/X11/xkb
-/var/state/xkb
-%attr(755,root,root) /usr/X11R6/lib/modules/*
-
-%endif
-
 %files -n xdm
 %defattr(644,root,root,755)
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xdm
@@ -1401,9 +1401,29 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/lib/lib*.so.*.*
 
+%ifnarch sparc
+
+/usr/X11R6/lib/X11/xkb
+/var/state/xkb
+%attr(755,root,root) /usr/X11R6/lib/modules/*
+
+%endif
+
+
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/lib/lib*.so
+/usr/X11R6/lib/libFS.a
+/usr/X11R6/lib/libXau.a
+/usr/X11R6/lib/libXdmcp.a
+/usr/X11R6/lib/libXdpms.a
+/usr/X11R6/lib/libXss.a
+/usr/X11R6/lib/libXxf86dga.a
+/usr/X11R6/lib/libXxf86misc.a
+/usr/X11R6/lib/libXxf86vm.a
+/usr/X11R6/lib/liboldX.a
+/usr/X11R6/lib/libxkbfile.a
+/usr/X11R6/lib/libxkbui.a
 
 /usr/X11R6/include/X11/*.h
 /usr/X11R6/include/X11/ICE
@@ -1427,7 +1447,19 @@ rm -rf $RPM_BUILD_ROOT
 
 %files static
 %defattr(644,root,root,755)
-/usr/X11R6/lib/lib*.a
+/usr/X11R6/lib/libICE.a
+/usr/X11R6/lib/libPEX5.a
+/usr/X11R6/lib/libSM.a
+/usr/X11R6/lib/libX11.a
+/usr/X11R6/lib/libXIE.a
+/usr/X11R6/lib/libXaw.a
+/usr/X11R6/lib/libXext.a
+/usr/X11R6/lib/libXi.a
+/usr/X11R6/lib/libXmu.a
+/usr/X11R6/lib/libXp.a
+/usr/X11R6/lib/libXt.a
+/usr/X11R6/lib/libXtst.a
+/usr/X11R6/lib/libXxf86rush.a
 
 %files Xvfb
 %defattr(644,root,root,755)
@@ -1622,6 +1654,12 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/share/man/man1/xmseconfig.1*
 
 %changelog
+* Thu Jun 17 1999 Jan Rêkorajski <baggins@pld.org.pl>
+  [3.3.3.1-51]
+- removed -modules packege, moved to libs
+- added patches for Riva TNT2, voodoo Rush, voodoo3 Banshee
+- cleanup
+
 * Tue Apr 20 1999 Artur Frysiak <wiget@pld.org.pl>
   [3.3.3.1-23]
 - compiled on rpm 3.
