@@ -154,8 +154,9 @@ Obsoletes:	X11R6.1
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
-%define		_pixmapsdir	/usr/share/pixmaps
 %define		_icondir	/usr/share/icons
+%define		_pixmapsdir	/usr/share/pixmaps
+%define		_soundsdir	/usr/share/sounds
 %define		_wmpropsdir	%{_datadir}/wm-properties
 
 # avoid Mesa dependency in XFree86-OpenGL-libs
@@ -1955,12 +1956,12 @@ rm -f xc/config/cf/host.def
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysconfig} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/{cs,da,de,es,fr,hu,it,ja,ko,nl,pl,pt,ru,sk,zh_CN.gb2312,zh_TW.big5} \
-	$RPM_BUILD_ROOT%{_datadir}/{misc,sounds} \
+	$RPM_BUILD_ROOT%{_datadir}/misc \
 	$RPM_BUILD_ROOT%{_sbindir} \
 	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
 	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
 	$RPM_BUILD_ROOT%{_applnkdir}/{Amusements,Editors,Utilities,Terminals} \
-	$RPM_BUILD_ROOT{%{_pixmapsdir}/mini,%{_wmpropsdir}}
+	$RPM_BUILD_ROOT{%{_pixmapsdir}/mini,%{_wmpropsdir},%{_soundsdir}}
 
 %{__make} -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -2911,9 +2912,9 @@ fi
 %dir %{_sbindir}
 %dir %{_datadir}/locale
 %dir %{_datadir}/misc
-%dir %{_datadir}/sounds
 %dir %{_pixmapsdir}
 %dir %{_pixmapsdir}/mini
+%dir %{_soundsdir}
 %dir %{_wmpropsdir}
 %attr(755,root,root) %{_libdir}/libX[1Ta-eg-t]*.so.*.*
 %attr(755,root,root) %{_libdir}/libXfont*.so.*.*
