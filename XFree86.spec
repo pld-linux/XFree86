@@ -2,10 +2,6 @@
 # TODO:
 # - separate XFS to be standalone - is it possible without duplicated files?
 
-# Linux OpenGL ABI compliance (http://oss.sgi.com/projects/ogl-sample/ABI/index.html)
-# - place libGLU.{so.1,so} in /usr/lib
-# - consider moving lib/libGL* and include/GL to /usr instead of symlinking
-
 #
 # Conditional build:
 %bcond_without	tdfx	# disables tdfx drivers building
@@ -24,7 +20,7 @@ Summary(uk):	‚¡⁄œ◊¶ €“…∆‘…, –“œ«“¡Õ… ‘¡ ƒœÀ’Õ≈Œ‘¡√¶— ƒÃ— “œ¬œﬁœß ”‘¡Œ√¶ß –¶ƒ X
 Summary(zh_CN):	XFree86 ¥∞ø⁄œµÕ≥∑˛ŒÒ∆˜∫Õª˘±æ≥Ã–Ú
 Name:		XFree86
 Version:	4.3.99.902
-Release:	3.1
+Release:	4
 Epoch:		1
 License:	MIT
 Group:		X11/XFree86
@@ -309,6 +305,7 @@ Pliki XFree86 wymagane zarÛwno po stronie serwera jak i klienta.
 Summary:	Display PostScript
 Summary(pl):	Display PostScript
 Group:		X11/XFree86
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Provides:	DPS
 Obsoletes:	dgs
 
@@ -324,7 +321,8 @@ wy∂wietlania informacji na ekranie.
 Summary:	Header files for Display PostScript
 Summary(pl):	Pliki nag≥Ûwkowe dla Display PostScript
 Group:		X11/XFree86
-Requires:	%{name}-DPS = %{epoch}:%{version}
+Requires:	%{name}-DPS = %{epoch}:%{version}-%{release}
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	dgs-devel
 
 %description DPS-devel
@@ -337,7 +335,7 @@ Pliki nag≥Ûwkowe biblioteki X-Window Display PostScript.
 Summary:	Display PostScript static libraries
 Summary(pl):	Biblioteki statyczne Display PostScript
 Group:		X11/XFree86
-Requires:	%{name}-DPS-devel = %{epoch}:%{version}
+Requires:	%{name}-DPS-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	dgs-static
 
 %description DPS-static
@@ -350,7 +348,7 @@ Statyczne biblioteki X-Window Display PostScript.
 Summary:	OpenGL support for X11R6
 Summary(pl):	Wsparcie OpenGL dla systemu X11R6
 Group:		X11/Libraries
-Requires:	%{name}-libs = %{epoch}:%{version}
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	XFree86-OpenGL-libGL
 Obsoletes:	XFree86-driver-nvidia
 
@@ -364,9 +362,8 @@ Wsparcie OpenGL dla systemu X11R6.
 Summary:	OpenGL support for X11R6 - GL library
 Summary(pl):	Wsparcie OpenGL dla systemu X11R6 - biblioteka GL
 Group:		X11/Libraries
-Requires:	XFree86-OpenGL-core = %{epoch}:%{version}
+Requires:	XFree86-OpenGL-core = %{epoch}:%{version}-%{release}
 Obsoletes:	XFree86-driver-firegl
-Conflicts:	OpenGL-core < 4.3.99.12
 
 %description OpenGL-libGL
 OpenGL support for X11R6 system - GL library.
@@ -378,9 +375,9 @@ Wsparcie OpenGL dla systemu X11R6 - biblioteka GL.
 Summary:	OpenGL for X11R6 development
 Summary(pl):	Pliki nag≥Ûwkowe OpenGL dla systemu X11R6
 Group:		X11/Development/Libraries
+Requires:	%{name}-OpenGL-libs = %{epoch}:%{version}-%{release}
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 Requires:	OpenGL-devel-base
-Requires:	%{name}-OpenGL-libs = %{epoch}:%{version}
-Requires:	%{name}-devel
 Provides:	OpenGL-devel
 Obsoletes:	Mesa-devel
 Obsoletes:	XFree86-OpenGL-doc
@@ -393,29 +390,28 @@ Headers and man pages for OpenGL for X11R6.
 Pliki nag≥Ûwkowe i manuale do OpenGL dla systemu X11R6.
 
 %package OpenGL-devel-base
-Summary:	OpenGL for X11R6 development (only gl?.h)
-Summary(pl):	Pliki nag≥Ûwkowe OpenGL dla systemu X11R6 (tylko gl?.h)
+Summary:	OpenGL for X11R6 development (GL and GLX only)
+Summary(pl):	Pliki nag≥Ûwkowe OpenGL dla systemu X11R6 (tylko GL i GLX)
 Group:		X11/Development/Libraries
-Requires:	OpenGL-devel
-Requires:	%{name}-OpenGL-libs = %{epoch}:%{version}
-Requires:	%{name}-devel
+Requires:	%{name}-OpenGL-devel = %{epoch}:%{version}-%{release}
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 Provides:	OpenGL-devel-base
 
 %description OpenGL-devel-base
-Base headers (only gl?.h) for OpenGL for X11R6.
+Base headers (GL and GLX only) for OpenGL for X11R6.
 
 %description OpenGL-devel-base -l pl
-Podstawowe pliki nag≥Ûwkowe (tylko gl?.h) OpenGL dla systemu X11R6.
+Podstawowe pliki nag≥Ûwkowe (tylko GL i GLX) OpenGL dla systemu X11R6.
 
 %package OpenGL-libs
 Summary:	OpenGL libraries for X11R6
 Summary(pl):	Biblioteki OpenGL dla systemu X11R6
 Group:		X11/Libraries
-Requires:	%{name}-OpenGL-core
-Requires:	%{name}-libs = %{epoch}:%{version}
+Requires:	%{name}-OpenGL-core = %{epoch}:%{version}-%{release}
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Provides:	OpenGL
-Obsoletes:	%{name}-OpenGL
 Obsoletes:	Mesa
+Obsoletes:	XFree86-OpenGL
 
 %description OpenGL-libs
 OpenGL libraries for X11R6 system.
@@ -427,7 +423,7 @@ Biblioteki OpenGL dla systemu X11R6.
 Summary:	X11R6 static libraries with OpenGL
 Summary(pl):	Biblioteki statyczne do X11R6 ze wsparciem dla OpenGL
 Group:		X11/Development/Libraries
-Requires:	%{name}-OpenGL-devel = %{epoch}:%{version}
+Requires:	%{name}-OpenGL-devel = %{epoch}:%{version}-%{release}
 Provides:	OpenGL-static
 Obsoletes:	Mesa-static
 
@@ -443,9 +439,10 @@ Summary(pl):	Serwer XFree86 Xnest
 Summary(ru):	"˜Ãœ÷≈ŒŒŸ " ”≈“◊≈“ XFree86
 Summary(uk):	"˜ÀÃ¡ƒ≈Œ… " ”≈“◊≈“ XFree86
 Group:		X11/XFree86/Servers
-Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
+Requires:	%{name}-common = %{epoch}:%{version}-%{release}
+Requires:	/usr/X11R6/lib/X11/rgb.txt
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
-Requires:	%{name}-fonts-base
+Requires:	XFree86-fonts-base
 
 %description Xnest
 Xnest is an X Window System server which runs in an X window. Xnest is
@@ -485,9 +482,10 @@ Summary:	X print server
 Summary(pl):	X serwer z rozszerzeniem Xprint
 Group:		X11/XFree86/Servers
 PreReq:		xprint-initrc
-Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
+Requires:	%{name}-common = %{epoch}:%{version}-%{release}
+Requires:	/usr/X11R6/lib/X11/rgb.txt
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
-Requires:	%{name}-fonts-base
+Requires:	XFree86-fonts-base
 
 %description Xprt
 Xprt provides an X server with the print extension and special DDX
@@ -503,9 +501,10 @@ Summary(fr):	Serveur XFree86
 Summary(pl):	Serwer XFree86
 Summary(tr):	XFree86 sunucusu
 Group:		X11/XFree86/Servers
-Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
+Requires:	%{name}-common = %{epoch}:%{version}-%{release}
+Requires:	/usr/X11R6/lib/X11/rgb.txt
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
-Requires:	%{name}-fonts-base
+Requires:	XFree86-fonts-base
 Requires:	pam
 Obsoletes:	XFree86-Mono
 Obsoletes:	XFree86-SVGA
@@ -564,9 +563,10 @@ Summary(pl):	Serwer XFree86 Xvfb
 Summary(ru):	Û≈“◊≈“ XFree86 ƒÃ— ◊…“‘’¡ÃÿŒœ«œ ∆“≈ Õ¬’∆≈“¡
 Summary(uk):	Û≈“◊≈“ XFree86 ƒÃ— ◊¶“‘’¡ÃÿŒœ«œ ∆“≈ Õ¬’∆≈“¡
 Group:		X11/XFree86/Servers
-Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
+Requires:	%{name}-common = %{epoch}:%{version}-%{release}
+Requires:	/usr/X11R6/lib/X11/rgb.txt
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
-Requires:	%{name}-fonts-base
+Requires:	XFree86-fonts-base
 
 %description Xvfb
 Xvfb (X Virtual Frame Buffer) is an X Window System server that is
@@ -639,8 +639,8 @@ Summary(ru):	‚…¬Ã…œ‘≈À… “¡⁄“¡¬œ‘ﬁ…À¡, »≈ƒ≈“¡ … ƒœÀ’Õ≈Œ‘¡√…— –œ –“œ«“¡ÕÕ…“œ◊¡Œ…¿ 
 Summary(tr):	X11R6 ile geli˛tirme iÁin gerekli dosyalar
 Summary(uk):	‚¶¬Ã¶œ‘≈À… –“œ«“¡Õ¶”‘¡, »≈ƒ≈“… ‘¡ ƒœÀ’Õ≈Œ‘¡√¶— –œ –“œ«“¡Õ’◊¡ŒŒ¿ X11R6
 Group:		X11/Development/Libraries
-Requires:	%{name}-libs = %{epoch}:%{version}
-Requires:	imake = %{epoch}:%{version}
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	imake = %{epoch}:%{version}-%{release}
 Provides:	xpm-devel
 Obsoletes:	xpm-devel
 %ifarch sparc sparc64
@@ -701,7 +701,7 @@ XFree86-devel Õ¶”‘…‘ÿ ¬¶¬Ã¶œ‘≈À…, »≈ƒ≈“… ‘¡ ƒœÀ’Õ≈Œ‘¡√¶¿, Œ≈œ¬»¶ƒŒ¶
 Summary:	Header files for XFree86 Xserver drivers/extensions development
 Summary(pl):	Pliki nag≥Ûwkowe do tworzenia sterownikÛw/rozszerzeÒ X serwera XFree86
 Group:		X11/Development/Libraries
-Requires:	%{name}-devel = %{epoch}:%{version}
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 
 %description Xserver-devel
 Header files for XFree86 Xserver drivers and extensions development.
@@ -760,8 +760,8 @@ Group:		X11/XFree86
 Requires:	OpenGL
 Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
-Conflicts:	XFree86-driver-nvidia
 Obsoletes:	XFree86-Rage128
+Conflicts:	XFree86-driver-nvidia
 
 %description driver-r128
 ATI Rage 128 video driver.
@@ -776,7 +776,7 @@ Group:		X11/XFree86
 Requires:	OpenGL
 Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
-Requires:	%{name}-driver-ati
+Requires:	%{name}-driver-ati = %{epoch}:%{version}-%{release}
 Conflicts:	XFree86-driver-nvidia
 
 %description driver-radeon
@@ -1254,8 +1254,8 @@ Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
 # dlopens libglide3x.so
 Requires:	Glide3-DRI
 Requires:	OpenGL
-Conflicts:	XFree86-driver-nvidia
 Obsoletes:	XFree86-3dfx
+Conflicts:	XFree86-driver-nvidia
 
 %description driver-tdfx
 3Dfx video driver. Supports Voodoo Banshee, Voodoo3, Voodoo4, Voodoo5.
@@ -1350,7 +1350,7 @@ Group:		X11/XFree86
 Requires(post,postun):	/sbin/ldconfig
 Requires(post,postun):	grep
 Requires(postun):	fileutils
-Requires:	%{name}-common = %{epoch}:%{version}
+Requires:	%{name}-common = %{epoch}:%{version}-%{release}
 Provides:	xpm
 Obsoletes:	xpm
 
@@ -1457,7 +1457,7 @@ Summary(pl):	Graficzny konfigurator dla XFree86
 Summary(ru):	ı‘…Ã…‘¡ ƒÃ— ÀœŒ∆…«’“¡√…… XFree86
 Summary(uk):	ı‘…Ã¶‘¡ ƒÃ— ÀœŒ∆¶«’“’◊¡ŒŒ— XFree86
 Group:		X11/XFree86
-Requires:	%{name}-Xserver = %{epoch}:%{version}
+Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
 Obsoletes:	XFree86-xf86cfg
 
 %description setup
@@ -1484,12 +1484,11 @@ Summary(pl):	Biblioteki statyczne X11R6
 Summary(ru):	Û‘¡‘…ﬁ≈”À…≈ ¬…¬Ã…œ‘≈À… X11R6
 Summary(uk):	Û‘¡‘…ﬁŒ¶ ¬¶¬Ã¶œ‘≈À… X11R6
 Group:		X11/Development/Libraries
-Requires:	%{name}-devel = %{epoch}:%{version}
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 %ifarch sparc sparc64
 Obsoletes:	X11R6.1-devel
 %endif
 Obsoletes:	xpm-static
-#Obsoletes:	Mesa-static
 
 %description static
 X11R6 static libraries.
@@ -1512,8 +1511,8 @@ Summary(pl):	RÛøne narzÍdzia dla XFree86
 Summary(ru):	Ú¡⁄Œœœ¬“¡⁄ŒŸ≈ ’‘…Ã…‘Ÿ ƒÃ— XFree86
 Summary(uk):	Ú¶⁄ŒœÕ¡Œ¶‘Œ¶ ’‘…Ã¶‘… ƒÃ— XFree86
 Group:		X11/XFree86
-Requires:	%{name} >= %{version}
-Requires:	%{name}-libs = %{epoch}:%{version}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	man-config
 Obsoletes:	X11R6-contrib
 
@@ -1665,7 +1664,7 @@ Summary(pl):	Twm - podstawowy zarz±dca okien dla X Window System
 Summary(ru):	“œ”‘œ  œÀœŒŒŸ  Õ≈Œ≈ƒ÷≈“
 Summary(uk):	“œ”‘…  ◊¶ÀœŒŒ…  Õ≈Œ≈ƒ÷≈“
 Group:		X11/Window Managers
-Requires:	%{name}-libs = %{epoch}:%{version}
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 
 %description -n twm
 Twm is a window manager for the X Window System. It provides
@@ -1689,7 +1688,7 @@ definiowalne przypisania klawiszy i przyciskÛw myszy.
 Summary:	xauth - X authority file utility
 Summary(pl):	xauth - narzÍdzie do plikÛw X authority
 Group:		X11/XFree86
-Requires:	%{name}-libs = %{epoch}:%{version}
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 
 %description -n xauth
 The xauth program is used to edit and display the authorization
@@ -1713,11 +1712,10 @@ Summary(uk):	Ì≈Œ≈ƒ÷≈“ ƒ…”–Ã≈¿ X
 Group:		X11/XFree86
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
-Requires:	%{name} = %{epoch}:%{version}
-Requires:	%{name}-libs = %{epoch}:%{version}
-Requires:	/usr/X11R6/bin/sessreg
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	pam >= 0.71
-Requires:	sessreg = %{epoch}:%{version}
+Requires:	sessreg = %{epoch}:%{version}-%{release}
 Requires:	/usr/X11R6/bin/sessreg
 Provides:	XDM
 Obsoletes:	XFree86-xdm
@@ -1755,9 +1753,10 @@ Requires(pre):	/usr/sbin/groupadd
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
-Requires:	%{name}-fonts-base
-Requires:	%{name}-libs = %{epoch}:%{version}
-Obsoletes:	xfsft XFree86-xfs
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Requires:	XFree86-fonts-base
+Obsoletes:	XFree86-xfs
+Obsoletes:	xfsft
 
 %description -n xfs
 This is a font server for XFree86. You can serve fonts to other X
@@ -1942,9 +1941,22 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libGL*.so
 ln -sf libGL.so.1 $RPM_BUILD_ROOT%{_libdir}/libGL.so
 ln -sf libGLU.so.1 $RPM_BUILD_ROOT%{_libdir}/libGLU.so
 
+# according to OpenGL ABI for Linux v1.0
+# (http://oss.sgi.com/projects/ogl-sample/ABI/index.html)
+# libGL.so.1, libGL.so, libGLU.so.1, libGL.so must be accessible in /usr
+# libGL is already linked by XFree86 build, but libGLU not
+ln -sf %{_libdir}/libGLU.so.1 $RPM_BUILD_ROOT/usr/%{_lib}/libGLU.so.1
+ln -sf %{_libdir}/libGLU.so $RPM_BUILD_ROOT/usr/%{_lib}/libGLU.so
+
+# move instead of symlinking
+rm -f $RPM_BUILD_ROOT/usr/include/GL
+mv -f $RPM_BUILD_ROOT%{_includedir}/GL $RPM_BUILD_ROOT/usr/include
+
 # get the most current OpenGL extensions
-rm -f $RPM_BUILD_ROOT%{_includedir}/GL/glext.h
-cp %{SOURCE49} $RPM_BUILD_ROOT%{_includedir}/GL/glext.h
+cp -f %{SOURCE49} $RPM_BUILD_ROOT/usr/include/GL/glext.h
+
+# don't include shared version due to Motif issues
+rm -f $RPM_BUILD_ROOT%{_libdir}/libGLw.so*
 
 # collect Xserver headers and make symlinks
 for f in `cat %{SOURCE40}`; do
@@ -2403,35 +2415,38 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libGL.so.*.*
 %attr(755,root,root) %{_libdir}/libGL.so
-%attr(755,root,root) /usr/%{_lib}/libGL.so*
+# Linux OpenGL ABI compatibility symlinks
+%attr(755,root,root) /usr/%{_lib}/libGL.so.1
+%attr(755,root,root) /usr/%{_lib}/libGL.so
 
 %files OpenGL-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libGLU.so
-%attr(755,root,root) %{_libdir}/libOSMesa*.so
+%attr(755,root,root) %{_libdir}/libOSMesa.so
+# Linux OpenGL ABI compatibility symlink
+%attr(755,root,root) /usr/%{_lib}/libGLU.so
 %{_libdir}/libGLw.a
-%dir %{_includedir}/GL
 %dir /usr/include/GL
-%{_includedir}/GL/GLwDrawA.h
-%{_includedir}/GL/GLwDrawAP.h
-%{_includedir}/GL/GLwMDrawA.h
-%{_includedir}/GL/GLwMDrawAP.h
-%{_includedir}/GL/glu.h
-%{_includedir}/GL/glxext.h
-%{_includedir}/GL/glxint.h
-%{_includedir}/GL/glxmd.h
-%{_includedir}/GL/glxproto.h
-%{_includedir}/GL/osmesa.h
+/usr/include/GL/GLwDrawA.h
+/usr/include/GL/GLwDrawAP.h
+/usr/include/GL/GLwMDrawA.h
+/usr/include/GL/GLwMDrawAP.h
+/usr/include/GL/glu.h
+/usr/include/GL/glxext.h
+/usr/include/GL/glxint.h
+/usr/include/GL/glxmd.h
+/usr/include/GL/glxproto.h
+/usr/include/GL/osmesa.h
 %{_mandir}/man3/gl[A-Z]*
 %{_mandir}/man3/glu*
 %{_mandir}/man3/GLw*
 
 %files OpenGL-devel-base
 %defattr(644,root,root,755)
-%{_includedir}/GL/gl.h
-%{_includedir}/GL/glx.h
-%{_includedir}/GL/glext.h
-%{_includedir}/GL/glxtokens.h
+/usr/include/GL/gl.h
+/usr/include/GL/glx.h
+/usr/include/GL/glext.h
+/usr/include/GL/glxtokens.h
 
 %files OpenGL-libs
 %defattr(644,root,root,755)
@@ -2440,13 +2455,15 @@ fi
 # to be fixed: it contains unresolved symbols and would need -lXm
 #%attr(755,root,root) %{_libdir}/libGLw.so.*.*
 %attr(755,root,root) %{_libdir}/libOSMesa.so.*.*
+# Linux OpenGL ABI compatibility symlink
+%attr(755,root,root) /usr/%{_lib}/libGLU.so.1
 %{_mandir}/man1/glxinfo.1*
 
 %files OpenGL-static
 %defattr(644,root,root,755)
 %{_libdir}/libGL.a
 %{_libdir}/libGLU.a
-%{_libdir}/libOSMesa*.a
+%{_libdir}/libOSMesa.a
 
 %files Xnest
 %defattr(644,root,root,755)
