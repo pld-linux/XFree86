@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	3.9.17
-Release:	2
+Release:	3
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -18,6 +18,9 @@ Source5:	xfs.initd
 Source6:	xfs.config
 Source7:	xserver.pamd
 Source8:	XTerm.ad-pl
+Source9:	twm.desktop
+Source10:	xdm.sysconfig
+Source11:	xfs.sysconfig
 Patch0:		XFree86-3.9.17-PLD.patch
 
 BuildRequires:	ncurses-devel
@@ -264,8 +267,6 @@ windows and graphics requests for its own clients.
 You will need to install Xnest if you require an X server which will run as
 a client of your real X server (perhaps for testing purposes).
 
-%description -l pl Xnest
-
 %package Xptr
 Summary:	X print server
 Summary(pl):	X print server
@@ -277,8 +278,6 @@ Requires:	%{name}-fonts = %{version}
 %description Xptr
 Xprt provides an X server with the print extension and special DDX
 implementation.
-
-%description -l pl Xptr
 
 %package Xserver
 Summary:	XFree86 X display server
@@ -395,7 +394,7 @@ Summary:	XFree86 TGA server
 Summary(pl):	XFree86 serwer dla kart TGA
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-modules = %{version}
 Requires:	%{name}-fonts = %{version}
 
 %description TGA
@@ -407,8 +406,6 @@ If you are installing the X Window System and your system uses a Digital TGA
 board based on the DC21040 chip, you'll need to install the XFree86-TGA
 package.
 
-%description -l pl TGA
-
 %package -n xdm
 Summary:	XDM
 Summary(pl):	XDM
@@ -416,18 +413,34 @@ Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name} = %{version}
 Requires:	pam >= 0.66
+Requires:	%{name}-libs = %{version}
+Prereq:		chkcongig
 Obsoletes:	XFree86-xdm
 
 %description -n xdm
 X Display Manager.
 
-%description -l pl -n xdm
+%package -n twm
+Summary:	Tab Window Manager for the X Window System
+Summary(pl):	Twm - podstawowy zarz±dca okien dla X Window System
+Group:		X11/Window Managers/Tools
+Group(es):	X11/Administraadores De Ventanas
+Group(fr):	X11/Gestionnaires De Fenêtres
+Group(pl):	X11/Zarz±dcy Okien/Narzêdzi
+
+%description -n twm
+Twm is a window manager for the X Window System. It provides titlebars,
+shaped windows, several forms of icon management, user-defined macro
+functions, click-to-type and pointerdriven keyboard focus, and
+user-specified key and pointer button bindings.
 
 %package -n xfs
 Summary:	Font server for XFree86
 Summary(pl):	Serwer fontów do XFree86
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
+Requires:	%{name}-libs = %{version}
+Prereq:		chkcongig
 Obsoletes:	xfsft XFree86-xfs
 
 %description -n xfs
@@ -436,8 +449,6 @@ remotely with this package, and the remote system will be able to use all
 fonts installed on the font server, even if they are not installed on the
 remote computer.
 
-%description -l pl -n xfs
-
 %package -n xauth
 Summary:	XAuth
 Group:		X11/XFree86
@@ -445,8 +456,6 @@ Group(pl):	X11/XFree86
 Summary(pl):	XAuth
 
 %description -n xauth
-
-%description -l pl -n xauth
 
 %package fonts
 Summary:	XFree86 Fonts
@@ -598,7 +607,8 @@ install -d $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
 	$RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps} \
 	$RPM_BUILD_ROOT/var/state/xkb \
 	$RPM_BUILD_ROOT/usr/include \
-	$RPM_BUILD_ROOT/usr/bin
+	$RPM_BUILD_ROOT/usr/bin \
+	$RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties
 
 make -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -647,6 +657,10 @@ install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
 install %{SOURCE6} $RPM_BUILD_ROOT/etc/X11/fs/config
 install %{SOURCE8} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/XTerm
+install %{SOURCE9} $RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties/twm.desktop
+
+install %{SOURCE10} $RPM_BUILD_ROOT/etc/sysconfig/xdm
+install %{SOURCE11} $RPM_BUILD_ROOT/etc/sysconfig/xfs
 
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
@@ -745,7 +759,7 @@ cd %{_fontdir}/latin2/75dpi
 
 %post -n xfs
 /sbin/chkconfig --add xfs
-if [ -f /var/run/xfs.pid ]; then
+if [ -f /var/lock/subsys/xfs ]; then
 	/etc/rc.d/init.d/xfs restart >&2
 else
 	echo "Run \"/etc/rc.d/init.d/xfs start\" to start font server." >&2
@@ -753,7 +767,7 @@ fi
 
 %post -n xdm
 /sbin/chkconfig --add xdm
-if [ -f /var/run/xdm.pid ]; then
+if [ -f /var/lock/subsys/xdm ]; then
 	/etc/rc.d/init.d/xdm restart >&2
 else
 	echo "Run \"/etc/rc.d/init.d/xdm start\" to start xdm." >&2
@@ -761,13 +775,17 @@ fi
 		
 %preun -n xfs
 if [ "$1" = "0" ]; then
-	/etc/rc.d/init.d/xfs stop >&2
+	if if [ -f /var/lock/subsys/xfs ]; then
+		/etc/rc.d/init.d/xfs stop >&2
+	fi
 	/sbin/chkconfig --del xfs
 fi
 
 %preun -n xdm
 if [ "$1" = "0" ]; then
-	/etc/rc.d/init.d/xdm stop >&2
+	if if [ -f /var/lock/subsys/xdm ]; then
+		/etc/rc.d/init.d/xdm stop >&2
+	fi
 	/sbin/chkconfig --del xdm
 fi
 
@@ -806,8 +824,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xserver
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xserver
 %config(missingok) /etc/security/console.apps/xserver
-%config /etc/X11/twm/system.twmrc
-%config /etc/X11/xsm/system.xsm
 %ghost /etc/X11/X
 
 %{_libdir}/X11/XErrorDB
@@ -821,8 +837,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %attr(755,root,root) %{_libdir}/X11/xinit
 
-%attr(755,root,root) %{_libdir}/X11/twm
-%attr(755,root,root) %{_libdir}/X11/fs
 %attr(755,root,root) %{_libdir}/X11/xsm
 
 %{_libdir}/X11/xserver/SecurityPolicy
@@ -868,7 +882,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/showrgb
 %attr(755,root,root) %{_bindir}/rstart
 %attr(755,root,root) %{_bindir}/smproxy
-%attr(755,root,root) %{_bindir}/twm
 %attr(755,root,root) %{_bindir}/x11perf
 %attr(755,root,root) %{_bindir}/x11perfcomp
 %attr(755,root,root) %{_bindir}/Xmark
@@ -949,7 +962,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/rstart.1*
 %{_mandir}/man1/rstartd.1*
 %{_mandir}/man1/smproxy.1*
-%{_mandir}/man1/twm.1*
 %{_mandir}/man1/x11perf.1*
 %{_mandir}/man1/x11perfcomp.1*
 %{_mandir}/man1/xclipboard.1*
@@ -1020,6 +1032,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xdm
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/security/blacklist.xdm
 %attr(754,root,root) /etc/rc.d/init.d/xdm
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/xdm
 
 %config %{_libdir}/X11/app-defaults/Chooser
 
@@ -1039,10 +1052,20 @@ rm -rf $RPM_BUILD_ROOT
 %config /etc/X11/xdm/TakeConsole
 %config /etc/X11/xdm/GiveConsole
 
+%files -n twm
+%defattr(644,root,root,755)
+%{_datadir}/gnome/wm-properties/twm.desktop
+%attr(755,root,root) %{_bindir}/twm
+%config /etc/X11/twm/system.twmrc
+%attr(755,root,root) %{_libdir}/X11/twm
+%{_mandir}/man1/twm.1*
+
 %files -n xfs
 %defattr(644,root,root,755)
 %attr(754,root,root) /etc/rc.d/init.d/xfs
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/xfs
 %dir /etc/X11/fs
+%attr(755,root,root) %{_libdir}/X11/fs
 %config(noreplace) /etc/X11/fs/config
 
 %attr(755,root,root) %{_bindir}/xfs
