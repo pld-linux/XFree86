@@ -1,0 +1,11 @@
+--- XFree86-3.3.5/xc/config/cf/linux.cf~	Thu Sep  2 20:21:42 1999
++++ XFree86-3.3.5/xc/config/cf/linux.cf	Thu Sep  2 21:14:58 1999
+@@ -139,7 +139,7 @@
+ #define HasMkstemp		YES
+ #endif
+ #ifndef HasPam
+-#define HasPam			NO
++#define HasPam			YES
+ #endif
+ 
+ #define AvoidNullMakeCommand	YES
