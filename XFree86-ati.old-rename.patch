@@ -1,0 +1,58 @@
+diff -urN ati.old.org/atiprobe.c ati.old/atiprobe.c
+--- ati.old.org/atiprobe.c	Mon Mar 11 12:50:37 2002
++++ ati.old/atiprobe.c	Mon Mar 11 12:52:26 2002
+@@ -2275,10 +2275,10 @@
+ 
+ #ifdef XFree86LOADER
+ 
+-            if (!xf86LoadSubModule(pScreenInfo, "atimisc"))
++            if (!xf86LoadSubModule(pScreenInfo, "atimisc_old"))
+             {
+                 xf86Msg(X_ERROR,
+-                    ATI_NAME ":  Failed to load \"atimisc\" module.\n");
++                    ATI_NAME ":  Failed to load \"atimisc_old\" module.\n");
+                 xf86DeleteScreen(pScreenInfo->scrnIndex, 0);
+                 continue;
+             }
+diff -urN ati.old.org/ativersion.h ati.old/ativersion.h
+--- ati.old.org/ativersion.h	Mon Mar 11 12:50:37 2002
++++ ati.old/ativersion.h	Mon Mar 11 12:52:01 2002
+@@ -25,7 +25,7 @@
+ #define ___ATIVERSION_H___ 1
+ 
+ #define ATI_NAME          "ATI"
+-#define ATI_DRIVER_NAME   "ati"
++#define ATI_DRIVER_NAME   "ati_old"
+ 
+ #define ATI_VERSION_NAME  "6.4.8"
+ 
+diff -urN ati.old.org/r128_probe.c ati.old/r128_probe.c
+--- ati.old.org/r128_probe.c	Mon Mar 11 12:50:37 2002
++++ ati.old/r128_probe.c	Mon Mar 11 12:53:28 2002
+@@ -205,9 +205,9 @@
+ 
+ #ifdef XFree86LOADER
+ 
+-	    if (!xf86LoadSubModule(pScrn, "r128")) {
++	    if (!xf86LoadSubModule(pScrn, "r128_old")) {
+ 		xf86Msg(X_ERROR,
+-		    R128_NAME ":  Failed to load \"r128\" module.\n");
++		    R128_NAME ":  Failed to load \"r128_old\" module.\n");
+ 		xf86DeleteScreen(pScrn->scrnIndex, 0);
+ 		continue;
+ 	    }
+diff -urN ati.old.org/radeon_probe.c ati.old/radeon_probe.c
+--- ati.old.org/radeon_probe.c	Mon Mar 11 12:50:37 2002
++++ ati.old/radeon_probe.c	Mon Mar 11 12:53:09 2002
+@@ -203,9 +203,9 @@
+         { 
+ #ifdef XFree86LOADER
+ 
+-	    if (!xf86LoadSubModule(pScrn, "radeon")) {
++	    if (!xf86LoadSubModule(pScrn, "radeon_old")) {
+ 		xf86Msg(X_ERROR,
+-		    RADEON_NAME ":  Failed to load \"radeon\" module.\n");
++		    RADEON_NAME ":  Failed to load \"radeon_old\" module.\n");
+ 		xf86DeleteScreen(pScrn->scrnIndex, 0);
+ 		continue;
+ 	    }
