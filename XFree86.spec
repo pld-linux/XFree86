@@ -1024,8 +1024,9 @@ make -C xc World \
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,lib/X11,man/man{1,3,5}} \
-	$RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,}
+install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,lib/X11,share/man/man{1,3,5}} \
+	$RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,} \
+	$RPM_BUILD_ROOT/var/state/xkb
 
 make -C xc  "DESTDIR=$RPM_BUILD_ROOT" \
 	    "INSTBINFLAGS=-m 755" \
