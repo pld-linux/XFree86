@@ -217,7 +217,7 @@ puestos a disposición en otro paquete.
 X Window System jest graficznym interfejsem u¿ytkownika; cechuje siê
 mo¿liwo¶ci± pracy w wielu oknach, z wieloma klientami i do tego w
 ró¿nych wystrojach okien. :) Jest u¿ywany na wiêkszo¶ci platform
-sytemów Unix, a klienci mog± byæ uruchamiani tak¿e pod innymi
+systemów Unix, a klienci mog± byæ uruchamiani tak¿e pod innymi
 popularnymi systemami okienkowymi. Protokó³ X pozwala na uruchamianie
 aplikacji zarówno z lokalnej maszyny jak i poprzez sieæ - daj±c przez
 to elastyczn± implementacjê architektury klient/serwer.
