@@ -768,6 +768,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Requires:	OpenGL
 
 %description driver-radeon
 ATI Radeon video driver.
