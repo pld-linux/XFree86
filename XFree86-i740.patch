@@ -1,19 +1,6 @@
 diff -u xc/programs/Xserver/hw/xfree86/drivers/i740/i740_driver.c:1.30 xc/programs/Xserver/hw/xfree86/drivers
-/i740/i740_driver.c:1.30.2.1
 --- XFree86-4.1.0/xc/programs/Xserver/hw/xfree86/drivers/i740/i740_driver.c:1.30        Tue May 15 12:19:38 2
-001
 +++ XFree86-4.1.0/xc/programs/Xserver/hw/xfree86/drivers/i740/i740_driver.c     Sun Jul  1 00:12:55 2001
-@@ -25,7 +25,7 @@
- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
- **************************************************************************/
--/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/i740/i740_driver.c,v 1.28 2001/01/21 21:19:27 tsi Exp $
-*/
-+/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/i740/i740_driver.c,v 1.30 2001/05/15 10:19:38 eich Exp $
- */
-
- /*
-  * Authors:
 @@ -540,6 +540,13 @@
    }
    xf86PrintDepthBpp(pScrn);
