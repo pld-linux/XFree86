@@ -113,7 +113,7 @@ BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
 BuildRequires:	gcc-c++
 BuildRequires:	libpng-devel
-BuildREquires:	libstdc++-devel
+BuildRequires:	libstdc++-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	pam-devel
 BuildRequires:	perl
