@@ -2095,9 +2095,7 @@ fi
 %{_mandir}/man1/editres.1*
 %{_mandir}/man1/iceauth.1*
 %{_mandir}/man1/lbxproxy.1*
-%ifnarch alpha
 %{_mandir}/man1/libxrx.1*
-%endif
 %{_mandir}/man1/lndir.1*
 %{_mandir}/man1/luit.1x*
 %{_mandir}/man1/makestrs.1*
@@ -2234,9 +2232,7 @@ fi
 %files OpenGL-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libGLU.so
-%ifnarch alpha
 %attr(755,root,root) %{_libdir}/libOSMesa*.so
-%endif
 %{_libdir}/libGLw.a
 %dir %{_includedir}/GL
 %attr(644,root,root) %{_includedir}/GL/*
@@ -2248,18 +2244,14 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/glxinfo
 %attr(755,root,root) %{_libdir}/libGLU.so.*.*
-%ifnarch alpha
 %attr(755,root,root) %{_libdir}/libOSMesa.so.*.*
-%endif
 %{_mandir}/man1/glxinfo.1*
 
 %files OpenGL-static
 %defattr(644,root,root,755)
 %{_libdir}/libGL.a
 %{_libdir}/libGLU.a
-%ifnarch alpha
 %{_libdir}/libOSMesa*.a
-%endif
 
 %files Xnest
 %defattr(644,root,root,755)
@@ -2299,9 +2291,7 @@ fi
 %attr(755,root,root) %{_libdir}/libX[1Ta-t]*.so
 %attr(755,root,root) %{_libdir}/libI*.so
 %attr(755,root,root) %{_libdir}/libS*.so
-%ifnarch alpha
 %attr(755,root,root) %{_libdir}/libx*.so
-%endif
 %{_libdir}/libfntstubs.a
 %{_libdir}/libfontenc.a
 %{_libdir}/libFS.a
@@ -2654,9 +2644,7 @@ fi
 %attr(755,root,root) %{_libdir}/libX[1Ta-t]*.so.*.*
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
 %attr(755,root,root) %{_libdir}/libS*.so.*.*
-%ifnarch alpha
 %attr(755,root,root) %{_libdir}/libx*.so.*.*
-%endif
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/X11/XftConfig
 
 %files modules
@@ -2666,9 +2654,7 @@ fi
 %{_sysconfdir}/X11/xkb
 /var/lib/xkb
 %dir %{_libdir}/modules
-%ifnarch alpha
 %dir %{_libdir}/modules/dri
-%endif
 %dir %{_libdir}/modules/drivers
 %ifnarch sparc sparc64 ppc
 %{_libdir}/modules/*.uc
