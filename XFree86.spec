@@ -1,13 +1,15 @@
 
 # TODO:
-# - update and fix tdfx patchs
 # - cleanups
 # - man4/mouse from modules conflicts with man4/mouse from man-pages
 # - add missing files
 # - separate XFS to be standalone - is it possible without duplicated files?
 # - imstt and nsc video drivers
 
-# _without_tdfx		disables tdfx build
+#
+# Conditional build:
+# _without_tdfx		- disables tdfx drivers building
+#
 
 %define		_sver	%(echo %{version} | tr -d .)
 
@@ -29,9 +31,9 @@ Release:	1.1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-1.tgz
-Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
-Source2:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
-Source3:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
+Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-2.tgz
+Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-3.tgz
+Source3:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source4:	xdm.pamd
 Source5:	xserver.pamd
 Source6:	xdm.init
@@ -56,8 +58,8 @@ Source34:	xclipboard.png
 Source35:	xclock.png
 Source36:	oclock.png
 Source37:	xconsole.png
-Source38:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-2.tgz
-Source39:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-3.tgz
+Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
+Source39:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -88,40 +90,23 @@ Patch26:	%{name}-HasFreetype2.patch
 Patch27:	%{name}-config-s3.patch
 Patch28:	%{name}-sparc_pci_domains.patch
 Patch29:	%{name}-XTerm.ad.patch
-#Patch30:	%{name}-dri_directory_mode_fix.patch
-Patch31:	%{name}-alpha_GLX_align_fix.patch
-#Patch32:	%{name}-XftConfig_in_correct_place.patch
-Patch33:	%{name}-PEX+XIE.patch
-Patch34:	%{name}-xman-manpaths.patch
-#Patch36:	ftp://ftp.xfree86.org/pub/XFree86/4.2.1/patches/4.2.0-4.2.1.diff.gz
-Patch37:	%{name}-clearrts.patch
-#Patch38:	%{name}-mga020414.patch
-#Patch39:	%{name}-trident-9397.patch
-#Patch40:	%{name}-4.2.0-i810-driver-update-cvs-20020617.patch.bz2
-#Patch41:	%{name}-nv020414.patch
-#Patch42:	%{name}-fix-07-s3trio64v2gx+netfinity.patch
-#Patch43:	%{name}-prosavage.patch
-#Patch44:	%{name}-xtt-null-pointer.patch
-Patch45:	%{name}-i740-driver-update-cvs-20020617.patch
-#Patch46:	%{name}-neomagic-Xv-support.patch
-Patch47:	%{name}-tdfx-disable-dri-on-16Mb-cards-in-hires.patch
-#Patch48:	%{name}-tdfx-should-be-2048-not-2046.patch
-Patch49:	%{name}-tdfx-interlace.patch
-Patch50:	%{name}-tdfx-fix-compiler-warnings.patch
-Patch51:	%{name}-tdfx-fix-vtswitch-font-corruption.patch
-Patch52:	%{name}-sis-option-swcursor.patch
-#Patch53:	%{name}-sis-unresolved-symbols.patch
-Patch54:	%{name}-sis-maxxfbmem-fixup.patch
-#Patch55:	%{name}-Radeon9000.patch
-Patch56:	%{name}-Xfont-Type1-large-DoS.patch
+Patch30:	%{name}-alpha_GLX_align_fix.patch
+Patch31:	%{name}-PEX+XIE.patch
+Patch32:	%{name}-xman-manpaths.patch
+Patch33:	%{name}-clearrts.patch
+Patch34:	%{name}-fix-07-s3trio64v2gx+netfinity.patch
+Patch35:	%{name}-i740-driver-update-cvs-20020617.patch
+Patch36:	%{name}-tdfx-disable-dri-on-16Mb-cards-in-hires.patch
+Patch37:	%{name}-tdfx-interlace.patch
+Patch38:	%{name}-tdfx-fix-compiler-warnings.patch
+Patch39:	%{name}-tdfx-fix-vtswitch-font-corruption.patch
+Patch40:	%{name}-Xfont-Type1-large-DoS.patch
 # "strip -g libGLcore.a" leaves empty objects m_debug_*.o, which cause
 # warnings during GLcore loading ("m_debug_*.o: no symbols") - shut up them
-Patch57:	%{name}-GLcore-strip-a-workaround.patch
-# Original from: ftp://ftp.xfree86.org/pub/XFree86/4.2.1/fixes/4.2.1-mit-shm-security.patch
-#Patch58:	%{name}-4.2.1-mit-shm-security.patch
-Patch59:	%{name}-disable_glide.patch
-Patch60:	%{name}-expat.patch
-Patch61:	%{name}-pkgconfig.patch
+Patch41:	%{name}-GLcore-strip-a-workaround.patch
+Patch42:	%{name}-disable_glide.patch
+Patch43:	%{name}-expat.patch
+Patch44:	%{name}-pkgconfig.patch
 BuildRequires:	bison
 BuildRequires:	expat-devel
 BuildRequires:	flex
@@ -158,6 +143,7 @@ Obsoletes:	X11R6.1
 %define		_icondir	/usr/share/icons
 %define		_pixmapsdir	/usr/share/pixmaps
 %define		_soundsdir	/usr/share/sounds
+%define		_themesdir	/usr/share/themes
 %define		_wmpropsdir	/usr/share/wm-properties
 
 # avoid Mesa dependency in XFree86-OpenGL-libs
@@ -1120,6 +1106,19 @@ Intel i810/i815/i830 video driver.
 %description driver-i810 -l pl
 Sterownik do grafiki na uk³adach Intel i810/i815/i830.
 
+%package driver-imstt
+Summary:	Integrated Micro Solutions Twin Turbo 128 driver
+Summary(pl):	Sterownik do kart Integrated Micro Solutions Twin Turbo 128
+Group:		X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-imstt
+Integrated Micro Solutions Twin Turbo 128 driver.
+
+%description driver-imstt -l pl
+Sterownik do kart Integrated Micro Solutions Twin Turbo 128.
+
 %package driver-mga
 Summary:	Matrox video driver
 Summary(pl):	Sterownik do kart Matrox
@@ -1149,6 +1148,37 @@ NeoMagic video driver.
 
 %description driver-neomagic -l pl
 Sterownik do kart NeoMagic.
+
+%package driver-newport
+Summary:	Newport (XL) adapters video driver
+Summary(pl):	Sterownik do kart Newport (XL)
+Group:		X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-newport
+Newport (XL) adapters video driver (found primarily in SGI Indy and
+Indigo2 machines).
+
+%description driver-newport -l pl
+Sterownik do kart Newport (XL) (wystêpuj±cych g³ównie w komputerach
+SGI Indy i Indigo).
+
+%package driver-nsc
+Summary:	National Semiconductors GEODE family video driver
+Summary(pl):	Sterownik dla kart na uk³adach z rodziny GEODE firmy National Semiconductors
+Group:		X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-nsc
+National Semiconductors GEODE family video driver. Supports GXLV (5530
+companion chip), SC1200, SC1400 and GX2 (5535 companion chip).
+
+%description driver-nsc -l pl
+Sterownik dla kart na uk³adach z rodziny GEODE firmy National
+Semiconductors. Obs³uguje GXLV (uk³ad towarzysz±cy 5530), SC1200,
+SC1400 oraz GX2 (uk³ad towarzysz±cy 5535).
 
 %package driver-nv
 Summary:	nVidia video driver
@@ -1856,7 +1886,7 @@ System. ôÁËÏÖ ×ÁÍ ÐÒÉÊÄÅÔØÓÑ ×ÓÔÁÎÏ×ÉÔÉ ÎÁÓÔÕÐÎ¦ ÐÁËÅÔÉ: XFree86,
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c -a1 -b38 -b39
+%setup -q -c -b1 -b2 -a3
 %patch0 -p0
 %patch1 -p1
 %patch2 -p1
@@ -1889,44 +1919,27 @@ System. ôÁËÏÖ ×ÁÍ ÐÒÉÊÄÅÔØÓÑ ×ÓÔÁÎÏ×ÉÔÉ ÎÁÓÔÕÐÎ¦ ÐÁËÅÔÉ: XFree86,
 #%patch28 -p1	-- needs update
 %endif
 %patch29 -p0
-#%patch30 -p1 -- obsoleted
-%patch31 -p1
-#%patch32 -p1 --obsoleted
-%patch33 -p0
-%patch34 -p1
-#%%{?_without_tdfx:%patch35}
-#%patch36 -p0 --obsoleted
-%patch37 -p1
-#%patch38 -p1	-- obsoleted
-#%patch39 -p1	-- obsoleted
-#%patch40 -p0	-- obsoleted
-#%patch41 -p1	-- obsoleted
-#%patch42 -p1	-- obsoleted (only partially???)
-#%patch43 -p1	-- obsoleted
-#%patch44 -p1	-- obsoleted
-#%patch45 -p1	-- obsoleted? (but doesn't look to be applied)
-#%patch46 -p1	-- obsoleted
-%{!?_without_tdfx:%patch47 -p0}
-#%patch48 -p0	-- obsoleted
-%{!?_without_tdfx:%patch49 -p1}
-#%patch50 -p0	-- causing problems IIRC (but not really needed)
-%{!?_without_tdfx:%patch51 -p0}
-#%patch52 -p1	-- probably not needed
-#%patch53 -p1	-- obsoleted
-#%patch54 -p1	-- obsoleted? (code looks very different)
-#%patch55 -p0	-- obsoleted
-%patch56 -p1
-%{!?debug:%patch57 -p1}
-#%patch58 -p0  --obsoleted
-%{?_without_tdfx:%patch59 -p0}
-%patch60 -p0
-%patch61 -p0
+%patch30 -p1
+%patch31 -p0
+%patch32 -p1
+%patch33 -p1
+#%patch34 -p1	-- seems not applied (was partially in rc1??? maybe another fix present?)
+#%patch35 -p1	-- obsoleted? (but doesn't look to be applied)
+%{!?_without_tdfx:%patch36 -p0}
+%{!?_without_tdfx:%patch37 -p1}
+#%patch38 -p0	-- causing problems IIRC (but not really needed)
+%{!?_without_tdfx:%patch39 -p0}
+%patch40 -p1
+%{!?debug:%patch41 -p1}
+%{?_without_tdfx:%patch42 -p0}
+%patch43 -p0
+%patch44 -p0
 
 rm -f xc/config/cf/host.def
 
 # New ATI drivers
 # cd xc/programs/Xserver/hw/xfree86/drivers
-#%bzcat %{SOURCE2} | tar x
+#%bzcat %{SOURCE39} | tar x
 # ati.2 directory
 
 #--- %build --------------------------
@@ -1959,7 +1972,7 @@ install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysc
 	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
 	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
 	$RPM_BUILD_ROOT%{_applnkdir}/{Amusements,Editors,Utilities,Terminals} \
-	$RPM_BUILD_ROOT{%{_pixmapsdir}/mini,%{_wmpropsdir},%{_soundsdir}}
+	$RPM_BUILD_ROOT{%{_pixmapsdir}/mini,%{_wmpropsdir},%{_soundsdir},%{_themesdir}/Default}
 
 %{__make} -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -2025,7 +2038,7 @@ install %{SOURCE31} %{SOURCE32} %{SOURCE33} %{SOURCE34} %{SOURCE35} \
 	%{SOURCE36} %{SOURCE37} \
 	$RPM_BUILD_ROOT%{_pixmapsdir}
 
-bzip2 -dc %{SOURCE3} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
+bzip2 -dc %{SOURCE38} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 
 > $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 > $RPM_BUILD_ROOT/etc/security/blacklist.xserver
@@ -2045,6 +2058,9 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
 :> $RPM_BUILD_ROOT%{_sysconfdir}/X11/XF86Config
 
 rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/html
+
+# resolve conflict with man-pages
+mv -f $RPM_BUILD_ROOT%{_mandir}/man4/{mouse.4,mouse-x.4}
 
 # directories for applications locales
 echo '%defattr(644,root,root,755)' > XFree86-libs.lang
@@ -2604,48 +2620,52 @@ fi
 %{_mandir}/man3/[A-EH-Z]*
 %exclude %{_mandir}/man3/Xft.3*
 
-%ifnarch sparc sparc64 alpha ppc
+# Devel: sparc sparc64
+%ifarch %{ix86}
 %files driver-apm
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/apm_drv.o
 %{_mandir}/man4/apm*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+# Devel: sparc sparc64
+%ifarch %{ix86}
 %files driver-ark
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/ark_drv.o
 %endif
 
-%ifnarch sparc sparc64 alpha
+# Devel: sparc sparc64
+%ifarch %{ix86} mips ppc arm
 %files driver-chips
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/chips_drv.o
 %{_mandir}/man4/chips*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+# Devel: sparc sparc64
+%ifarch %{ix86} alpha
 %files driver-cirrus
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/cirrus_*.o
 %{_mandir}/man4/cirrus*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+%ifarch %{ix86}
 %files driver-cyrix
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/cyrix_drv.o
 %{_mandir}/man4/cyrix*
 %endif
 
-%ifnarch alpha
+%ifarch %{ix86} sparc sparc64 mips ppc arm superh
 %files driver-fbdev
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/fbdev_drv.o
 %{_mandir}/man4/fbdev*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+%ifarch %{ix86}
 %{!?_without_tdfx:%files driver-glide}
 %{!?_without_tdfx:%defattr(644,root,root,755)}
 %{!?_without_tdfx:%attr(755,root,root) %{_libdir}/modules/drivers/glide_drv.o}
@@ -2655,26 +2675,29 @@ fi
 %files driver-glint
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/glint_drv.o
-%ifnarch sparc sparc64
+%ifarch %{ix86} alpha ppc arm
 %attr(755,root,root) %{_libdir}/modules/dri/gamma_dri.so
 %endif
 %{_mandir}/man4/glint*
 
-%ifnarch sparc sparc64 alpha ppc
+# Devel: sparc sparc64
+%ifarch %{ix86}
 %files driver-i128
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i128_drv.o
 %{_mandir}/man4/i128*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+# Devel: sparc sparc64
+%ifarch %{ix86}
 %files driver-i740
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i740_drv.o
 %{_mandir}/man4/i740*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+# Devel: sparc sparc64
+%ifarch %{ix86}
 %files driver-i810
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i810_drv.o
@@ -2683,28 +2706,54 @@ fi
 %{_mandir}/man4/i810*
 %endif
 
-%ifnarch sparc sparc64
+# Devel: %{ix86} sparc sparc64 ppc
+%if 0
+%files driver-imstt
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/imstt_drv.o
+%{_mandir}/man4/imstt.4*
+%endif
+
+%ifarch %{ix86} sparc sparc64 mips alpha ppc arm
 %files driver-mga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/mga_drv.o
+%ifarch %{ix86} alpha ppc arm
 %attr(755,root,root) %{_libdir}/modules/dri/mga_dri.so
+%endif
 %{_mandir}/man4/mga*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+# Devel: sparc sparc64
+%ifarch %{ix86}
 %files driver-neomagic
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/neomagic_drv.o
 %{_mandir}/man4/neomagic*
 %endif
 
-%ifnarch sparc sparc64 ppc
+# Devel: %{ix86} sparc sparc64
+%ifarch mips
+%files driver-newport
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/newport_drv.o
+%{_mandir}/man4/newport.4*
+%endif
+
+%ifarch %{ix86}
+%files driver-nsc
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/nsc_drv.o
+%{_mandir}/man4/nsc.4*
+%endif
+
+# Devel: sparc sparc64
+%ifarch %{ix86} mips alpha arm
 %files driver-nv
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/nv_drv.o
 %{_mandir}/man4/nv*
 %endif
-
 
 %files driver-ati
 %defattr(644,root,root,755)
@@ -2713,7 +2762,7 @@ fi
 %files driver-r128
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/r128*_drv.o
-%ifnarch sparc sparc64
+%ifarch %{ix86} alpha ppc arm
 %attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
 %endif
 %{_mandir}/man4/r128*
@@ -2721,7 +2770,7 @@ fi
 %files driver-radeon
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/radeon*_drv.o
-%ifnarch sparc sparc64
+%ifarch %{ix86} alpha ppc arm
 %attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
 %attr(755,root,root) %{_libdir}/modules/dri/r200_dri.so
 %endif
@@ -2755,46 +2804,50 @@ fi
 #%endif
 %endif
 
-%ifnarch sparc sparc64 ppc
+# Devel: sparc sparc64
+%ifarch %{ix86} alpha
 %files driver-rendition
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/rendition_drv.o
 %{_mandir}/man4/rendition*
 %endif
 
-%ifnarch sparc sparc64
+# Devel: sparc sparc64
+%ifarch %{ix86} mips alpha ppc arm
 %files driver-s3virge
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/s3virge_drv.o
 %{_mandir}/man4/s3virge*
 %endif
 
-%ifnarch sparc sparc64
+%ifarch %{ix86} mips alpha ppc arm
 %files driver-s3
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/s3_drv.o
-#%%{_mandir}/man4/s3*
+#%%{_mandir}/man4/s3.4*
 %endif
 
-%ifnarch sparc sparc64
+# Devel: sparc sparc64
+%ifarch %{ix86} mips alpha ppc arm
 %files driver-savage
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/savage_drv.o
 %{_mandir}/man4/savage*
 %endif
 
-%ifnarch sparc sparc64 ppc
+# Devel: sparc sparc64
+%ifarch %{ix86} alpha
 %files driver-siliconmotion
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/siliconmotion_drv.o
 %{_mandir}/man4/siliconmotion*
 %endif
 
-%ifnarch sparc sparc64 alpha
+%ifarch %{ix86} mips ppc arm
 %files driver-sis
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
-%ifnarch ppc
+%ifarch %{ix86}
 #%attr(755,root,root) %{_libdir}/modules/dri/sis_dri.so
 %endif
 %{_mandir}/man4/sis*
@@ -2850,34 +2903,39 @@ fi
 %{_mandir}/man4/suntcx*
 %endif
 
-%ifnarch sparc sparc64 ppc
+%ifarch %{ix86} sparc sparc64 mips alpha arm
 %{!?_without_tdfx:%files driver-tdfx}
 %{!?_without_tdfx:%defattr(644,root,root,755)}
 %{!?_without_tdfx:%attr(755,root,root) %{_libdir}/modules/drivers/tdfx_drv.o}
+%ifarch %{ix86} alpha arm
 %{!?_without_tdfx:%attr(755,root,root) %{_libdir}/modules/dri/tdfx_dri.so}
+%endif
 %{!?_without_tdfx:%{_mandir}/man4/tdfx*}
 %endif
 
-%ifnarch sparc sparc64 ppc
+# Devel: sparc sparc64
+%ifarch %{ix86} alpha
 %files driver-tga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tga_drv.o
 %endif
 
-%ifnarch sparc sparc64 alpha
+# Devel: sparc sparc64
+%ifarch %{ix86} mips ppc arm
 %files driver-trident
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/trident_drv.o
 %{_mandir}/man4/trident*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+%ifarch %{ix86}
 %files driver-tseng
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tseng_drv.o
 %{_mandir}/man4/tseng*
 %endif
 
+# Devel: sparc sparc64
 %ifarch %{ix86}
 %files driver-vmware
 %defattr(644,root,root,755)
@@ -2887,8 +2945,8 @@ fi
 
 %files libs -f XFree86-libs.lang
 %defattr(644,root,root,755)
-%dir /usr/share/themes
-%dir /usr/share/themes/Default
+%dir %{_themesdir}
+%dir %{_themesdir}/Default
 %{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XKeysymDB
 %dir %{_libdir}/X11/app-defaults
@@ -2939,11 +2997,11 @@ fi
 %attr(755,root,root) %{_libdir}/modules/*.a
 %attr(755,root,root) %{_libdir}/modules/codeconv
 %attr(755,root,root) %{_libdir}/modules/drivers/linux
-%ifnarch sparc sparc64
+%ifarch %{ix86} sparc sparc64 alpha ppc arm
 %attr(755,root,root) %{_libdir}/modules/drivers/vga_drv.o
-%ifnarch alpha ppc
-%attr(755,root,root) %{_libdir}/modules/drivers/vesa_drv.o
 %endif
+%ifarch %{ix86} sparc sparc64
+%attr(755,root,root) %{_libdir}/modules/drivers/vesa_drv.o
 %endif
 %dir %{_libdir}/modules/extensions
 %attr(755,root,root) %{_libdir}/modules/extensions/libdbe.a
@@ -2962,16 +3020,21 @@ fi
 %{_mandir}/man4/citron*
 %{_mandir}/man4/dmc.4*
 %{_mandir}/man4/dynapro*
+%{_mandir}/man4/fpit.4*
+%{_mandir}/man4/js_x.4*
+%{_mandir}/man4/kbd.4*
 %{_mandir}/man4/keyboard*
 %{_mandir}/man4/microtouch*
-#%%{_mandir}/man4/mouse* - conflicts with man-pages - fixme
+%{_mandir}/man4/mouse-x.4*
+%{_mandir}/man4/palmax.4*
 %{_mandir}/man4/penmount.4*
+%{_mandir}/man4/tek4957.4*
 %{_mandir}/man4/v4l*
-%ifnarch sparc sparc64
+%ifarch %{ix86} sparc sparc64 alpha ppc arm
 %{_mandir}/man4/vga*
-%ifnarch alpha ppc
-%{_mandir}/man4/vesa*
 %endif
+%ifarch %{ix86} sparc sparc64
+%{_mandir}/man4/vesa*
 %endif
 %{_mandir}/man4/void*
 %{_mandir}/man4/wacom*
