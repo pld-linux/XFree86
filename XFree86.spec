@@ -124,6 +124,7 @@ Patch46:	%{name}-lock.patch
 Patch47:	%{name}-linux-version.patch
 Patch48:	%{name}-new-s3-nodebug.patch
 Patch49:	%{name}-genauth.patch
+Patch50:	%{name}-xterm-256colors.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	%{_bindir}/perl
 BuildRequires:	bison
@@ -1794,6 +1795,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 tar xfz *.tar.gz
 %patch48 -p0
 %patch49 -p0
+%patch50 -p1
 
 rm -f xc/config/cf/host.def
 
