@@ -6,8 +6,8 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Name:		XFree86
-Version:	4.1.0
-Release:	14
+Version:	4.2.0
+Release:	1
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -54,25 +54,25 @@ Patch17:	%{name}-imake-kernel-version.patch
 Patch18:	%{name}-no-kernel-modules.patch
 Patch19:	%{name}-parallelmake.patch
 Patch20:	%{name}-pic.patch
-Patch21:	%{name}-defmodes-1400.patch
-Patch22:	%{name}-r128-busmstr2.patch
-Patch23:	%{name}-neomagic_swcursor.patch
-Patch24:	%{name}-mga-busmstr.patch
-Patch25:	%{name}-agpgart-load.patch
-Patch26:	%{name}-mkfontdir-chmod_644.patch
-Patch27:	%{name}-HasFreetype2.patch
-Patch28:	%{name}-libXfont-put-eof.patch
-Patch29:	%{name}-config-s3.patch
-Patch30:	%{name}-stolen_from_HEAD.patch
-Patch31:	%{name}-sparc_pci_domains.patch
-Patch32:	%{name}-s3virge_mx_console_corruption_fix.patch
-Patch33:	%{name}-cirrus_driver_fix.patch
-Patch34:	%{name}-dri_directory_mode_fix.patch
-Patch35:	%{name}-alpha_GLX_align_fix.patch
-Patch36:	%{name}-manpage_link_fixes.patch
-Patch37:	%{name}-XftConfig_in_correct_place.patch
-Patch38:	%{name}-i740.patch
-Patch39:        %{name}-compaq-alpha-megapatch.patch
+Patch21:	%{name}-r128-busmstr2.patch
+Patch22:	%{name}-neomagic_swcursor.patch
+Patch23:	%{name}-mga-busmstr.patch
+Patch24:	%{name}-agpgart-load.patch
+Patch25:	%{name}-mkfontdir-chmod_644.patch
+Patch26:	%{name}-HasFreetype2.patch
+Patch27:	%{name}-config-s3.patch
+Patch28:	%{name}-sparc_pci_domains.patch
+Patch29:	%{name}-s3virge_mx_console_corruption_fix.patch
+Patch30:	%{name}-dri_directory_mode_fix.patch
+Patch31:	%{name}-alpha_GLX_align_fix.patch
+Patch32:	%{name}-XftConfig_in_correct_place.patch
+Patch33:        %{name}-compaq-alpha-megapatch.patch
+#Patch21:	%{name}-defmodes-1400.patch
+#Patch28:	%{name}-libXfont-put-eof.patch
+#Patch30:	%{name}-stolen_from_HEAD.patch
+#Patch33:	%{name}-cirrus_driver_fix.patch
+#Patch36:	%{name}-manpage_link_fixes.patch
+#Patch38:	%{name}-i740.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1400,19 +1400,15 @@ serwerów lokalnych lub zdalnych.
 %patch25 -p1
 %patch26 -p1
 %patch27 -p1
-%patch28 -p1
-%patch29 -p1
+# needs updating (14 rejects)
+#%patch28 -p1
+# is it needed now? could someone else look at it (rejects)
+#%patch29 -p1
 %patch30 -p1
 %patch31 -p1
 %patch32 -p1
-%patch33 -p1
-%patch34 -p1
-%patch35 -p1
-%patch36 -p1
-%patch37 -p1
-%patch38 -p1
 %ifarch alpha
-%patch39 -p0
+%patch33 -p0
 %endif
 rm -f xc/config/cf/host.def
 tar zx -f %{SOURCE15} -C xc/programs/Xserver/hw/xfree86/drivers/
