@@ -2014,7 +2014,7 @@ gunzip $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
 # kill some stuff for cleaner build
 # (packaged separately, DRM already in kernel)
 rm -rf $RPM_BUILD_ROOT%{_pkgconfigdir}/{xcursor,xft}.pc \
-	$RPM_BUILD_ROOT%{_libdir}/pkgconfig/fontconfig.pc} \
+	$RPM_BUILD_ROOT%{_libdir}/pkgconfig/fontconfig.pc \
 	$RPM_BUILD_ROOT%{_mandir}/{man3/fontconfig.3x,man1/fc-{cache,list}.1x} \
 	$RPM_BUILD_ROOT%{_libdir}/{libfontconfig.*,libXrender.*,libXcursor.*,libXft.{a,so.2*}} \
 	$RPM_BUILD_ROOT%{_includedir}/{fontconfig,X11/{Xcursor,Xft}} \
