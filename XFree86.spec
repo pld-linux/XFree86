@@ -52,15 +52,10 @@ Source30:	xlogo64.png
 Source31:	xeyes.png
 Source32:	xedit.png
 Source33:	xterm.png
-# Source33-md5:	a9e182f1f2ce977c51cdfd28dae53fdb
 Source34:	xclipboard.png
-# Source34-md5:	a2eb1994b5b6871124178d0ce518f157
 Source35:	xclock.png
-# Source35-md5:	b7a0e68f24dc55bfed08220bfdc7e538
 Source36:	oclock.png
-# Source36-md5:	1bd2b33adc6ff3e7607a164d9fd16e8a
 Source37:	xconsole.png
-# Source37-md5:	7da3e9920e4b03dd643425f426c52adc
 Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
 # Source38-md5: a184106bb83cb27c6963944d9243ac3f
 Source39:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
