@@ -2471,6 +2471,7 @@ fi
 %attr(755,root,root) %{_libdir}/libOSMesa*.so
 %{_libdir}/libGLw.a
 %dir %{_includedir}/GL
+%dir /usr/include/GL
 %attr(644,root,root) %{_includedir}/GL/*
 %exclude %{_includedir}/GL/gl.h
 %exclude %{_includedir}/GL/glx.h
