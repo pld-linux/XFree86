@@ -407,7 +407,7 @@ Podstawowe pliki nag³ówkowe (tylko GL i GLX) OpenGL dla systemu X11R6.
 Summary:	OpenGL libraries for X11R6
 Summary(pl):	Biblioteki OpenGL dla systemu X11R6
 Group:		X11/Libraries
-Requires:	%{name}-OpenGL-core = %{epoch}:%{version}-%{release}
+Requires:	%{name}-OpenGL-core
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Provides:	OpenGL
 Obsoletes:	Mesa
