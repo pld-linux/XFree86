@@ -1015,7 +1015,8 @@ Summary(pl):	XAuth
 %patch39 -p0 -b .Banshee
 # the following patch is in CVS diff format, needs POSIXLY_CORRECT env var.
 POSIXLY_CORRECT=1 patch -p0 -b -z .NVIDIA -s < %{PATCH40}
-%patch41 -p1 -b .3dfx
+# XFree make system is realy brain damaged
+#%patch41 -p1 -b .3dfx
 %patch42 -p1 -b .G200dga
 %patch43 -p1 -b .ffbcrash
 %patch44 -p1 -b .fixiso8859-2
@@ -1139,6 +1140,39 @@ fi
 %postun -n xfs
 if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del xfs
+fi
+
+%post XF86Setup
+if ! grep "# 3dfx based cards" /usr/X11R6/lib/X11/Cards > /dev/null; then
+	sed -e s/END// < /usr/X11R6/lib/X11/Cards > /usr/X11R6/lib/X11/Cards.tmp
+	/bin/mv /usr/X11R6/lib/X11/Cards.tmp /usr/X11R6/lib/X11/Cards
+	cat >> /usr/X11R6/lib/X11/Cards <<_EOT_
+
+# 3dfx based cards
+
+NAME 3dfx Banshee
+SERVER SVGA
+NOCLOCKPROBE
+
+NAME 3dfx Voodoo3 2000
+SERVER SVGA
+NOCLOCKPROBE
+
+NAME 3dfx Voodoo3 3000
+SERVER SVGA
+NOCLOCKPROBE
+
+NAME 3dfx Voodoo3 3500
+SERVER SVGA
+NOCLOCKPROBE
+
+NAME 3dfx Voodoo3 4000
+SERVER SVGA
+NOCLOCKPROBE
+
+END
+
+_EOT_
 fi
 
 %clean
