@@ -876,10 +876,8 @@ X11R6-contrib in older releases.
 %patch8 -p1
 %patch9 -p0
 %patch10 -p1
-%ifarch sparc64
+%ifarch sparc sparc64
 %patch11 -p1
-%endif
-%ifarch alpha
 %patch12 -p0
 %endif 
 %patch13 -p1
