@@ -1890,10 +1890,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #%patch32 -p1 --obsoleted
 %patch33 -p0
 %patch34 -p1
-%ifarch ppc
-%patch35	--new version required
-%endif
-#%%{?_without_tdfx:%patch35} --same as above
+#%%{?_without_tdfx:%patch35}
 #%patch36 -p0 --obsoleted
 %patch37 -p1
 #%patch38 -p1	-- obsoleted
@@ -2697,7 +2694,7 @@ fi
 %{_mandir}/man4/neomagic*
 %endif
 
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 ppc
 %files driver-nv
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/nv_drv.o
