@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
 Version:	4.0.2
-Release:	12
+Release:	13
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -53,16 +53,6 @@ Patch23:	%{name}-portuguese.patch
 Patch24:	%{name}-XF86CardDrivers-cfg.patch
 Patch25:	%{name}-pic.patch
 Patch26:	%{name}-time.patch
-Patch27:	%{name}-xf-4_0_2-branch-2001-02-10.patch
-Patch28:	%{name}-sis-unresolved-memcpy.patch
-Patch29:	%{name}-romanian-keyboard-fix.patch
-Patch30:	%{name}-g450.patch
-Patch31:	%{name}-Xft-update.patch
-Patch32:	%{name}-neomagic_swcursor.patch
-Patch33:	%{name}-cpp.patch
-Patch34:	%{name}-banshee-ramtiming.patch
-Patch35:	%{name}-defmodes-1400.patch
-Patch36:	%{name}-ia64-int10.patch
 BuildRequires:	flex
 BuildRequires:	bison
 BuildRequires:	ncurses-devel
@@ -1048,18 +1038,8 @@ X11R6-contrib in older releases.
 %patch23 -p1
 %patch24 -p1
 %patch25 -p1
+%patch26 -p0
 rm -f xc/config/cf/host.def
-%patch26 -p1
-%patch27 -p1
-%patch28 -p1
-%patch29 -p1
-%patch30 -p1
-%patch31 -p1
-%patch32 -p1
-%patch33 -p1
-%patch34 -p1
-%patch35 -p1
-%patch36 -p1
 
 #--- %build --------------------------
 
@@ -1112,9 +1092,7 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console
 	$RPM_BUILD_ROOT/usr/bin \
 	$RPM_BUILD_ROOT/usr/lib \
 	$RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties \
-	$RPM_BUILD_ROOT%{_appnkldir}/Utilities \
-	$RPM_BUILD_ROOT%{_pixmapsdir} \
-	$RPM_BUILD_ROOT%{_datadir}/icons/mini
+	$RPM_BUILD_ROOT{%{_appnkldir}/Utilities,%{_datadir}/pixmaps}
 
 %{__make} -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -1171,6 +1149,7 @@ touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xdm
 
+#ln -sf ../..%{_includedir}/X11 $RPM_BUILD_ROOT%{_includedir}/X11 ##change
 ln -sf %{_fontdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
 
 # do not duplicate xkbcomp program
@@ -1186,15 +1165,6 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
 :> $RPM_BUILD_ROOT/etc/X11/XF86Config
 
 rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/html
-
-# directories for applications locales
-:> XFree86-libs.lang
-for lang in af az bg bg_BG.cp1251 br ca cs da de el en_GB eo es et eu fi \
-    fr ga gl he hr hu is it ja ko lt mi mk nl nn no pl pt pt_BR ro ru sk \
-    sl sr sv ta th tr uk wa zh_CN zh_CN.GB2312 zh_TW.Big5 ; do
-	install -d $RPM_BUILD_ROOT%{_datadir}/locale/${lang}/LC_MESSAGES
-	echo "%lang(${lang}) %{_datadir}/locale/${lang}" >> XFree86-libs.lang
-done
 
 %ifnarch sparc sparc64
 gzip -9nf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
@@ -1303,7 +1273,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %ifnarch sparc sparc64
-%doc %{_docdir}/%{name}-%{version}
+%doc %{_docdir}/%{name}-%{version}/*
 %doc %{_libdir}/X11/doc
 %endif
 
@@ -1614,17 +1584,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xauth
 %{_mandir}/man1/xauth.1*
 
-%files libs -f XFree86-libs.lang
+%files libs
 %defattr(644,root,root,755)
 %dir %{_libdir}
 %dir %{_libdir}/X11
 /usr/lib/X11
 %dir %{_bindir}
 /usr/bin/X11
-%dir %{_datadir}/locale
-%dir %{_pixmapsdir}
-%dir %{_datadir}/icons
-%dir %{_datadir}/icons/mini
 %attr(755,root,root) %{_libdir}/libX*.so.*.*
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
 %attr(755,root,root) %{_libdir}/libP*.so.*.*
