@@ -473,8 +473,9 @@ diff -Nur XFree86-4.0.2.org/xc/programs/xdm/config/Xres.cpp XFree86-4.0.2/xc/pro
 @@ -66,9 +66,9 @@
  /**/#endif
  #ifdef XPM
- /**/#if PLANES >= 8
+-/**/#if PLANES >= 8
 -xlogin*logoFileName: BITMAPDIR/**//XDM_PIXMAP
++/**/#if PLANES >= 15
 +xlogin*logoFileName: BITMAPDIR/**//xdm-pld-logo.xpm
  /**/#else
 -xlogin*logoFileName: BITMAPDIR/**//XDM_BWPIXMAP
