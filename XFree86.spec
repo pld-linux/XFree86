@@ -15,7 +15,7 @@ Source2:	xdm.initd
 Source3:	xfs.initd
 Source4:	xfs.config
 Source5:	xserver.pamd
-Source6:	XTerm
+Source6:	XTerm.ad-pl
 Patch0:		ftp://ftp.xfree86.org/pub/XFree86/3.3.3/fixes/3.3.3-3.3.3.1.diff.gz
 Patch1:		XFree86-rh.patch
 Patch2:		XFree86-rhxdm.patch
@@ -1084,8 +1084,8 @@ make -C xc World \
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,lib/X11,man/man{1,3,5}} \
-	$RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,security/console.apps} \
+install -d $RPM_BUILD_ROOT/usr/X11R6/lib/X11/pl/app-defaults \
+	$RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps} \
 	$RPM_BUILD_ROOT/var/state/xkb
 
 make -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
@@ -1102,7 +1102,6 @@ rm -f $RPM_BUILD_ROOT/usr/X11R6/bin/X
 ln -s Xwrapper $RPM_BUILD_ROOT/usr/X11R6/bin/X
 
 # Move config stuff to /etc/X11
-install -d $RPM_BUILD_ROOT/etc/X11
 
 cp $RPM_BUILD_ROOT/usr/X11R6/lib/X11/XF86Config.eg \
 $RPM_BUILD_ROOT/etc/X11/XF86Config
@@ -1130,13 +1129,12 @@ install	-d $RPM_BUILD_ROOT%{_fontdir}/TrueType
 echo 0 > $RPM_BUILD_ROOT%{_fontdir}/TrueType/fonts.dir
 echo 0 > $RPM_BUILD_ROOT%{_fontdir}/TrueType/fonts.scale
 
-install -d $RPM_BUILD_ROOT/usr/X11R6/lib/X11/pl
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/xdm
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/pam.d/xserver
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/X11/fs/config
-install %{SOURCE6} $RPM_BUILD_ROOT/usr/X11R6/lib/X11/pl/XTerm
+install %{SOURCE6} $RPM_BUILD_ROOT/usr/X11R6/lib/X11/pl/app-defaults/XTerm
 
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
