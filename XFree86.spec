@@ -64,7 +64,7 @@ auch mit Hilfe anderer Fenstersysteme anzeigen. Das X-Protokoll gestattet
 die Ausführung der Applikationen direkt auf lokalen Rechnern oder über ein
 Netz und bietet große Flexibilität bei Client-Server-Implementierungen.
 
-%decription -l pl
+%description -l pl
 
 X Window System jest graficznym interfejsem u¿ytkownika, cechuje siê
 mo¿liwo¶ci± pracy w wielu oknach, z wieloma klientami i do tego w ró¿nych
@@ -134,7 +134,7 @@ sans serveur X (en réseau).
 %description -l pl libs
 Pakiet zawieraj±cy podstawowe biblioteki dla programów kozystaj±cych z
 systemu X Window. Wydzielony w celu oszczednosci miejsca, nie wp³ywa na
-mo¿liwo¶ci pracy aplikacji X Windows poprzez np. sieæ. Nie potrzebny dla
+mo¿liwo¶ci pracy aplikacji X Window poprzez np. sieæ. Nie potrzebny dla
 komputerów nie posiadaj±cych X serwerów.
 
 %description -l tr libs
@@ -218,7 +218,7 @@ type, and other miscellaneous options. It is slow however, and requires the
 generic VGA 16 color server be available.
 
 %description -l pl XF86Setup
-Graficzny konfigurator dla XFree86
+Graficzny konfigurator dla XFree86.
 
 %package Xvfb
 Summary:	XFree86 Xvfb server
@@ -325,8 +325,8 @@ X serwer dla wiêkszo¶ci prostych kart SVGA, w³±czaj±c karty zbudowane na
 uk³adach ET4000, Cirrus Logic, Trident 8900 i 9000, oraz uk³ady wystêpuj±ce
 w laptopach. Dzia³a tak¿e z kartami Diamnod Speedstar, Orchid Kelvins, STB
 Nitros i Horizons, Genoa 8500VL, wiêkszo¶æ Actix, Spider VLB Plus. Dzia³a
-równie¿ na wielu innych kartach opartych na innych uk³adach wiêc spróbuj ten
-serwer je¶li masz jakie¶ problemy.
+równie¿ na wielu innych kartach opartych na innych uk³adach wiêc spróbuj tego
+serwera je¶li masz jakie¶ problemy.
 
 %description -l tr Xserver
 ET4000, Cirrus Logic, Chips and Technologies dizüstü, Trident 8900 ve 9000
@@ -459,8 +459,8 @@ This package contains the basic fonts. This package is required when you
 have installed X server.
 
 %description -l pl fonts
-Pakiet ten zawiera podstawowe fonty. Pakiet ten jest koniecznie potrzebny
-wtedy kiedy masz zainstalowany jakikolwiek X serwer.
+Pakiet ten zawiera podstawowe czcionki. Pakiet ten jest koniecznie potrzebny,
+je¶li masz zainstalowany jakikolwiek X serwer.
 
 %package 75dpi-fonts
 Summary:	X11R6 75dpi fonts - only need on server side
@@ -491,8 +491,8 @@ des écrans à haute résolution préfèreront les fontes 100 dpi disponibles
 dans un autre paquetage.
 
 %description -l pl 75dpi-fonts
-Pakiet ten zawiera fonty rastrowe 75dpi. W wypadku wiêkszej rozdzielczo¶ci
-zalecane czcionki 100dpi s± dostêpne w osobnym sk³adzie.
+Pakiet ten zawiera czcionki rastrowe 75dpi. W wypadku wiêkszej rozdzielczo¶ci
+zalecane s± czcionki 100dpi, które s± dostêpne w osobnym pakiecie.
 
 %description -l tr 75dpi-fonts
 Çoðu Linux sisteminde 75dpi yazýtipi kullanýlýr. Yüksek çözünürlük kullanan
@@ -527,7 +527,7 @@ Les utilisateurs ayant des hautes résolutions peuvent préférer les
 fontes 100dpi disponibles dans un package séparé.
 
 %description -l pl 100dpi-fonts
-Pakiet ten zawiera fonty rastrowe 100dpi. Bed± one potrzebne przy pracy z
+Pakiet ten zawiera czcionki rastrowe 100dpi. Bed± one potrzebne przy pracy z
 du¿± rozdzielczo¶ci±.
 
 %description -l tr 100dpi-fonts
@@ -545,7 +545,7 @@ Prereq:		%{_bindir}/mkfontdir
 Cyrillic raster fonts.
 
 %description -l pl cyrillic-fonts
-Fonty rastrowe czcionkami w cyrylicy.
+Czcionki rastrowe z cyrylic±.
 
 %package latin2-100dpi-fonts
 Summary:	Latin 2 100dpi fonts - only need on server side
@@ -558,7 +558,7 @@ Prereq:		%{_bindir}/mkfontdir
 Latin 2 raster fonts.
 
 %description -l pl latin2-100dpi-fonts
-Fonty rastrowe czcionkami w ISO-8859-2.
+Czcionki rastrowe ISO-8859-2.
 
 %package latin2-75dpi-fonts
 Summary:	Latin 2 75dpi fonts - only need on server side
@@ -571,7 +571,7 @@ Prereq:		%{_bindir}/mkfontdir
 Latin 2 raster fonts.
 
 %description -l pl latin2-75dpi-fonts
-Fonty rastrowe czcionkami w ISO-8859-2.
+Czcionki rastrowe ISO-8859-2.
 
 #--- %prep ---------------------------
 
