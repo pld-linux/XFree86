@@ -542,7 +542,7 @@ Group:		X11/XFree86/Servers
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
-Requires:	xprint-initrc
+PreReq:		xprint-initrc
 
 %description Xprt
 Xprt provides an X server with the print extension and special DDX
