@@ -33,7 +33,7 @@ Patch6:		XFree86-4.0-makedepend.patch
 Patch7:		XFree86-tdfx.patch
 Patch8:		XFree86-xfsredhat.patch
 Patch9:		XFree86-xfs-fix.patch
-#Patch10:	XFree86-xfs-logger.patch
+Patch10:	XFree86-xfs-logger.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -429,6 +429,25 @@ Group(pl):	X11/XFree
 %description DPS
 %description -l pl DPS
 
+%package DPS-devel
+Summary:	Display PostScript
+Summary(pl):	Display PostScript
+Group:		X11/XFree
+Group(pl):	X11/XFree
+
+%description DPS-devel
+%description -l pl DPS-devel
+
+%package DPS-static
+Summary:	Display PostScript
+Summary(pl):	Display PostScript
+Group:		X11/XFree
+Group(pl):	X11/XFree
+
+%description DPS-static
+%description -l pl DPS-static
+
+
 %package -n sessreg
 Summary:	sessreg - manage utmp/wtmp entries for non-init clients
 Group:		X11/XFree86
@@ -519,7 +538,8 @@ the case when using remote logins or granting access to other users).
 %patch7 -p0
 %patch8 -p0
 %patch9 -p0
-#%patch10 -p0
+%patch10 -p0
+
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
@@ -960,10 +980,30 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
+### remove libdps*.so.1.0
+
+
+
+
+
+
+
+
 %attr(755,root,root) %{_libdir}/lib*.so.*.*
 
 %files devel
 %defattr(644,root,root,755)
+## usunac libdps*.so
+
+
+
+
+
+
+
+
+
+
 %attr(755,root,root) %{_libdir}/lib*.so
 %{_libdir}/libFS.a
 %{_libdir}/libXau.a
@@ -1099,6 +1139,19 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %files DPS
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libdps.so.1.0
+%attr(755,root,root) %{_libdir}/libdpstk.so.1.0
+
+%files DPS-devel
+%defattr(644,root,root,755)
+%{_includedir}/DPS/*.h
+
+%files DPS-static
+%defattr(644,root,root,755)
+%{_libdir}/libdps.a
+%{_lindir}/libdpstk.a
+
 #%files XF86Setup
 #%defattr(644,root,root,755)
 #%attr(755,root,root) %{_bindir}/XF86Setup
