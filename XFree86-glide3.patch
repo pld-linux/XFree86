@@ -1,0 +1,11 @@
+--- xc/lib/GL/mesa/src/drv/tdfx/Imakefile.fred	Thu Aug 24 09:17:57 2000
++++ xc/lib/GL/mesa/src/drv/tdfx/Imakefile	Thu Aug 24 09:51:47 2000
+@@ -278,7 +278,7 @@
+          SRCS = $(DRISRCS) $(DRMSRCS) $(TDFXSRCS) $(MESASRCS) $(ASMSRCS)
+          OBJS = $(DRIOBJS) $(DRMOBJS) $(TDFXOBJS) $(MESAOBJS) $(ASMOBJS)
+ 
+-REQUIREDLIBS = -lglide3x -lm
++REQUIREDLIBS = -lglide3 -lm
+ #if !GlxBuiltInTdfx
+ REQUIREDLIBS += -L../../../.. -lGL
+ #endif
