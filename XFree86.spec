@@ -99,7 +99,7 @@ Patch33:	%{name}-clearrts.patch
 Patch34:	%{name}-fix-07-s3trio64v2gx+netfinity.patch
 Patch35:	%{name}-i740-driver-update-cvs-20020617.patch
 Patch36:	%{name}-tdfx-disable-dri-on-16Mb-cards-in-hires.patch
-Patch37:	%{name}-tdfx-interlace.patch
+
 Patch38:	%{name}-tdfx-fix-compiler-warnings.patch
 Patch39:	%{name}-tdfx-fix-vtswitch-font-corruption.patch
 Patch40:	%{name}-Xfont-Type1-large-DoS.patch
@@ -136,7 +136,6 @@ BuildRequires:	ed
 %ifarch %{ix86}
 %{!?_without_tdfx:BuildRequires:	Glide2x_SDK}
 %endif
-BuildConflicts:	flex >= 2.5.31
 Requires:	xauth
 Requires:	%{name}-libs = %{version}
 ExclusiveArch:	%{ix86} alpha sparc m68k armv4l noarch ppc
@@ -1970,7 +1969,6 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #%patch34 -p1	-- seems not applied (was partially in rc1??? maybe another fix present?)
 #%patch35 -p1	-- obsoleted? (but doesn't look to be applied)
 %{!?_without_tdfx:%patch36 -p0}
-%{!?_without_tdfx:%patch37 -p1}
 #%patch38 -p0	-- causing problems IIRC (but not really needed)
 %{!?_without_tdfx:%patch39 -p0}
 %patch40 -p1
