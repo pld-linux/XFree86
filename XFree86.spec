@@ -2101,6 +2101,7 @@ fi
 %attr(755,root,root) %{_libdir}/X11/xsm
 
 %dir /etc/X11/xinit
+%config(noreplace) /etc/X11/xinit/xinitrc
 %dir /etc/X11/lbxproxy
 /etc/X11/lbxproxy/*
 %dir /etc/X11/proxymngr
@@ -2130,6 +2131,7 @@ fi
 %attr(755,root,root) %{_bindir}/cxpm
 %attr(755,root,root) %{_bindir}/dga
 %attr(755,root,root) %{_bindir}/editres
+%attr(755,root,root) %{_bindir}/gtf
 %attr(755,root,root) %{_bindir}/iceauth
 %attr(755,root,root) %{_bindir}/lbxproxy
 %attr(755,root,root) %{_bindir}/lndir
@@ -2139,6 +2141,8 @@ fi
 %attr(755,root,root) %{_bindir}/mergelib
 %attr(755,root,root) %{_bindir}/mkdirhier
 %attr(755,root,root) %{_bindir}/mkfontdir
+%attr(755,root,root) %{_bindir}/mkfontscale
+%attr(755,root,root) %{_bindir}/mkhtmlindex
 %attr(755,root,root) %{_bindir}/proxymngr
 %attr(755,root,root) %{_bindir}/resize
 %attr(755,root,root) %{_bindir}/revpath
@@ -2171,6 +2175,7 @@ fi
 %attr(755,root,root) %{_bindir}/xmodmap
 %attr(755,root,root) %{_bindir}/xon
 %attr(755,root,root) %{_bindir}/xprop
+%attr(755,root,root) %{_bindir}/xrandr
 %attr(755,root,root) %{_bindir}/xrdb
 %attr(755,root,root) %{_bindir}/xrefresh
 %attr(755,root,root) %{_bindir}/xset
@@ -2202,6 +2207,7 @@ fi
 %{_mandir}/man1/cxpm.1*
 %{_mandir}/man1/dga.1*
 %{_mandir}/man1/editres.1*
+%{_mandir}/man1/gtf.1*
 %{_mandir}/man1/iceauth.1*
 %{_mandir}/man1/lbxproxy.1*
 %{_mandir}/man1/libxrx.1*
@@ -2209,8 +2215,11 @@ fi
 %{_mandir}/man1/luit.1x*
 %{_mandir}/man1/makestrs.1*
 %{_mandir}/man1/makeg.1*
+%{_mandir}/man1/mergelib.1*
 %{_mandir}/man1/mkdirhier.1*
 %{_mandir}/man1/mkfontdir.1*
+%{_mandir}/man1/mkfontscale.1*
+%{_mandir}/man1/mkhtmlindex.1*
 %{_mandir}/man1/proxymngr.1*
 %{_mandir}/man1/resize.1*
 %{_mandir}/man1/revpath.1*
@@ -2238,6 +2247,7 @@ fi
 %{_mandir}/man1/xlsfonts.1*
 %{_mandir}/man1/xmodmap.1*
 %{_mandir}/man1/xprop.1*
+%{_mandir}/man1/xrandr.1*
 %{_mandir}/man1/xrdb.1*
 %{_mandir}/man1/xrefresh.1*
 %{_mandir}/man1/xset.1*
@@ -2334,6 +2344,8 @@ fi
 %files XIE
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libXIE.so.*.*
+%attr(755,root,root) %{_bindir}/xieperf
+%{_mandir}/man1/xieperf.1*
 
 %files XIE-devel
 %defattr(644,root,root,755)
@@ -2418,6 +2430,8 @@ fi
 %attr(755,root,root) %{_libdir}/libI*.so
 %attr(755,root,root) %{_libdir}/libS*.so
 %attr(755,root,root) %{_libdir}/libx*.so
+%attr(755,root,root) %{_libdir}/libXv.so
+%attr(755,root,root) %{_libdir}/libexpat.so
 %{_libdir}/libfntstubs.a
 %{_libdir}/libfontenc.a
 %{_libdir}/libFS.a
@@ -2454,6 +2468,7 @@ fi
 %{_includedir}/X11/fonts
 %{_includedir}/X11/Xcursor
 %{_includedir}/xf86*.h
+%{_includedir}/expat.h
 %{_libdir}/X11/config
 
 %{_mandir}/man3/[A-EH-Z]*
@@ -2774,6 +2789,8 @@ fi
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
 %attr(755,root,root) %{_libdir}/libS*.so.*.*
 %attr(755,root,root) %{_libdir}/libx*.so.*.*
+%attr(755,root,root) %{_libdir}/libXv.so.*.*
+%attr(755,root,root) %{_libdir}/libexpat.so.*.*
 
 %files modules
 %defattr(644,root,root,755)
@@ -2860,6 +2877,7 @@ fi
 %{_libdir}/libICE.a
 %{_libdir}/libSM.a
 %{_libdir}/libX11.a
+%{_libdir}/libXRes.a
 %{_libdir}/libXaw.a
 %{_libdir}/libXext.a
 %{_libdir}/libXfont.a
@@ -2871,6 +2889,7 @@ fi
 %{_libdir}/libXrender.a
 %{_libdir}/libXt.a
 %{_libdir}/libXtst.a
+%{_libdir}/libexpat.a
 
 %files tools
 %defattr(644,root,root,755)
@@ -2956,6 +2975,7 @@ fi
 %{_libdir}/X11/app-defaults/Xmag
 %{_libdir}/X11/app-defaults/Xman
 %{_libdir}/X11/app-defaults/Xmessage
+%{_libdir}/X11/app-defaults/Xmessage-color
 %{_libdir}/X11/app-defaults/Xmh
 %{_libdir}/X11/app-defaults/XFontSel
 %{_libdir}/X11/app-defaults/Xditview
@@ -2970,12 +2990,17 @@ fi
 
 %files -n imake
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/ccmakedep
+%attr(755,root,root) %{_bindir}/cleanlinks
 %attr(755,root,root) %{_bindir}/gccmakedep
 %attr(755,root,root) %{_bindir}/imake
 %attr(755,root,root) %{_bindir}/makedepend
 %attr(755,root,root) %{_bindir}/xmkmf
 
 %{_mandir}/man1/imake.1*
+%{_mandir}/man1/ccmakedep.1*
+%{_mandir}/man1/cleanlinks.1*
+%{_mandir}/man1/gccmakedep.1*
 %{_mandir}/man1/makedepend.1*
 %{_mandir}/man1/xmkmf.1*
 
