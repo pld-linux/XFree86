@@ -66,6 +66,12 @@ Source40:	http://w1.894.telia.com/~u89404340/touchpad/synaptics-%{_synaptics_ver
 Source41:	http://www.linux.org.uk/~alan/S3.zip
 # Source41-md5:	8b754fc6bbded60b683563b945e384b0
 Source42:	twm-xsession.desktop
+Source43:	xcalc.desktop
+Source44:	xload.desktop
+Source45:	xmag.desktop
+Source46:	xcalc.png
+Source47:	xload.png
+Source48:	xmag.png
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -1943,10 +1949,11 @@ install %{SOURCE11} $RPM_BUILD_ROOT/etc/sysconfig/xfs
 
 install %{SOURCE20} $RPM_BUILD_ROOT%{_wmpropsdir}/twm.desktop
 install %{SOURCE21} %{SOURCE22} %{SOURCE23} %{SOURCE24} %{SOURCE25} \
-	%{SOURCE26} %{SOURCE27} \
+	%{SOURCE26} %{SOURCE27} %{SOURCE43} %{SOURCE44} %{SOURCE45} \
 	$RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE30} %{SOURCE31} %{SOURCE32} %{SOURCE33} %{SOURCE34} \
-	%{SOURCE35} %{SOURCE36} %{SOURCE37} \
+	%{SOURCE35} %{SOURCE36} %{SOURCE37} %{SOURCE46} %{SOURCE47} \
+	%{SOURCE48} \
 	$RPM_BUILD_ROOT%{_pixmapsdir}
 
 bzip2 -dc %{SOURCE38} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
@@ -3061,15 +3068,21 @@ fi
 %{_libdir}/X11/app-defaults/Xditview-chrtr
 
 %{_desktopdir}/oclock.desktop
+%{_desktopdir}/xcalc.desktop
 %{_desktopdir}/xclipboard.desktop
 %{_desktopdir}/xclock.desktop
 %{_desktopdir}/xedit.desktop
 %{_desktopdir}/xeyes.desktop
+%{_desktopdir}/xload.desktop
+%{_desktopdir}/xmag.desktop
 %{_pixmapsdir}/oclock.png
+%{_pixmapsdir}/xcalc.png
 %{_pixmapsdir}/xclipboard.png
 %{_pixmapsdir}/xclock.png
 %{_pixmapsdir}/xedit.png
 %{_pixmapsdir}/xeyes.png
+%{_pixmapsdir}/xload.png
+%{_pixmapsdir}/xmag.png
 
 %files -n imake
 %defattr(644,root,root,755)
