@@ -20,7 +20,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.4.0
-Release:	0.1
+Release:	0.2
 Epoch:		1
 License:	XFree86 1.1
 Group:		X11/XFree86
@@ -2507,6 +2507,8 @@ fi
 %{_includedir}/X11/X10.h
 %{_includedir}/X11/XWDFile.h
 %{_includedir}/X11/ap_keysym.h
+%{_includedir}/X11/extensions/Print.h
+%{_includedir}/X11/extensions/Printstr.h
 %{_includedir}/X11/extensions/XKBbells.h
 %{_includedir}/X11/extensions/XKBconfig.h
 %{_includedir}/X11/extensions/XKBfile.h
@@ -2636,8 +2638,6 @@ fi
 %{_includedir}/X11/xpm.h
 %dir %{_includedir}/X11/extensions
 %{_includedir}/X11/extensions/MITMisc.h
-%{_includedir}/X11/extensions/Print.h
-%{_includedir}/X11/extensions/Printstr.h
 %{_includedir}/X11/extensions/XEVI.h
 %{_includedir}/X11/extensions/XEVIstr.h
 %{_includedir}/X11/extensions/XI.h
@@ -2704,12 +2704,11 @@ fi
 %{_libdir}/libXfont.so
 %{_libdir}/libXi.so
 %{_libdir}/libXmu.so
+%{_libdir}/libXmuu.so
+%{_libdir}/libXpm.so
 %{_libdir}/libXrandr.so
 %{_libdir}/libXt.so
 %{_libdir}/libXv.so
-# TODO (higher soname)
-%{_libdir}/libXmuu.so
-%{_libdir}/libXpm.so
 %endif
 
 %files Xserver-devel
@@ -3089,7 +3088,6 @@ fi
 %attr(755,root,root) %{_libdir}/libXTrap.so.*.*
 %attr(755,root,root) %{_libdir}/libXfontcache.so.*.*
 %attr(755,root,root) %{_libdir}/libXinerama.so.*.*
-%attr(755,root,root) %{_libdir}/libXmuu.so.*.*
 %attr(755,root,root) %{_libdir}/libXp.so.*.*
 %attr(755,root,root) %{_libdir}/libXss.so.*.*
 %attr(755,root,root) %{_libdir}/libXtst.so.*.*
@@ -3113,6 +3111,7 @@ fi
 %attr(755,root,root) %{_libdir}/libXfont.so.*.*
 %attr(755,root,root) %{_libdir}/libXi.so.*.*
 %attr(755,root,root) %{_libdir}/libXmu.so.*.*
+%attr(755,root,root) %{_libdir}/libXmuu.so.*.*
 %attr(755,root,root) %{_libdir}/libXpm.so.*.*
 %attr(755,root,root) %{_libdir}/libXrandr.so.*.*
 %attr(755,root,root) %{_libdir}/libXt.so.*.*
