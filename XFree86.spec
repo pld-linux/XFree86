@@ -4,14 +4,14 @@ Summary(fr):	Serveurs du système XFree86 et programmes de base
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
-Version:	4.0.1
-Release:	9
+Version:	4.0.2
+Release:	1
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0/source/X401src-1.tgz
-Source1:	ftp://ftp.mesa3d.org/mesa/MesaLib-3.2.1.tar.bz2
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0/source/X402src-1.tgz
+Source1:	ftp://download.sourceforge.net/pub/sourceforge/mesa3d/MesaLib-3.4.tar.bz2
 Source2:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source3:	xdm.pamd
 Source4:	xdm.init
@@ -35,32 +35,26 @@ Patch5:		%{name}-xfs-fix.patch
 Patch6:		%{name}-xfs-logger.patch
 Patch7:		%{name}-xterm-utempter.patch
 Patch8:		%{name}-app_defaults_dir.patch
-# From DRI CVS
-#Patch9:	%{name}-DRI-20000624.patch.gz
-# from rawhide
-Patch10:	%{name}-startx_xauth.patch
-Patch11:	%{name}-v4l.patch
-Patch12:	%{name}-fixemacs.patch
-Patch13:	%{name}-sparc1.patch.gz
-Patch14:	%{name}-sparc2.patch.gz
-Patch15:	%{name}-sparc3.patch.gz
-Patch16:	%{name}-sparc4.patch.gz
-Patch17:	%{name}-shared.patch
-Patch18:	%{name}-broken-includes.patch
-Patch19:	%{name}-Xaw-unaligned.patch
-Patch20:	%{name}-4.0.1-alpha-pcibus-lemming.patch
-Patch21:	%{name}-xdm-pam.patch
-Patch22:	%{name}-xlib-textmeasure.patch
-Patch23:	%{name}-fhs.patch
-Patch24:	%{name}-xdmsecurity.patch
-Patch25:	%{name}-moresecurity.patch
-Patch26:	%{name}-xman.patch
-Patch27:	%{name}-glide3.patch
-Patch28:	%{name}-tdfxdrmfixes.patch
-Patch29:	%{name}-HasXdmAuth.patch
-Patch30:	%{name}-Xserver_observe_XAUTHORITY.patch
-Patch31:	%{name}-xdm-fixes.patch
-Patch32:	%{name}-4.0.1-11.diff.gz
+Patch9:		%{name}-startx_xauth.patch
+Patch10:	%{name}-v4l.patch
+Patch11:	%{name}-fixemacs.patch
+Patch14:	%{name}-sparc3.patch.gz
+Patch15:	%{name}-sparc4.patch.gz
+Patch16:	%{name}-shared.patch
+Patch17:	%{name}-broken-includes.patch
+Patch18:	%{name}-Xaw-unaligned.patch
+Patch19:	%{name}-4.0.1-alpha-pcibus-lemming.patch
+Patch20:	%{name}-xdm-pam.patch
+Patch21:	%{name}-xlib-textmeasure.patch
+Patch22:	%{name}-fhs.patch
+Patch23:	%{name}-xdmsecurity.patch
+Patch24:	%{name}-moresecurity.patch
+Patch25:	%{name}-xman.patch
+Patch26:	%{name}-glide3.patch
+Patch27:	%{name}-tdfxdrmfixes.patch
+Patch28:	%{name}-HasXdmAuth.patch
+Patch29:	%{name}-Xserver_observe_XAUTHORITY.patch
+Patch30:	%{name}-xdm-fixes.patch
 
 BuildRequires:	flex
 BuildRequires:	ncurses-devel
@@ -77,7 +71,7 @@ Obsoletes:	xpm-progs
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
 Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%ifarch sparc
+%ifarch sparc sparc64
 Obsoletes:	X11R6.1
 %endif
 
@@ -164,7 +158,7 @@ Prereq:		/sbin/ldconfig
 Obsoletes:	xpm
 Provides:	xpm
 
-%ifarch sparc
+%ifarch sparc sparc64
 Obsoletes:	X11R6.1-libs
 %endif
 
@@ -210,7 +204,7 @@ Group(de):	X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-libs = %{version}
 Obsoletes:	xpm-devel
-%ifarch sparc
+%ifarch sparc sparc64
 Obsoletes:	X11R6.1-devel
 %endif
 
@@ -255,7 +249,7 @@ Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-devel = %{version}
-%ifarch sparc
+%ifarch sparc sparc64
 Obsoletes:	X11R6.1-devel
 %endif
 Obsoletes:	xpm-static
@@ -542,6 +536,17 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-fbdev
 Video driver for framebuffer device.
 
+%package driver-ffb
+Summary:	Video driver for DRI sparc framebuffer device
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-ffb
+Video driver for DRI sparc framebuffer device.
+
 %package driver-glide
 Summary:	Voodoo 1 and Voodoo 2 video driver
 Group:		X11/XFree86
@@ -712,64 +717,6 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-tseng
 Tseng Labs video driver.
 
-%package Sun
-Summary:	XFree86 Sun server (monochrome and 8-bit color SBUS framebuffers)
-Summary(pl):	Serwer XFree86 Sun (dla framebuffera)
-Group:		X11/XFree86/Servers
-Group(de):	X11/XFree86/Server
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-fonts = %{version}
-Obsoletes:	X11R6.1-Sun
-
-%description Sun
-To run X Windows programs requires an X server for your specific
-hardware. This package includes the X server for Sun computers with
-monochrome and 8-bit color SBUS framebuffers.
-
-%description -l pl Sun
-Aby uruchomiæ X Window System potrzebujesz X serwera dostosowanego do
-Twojego sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun
-z monochromatycznymi lub te¿ 8-bitowymi kolorowymi framebufferami
-SBUS.
-
-%package SunMono
-Summary:	XFree86 Sun server for monochrome SBUS framebuffers only
-Summary(pl):	Serwer XFree86 Sun (tylko dla monitorów monochromatycznych)
-Group:		X11/XFree86/Servers
-Group(de):	X11/XFree86/Server
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-fonts = %{version}
-Obsoletes:	X11R6.1-SunMono
-
-%description SunMono
-To run X Windows programs requires an X server for your specific
-hardware. This package includes the X server for Sun computers with
-monochrome SBUS framebuffers only.
-
-%description -l pl SunMono
-Aby uruchomiæ X Window System potrzebujesz X serwera dostosowanego do
-Twojego sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun
-z wy³±cznie monochromatycznymi framebufferami SBUS.
-
-%package Sun24
-Summary:	XFree86 Sun server for all supported SBUS framebuffers
-Summary(pl):	Serwer XFree86 Sun (dla wszystkich SBUS framebufferów)
-Group:		X11/XFree86/Servers
-Group(de):	X11/XFree86/Server
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-fonts = %{version}
-Obsoletes:	X11R6.1-Sun24
-
-%description Sun24
-To run X Windows programs requires an X server for your specific
-hardware. This package includes the X server for Sun computers with
-all supported SBUS framebuffers.
-
-%description -l pl Sun24
-Aby uruchomiæ X Window System potrzebujesz X serwera dostosowanego do
-Twojego sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun
-dla wszystkich wspieranych framebufferów SBUS.
-
 %package DPS
 Summary:	Display PostScript
 Summary(pl):	Display PostScript
@@ -926,44 +873,40 @@ X11R6-contrib in older releases.
 
 %prep
 %setup -q -c -a1 -a2
-%patch0 -p1
+#%patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
-%patch4 -p0
+#%patch3 -p1
+#%patch4 -p0
 %patch5 -p0
 # Not ready yet
 #%patch6 -p0
 %patch7 -p1
 %patch8 -p1
-# XFree 4.0.1 is in sync, yet...
-#%patch9 -p0
+#%patch9 -p1
 %patch10 -p1
-%patch11 -p1
-%patch12 -p1
-%ifarch sparc sparc64
-%patch13 -p0
-%patch14 -p1
-%patch15 -p1
-%patch16 -p0
-%endif
-%patch17 -p1
-%patch18 -p1
-%patch19 -p1
+#%patch11 -p1
+#%patch12 -p0
+#%patch13 -p1
+#%patch14 -p1
 %ifarch alpha
-%patch20 -p0
+%patch15 -p0
 %endif 
-%patch21 -p1
-%patch22 -p0
-%patch23 -p1
-%patch24 -p1
-%patch25 -p1
-%patch26 -p1
-%patch27 -p0
+#%patch16 -p1
+%patch17 -p1
+#%patch18 -p1
+%patch19 -p0
+#%patch20 -p1
+#%patch21 -p0
+%patch22 -p1
+#%patch23 -p1
+#%patch24 -p1
+#%patch25 -p1
+#%patch26 -p0
+#%patch27 -p1
 %patch28 -p1
-%patch29 -p1
-%patch30 -p0
-%patch31 -p0
+#%patch29 -p0
+#%patch30 -p0
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
@@ -1030,11 +973,6 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console
 
 install Mesa*/include/GL/glu.h $RPM_BUILD_ROOT%{_includedir}/GL/
 
-# Move config stuff to /etc/X11
-cp $RPM_BUILD_ROOT%{_libdir}/X11/XF86Config.eg \
-	$RPM_BUILD_ROOT/etc/X11/XF86Config
-ln -sf ../../../../etc/X11/XF86Config $RPM_BUILD_ROOT%{_libdir}/X11/XF86Config
-
 # setting default X
 rm -f $RPM_BUILD_ROOT%{_bindir}/X
 ln -sf XFree86 $RPM_BUILD_ROOT%{_bindir}/X
@@ -1088,14 +1026,19 @@ ln -sf ../../../share/doc/%{name}-%{version} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/doc
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
+
 :> $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
+:> $RPM_BUILD_ROOT/etc/X11/XF86Config
 
 rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/html
 
+%ifnarch sparc sparc64
 gzip -9nf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
 
 # don't gzip README.* files, they are needed by XF86Setup
 gunzip $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
+
+%endif
 
 #--- %post{un}, %preun, %verifyscript -
 
@@ -1152,7 +1095,7 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del xdm
 fi
 
-%post DPS -p /sbin/ldconfig
+%post   DPS -p /sbin/ldconfig
 %postun DPS -p /sbin/ldconfig
 
 %clean
@@ -1162,14 +1105,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%docdir %{_docdir}/%{name}-%{version}
-%doc /%{_docdir}/%{name}-%{version}/*
+%ifnarch sparc sparc64
+%doc %{_docdir}/%{name}-%{version}/*
 %doc %{_libdir}/X11/doc
+%endif
 
 %dir %{_prefix}
 %dir %{_libdir}
 %dir %{_libdir}/X11
-%dir %{_libdir}/X11/etc
 %dir %{_bindir}
 
 %{_libdir}/X11/XErrorDB
@@ -1187,7 +1130,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/X11/app-defaults/XSm
 %{_libdir}/X11/app-defaults/XTerm
 %{_libdir}/X11/app-defaults/XTerm-color
+%ifnarch sparc sparc64
 %{_libdir}/X11/app-defaults/XF86Cfg
+%endif
 
 %attr(755,root,root) %{_libdir}/X11/lbxproxy
 %attr(755,root,root) %{_libdir}/X11/proxymngr
@@ -1224,11 +1169,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/X11/x11perfcomp/*
 %{_libdir}/X11/*.txt
 
-%attr(755,root,root) %{_libdir}/X11/etc/*.sh
-%{_libdir}/X11/etc/*.term*
-%{_libdir}/X11/etc/xmodmap.std
-
+%ifnarch sparc sparc64
 %attr(755,root,root) %{_bindir}/SuperProbe
+%endif
 %attr(755,root,root) %{_bindir}/Xmark
 %attr(755,root,root) %{_bindir}/appres
 %attr(755,root,root) %{_bindir}/atobm
@@ -1246,13 +1189,17 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/mergelib
 %attr(755,root,root) %{_bindir}/mkdirhier
 %attr(755,root,root) %{_bindir}/mkfontdir
+%ifnarch sparc sparc64
 %attr(755,root,root) %{_bindir}/pcitweak
+%endif
 %attr(755,root,root) %{_bindir}/proxymngr
 %attr(755,root,root) %{_bindir}/resize
 %attr(755,root,root) %{_bindir}/revpath
 %attr(755,root,root) %{_bindir}/rstart
 %attr(755,root,root) %{_bindir}/rstartd
+%ifnarch sparc sparc64
 %attr(755,root,root) %{_bindir}/scanpci
+%endif
 %attr(755,root,root) %{_bindir}/setxkbmap
 %attr(755,root,root) %{_bindir}/showrgb
 %attr(755,root,root) %{_bindir}/smproxy
@@ -1357,7 +1304,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xwud.1*
 %{_mandir}/man1/xf86cfg.1*
 %{_mandir}/man1/xf86config.1*
+%ifnarch sparc sparc64
 %{_mandir}/man1/SuperProbe.1*
+%endif
 %{_mandir}/man1/xon.1*
 %{_mandir}/man1/revpath.1*
 %{_mandir}/man1/xgamma.1*
@@ -1491,8 +1440,10 @@ rm -rf $RPM_BUILD_ROOT
 %files OpenGL-core
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libGL.so.*.*
+%ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/extensions/libglx.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libGLcore.a
+%endif
 
 %files OpenGL-libs
 %defattr(644,root,root,755)
@@ -1582,10 +1533,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libXt.a
 %{_libdir}/libXtst.a
 
+%ifarch %{x86}
+
 %files Xvfb
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/Xvfb
 %{_mandir}/man1/Xvfb.1*
+
+%endif
 
 %files Xnest
 %defattr(644,root,root,755)
@@ -1598,7 +1553,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files Xserver
 %defattr(644,root,root,755)
+%ifnarch sparc sparc64
 %attr(4755,root,root) %{_bindir}/Xwrapper
+%endif
 %attr(755,root,root) %{_bindir}/XFree86
 %attr(755,root,root) /etc/X11/X
 %attr(755,root,root) %{_bindir}/X
@@ -1606,115 +1563,170 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/Xserver.1*
 %{_mandir}/man5/XF86Config.5*
 
-%doc %{_libdir}/X11/XF86Config.eg
-%doc %{_libdir}/X11/XF86Config.98
+%ifnarch sparc sparc64
 %{_libdir}/X11/Cards
+%endif
 
 %config(noreplace) %verify(not md5 mtime size) /etc/X11/XF86Config
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xserver
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xserver
 %config(missingok) /etc/security/console.apps/xserver
 
+%ifarch %{x86}
+
 %files driver-apm
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/apm_drv.o
 %{_mandir}/man4/apm*
+
+%endif
+%ifarch %{x86}
 
 %files driver-ati
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/ati_drv.o
 %{_mandir}/man4/ati*
 
+%endif
+%ifarch %{x86}
+
 %files driver-chips
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/chips_drv.o
 %{_mandir}/man4/chips*
+
+%endif
+%ifarch %{x86}
 
 %files driver-cirrus
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/cirrus_*.o
 %{_mandir}/man4/cirrus*
 
-%ifnarch alpha
+%endif
+%ifarch %{x86}
+
 %files driver-cyrix
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/cyrix_drv.o
 %{_mandir}/man4/cyrix*
+
 %endif
+%ifarch %{x86}
 
 %files driver-fbdev
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/fbdev_drv.o
 %{_mandir}/man4/fbdev*
 
-%ifnarch alpha
+%endif
+%ifarch sparc sparc64
+
+%files driver-ffb
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/dri/ffb_dri.so
+%{_mandir}/man4/sunffb.4*
+
+%endif
+%ifarch %{x86} alpha
+
 %files driver-glide
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/glide_drv.o
 %{_mandir}/man4/glide*
+
 %endif
+%ifarch %{x86}
 
 %files driver-glint
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/glint_drv.o
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/modules/dri/gamma_dri.so
-%endif
 %{_mandir}/man4/glint*
+%endif
+
+%endif
+%ifarch %{x86}
 
 %files driver-i740
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i740_drv.o
 %{_mandir}/man4/i740*
 
-%ifnarch alpha
+%endif
+%ifarch %{x86}
+
 %files driver-i810
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i810_drv.o
 %attr(755,root,root) %{_libdir}/modules/dri/i810_dri.so
 %{_mandir}/man4/i810*
+
 %endif
+%ifarch %{x86}
 
 %files driver-mga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/mga_drv.o
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/modules/dri/mga_dri.so
-%endif
 %{_mandir}/man4/mga*
+%endif
+
+%endif
+%ifarch %{x86}
 
 %files driver-neomagic
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/neomagic_drv.o
 %{_mandir}/man4/neomagic*
 
+%endif
+%ifarch %{x86}
+
 %files driver-nv
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/nv_drv.o
 %{_mandir}/man4/nv*
+
+%endif
+%ifarch %{x86}
 
 %files driver-r128
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/r128_drv.o
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
-%endif
 %{_mandir}/man4/r128*
+%endif
+
+%endif
+%ifarch %{x86}
 
 %files driver-rendition
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/rendition_drv.o
 %{_mandir}/man4/rendition*
 
+%endif
+%ifarch %{x86}
+
 %files driver-s3virge
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/s3virge_drv.o
 %{_mandir}/man4/s3virge*
 
+%endif
+%ifarch %{x86}
+
 %files driver-sis
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
 %{_mandir}/man4/sis*
+
+%endif
+%ifarch %{x86}
 
 %files driver-tdfx
 %defattr(644,root,root,755)
@@ -1724,48 +1736,29 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 %{_mandir}/man4/tdfx*
 
+%endif
+%ifarch %{x86}
+
 %files driver-tga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tga_drv.o
+
+%endif
+%ifarch %{x86}
 
 %files driver-trident
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/trident_drv.o
 %{_mandir}/man4/trident*
 
+%endif
+%ifarch %{x86}
+
 %files driver-tseng
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tseng_drv.o
 %{_mandir}/man4/tseng*
 
-%ifarch sparc
-
-%files Sun
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/Xsun
-%dir %{_libdir}/X11/xkb
-%attr(755,root,root) %{_libdir}/X11/xkb/*
-/var/lib/xkb
-%endif
-
-%ifarch sparc
-
-%files SunMono
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/XsunMono
-%dir %{_libdir}/X11/xkb
-%attr(755,root,root) %{_libdir}/X11/xkb/*
-/var/lib/xkb
-%endif
-
-%ifarch sparc
-
-%files Sun24
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/Xsun24
-%dir %{_libdir}/X11/xkb
-%attr(755,root,root) %{_libdir}/X11/xkb/*
-/var/lib/xkb
 %endif
 
 %files DPS
