@@ -257,7 +257,7 @@ X11R6 static libraries.
 %description -l pl static
 Biblioteki sytatyczne do X11R6.
 
-%package	XF86Setup
+%package XF86Setup
 Summary:	Graphical configuration tool for XFree86
 Summary(pl):	Graficzny konfigurator dla XFree86
 Group:		X11/XFree86
@@ -282,6 +282,7 @@ Summary(tr):	XFree86 S3 sunucularý
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description S3
 XFree86-S3 is the X server for video cards based on S3 chips, including most
@@ -329,6 +330,7 @@ Summary(tr):	XFree86 #9 Imagine 128 sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description I128
 X server for the #9 Imagine 128 board.
@@ -354,6 +356,7 @@ Summary(tr):	XFree86 S3 Virge sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description S3V
 XFree86-S3V is the X server for video cards based on the S3 ViRGE chipset.
@@ -382,6 +385,7 @@ Summary(tr):	XFree86 Mach64 sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description Mach64
 XFree86-Mach64 is the server package for cards based on ATI's Mach64 chip,
@@ -426,6 +430,7 @@ Summary:	XFree86 Sun server (monochrome and 8-bit color SBUS framebuffers)
 Summary(pl):	Serwer XFree86 Sun (dla framebuffera)
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
+Requires:	%{name}-fonts = %{version}
 Obsoletes:	X11R6.1-Sun
 
 %description Sun
@@ -443,6 +448,7 @@ Summary:	XFree86 Sun server for monochrome SBUS framebuffers only
 Summary(pl):	Serwer XFree86 Sun (tylko dla monitorów monochromatycznych)
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
+Requires:	%{name}-fonts = %{version}
 Obsoletes:	X11R6.1-SunMono
 
 %description SunMono
@@ -457,10 +463,11 @@ wy³±cznie monochromatycznymi framebufferami SBUS.
 
 %package Sun24
 Summary:	XFree86 Sun server for all supported SBUS framebuffers
+Summary(pl):	Serwer XFree86 Sun (dla wszystkich SBUS framebufferów)
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
+Requires:	%{name}-fonts = %{version}
 Obsoletes:	X11R6.1-Sun24
-Summary(pl):	Serwer XFree86 Sun (dla wszystkich SBUS framebufferów)
 
 %description Sun24
 To run X Windows programs requires an X server for your specific hardware.
@@ -478,6 +485,7 @@ Summary(pl):	Serwer XFree86 Xvfb
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description Xvfb
 Xvfb (X Virtual Frame Buffer) is an X Windows System server that is capable
@@ -503,6 +511,7 @@ Summary(pl):	Serwer XFree86 3DLabs
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description 3DLabs
 X server for cards built around 3D Labs GLINT and Permedia chipsets,
@@ -519,6 +528,7 @@ Summary(pl):	Serwer XFree86 Xnest
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description Xnest
 Xnest is an X Window System server which runs in an X window. Xnest is a
@@ -537,6 +547,7 @@ Summary(pl):	X print server
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description Xptr
 Xprt provides an X server with the print extension and special DDX
@@ -553,6 +564,7 @@ Summary(tr):	XFree86 8514 sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description 8514
 X server for older IBM 8514 cards and compatibles from companies such as
@@ -582,6 +594,7 @@ Summary(tr):	XFree86 AGX sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description AGX
 This is the X server for AGX-based cards, such as the Boca Vortex, Orchid
@@ -609,6 +622,7 @@ Summary(pl):	XFree86/86 FBDev server
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description FBDev
 X server for the generic frame buffer device used on the Amiga, Atari
@@ -628,6 +642,7 @@ Summary(tr):	XFree86 Mach32 sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description Mach32
 XFree86-Mach32 is the X server package for video cards built around ATI's
@@ -661,6 +676,7 @@ Summary(tr):	XFree86 Mach8 sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description Mach8
 XFree86-Mach 8 is the X server for video cards built around ATI's Mach8
@@ -694,6 +710,7 @@ Summary(tr):	XFree86 Mono sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description Mono
 XFree86-Mono is a generic monochrome (2 color) server for VGA cards.
@@ -723,12 +740,13 @@ altýnda birçok VGA kart ile çalýþýr.
 
 %package P9000
 Summary:	XFree86 P9000 server
-Summary(pl):	XFree86 serwer dla kart P9000
 Summary(de):	XFree86 P9000 Server
 Summary(fr):	Serveur XFree86 pour P9000
+Summary(pl):	XFree86 serwer dla kart P9000
 Summary(tr):	XFree86 P9000 sunucusu
 Group:		X11/XFree86/Servers
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description P9000
 XFree86-P9000 is the X server for video cards built around the Weitek P9000
@@ -762,6 +780,7 @@ Summary(tr):	XFree86 SVGA sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description SVGA
 X server for most simple framebuffer SVGA devices, including cards built
@@ -812,6 +831,7 @@ Summary(tr):	XFree86 VGA16 sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description VGA16
 XFree86-VGA16 is a generic 16 color server for VGA boards. XFree86-VGA16
@@ -849,6 +869,7 @@ Summary(tr):	XFree86 W32 sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description W32
 XFree86-W32 is the X server for cards built around ET4000/W32 chips,
@@ -885,6 +906,7 @@ Summary(pl):	XFree86 serwer dla kart TGA
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts = %{version}
 
 %description TGA
 The XFree86-TGA package contains an 8-bit X server for Digital TGA boards
@@ -941,15 +963,17 @@ Summary:	XFree86 Fonts
 Summary(pl):	Fonty dla systemu XFree86 
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
+Pereq:		%{_bindir}/mkfontdir
 
 %description fonts
-This package contains the basic fonts, programs and documentation for an X
-workstation. It does not provide the X server which drives your video
-hardware -- those are available in other package.
+This package contains the basic fonts. This package is required when you
+have installed X server.
 
 %description -l pl fonts
+Pakiet ten zawiera podstawowe fonty. Pakiet ten jest koniecznie potrzebny
+wtedy kiedy masz zainstalowany jakikolwiek X serwer.
 
-%package 	75dpi-fonts
+%package 75dpi-fonts
 Summary:	X11R6 75dpi fonts - only need on server side
 Summary(de):	X11RT 76 dpi-Fonts - nur auf Serverseite erforderlich
 Summary(fr):	Fontes 75 dpi X11R6 - nécessaire uniquement côté serveur
@@ -957,6 +981,7 @@ Summary(pl):	Fonty o rozdzielczo¶ci 75dpi-niebêdne dla serwera.
 Summary(tr):	X11R6 75dpi yazýtipleri - yalnýzca sunucu tarafýnda gerekir
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
+Pereq:		%{_bindir}/mkfontdir
 
 %ifarch sparc
 Obsoletes: X11R6.1-75dpi-fonts
@@ -976,16 +1001,15 @@ Fontes 75 dpi utilisées sur la plupart des systèmes Linux. Ceux qui ont
 des écrans à haute résolution préfèreront les fontes 100 dpi disponibles
 dans un autre paquetage.
 
+%description -l pl 75dpi-fonts
+Pakiet ten zawiera fonty rastrowe 75dpi. W wypadku wiêkszej rozdzielczo¶ci
+zalecane czcionki 100dpi s± dostêpne w osobnym sk³adzie.
+
 %description -l tr 75dpi-fonts
 Çoðu Linux sisteminde 75dpi yazýtipi kullanýlýr. Yüksek çözünürlük kullanan
 kullanýcýlar 100dpi yazýtiplerini yeðleyebilirler.
 
-%description -l pl 75dpi-fonts
-75dpi - Podstawowe czcionki dla wielu maszyn Linuxowych.
-W wypadku wiêkszej rozdzielczo¶ci zalecane czcionki 100dpi s± dostêpne 
-w osobnym sk³adzie.
- 
-%package 	100dpi-fonts
+%package 100dpi-fonts
 Summary:	X11R6 100dpi fonts - only need on server side
 Summary(de):	X11R6 100dpi-Fonts - nur auf Server-Seite erforderlich
 Summary(fr):	Fontes 100ppp pour X11R6 - nécessaires seulement coté serveur.
@@ -993,6 +1017,7 @@ Summary(pl):	Fonty o rozdzielczosci 100dpi-niezbêdne dla serwera.
 Summary(tr):	X11R6 100dpi yazýtipleri - yalnýzca sunucu tarafýnda gereklidir
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
+Pereq:		%{_bindir}/mkfontdir
 
 %ifarch sparc
 Obsoletes: X11R6.1-100dpi-fonts
@@ -1012,19 +1037,20 @@ Les fontes 100dpi sont utilisées par la plupart des systèmes Linux.
 Les utilisateurs ayant des hautes résolutions peuvent préférer les 
 fontes 100dpi disponibles dans un package séparé.
 
+%description -l pl 100dpi-fonts
+Pakiet ten zawiera fonty rastrowe 100dpi. Bed± one potrzebne przy pracy z
+du¿± rozdzielczo¶ci±.
+
 %description -l tr 100dpi-fonts
 Yüksek çözünürlük kullanan kullanýcýlar 100dpi yazýtiplerini 75dpi olanlara
 yeðleyebilirler.
 
-%description -l pl 100dpi-fonts
-100dpi - Podstawowe czcionki dla maszyn Linuxowych pracuj±cych z wysok±
-rozdzielczo¶ci± obrazu.
-
-%package 	cyrillic-fonts
+%package cyrillic-fonts
 Summary:	Cyrillic fonts - only need on server side
 Summary(pl):	Cyrlica
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
+Pereq:		%{_bindir}/mkfontdir
 
 %description cyrillic-fonts
 Cyrillic raster fonts.
@@ -1234,7 +1260,7 @@ cd %{_fontdir}/75dpi
 umask 022
 %{_bindir}/mkfontdir
 
-%post 100pi-fonts
+%post 100dpi-fonts
 cd %{_fontdir}/100dpi
 %{_bindir}/mkfontdir
 
