@@ -7,7 +7,7 @@ Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Summary(es):	Programas básicos y servidores para el sistema de ventanas XFree86
 Name:		XFree86
 Version:	4.1.0
-Release:	8
+Release:	9
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -32,6 +32,7 @@ Source12:	xconsole.desktop
 Source13:	xterm.desktop
 Source14:	xlogo64.png
 Source15:	s3-0.3.21.tgz
+Source16:	%{name}-non-english-Xman-pages.tar.bz2
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -1404,6 +1405,8 @@ install %{SOURCE13} $RPM_BUILD_ROOT%{_applnkdir}
 
 install %{SOURCE14} $RPM_BUILD_ROOT%{_datadir}/pixmaps
 
+bzip2 -dc %{SOURCE16} $RPM_BUILD_ROOT%{_mandir}
+
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xdm
@@ -1669,35 +1672,43 @@ rm -rf $RPM_BUILD_ROOT
 %{_pixmapsdir}/x*
 
 %{_mandir}/man1/Xmark.1*
+%{_mandir}/man1/appres.1*
+%{_mandir}/man1/atobm.1*
+%{_mandir}/man1/bdftopcf.1*
+%{_mandir}/man1/bitmap.1*
+%{_mandir}/man1/bmtoa.1*
+%{_mandir}/man1/cxpm.1*
+%{_mandir}/man1/dga.1*
+%{_mandir}/man1/editres.1*
+%{_mandir}/man1/iceauth.1*
 %{_mandir}/man1/lbxproxy.1*
-%{_mandir}/man1/proxymngr.1*
-%{_mandir}/man1/xfindproxy.1*
-%{_mandir}/man1/xfwp.1*
+%ifnarch alpha
+%{_mandir}/man1/libxrx.1*
+%endif
 %{_mandir}/man1/lndir.1*
 %{_mandir}/man1/makestrs.1*
 %{_mandir}/man1/makeg.1*
 %{_mandir}/man1/mkdirhier.1*
-%{_mandir}/man1/appres.1*
-%{_mandir}/man1/bdftopcf.1*
-%{_mandir}/man1/bitmap.1*
-%{_mandir}/man1/bmtoa.1*
-%{_mandir}/man1/atobm.1*
-%{_mandir}/man1/editres.1*
-%{_mandir}/man1/iceauth.1*
 %{_mandir}/man1/mkfontdir.1*
-%{_mandir}/man1/showrgb.1*
+%{_mandir}/man1/proxymngr.1*
+%{_mandir}/man1/resize.1*
+%{_mandir}/man1/revpath.1*
 %{_mandir}/man1/rstart.1*
 %{_mandir}/man1/rstartd.1*
+%{_mandir}/man1/setxkbmap.1*
+%{_mandir}/man1/showrgb.1*
 %{_mandir}/man1/smproxy.1*
-%{_mandir}/man1/xcutsel.1*
+%{_mandir}/man1/startx.1*
+%{_mandir}/man1/sxpm.1*
 %{_mandir}/man1/xcmsdb.1*
 %{_mandir}/man1/xconsole.1*
+%{_mandir}/man1/xcutsel.1*
 %{_mandir}/man1/xdpyinfo.1*
-%{_mandir}/man1/dga.1*
+%{_mandir}/man1/xfindproxy.1*
+%{_mandir}/man1/xfwp.1*
+%{_mandir}/man1/xgamma.1*
 %{_mandir}/man1/xhost.1*
 %{_mandir}/man1/xinit.1*
-%{_mandir}/man1/startx.1*
-%{_mandir}/man1/setxkbmap.1*
 %{_mandir}/man1/xkbcomp.1*
 %{_mandir}/man1/xkbevd.1*
 %{_mandir}/man1/xkbprint.1*
@@ -1715,20 +1726,25 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xsm.1*
 %{_mandir}/man1/xstdcmap.1*
 %{_mandir}/man1/xterm.1*
-%{_mandir}/man1/resize.1*
 %{_mandir}/man1/xvidtune.1*
 %{_mandir}/man1/xvinfo.1*
 %{_mandir}/man1/xwd.1*
 %{_mandir}/man1/xwud.1*
 %{_mandir}/man1/xon.1*
-%{_mandir}/man1/revpath.1*
-%{_mandir}/man1/xgamma.1*
-%{_mandir}/man1/cxpm.1*
-%{_mandir}/man1/sxpm.1*
-%ifnarch alpha
-%{_mandir}/man1/libxrx.1*
-%endif
 %{_mandir}/man7/*
+
+%lang(it) %{_mandir}/it/man1/startx.1*
+%lang(it) %{_mandir}/man1/it/xconsole.1*
+%lang(it) %{_mandir}/man1/it/xinit.1*
+%lang(it) %{_mandir}/man1/it/xsetpointer.1*
+
+%lang(ko) %{_mandir}/ko/man1/xterm.1*
+
+%lang(pl) %{_mandir}/pl/man1/lndir.1*
+%lang(pl) %{_mandir}/pl/man1/startx.1*
+%lang(pl) %{_mandir}/pl/man1/xinit.1*
+%lang(pl) %{_mandir}/pl/man1/xwd.1*
+
 
 %files modules
 %defattr(-,root,root,755)
@@ -2411,6 +2427,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xlogo.1*
 %{_mandir}/man1/oclock.1*
 %{_mandir}/man1/rman.1*
+
+%lang(it) %{_mandir}/it/man1/xload.1*
+
+%lang(pl) %{_mandir}/pl/man1/rman.1*
+
 %{_libdir}/X11/app-defaults/Beforelight
 %{_libdir}/X11/app-defaults/Bitmap
 %{_libdir}/X11/app-defaults/Bitmap-color
