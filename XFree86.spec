@@ -68,8 +68,7 @@ Patch29:	%{name}-s3virge_mx_console_corruption_fix.patch
 Patch30:	%{name}-dri_directory_mode_fix.patch
 Patch31:	%{name}-alpha_GLX_align_fix.patch
 Patch32:	%{name}-XftConfig_in_correct_place.patch
-Patch33:        %{name}-compaq-alpha-megapatch.patch
-Patch34:	%{name}-PEX+XIE.patch
+Patch33:	%{name}-PEX+XIE.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1559,10 +1558,7 @@ serwerów lokalnych lub zdalnych.
 %patch30 -p1
 %patch31 -p1
 %patch32 -p1
-%ifarch alpha
-%patch33 -p0
-%endif
-%patch34 -p1
+%patch33 -p1
 
 rm -f xc/config/cf/host.def
 
@@ -2008,11 +2004,10 @@ fi
 %{_libdir}/libdpstk.a
 %{_libdir}/libpsres.a
 
-%ifnarch alpha sparc64 ia64
+%ifnarch alpha sparc64 ia64 s390x
 %files PEX
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libPEX5.so.*.*
-%endif
 
 %files PEX-devel
 %defattr(644,root,root,755)
@@ -2022,6 +2017,7 @@ fi
 %files PEX-static
 %defattr(644,root,root,755)
 %{_libdir}/libPEX5.a
+%endif
 
 %files XIE
 %defattr(644,root,root,755)
@@ -2491,7 +2487,7 @@ fi
 %{_mandir}/man4/elographics*
 %{_mandir}/man4/mutouch*
 
-%ifnarch alpha sparc64 ia64
+%ifnarch alpha sparc64 ia64 s390x
 %files module-PEX
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/extensions/libpex5.a
