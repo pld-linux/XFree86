@@ -2309,7 +2309,6 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/extensions/libglx.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libGLcore.a
-%{_mandir}/man1/glxgears.1x*
 
 %files OpenGL-libGL
 %defattr(644,root,root,755)
@@ -2359,6 +2358,7 @@ fi
 # Linux OpenGL ABI compatibility symlink
 %attr(755,root,root) /usr/%{_lib}/libGLU.so.1
 %{_mandir}/man1/glxinfo.1*
+%{_mandir}/man1/glxgears.1x*
 
 %files OpenGL-static
 %defattr(644,root,root,755)
