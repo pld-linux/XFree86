@@ -10,7 +10,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Name:		XFree86
 Version:	4.2.0
-Release:	2.1
+Release:	2.2
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/%{version}/source/X%{_sver}src-1.tgz
@@ -1614,7 +1614,6 @@ fi
 %attr(755,root,root) %{_libdir}/X11/lbxproxy
 %attr(755,root,root) %{_libdir}/X11/proxymngr
 %attr(755,root,root) %{_libdir}/X11/rstart
-%attr(755,root,root) %{_libdir}/X11/xserver
 %attr(755,root,root) %{_libdir}/X11/fonts
 %attr(755,root,root) %{_libdir}/X11/xinit
 %attr(755,root,root) %{_libdir}/X11/xsm
@@ -1635,8 +1634,6 @@ fi
 %attr(755,root,root) /etc/X11/rstart/commands/x11r6/*
 %dir /etc/X11/rstart/contexts
 /etc/X11/rstart/contexts/*
-%dir /etc/X11/xserver
-/etc/X11/xserver/SecurityPolicy
 %dir /etc/X11/xsm
 /etc/X11/xsm/*
 
@@ -1681,7 +1678,6 @@ fi
 %attr(755,root,root) %{_bindir}/xhost
 %attr(755,root,root) %{_bindir}/xinit
 %attr(755,root,root) %{_bindir}/xkbbell
-%attr(755,root,root) %{_bindir}/xkbcomp
 %attr(755,root,root) %{_bindir}/xkbevd
 %attr(755,root,root) %{_bindir}/xkbprint
 %attr(755,root,root) %{_bindir}/xkbvleds
@@ -2242,6 +2238,7 @@ fi
 
 %files modules
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/xkbcomp
 %{_libdir}/X11/xkb
 %{_sysconfdir}/X11/xkb
 /var/lib/xkb
@@ -2272,6 +2269,9 @@ fi
 %attr(755,root,root) %{_libdir}/modules/fonts
 %attr(755,root,root) %{_libdir}/modules/input
 %attr(755,root,root) %{_libdir}/modules/linux
+%attr(755,root,root) %{_libdir}/X11/xserver
+%dir /etc/X11/xserver
+/etc/X11/xserver/SecurityPolicy
 %{_mandir}/man4/citron*
 %{_mandir}/man4/dynapro*
 %{_mandir}/man4/keyboard*
