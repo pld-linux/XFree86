@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
 Version:	4.0.2
-Release:	7
+Release:	12
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -53,6 +53,16 @@ Patch23:	%{name}-portuguese.patch
 Patch24:	%{name}-XF86CardDrivers-cfg.patch
 Patch25:	%{name}-pic.patch
 Patch26:	%{name}-time.patch
+Patch27:	%{name}-xf-4_0_2-branch-2001-02-10.patch
+Patch28:	%{name}-sis-unresolved-memcpy.patch
+Patch29:	%{name}-romanian-keyboard-fix.patch
+Patch30:	%{name}-g450.patch
+Patch31:	%{name}-Xft-update.patch
+Patch32:	%{name}-neomagic_swcursor.patch
+Patch33:	%{name}-cpp.patch
+Patch34:	%{name}-banshee-ramtiming.patch
+Patch35:	%{name}-defmodes-1400.patch
+Patch36:	%{name}-ia64-int10.patch
 BuildRequires:	flex
 BuildRequires:	bison
 BuildRequires:	ncurses-devel
@@ -1038,8 +1048,18 @@ X11R6-contrib in older releases.
 %patch23 -p1
 %patch24 -p1
 %patch25 -p1
-%patch26 -p0
 rm -f xc/config/cf/host.def
+%patch26 -p1
+%patch27 -p1
+%patch28 -p1
+%patch29 -p1
+%patch30 -p1
+%patch31 -p1
+%patch32 -p1
+%patch33 -p1
+%patch34 -p1
+%patch35 -p1
+%patch36 -p1
 
 #--- %build --------------------------
 
