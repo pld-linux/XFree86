@@ -17,7 +17,7 @@ diff -urN XFree86-4.0.1.orig/xc/programs/xdm/greeter/verify.c XFree86-4.0.1/xc/p
  
  #ifdef USE_PAM
  static char *PAM_password;
-+pam_handle_t *pamh;
++extern pam_handle_t *pamh;
  static int pam_error;
  
  static int PAM_conv (int num_msg,
@@ -41,7 +41,7 @@ diff -urN XFree86-4.0.1.orig/xc/programs/xdm/session.c XFree86-4.0.1/xc/programs
  extern	char	*crypt(CRYPT_ARGS);
  #endif
  #ifdef USE_PAM
-+extern pam_handle_t *pamh;
++pam_handle_t *pamh;
  pam_handle_t *thepamh()
  {
 -	static pam_handle_t *pamh = NULL;
