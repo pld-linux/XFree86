@@ -24,7 +24,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.99.11
-Release:	0.1
+Release:	0.2
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
@@ -63,6 +63,8 @@ Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-X
 # http://w1.894.telia.com/~u89404340/touchpad/index.html
 Source40:	http://w1.894.telia.com/~u89404340/touchpad/synaptics-%{_synaptics_ver}.tar.bz2
 # Source40-md5:	4dabd4c8ce8968eba6cde1dd6265c9c7
+Source41:	http://www.linux.org.uk/~alan/S3.zip
+# Source41-md5:	8b754fc6bbded60b683563b945e384b0
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -1930,7 +1932,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c -b3 -a40
+%setup -q -c -b3 -a40 -a41
 #-b1 -b2 -a3
 %patch0 -p0
 %patch1 -p1
@@ -2014,6 +2016,25 @@ rm -rf xc/fonts
 #	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 %endif
 
+%ifarch %{ix86} mips alpha ppc arm
+olddir=$(pwd)
+tar xfz *.tar.gz
+cd LinuxDriver/2D
+sed -i -e 's#$(XF86OSSRC)/vbe#$(XF86SRC)/vbe#g' Imakefile
+xmkmf $olddir/xc .
+%{__make} -S savage_drv.o \
+	DEFAULT_OS_CPU_FROB=%{_target_cpu} \
+	CC="%{__cc}" \
+	BOOTSTRAPCFLAGS="%{rpmcflags}" \
+	CCOPTIONS="%{rpmcflags}" \
+	CXXOPTIONS="%{rpmcflags}" \
+	CXXDEBUGFLAGS="" \
+	CDEBUGFLAGS="" \
+	ICONDIR="%{_icondir}" \
+	LINUXDIR="%{_kernelsrcdir}"
+cd $olddir
+%endif
+
 %ifnarch sparc sparc64
 TOPDIR=$(pwd)/xc
 %{__make} -S -C synaptics clean all \
@@ -2071,6 +2092,9 @@ install synaptics/synaptics_drv.o $RPM_BUILD_ROOT%{_libdir}/modules/input
 #install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_dri.o \
 #	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/dri
 %endif
+
+install -d $RPM_BUILD_ROOT%{_libdir}/modules.s3/drivers
+install LinuxDriver/2D/savage_drv.o $RPM_BUILD_ROOT%{_libdir}/modules.s3/drivers
 
 # setting default X
 rm -f $RPM_BUILD_ROOT%{_bindir}/X
@@ -2963,6 +2987,8 @@ fi
 %files driver-savage
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/savage_drv.o
+%dir %{_libdir}/modules.s3
+%attr(755,root,root) %{_libdir}/modules.s3/savage_drv.o
 %{_mandir}/man4/savage*
 %endif
 
