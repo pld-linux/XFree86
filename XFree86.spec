@@ -7,7 +7,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Name:		XFree86
 Version:	4.1.0
-Release:	14
+Release:	15
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -1251,7 +1251,6 @@ Summary(pl):	Program do zarz±dzania wpisami w utmp/wtmp
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
-Requires:	%{name}-libs = %{version}
 
 %description -n sessreg
 sessreg is a simple program for managing utmp/wtmp entries for xdm
