@@ -2436,7 +2436,7 @@ fi
 
 %files xft
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libXft.so.2.0
+%attr(755,root,root) %{_libdir}/libXft.so.2.1
 
 %files xft-devel
 %defattr(644,root,root,755)
