@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
 Version:	4.1.0
-Release:	1
+Release:	2
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -54,6 +54,7 @@ Patch25:	%{name}-agpgart-load.patch
 Patch26:	%{name}-mkfontdir-chmod_644.patch
 Patch27:	%{name}-DEC.patch
 Patch28:	%{name}-HasFreetype2.patch
+Patch29:	%{name}-libXfont-put-eof.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1234,6 +1235,7 @@ X11R6-contrib in older releases.
 %patch27 -p0
 %endif
 %patch28 -p1
+%patch29 -p1
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
