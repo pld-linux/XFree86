@@ -23,8 +23,8 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
-Version:	4.3.99.6
-Release:	2
+Version:	4.3.99.7
+Release:	0.1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
@@ -109,12 +109,12 @@ Patch41:	%{name}-GLcore-strip-a-workaround.patch
 Patch42:	%{name}-disable_glide.patch
 Patch43:	%{name}-expat.patch
 Patch44:	%{name}-pkgconfig.patch
-Patch45:	%{name}-VidMode-nocrashafterfailure.patch
 # spencode.o in libspeedo.a is empty - patch like for libGLcore.a
-Patch46:	%{name}-spencode-nowarning.patch
+Patch45:	%{name}-spencode-nowarning.patch
 # Small (maybe buggy) patch to resolve problems with totem 0.97.0
-Patch47:	%{name}-lock.patch
-Patch48:	%{name}-linux-version.patch
+Patch46:	%{name}-lock.patch
+Patch47:	%{name}-linux-version.patch
+Patch48:	%{name}-XF86_VERSION_SNAP.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	bison
 BuildRequires:	expat-devel
@@ -136,6 +136,7 @@ BuildRequires:	ed
 %ifarch %{ix86}
 %{!?_without_tdfx:BuildRequires:	Glide2x_SDK}
 %endif
+BuildConflicts:	flex >= 2.5.31
 Requires:	xauth
 Requires:	%{name}-libs = %{version}
 ExclusiveArch:	%{ix86} alpha sparc m68k armv4l noarch ppc
@@ -1978,9 +1979,9 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch43 -p0
 %patch44 -p0
 %patch45 -p1
-%patch46 -p1
-%patch47 -p0
-%patch48 -p1
+%patch46 -p0
+%patch47 -p1
+%patch48 -p0
 
 rm -f xc/config/cf/host.def
 
