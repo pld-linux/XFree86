@@ -12,7 +12,7 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Name:		XFree86
 Version:	4.2.0
-Release:	3
+Release:	3.1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/%{version}/source/X%{_sver}src-1.tgz
@@ -2151,6 +2151,7 @@ fi
 %files OpenGL-core
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libGL.so.*.*
+%attr(755,root,root) %{_libdir}/libGL.so
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/extensions/libglx.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libGLcore.a
@@ -2158,7 +2159,7 @@ fi
 
 %files OpenGL-devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libGL*.so
+%attr(755,root,root) %{_libdir}/libGLU.so
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/libOSMesa*.so
 %endif
