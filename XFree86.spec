@@ -1985,12 +1985,14 @@ rm -rf $RPM_BUILD_ROOT
 %postun	OpenGL-libs -p /sbin/ldconfig
 
 %post libs
-grep "^%{_libdir}$" /etc/ld.so.conf >/dev/null 2>&1
+umask 022
+grep -qs "^%{_libdir}$" /etc/ld.so.conf
 [ $? -ne 0 ] && echo "%{_libdir}" >> /etc/ld.so.conf
 /sbin/ldconfig
 
 %postun libs
 if [ "$1" = "0" ]; then
+	umask 022
 	grep -v "%{_libdir}" /etc/ld.so.conf > /etc/ld.so.conf.new
 	mv -f /etc/ld.so.conf.new /etc/ld.so.conf
 fi
@@ -1998,7 +2000,7 @@ fi
 
 %verifyscript libs
 echo -n "Looking for %{_libdir} in /etc/ld.so.conf... "
-if ! grep "^%{_libdir}$" /etc/ld.so.conf > /dev/null; then
+if ! grep -q "^%{_libdir}$" /etc/ld.so.conf ; then
 	echo "missing"
 	echo "%{_libdir} missing from /etc/ld.so.conf" >&2
 else
