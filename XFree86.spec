@@ -1888,7 +1888,8 @@ rm -f xc/config/cf/host.def
 	CXXOPTIONS="%{rpmcflags}" \
 	CXXDEBUGFLAGS="" \
 	CDEBUGFLAGS="" \
-	ICONDIR="%{_icondir}"
+	ICONDIR="%{_icondir}" \
+	LINUXDIR="%{_kernelsrcdir}"
 
 %ifnarch alpha
 #%%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" Makefiles
@@ -1923,7 +1924,8 @@ install -d $RPM_BUILD_ROOT/etc/{X11/fs,pam.d,rc.d/init.d,security/console.apps,s
 	CXXOPTIONS="%{rpmcflags}" \
 	CXXDEBUGFLAGS="" \
 	CDEBUGFLAGS="" \
-	ICONDIR="%{_icondir}"
+	ICONDIR="%{_icondir}" \
+	LINUXDIR="%{_kernelsrcdir}"
 
 %ifnarch alpha
 #install -d $RPM_BUILD_ROOT%{_libdir}/modules.gatos/{drivers,dri}
