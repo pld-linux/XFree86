@@ -332,6 +332,7 @@ Summary:	Old version of font rendering library
 Summary(pl):	Stara wersja biblioteki wy¶wietlaj±cej fonty
 Group:		X11/XFree86
 Requires:	%{name}-libs = %{version}
+Requires:	%{name}-xrender = %{version}
 Obsoletes:	XFree86-xft < 4.2.99
 
 %description xft1
@@ -344,8 +345,9 @@ Stara wersja biblioteki wy¶wietlaj±cej fonty.
 Summary:	X Font rendering library
 Summary(pl):	Biblioteka do renderowania fontów
 Group:		X11/XFree86
-Requires:	%{name}-libs = %{version}
 Requires:	%{name}-fontconfig = %{version}
+Requires:	%{name}-libs = %{version}
+Requires:	%{name}-xrender = %{version}
 Provides:	Xft = 2.1-2
 Obsoletes:	XFree86-xft2
 Obsoletes:	Xft
@@ -361,7 +363,8 @@ Summary:	X Font Rendering library
 Summary(pl):	Biblioteka do renderowania fontów
 Group:		X11/Development/Libraries
 Requires:	%{name}-xft = %{version}
-Requires:	%{name}-fontconfig-devel
+Requires:	%{name}-fontconfig-devel = %{version}
+Requires:	%{name}-xrender-devel = %{version}
 Provides:	Xft-devel = 2.1-2
 Obsoletes:	XFree86-xft2-devel
 Obsoletes:	Xft-devel
