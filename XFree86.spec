@@ -47,6 +47,7 @@ Patch16:	%{name}-sparc4.patch.gz
 Patch17:	%{name}-shared.patch
 Patch18:	%{name}-broken-includes.patch
 Patch19:	%{name}-Xaw-unaligned.patch
+Patch20:	%{name}-4.0.1-alpha-pcibus-lemming.patch
 
 BuildRequires:	flex
 BuildRequires:	ncurses-devel
@@ -909,7 +910,9 @@ X11R6-contrib in older releases.
 %patch17 -p1
 %patch18 -p1
 %patch19 -p1
-
+%ifarch alpha
+%patch20 -p0 -b .lemming
+%endif 
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
