@@ -2017,15 +2017,6 @@ rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/html
 # resolve conflict with man-pages
 mv -f $RPM_BUILD_ROOT%{_mandir}/man4/{mouse.4,mouse-x.4}
 
-# directories for applications locales
-echo '%defattr(644,root,root,755)' > XFree86-libs.lang
-for lang in af az bg bg_BG.cp1251 br ca cs da de el en_GB eo es et eu fi \
-	fr ga gl he hr hu is it ja ko lt mi mk nl nn no pl pt pt_BR ro ru sk \
-	sl sr sv ta th tr uk wa zh_CN zh_TW ; do
-	install -d $RPM_BUILD_ROOT%{_datadir}/locale/${lang}/LC_MESSAGES
-	echo "%lang(${lang}) %{_datadir}/locale/${lang}" >> XFree86-libs.lang
-done
-
 %ifnarch sparc sparc64
 gzip -9nf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
 
@@ -2896,7 +2887,7 @@ fi
 %{_mandir}/man4/vmware*
 %endif
 
-%files libs -f XFree86-libs.lang
+%files libs
 %defattr(644,root,root,755)
 %dir /etc/xdg
 %dir %{_themesdir}
@@ -2924,7 +2915,6 @@ fi
 %dir %{_includedir}/X11
 /usr/include/X11
 %dir %{_sbindir}
-%dir %{_datadir}/locale
 %dir %{_datadir}/misc
 %dir %{_iconsdir}
 %dir %{_pixmapsdir}
