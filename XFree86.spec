@@ -65,6 +65,7 @@ Source40:	http://w1.894.telia.com/~u89404340/touchpad/synaptics-%{_synaptics_ver
 # Source40-md5:	c07ffb03e93aefebc0570fe638939e27
 Source41:	http://www.linux.org.uk/~alan/S3.zip
 # Source41-md5:	8b754fc6bbded60b683563b945e384b0
+Source42:	twm-xsession.desktop
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -1940,7 +1941,6 @@ install %{SOURCE10} $RPM_BUILD_ROOT/etc/sysconfig/xdm
 install %{SOURCE11} $RPM_BUILD_ROOT/etc/sysconfig/xfs
 
 install %{SOURCE20} $RPM_BUILD_ROOT%{_wmpropsdir}/twm.desktop
-install %{SOURCE20} $RPM_BUILD_ROOT%{_datadir}/xsessions/twm.desktop
 install %{SOURCE21} %{SOURCE22} %{SOURCE23} %{SOURCE24} %{SOURCE25} \
 	%{SOURCE26} %{SOURCE27} \
 	$RPM_BUILD_ROOT%{_desktopdir}
@@ -1949,6 +1949,9 @@ install %{SOURCE30} %{SOURCE31} %{SOURCE32} %{SOURCE33} %{SOURCE34} \
 	$RPM_BUILD_ROOT%{_pixmapsdir}
 
 bzip2 -dc %{SOURCE38} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
+
+# twm desktop file for gdm/kdm support
+install %{SOURCE42} $RPM_BUILD_ROOT%{_datadir}/xsessions/twm.desktop
 
 :> $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 :> $RPM_BUILD_ROOT/etc/security/blacklist.xserver
