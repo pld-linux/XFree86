@@ -346,9 +346,9 @@ Wsparcie OpenGL dla systemu X11R6.
 Summary:	OpenGL for X11R6 development
 Summary(pl):	Pliki nagЁСwkowe OpenGL dla systemu X11R6
 Group:		X11/Development/Libraries
+Requires:	OpenGL-devel-base
 Requires:	%{name}-OpenGL-libs = %{version}
 Requires:	%{name}-devel
-Requires:	OpenGL-devel-base
 Provides:	OpenGL-devel
 Obsoletes:	Mesa-devel
 Obsoletes:	XFree86-OpenGL-doc
@@ -364,9 +364,9 @@ Pliki nagЁСwkowe i manuale do OpenGL dla systemu X11R6.
 Summary:	OpenGL for X11R6 development (only gl?.h)
 Summary(pl):	Pliki nagЁСwkowe OpenGL dla systemu X11R6 (tylko gl?.h)
 Group:		X11/Development/Libraries
+Requires:	OpenGL-devel
 Requires:	%{name}-OpenGL-libs = %{version}
 Requires:	%{name}-devel
-Requires:	OpenGL-devel
 Provides:	OpenGL-devel-base
 
 %description OpenGL-devel-base
@@ -413,7 +413,7 @@ Summary(uk):	"Вкладений" сервер XFree86
 Group:		X11/XFree86/Servers
 Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	XFree86-fonts-base
+Requires:	%{name}-fonts-base
 
 %description Xnest
 Xnest is an X Window System server which runs in an X window. Xnest is
@@ -455,7 +455,7 @@ Group:		X11/XFree86/Servers
 PreReq:		xprint-initrc
 Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	XFree86-fonts-base
+Requires:	%{name}-fonts-base
 
 %description Xprt
 Xprt provides an X server with the print extension and special DDX
@@ -473,15 +473,19 @@ Summary(tr):	XFree86 sunucusu
 Group:		X11/XFree86/Servers
 Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	XFree86-fonts-base
+Requires:	%{name}-fonts-base
 Requires:	pam
-Obsoletes:	XFree86-VGA16 XFree86-SVGA XFree86-Mono
+Obsoletes:	XFree86-Mono
+Obsoletes:	XFree86-SVGA
+Obsoletes:	XFree86-VGA16
 # obsoleted by many drivers: suncg3,suncg6,suncg14,sunffb,sunleo,suntcx
-Obsoletes:	XFree86-Sun XFree86-Sun24
+Obsoletes:	XFree86-Sun
+Obsoletes:	XFree86-Sun24
 # still not supported in 4.2.0:
 #Obsoletes:	XFree86-Mach8 XFree86-8514 XFree86-AGX XFree86-P9000
 # (and many drivers from XF86_SVGA server... and some from others)
-Obsoletes:	XFree86-XF86Setup Xconfigurator
+Obsoletes:	XFree86-XF86Setup
+Obsoletes:	Xconfigurator
 
 %description Xserver
 Generally used X server which uses display hardware. It requires
@@ -530,7 +534,7 @@ Summary(uk):	Сервер XFree86 для в╕ртуального фреймбуфера
 Group:		X11/XFree86/Servers
 Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	XFree86-fonts-base
+Requires:	%{name}-fonts-base
 
 %description Xvfb
 Xvfb (X Virtual Frame Buffer) is an X Window System server that is
@@ -707,7 +711,9 @@ Summary(pl):	Sterownik do kart ATI
 Group:		X11/XFree86
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	%{name}-modules = %{version}-%{release}
-Obsoletes:	XFree86-ATI XFree86-Mach32 XFree86-Mach64
+Obsoletes:	XFree86-ATI
+Obsoletes:	XFree86-Mach32
+Obsoletes:	XFree86-Mach64
 
 %description driver-ati
 ATI video driver.
@@ -719,9 +725,9 @@ Sterownik do kart ATI.
 Summary:	ATI Rage 128 video driver
 Summary(pl):	Sterownik do kart ATI Rage 128
 Group:		X11/XFree86
+Requires:	OpenGL
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	OpenGL
 Conflicts:	XFree86-driver-nvidia
 Obsoletes:	XFree86-Rage128
 
@@ -735,10 +741,10 @@ Sterownik do kart ATI Rage 128.
 Summary:	ATI Radeon video driver
 Summary(pl):	Sterownik do kart ATI Radeon
 Group:		X11/XFree86
+Requires:	OpenGL
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	OpenGL
-Requires:	XFree86-driver-ati
+Requires:	%{name}-driver-ati
 Conflicts:	XFree86-driver-nvidia
 
 %description driver-radeon
@@ -753,7 +759,9 @@ Summary(pl):	Sterownik do kart ATI (ATI.2)
 Group:		X11/XFree86
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	%{name}-modules = %{version}-%{release}
-Obsoletes:	XFree86-ATI XFree86-Mach32 XFree86-Mach64
+Obsoletes:	XFree86-ATI
+Obsoletes:	XFree86-Mach32
+Obsoletes:	XFree86-Mach64
 
 %description driver-ati.2
 ATI video driver (ATI.2) from gatos (http://gatos.sourceforge.net/).
@@ -766,10 +774,10 @@ Sterownik do kart ATI (ATI.2) projektu gatos
 Summary:	ATI Rage 128 video driver (ATI.2)
 Summary(pl):	Sterownik do kart ATI Rage 128 (ATI.2)
 Group:		X11/XFree86
+Requires:	OpenGL
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	OpenGL
-Requires:	XFree86-driver-ati.2
+Requires:	%{name}-driver-ati.2
 Conflicts:	XFree86-driver-nvidia
 Obsoletes:	XFree86-Rage128
 
@@ -785,10 +793,10 @@ Sterownik do kart ATI Rage 128 (ATI.2) projektu gatos
 Summary:	ATI Radeon video driver (ATI.2)
 Summary(pl):	Sterownik do kart ATI Radeon (ATI.2)
 Group:		X11/XFree86
+Requires:	OpenGL
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	OpenGL
-Requires:	XFree86-driver-ati.2
+Requires:	%{name}-driver-ati.2
 Conflicts:	XFree86-driver-nvidia
 
 %description driver-radeon.2
@@ -885,9 +893,9 @@ Sterownik do kart Voodoo1 i Voodoo2 firmy 3Dfx.
 Summary:	GLINT/Permedia video driver
 Summary(pl):	Sterownik do kart GLINT i Permedia
 Group:		X11/XFree86
+Requires:	OpenGL
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	OpenGL
 Conflicts:	XFree86-driver-nvidia
 Obsoletes:	XFree86-3DLabs
 
@@ -929,9 +937,9 @@ Sterownik do kart na ukЁadzie Intel i740.
 Summary:	Intel i810/i815/i830 video driver
 Summary(pl):	Sterownik do grafiki na ukЁadach Intel i810/i815/i830
 Group:		X11/XFree86
+Requires:	OpenGL
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	OpenGL
 Conflicts:	XFree86-driver-nvidia
 Obsoletes:	XFree86-i810
 
@@ -958,9 +966,9 @@ Sterownik do kart Integrated Micro Solutions Twin Turbo 128.
 Summary:	Matrox video driver
 Summary(pl):	Sterownik do kart Matrox
 Group:		X11/XFree86
+Requires:	OpenGL
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	OpenGL
 Conflicts:	XFree86-driver-nvidia
 Obsoletes:	XFree86-mga
 
@@ -1207,10 +1215,10 @@ Sterownik do kart Sun TCX.
 Summary:	3Dfx video driver
 Summary(pl):	Sterownik do kart 3Dfx
 Group:		X11/XFree86
-Requires:	%{name}-Xserver = %{version}-%{release}
-Requires:	%{name}-modules = %{version}-%{release}
 Requires:	Glide3-DRI
 Requires:	OpenGL
+Requires:	%{name}-Xserver = %{version}-%{release}
+Requires:	%{name}-modules = %{version}-%{release}
 Conflicts:	XFree86-driver-nvidia
 Obsoletes:	XFree86-3dfx
 
@@ -1470,7 +1478,7 @@ Summary(ru):	Разнообразные утилиты для XFree86
 Summary(uk):	Р╕зноман╕тн╕ утил╕ти для XFree86
 Group:		X11/XFree86
 Requires:	%{name} >= %{version}
-Requires:	XFree86-libs = %{version}
+Requires:	%{name}-libs = %{version}
 Requires:	man-config
 Obsoletes:	X11R6-contrib
 
@@ -1580,7 +1588,7 @@ Summary(pl):	Twm - podstawowy zarz╠dca okien dla X Window System
 Summary(ru):	Простой оконный менеджер
 Summary(uk):	Простий в╕конний менеджер
 Group:		X11/Window Managers
-Requires:	XFree86-libs = %{version}
+Requires:	%{name}-libs = %{version}
 
 %description -n twm
 Twm is a window manager for the X Window System. It provides
@@ -1670,8 +1678,8 @@ Requires(pre):	/usr/sbin/groupadd
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
+Requires:	%{name}-fonts-base
 Requires:	%{name}-libs = %{version}
-Requires:	XFree86-fonts-base
 Obsoletes:	xfsft XFree86-xfs
 
 %description -n xfs
