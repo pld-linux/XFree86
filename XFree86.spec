@@ -1487,7 +1487,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -n xdm
 %defattr(644,root,root,755)
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xdm
-%attr(750,root,root) %config /etc/rc.d/init.d/xdm
+%attr(754,root,root) /etc/rc.d/init.d/xdm
 %attr(-,root,root) /etc/X11/xdm/*
 
 %config /usr/X11R6/lib/X11/app-defaults/Chooser
