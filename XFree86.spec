@@ -2100,7 +2100,10 @@ rm -rf $RPM_BUILD_ROOT
 %post   xft -p /sbin/ldconfig
 %postun xft -p /sbin/ldconfig
 
-%post	fontconfig -p /sbin/ldconfig
+%post	fontconfig
+/sbin/ldconfig
+HOME=/root %{_bindir}/fc-cache -f 2> /dev/nul
+
 %postun	fontconfig -p /sbin/ldconfig
 
 %post	OpenGL-core -p /sbin/ldconfig
