@@ -1,0 +1,3 @@
+- release 4 (bugfix),
+- rebuild on fixed rpm (which do not strip modules),
+- fixed donts Requires rule (Requires: XFree86-fonts-ISO8859-1).
