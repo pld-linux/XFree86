@@ -35,6 +35,10 @@ Patch8:		XFree86-xfsredhat.patch
 Patch9:		XFree86-xfs-fix.patch
 Patch10:	XFree86-xfs-logger.patch
 Patch11:	XFree86-xterm-utempter.patch
+# from rawhide
+Patch12:	XFree86-startx_xauth.patch
+Patch13:	XFree86-sparc.patch
+Patch14:	XFree86-v4l.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
