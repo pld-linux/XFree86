@@ -16,11 +16,12 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
-Version:	4.2.1
-Release:	9.3
+Version:	4.2.99.3
+Release:	0.1
 License:	MIT
 Group:		X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
+#Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
+Source0:	X42993src-1.tar.bz2
 Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source2:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
 Source3:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
@@ -1754,10 +1755,10 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 
 %prep
 %setup -q -c -a1
-%patch0 -p1
+%patch0 -p0
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
+%patch3 -p0
 %patch4 -p1
 %patch5 -p0
 # not ready yet
@@ -1766,16 +1767,16 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
-%patch11 -p0
+#%patch11 -p0 --seems to be obsoleted
 %patch12 -p1
 %patch13 -p1
-%patch14 -p1
+%patch14 -p0
 %patch15 -p1
-%patch16 -p1
-%patch17 -p1
+%patch16 -p0
+#%patch17 -p1 -- not ready, is it required?
 %patch18 -p1
 #%patch19 -p1
-%patch20 -p1
+%patch20 -p0 
 %patch21 -p1
 %patch22 -p1
 %patch23 -p1
@@ -1787,27 +1788,27 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 # needs updating (14 rejects)
 #%patch28 -p1
 %endif
-%patch29 -p1
-%patch30 -p1
+%patch29 -p0
+#%patch30 -p1 -- obsoleted
 %patch31 -p1
-%patch32 -p1
-%patch33 -p1
-%patch34 -p1
+#%patch32 -p1 --obsoleted
+%patch33 -p0
+#%patch34 -p1 --obsoleted????????
 %ifarch ppc
-%patch35
+%patch35	--new version required
 %endif
-%{?_without_tdfx:%patch35}
-%patch36 -p0
+#%%{?_without_tdfx:%patch35} --same as above
+#%patch36 -p0 --obsoleted
 %patch37 -p1
-%patch38 -p1
+####%patch38 -p1
 #%patch39 -p1
-%patch40 -p0
-%patch41 -p1
-%patch42 -p1
-%patch43 -p1
-%patch44 -p1
-%patch45 -p1
-%patch46 -p1
+####%patch40 -p0
+####%patch41 -p1
+####%patch42 -p1  --obsoleted (all with ####)
+####%patch43 -p1
+####%patch44 -p1
+####%patch45 -p1
+####%patch46 -p1
 %{!?_without_tdfx:%patch47 -p0}
 %{!?_without_tdfx:%patch48 -p0}
 %{!?_without_tdfx:%patch49 -p1}
@@ -1816,22 +1817,22 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #%patch52 -p1
 #%patch53 -p1
 #%patch54 -p1
-%patch55 -p0
+#%patch55 -p0
 %patch56 -p1
-%{!?debug:%patch57 -p1}
-%patch58 -p0
+#%%{!?debug:%patch57 -p1} --obsoleted
+#%patch58 -p0  --obsoleted
 %{?_without_tdfx:%patch59 -p0}
 
 rm -f xc/config/cf/host.def
 
 # New ATI drivers
-cd xc/programs/Xserver/hw/xfree86/drivers
-bzcat %{SOURCE2} | tar x
+#%cd xc/programs/Xserver/hw/xfree86/drivers
+#%bzcat %{SOURCE2} | tar x
 # ati.2 directory
 
 # New SiS drivers
-cd sis
-zcat %{SOURCE38} | tar x
+#%cd sis
+#%zcat %{SOURCE38} | tar x
 
 #--- %build --------------------------
 
@@ -1843,12 +1844,12 @@ zcat %{SOURCE38} | tar x
 	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 
 %ifnarch alpha
-%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" Makefiles
-%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" all \
-	"BOOTSTRAPCFLAGS=%{rpmcflags}" \
-	"CCOPTIONS=%{rpmcflags}" \
-	"CXXOPTIONS=%{rpmcflags}" \
-	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
+#%%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" Makefiles
+#%%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" all \
+#	"BOOTSTRAPCFLAGS=%{rpmcflags}" \
+#	"CCOPTIONS=%{rpmcflags}" \
+#	"CXXOPTIONS=%{rpmcflags}" \
+#	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 %endif
 
 #--- %install ------------------------
@@ -1876,11 +1877,11 @@ install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysc
 		install install.man
 
 %ifnarch alpha
-install -d $RPM_BUILD_ROOT%{_libdir}/modules.gatos/{drivers,dri}
-install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_drv.o \
-	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/drivers
-install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_dri.o \
-	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/dri
+#install -d $RPM_BUILD_ROOT%{_libdir}/modules.gatos/{drivers,dri}
+#install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_drv.o \
+#	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/drivers
+#install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_dri.o \
+#	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/dri
 
 %endif
 
@@ -2316,7 +2317,7 @@ fi
 %files xft
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libXft.so.*.*
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/X11/XftConfig
+#%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/X11/XftConfig
 
 %files xft-devel
 %defattr(644,root,root,755)
@@ -2570,35 +2571,36 @@ fi
 %attr(755,root,root) %{_libdir}/modules/drivers/radeon*_drv.o
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
+%attr(755,root,root) %{_libdir}/modules/dri/r200_dri.so
 %endif
 
 
 %ifnarch alpha
-%files driver-ati.2
-%defattr(644,root,root,755)
-%dir %{_libdir}/modules.gatos/drivers
-%attr(755,root,root) %{_libdir}/modules.gatos/drivers/ati*_drv.o
-%attr(755,root,root) %{_libdir}/modules.gatos/drivers/[bfmt]*_drv.o
+#%%files driver-ati.2
+#%defattr(644,root,root,755)
+#%dir %{_libdir}/modules.gatos/drivers
+#%attr(755,root,root) %{_libdir}/modules.gatos/drivers/ati*_drv.o
+#%attr(755,root,root) %{_libdir}/modules.gatos/drivers/[bfmt]*_drv.o
 %endif
 
 %ifnarch alpha
-%files driver-r128.2
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules.gatos/drivers/r128*_drv.o
-%ifnarch sparc sparc64
-%attr(755,root,root) %{_libdir}/modules.gatos/dri/r128_dri.o
-%endif
-%{_mandir}/man4/r128*
+#%files driver-r128.2
+#%defattr(644,root,root,755)
+#%attr(755,root,root) %{_libdir}/modules.gatos/drivers/r128*_drv.o
+#%ifnarch sparc sparc64
+#%attr(755,root,root) %{_libdir}/modules.gatos/dri/r128_dri.o
+#%endif
+#%{_mandir}/man4/r128*
 %endif
 
 %ifnarch alpha
-%files driver-radeon.2
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules.gatos/drivers/radeon*_drv.o
-%attr(755,root,root) %{_libdir}/modules.gatos/drivers/saa7114_drv.o
-%ifnarch sparc sparc64
-%attr(755,root,root) %{_libdir}/modules.gatos/dri/radeon_dri.o
-%endif
+#%files driver-radeon.2
+#%defattr(644,root,root,755)
+#%attr(755,root,root) %{_libdir}/modules.gatos/drivers/radeon*_drv.o
+#%attr(755,root,root) %{_libdir}/modules.gatos/drivers/saa7114_drv.o
+#%ifnarch sparc sparc64
+#%attr(755,root,root) %{_libdir}/modules.gatos/dri/radeon_dri.o
+#%endif
 %endif
 
 %ifnarch sparc sparc64 ppc
@@ -2637,13 +2639,13 @@ fi
 %endif
 
 %ifnarch sparc sparc64 alpha
-%files driver-sis
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
-%ifnarch ppc
-%attr(755,root,root) %{_libdir}/modules/dri/sis_dri.so
-%endif
-%{_mandir}/man4/sis*
+#%files driver-sis
+#%defattr(644,root,root,755)
+#%attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
+#%ifnarch ppc
+#%attr(755,root,root) %{_libdir}/modules/dri/sis_dri.so
+#%endif
+#%{_mandir}/man4/sis*
 %endif
 
 %ifarch sparc sparc64
@@ -3034,11 +3036,11 @@ fi
 %attr(755,root,root) %{_bindir}/fstobdf
 %attr(755,root,root) %{_bindir}/mkcfm
 %attr(755,root,root) %{_bindir}/xfsinfo
-%attr(755,root,root) %{_bindir}/xftcache
+#%attr(755,root,root) %{_bindir}/xftcache
 
 %{_mandir}/man1/xfs.1*
 %{_mandir}/man1/fslsfonts.1*
 %{_mandir}/man1/fstobdf.1*
 %{_mandir}/man1/mkcfm.1*
 %{_mandir}/man1/xfsinfo.1*
-%{_mandir}/man1/xftcache.1*
+#%{_mandir}/man1/xftcache.1*
