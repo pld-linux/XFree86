@@ -1853,8 +1853,9 @@ Requires:	pam >= 0.71
 Requires:	%{name}-libs = %{version}
 Requires:	sessreg = %{version}
 Requires:	/usr/X11R6/bin/sessreg
+PreReq:		rc-scripts
+Requires(post,preun):	/sbin/chkconfig
 Provides:	XDM
-PreReq:		chkconfig
 Obsoletes:	XFree86-xdm
 Obsoletes:	gdm
 Obsoletes:	kdm
@@ -1884,11 +1885,12 @@ Summary(uk):	Фонтсервер для X Window System
 Group:		X11/XFree86
 Requires:	%{name}-libs = %{version}
 Requires:	XFree86-fonts-base
-PreReq:		chkconfig
+PreReq:		rc-scripts
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/useradd
 Requires(pre):	/usr/sbin/groupadd
+Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
 Obsoletes:	xfsft XFree86-xfs
