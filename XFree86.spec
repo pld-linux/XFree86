@@ -1073,13 +1073,13 @@ for n in libX11.so.6.1 libICE.so.6.3 libSM.so.6.0 libXext.so.6.3 libXt.so.6.0 \
 ln -sf $n $RPM_BUILD_ROOT/usr/X11R6/lib/`echo $n | sed "s/\.so.*/\.so/"`
 done
 
-# xkb 'compiled' files need to be in /var/lib/xkb, so
+# xkb 'compiled' files need to be in /var/state/xkb, so
 # /usr is NFS / read-only mountable
-mkdir -p $RPM_BUILD_ROOT/var/lib/xkb
+mkdir -p $RPM_BUILD_ROOT/var/state/xkb
 cp -a $RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/compiled/* \
-	$RPM_BUILD_ROOT/var/lib/xkb
+	$RPM_BUILD_ROOT/var/sytate/xkb
 rm -rf $RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/compiled
-ln -sf ../../../../../var/lib/xkb \
+ln -sf ../../../../../var/state/xkb \
 	$RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/compiled
 
 gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/man/man[135]/*
@@ -1327,7 +1327,7 @@ rm -rf $RPM_BUILD_ROOT
 %files modules
 %defattr(755,root,root,755)
 /usr/X11R6/lib/X11/xkb
-/var/lib/xkb
+/var/state/xkb
 %attr(755,root,root) /usr/X11R6/lib/modules/*
 
 %endif
@@ -1546,7 +1546,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/Xsun
 %attr(-,root,root) /usr/X11R6/lib/X11/xkb
-/var/lib/xkb
+/var/state/xkb
 %endif
 
 %ifarch sparc
@@ -1555,7 +1555,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644, root, root, 755)
 %attr(755,root,root) /usr/X11R6/bin/XsunMono
 %attr(-,root,root) /usr/X11R6/lib/X11/xkb
-/var/lib/xkb
+/var/state/xkb
 %endif
 
 %ifarch sparc
@@ -1564,7 +1564,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644, root, root, 755)
 %attr(755,root,root) /usr/X11R6/bin/Xsun24
 %attr(-,root,root) /usr/X11R6/lib/X11/xkb
-/var/lib/xkb
+/var/state/xkb
 %endif
 
 %ifarch i386 i486 i586 i686
