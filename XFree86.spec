@@ -20,7 +20,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.4.0
-Release:	0.3
+Release:	2
 Epoch:		1
 License:	XFree86 1.1
 Group:		X11/XFree86
@@ -1740,7 +1740,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #--- %prep ---------------------------
 
 %prep
-%setup -qcT -b0 -b1 -b2 -b3 -b4 -b5 -b6 -b7
+%setup -qcT -b0 -b1 -b2 -b7
 
 %patch0 -p0
 %patch1 -p1
