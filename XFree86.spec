@@ -589,7 +589,6 @@ Summary(pl):    Sterownik do kart ATI Rage 128
 Group:          X11/XFree86
 Requires:       %{name}-modules = %{version}-%{release}
 Requires:       %{name}-Xserver = %{version}-%{release}
-Requires:	%{name}-driver-ati = %{version}-%{release}
 Requires:       OpenGL
 Conflicts:	XFree86-driver-nvidia
 Obsoletes:      XFree86-Rage128
@@ -606,7 +605,6 @@ Summary(pl):    Sterownik do kart ATI Radeon
 Group:          X11/XFree86
 Requires:       %{name}-modules = %{version}-%{release}
 Requires:       %{name}-Xserver = %{version}-%{release}
-Requires:	%{name}-driver-ati = %{version}-%{release}
 Requires:       OpenGL
 Conflicts:	XFree86-driver-nvidia
 
@@ -2111,13 +2109,14 @@ fi
 %attr(755,root,root) %{_libdir}/modules/drivers/ati*_drv.o
 %dir %{_libdir}/modules/drivers/ati.2
 %attr(755,root,root) %{_libdir}/modules/drivers/ati.2/ati*_drv.o
-%attr(755,root,root) %{_libdir}/modules/multimedia/*.o
+%attr(755,root,root) %{_libdir}/modules/drivers/ati.2/[bfmt]*_drv.o
 %endif
 
 %ifnarch alpha
 %files driver-r128
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/r128*_drv.o
+%attr(755,root,root) %{_libdir}/modules/drivers/ati.2/r128*_drv.o
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
 %endif
@@ -2128,6 +2127,7 @@ fi
 %files driver-radeon
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/radeon*_drv.o
+%attr(755,root,root) %{_libdir}/modules/drivers/ati.2/radeon*_drv.o
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
 %endif
