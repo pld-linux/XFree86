@@ -26,7 +26,7 @@ Source12:	xclipboard.desktop
 Source13:	xconsole.desktop
 Source14:	xterm.desktop
 Source15:	xlogo64.png
-Patch0:		%{name}-PLD.patch
+Patch0:		%{name}-%{version}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
 Patch3:		%{name}-Xwrapper.patch
@@ -875,17 +875,17 @@ X11R6-contrib in older releases.
 %setup -q -c -a2
 #%setup -q -c -a1 -a2
 #%patch0 -p1
-%patch1 -p1
-%patch2 -p1
+#%patch1 -p1
+#%patch2 -p1
 #%patch3 -p1
 #%patch4 -p0
-%patch5 -p0
+#%patch5 -p0
 # Not ready yet
 #%patch6 -p0
-%patch7 -p1
-%patch8 -p1
+#%patch7 -p1
+#%patch8 -p1
 #%patch9 -p1
-%patch10 -p1
+#%patch10 -p1
 #%patch11 -p1
 #%patch12 -p0
 #%patch13 -p1
@@ -894,18 +894,18 @@ X11R6-contrib in older releases.
 %patch15 -p0
 %endif 
 #%patch16 -p1
-%patch17 -p1
+#%patch17 -p1
 #%patch18 -p1
-%patch19 -p0
+#%patch19 -p0
 #%patch20 -p1
 #%patch21 -p0
-%patch22 -p1
+#%patch22 -p1
 #%patch23 -p1
 #%patch24 -p1
 #%patch25 -p1
 #%patch26 -p0
 #%patch27 -p1
-%patch28 -p1
+#%patch28 -p1
 #%patch29 -p0
 #%patch30 -p0
 rm -f xc/config/cf/host.def
