@@ -10,7 +10,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Name:		XFree86
 Version:	4.2.0
-Release:	2
+Release:	2.1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/%{version}/source/X%{_sver}src-1.tgz
@@ -29,6 +29,7 @@ Source12:	xconsole.desktop
 Source13:	xterm.desktop
 Source14:	xlogo64.png
 Source15:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
+Source16:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20020310.tar.bz2
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -575,12 +576,13 @@ Group:		X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-ATI XFree86-Mach32 XFree86-Mach64
+Obsoletes:	XFree86-driver-r128 XFree86-driver-radeon
 
 %description driver-ati
-ATI video driver.
+ATI video driver (including Rage128 and Radeon).
 
 %description driver-ati -l pl
-Sterownik do kart ATI.
+Sterownik do kart ATI (w³±czaj±c Rage128 and Radeon).
 
 %package driver-chips
 Summary:	Chips and Technologies video driver
@@ -764,35 +766,6 @@ nVidia video driver. Supports Riva128, RivaTNT, GeForce.
 
 %description driver-nv -l pl
 Sterownik do kart na uk³adach firmy nVidia: Riva128, RivaTNT, GeForce.
-
-%package driver-r128
-Summary:	ATI Rage 128 video driver
-Summary(pl):	Sterownik do kart ATI Rage 128
-Group:		X11/XFree86
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-Xserver = %{version}-%{release}
-Requires:	OpenGL
-Obsoletes:	XFree86-Rage128
-
-%description driver-r128
-ATI Rage 128 video driver.
-
-%description driver-r128 -l pl
-Sterownik do kart ATI Rage 128.
-
-%package driver-radeon
-Summary:	ATI Radeon video driver
-Summary(pl):	Sterownik do kart ATI Radeon
-Group:		X11/XFree86
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-Xserver = %{version}-%{release}
-Requires:	OpenGL
-
-%description driver-radeon
-ATI Radeon video driver.
-
-%description driver-radeon -l pl
-Sterownik do kart ATI Radeon.
 
 %package driver-rendition
 Summary:	Rendition video driver
@@ -1384,6 +1357,12 @@ serwerów lokalnych lub zdalnych.
 
 rm -f xc/config/cf/host.def
 
+# New ATI drivers
+cd xc/programs/Xserver/hw/xfree86/drivers
+bzcat %{SOURCE16} | tar x
+mv ati ati.old
+mv ati.2 ati
+
 #--- %build --------------------------
 
 %build
@@ -1392,6 +1371,15 @@ rm -f xc/config/cf/host.def
 	"CCOPTIONS=%{rpmcflags}" \
 	"CXXOPTIONS=%{rpmcflags}" \
 	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
+
+%ifnarch alpha
+%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.old" Makefiles
+%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.old" all \
+	"BOOTSTRAPCFLAGS=%{rpmcflags}" \
+	"CCOPTIONS=%{rpmcflags}" \
+	"CXXOPTIONS=%{rpmcflags}" \
+	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
+%endif
 
 #--- %install ------------------------
 
@@ -1416,6 +1404,11 @@ install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysc
 		"CXXOPTIONS=%{rpmcflags}" \
 		"CXXDEBUGFLAGS=" "CDEBUGFLAGS=" \
 		install install.man
+
+%ifnarch alpha
+install xc/programs/Xserver/hw/xfree86/drivers/ati.old/ati_drv.o \
+	$RPM_BUILD_ROOT%{_libdir}/modules/drivers/ati_old_drv.o 
+%endif
 
 # setting default X
 rm -f $RPM_BUILD_ROOT%{_bindir}/X
@@ -1988,13 +1981,6 @@ fi
 %attr(755,root,root) %{_libdir}/modules/drivers/ark_drv.o
 %endif
 
-%ifnarch alpha
-%files driver-ati
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/ati*_drv.o
-#%{_mandir}/man4/ati*
-%endif
-
 %ifnarch sparc sparc64 alpha
 %files driver-chips
 %defattr(644,root,root,755)
@@ -2082,27 +2068,20 @@ fi
 %{_mandir}/man4/nv*
 %endif
 
-%ifnarch sparc sparc64
-%files driver-r128
+%ifnarch alpha
+%files driver-ati
 %defattr(644,root,root,755)
-%ifnarch alpha
-%attr(755,root,root) %{_libdir}/modules/drivers/r128_drv.o
-%endif
+%attr(755,root,root) %{_libdir}/modules/drivers/ati*_drv.o
 %ifnarch sparc sparc64
+%attr(755,root,root) %{_libdir}/modules/drivers/r128_drv.o
 %attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
-%endif
-%ifnarch alpha
 %{_mandir}/man4/r128*
 %endif
-%endif
-
-%files driver-radeon
-%defattr(644,root,root,755)
-%ifnarch alpha
 %attr(755,root,root) %{_libdir}/modules/drivers/radeon_drv.o
-%endif
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
+%endif
+%attr(755,root,root) %{_libdir}/modules/multimedia/*.o
 %endif
 
 %ifnarch sparc sparc64 ppc
@@ -2270,6 +2249,7 @@ fi
 %ifnarch alpha
 %dir %{_libdir}/modules/dri
 %endif
+%dir %{_libdir}/modules/multimedia
 %dir %{_libdir}/modules/drivers
 %ifnarch sparc sparc64 ppc
 %{_libdir}/modules/*.uc
