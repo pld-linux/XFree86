@@ -19,7 +19,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.4.0
-Release:	6
+Release:	7
 Epoch:		1
 License:	XFree86 1.1
 Group:		X11/XFree86
@@ -2799,9 +2799,9 @@ fi
 %dir %{_libx11dir}/locale
 %{_libx11dir}/locale/[!l]*
 %{_libx11dir}/locale/locale.*
-%dir %{_libx11dir}/locale/lib
-%dir %{_libx11dir}/locale/lib/common
-%attr(755,root,root) %{_libx11dir}/locale/lib/common/*.so*
+%dir %{_libx11dir}/locale/%{_lib}
+%dir %{_libx11dir}/locale/%{_lib}/common
+%attr(755,root,root) %{_libx11dir}/locale/%{_lib}/common/*.so*
 %dir %{_includedir}
 %dir %{_includedir}/X11
 /usr/include/X11
