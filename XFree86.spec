@@ -2019,7 +2019,7 @@ rm -rf xc/fonts
 #	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 %endif
 
-%ifarch %{ix86} mips alpha ppc arm
+%ifarch %{ix86} mips ppc arm
 olddir=$(pwd)
 cd LinuxDriver/2D
 sed -i -e 's#$(XF86OSSRC)/vbe#$(XF86SRC)/vbe#g' Imakefile
@@ -2095,8 +2095,10 @@ install synaptics/synaptics_drv.o $RPM_BUILD_ROOT%{_libdir}/modules/input
 #	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/dri
 %endif
 
+%ifarch %{ix86} mips ppc arm
 install -d $RPM_BUILD_ROOT%{_libdir}/modules.s3/drivers
 install LinuxDriver/2D/savage_drv.o $RPM_BUILD_ROOT%{_libdir}/modules.s3/drivers
+%endif
 
 # setting default X
 rm -f $RPM_BUILD_ROOT%{_bindir}/X
@@ -2989,9 +2991,11 @@ fi
 %files driver-savage
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/savage_drv.o
+%ifarch %{ix86} mips ppc arm
 %dir %{_libdir}/modules.s3
 %dir %{_libdir}/modules.s3/drivers
 %attr(755,root,root) %{_libdir}/modules.s3/drivers/savage_drv.o
+%endif
 %{_mandir}/man4/savage*
 %endif
 
