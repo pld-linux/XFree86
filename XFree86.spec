@@ -1392,24 +1392,60 @@ else
 fi
 
 %pre -n xfs
-GROUP=xfs; GID=56; NAME=xfs; %groupadd
-USER=xfs; UID=56; HOMEDIR=/etc/X11/fs; COMMENT="X Font Server"; %useradd
+if [ -n "`/usr/bin/getgid xfs`" ]; then
+	if [ "`/usr/bin/getgid xfs`" != "56" ]; then
+		echo "Warning: group xfs hasn't gid=56. Correct this before installing xfs." 1>&2
+		exit 1
+	fi
+else
+	/usr/sbin/groupadd -g 56 -r -f xfs
+fi
+if [ -n "`/bin/id -u xfs 2>/dev/null`" ]; then
+	if [ "`/bin/id -u xfs`" != "56" ]; then
+		echo "Warning: user xfs hasn't uid=56. Corrent this before installing xfs." 1>&2
+		exit 1
+	fi
+else
+	/usr/sbin/useradd -u 56 -r -d /etc/X11/fs -s /bin/false -c "X Font Server" -g xfs xfs 1>&2
+fi
 
 %post -n xfs
-NAME=xfs; DESC="font server"; %chkconfig_add
+/sbin/chkconfig --add xfs
+if [ -f /var/lock/subsys/xfs ]; then
+	/etc/rc.d/init.d/xfs restart >&2
+else
+	echo "Run \"/etc/rc.d/init.d/xfs start\" to start font server." >&2
+fi
 
 %preun -n xfs
-NAME=xfs; %chkconfig_del
+if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/xfs ]; then
+		/etc/rc.d/init.d/xfs stop >&2
+	fi
+	/sbin/chkconfig --del xfs
+fi
 
 %postun -n xfs
-USER=xfs; %userdel
-GROUP=xfs; %groupdel
+if [ $1 = 0 ]; then
+	/usr/sbin/userdel xfs 2>/dev/null
+	/usr/sbin/groupdel xfs 2>/dev/null
+fi
 
 %post -n xdm
-NAME=xdm; %chkconfig_add
+/sbin/chkconfig --add xdm
+if [ -f /var/lock/subsys/xdm ]; then
+	/etc/rc.d/init.d/xdm restart >&2
+else
+	echo "Run \"/etc/rc.d/init.d/xdm start\" to start xdm." >&2
+fi
 		
 %preun -n xdm
-NAME=xdm; %chkconfig_del
+if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/xdm ]; then
+		/etc/rc.d/init.d/xdm stop >&2
+	fi
+	/sbin/chkconfig --del xdm
+fi
 
 %post   DPS -p /sbin/ldconfig
 %postun DPS -p /sbin/ldconfig
