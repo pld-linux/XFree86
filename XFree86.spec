@@ -466,6 +466,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-apm
 Alliance Promotion driver for XFree86 4.0+.
@@ -476,6 +477,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-ati
 ATI video driver.
@@ -486,6 +488,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-chips
 Chips and Technologies video driver.
@@ -496,6 +499,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-cirrus
 Cirrus Logic video driver.
@@ -506,6 +510,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-cyrix
 Cyrix video driver.
@@ -516,6 +521,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-fbdev
 Video driver for framebuffer device.
@@ -526,6 +532,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-glide
 Voodoo 1 and Voodoo 2 video driver.
@@ -536,6 +543,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
 
 %description driver-glint
@@ -547,6 +555,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-i740
 Intel i740 video driver.
@@ -557,6 +566,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
 
 %description driver-i810
@@ -568,6 +578,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
 
 %description driver-mga
@@ -579,6 +590,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-neomagic
 NeoMagic video driver.
@@ -589,6 +601,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-nv
 NVIDIA video driver.
@@ -599,6 +612,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
 
 %description driver-r128
@@ -610,6 +624,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-rendition
 Rendition video driver.
@@ -620,6 +635,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-s3virge
 S3 ViRGE video driver.
@@ -630,6 +646,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-sis
 SiS video driver.
@@ -640,6 +657,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
 
 %description driver-tdfx
@@ -651,6 +669,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-tga
 TGA video driver.
@@ -661,6 +680,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-trident
 Trident video driver.
@@ -671,6 +691,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-tseng
 Tseng Labs video driver.
