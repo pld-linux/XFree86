@@ -1368,7 +1368,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{_appnkldir}/Utilities/*.desktop
 %{_appnkldir}/*.desktop
-%{_datadir}/pixmaps/*
+%{_pixmapsdir}/*
 
 %{_mandir}/man1/Xmark.1*
 %{_mandir}/man1/lbxproxy.1*
