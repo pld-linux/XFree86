@@ -10,7 +10,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Name:		XFree86
 Version:	4.2.0
-Release:	2.2
+Release:	2.3
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/%{version}/source/X%{_sver}src-1.tgz
@@ -1787,7 +1787,6 @@ fi
 %{_mandir}/man1/xgamma.1*
 %{_mandir}/man1/xhost.1*
 %{_mandir}/man1/xinit.1*
-%{_mandir}/man1/xkbcomp.1*
 %{_mandir}/man1/xkbevd.1*
 %{_mandir}/man1/xkbprint.1*
 %{_mandir}/man1/xlsatoms.1*
@@ -2321,6 +2320,7 @@ fi
 %attr(755,root,root) %{_libdir}/X11/xserver
 %dir /etc/X11/xserver
 /etc/X11/xserver/SecurityPolicy
+%{_mandir}/man1/xkbcomp.1*
 %{_mandir}/man4/citron*
 %{_mandir}/man4/dynapro*
 %{_mandir}/man4/keyboard*
