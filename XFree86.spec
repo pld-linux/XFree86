@@ -75,7 +75,7 @@ BuildPrereq:	ncurses-devel
 BuildPrereq:	zlib-devel
 BuildPrereq:	utempter-devel
 Exclusivearch:	i386 i486 i586 i686 alpha sparc m68k armv4l
-Buildroot:	/tmp/%{name}-%{version}-root
+Buildroot:	/tmp/%{name}-%{version}-root/
 
 %ifarch sparc
 Obsoletes: X11R6.1
