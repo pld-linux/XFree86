@@ -1870,7 +1870,7 @@ TOPDIR=$(pwd)/xc
 	LINUXDIR="%{_kernelsrcdir}"
 
 cd synaptics
-for f in COMPATIBILITY FEATURES INSTALL NEWS PARAMETER; do
+for f in COMPATIBILITY INSTALL NEWS README README.alps TODO; do
 	cp -f ${f} ${f}.synaptics
 done
 %endif
