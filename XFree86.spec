@@ -12,7 +12,7 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Name:		XFree86
 Version:	4.2.1
-Release:	1
+Release:	2
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
@@ -87,6 +87,7 @@ Patch51:	%{name}-tdfx-should-be-2048-not-2046.patch
 Patch52:	%{name}-sis-option-swcursor.patch
 Patch53:	%{name}-sis-unresolved-symbols.patch
 Patch54:	%{name}-sis-maxxfbmem-fixup.patch
+Patch55:	%{name}-Radeon9000.patch
 
 BuildRequires:	bison
 BuildRequires:	flex
@@ -1746,6 +1747,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #%patch52 -p1
 #%patch53 -p1
 %patch54 -p1
+%patch55 -p0
 
 rm -f xc/config/cf/host.def
 
