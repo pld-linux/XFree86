@@ -1,4 +1,10 @@
 
+# TODO:
+# - update and fix tdfx patchs
+# - cleanups
+# - man4/mouse from modules conflicts with man4/mouse from man-pages
+# - add missing files
+
 # _without_tdfx		disables tdfx build
 
 %define		_sver	%(echo %{version} | tr -d .)
@@ -17,7 +23,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.2.99.3
-Release:	0.20030109.1
+Release:	0.20030109.2
 License:	MIT
 Group:		X11/XFree86
 #Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
@@ -114,6 +120,7 @@ Patch57:	%{name}-GLcore-strip-a-workaround.patch
 Patch58:	%{name}-4.2.1-mit-shm-security.patch
 Patch59:	%{name}-disable_glide.patch
 Patch60:	%{name}-expat.patch
+Patch61:	%{name}-ProjectRoot.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -145,8 +152,6 @@ Obsoletes:	X11R6.1
 
 %define		_pixmapsdir	/usr/share/pixmaps
 %define		_icondir	/usr/share/icons
-%define		_prefix		/usr/X11R6
-%define		_mandir		%{_prefix}/man
 %define		_wmpropsdir	%{_datadir}/wm-properties
 
 # avoid Mesa dependency in XFree86-OpenGL-libs
@@ -504,7 +509,7 @@ Summary(ru):	"Вложенный" сервер XFree86
 Summary(uk):	"Вкладений" сервер XFree86
 Group:		X11/XFree86/Servers
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
+Requires:	%{name}-common /usr/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
 
 %description Xnest
@@ -545,7 +550,7 @@ Summary:	X print server
 Summary(pl):	X serwer z rozszerzeniem Xprint
 Group:		X11/XFree86/Servers
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
+Requires:	%{name}-common /usr/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
 PreReq:		xprint-initrc
 
@@ -565,7 +570,7 @@ Summary(tr):	XFree86 sunucusu
 Group:		X11/XFree86/Servers
 Requires:	pam
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
+Requires:	%{name}-common /usr/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
 Obsoletes:	XFree86-VGA16 XFree86-SVGA XFree86-Mono
 # obsoleted by many drivers: suncg3,suncg6,suncg14,sunffb,sunleo,suntcx
@@ -621,7 +626,7 @@ Summary(ru):	Сервер XFree86 для виртуального фреймбуфера
 Summary(uk):	Сервер XFree86 для в╕ртуального фреймбуфера
 Group:		X11/XFree86/Servers
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
+Requires:	%{name}-common /usr/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
 
 %description Xvfb
@@ -1681,7 +1686,7 @@ Requires:	%{name} = %{version}
 Requires:	pam >= 0.71
 Requires:	%{name}-libs = %{version}
 Requires:	sessreg = %{version}
-Requires:	/usr/X11R6/bin/sessreg
+Requires:	/usr/bin/sessreg
 Provides:	XDM
 PreReq:		chkconfig
 Obsoletes:	XFree86-xdm
@@ -1826,6 +1831,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #%patch58 -p0  --obsoleted
 %{?_without_tdfx:%patch59 -p0}
 %patch60 -p0
+%patch61 -p0
 
 rm -f xc/config/cf/host.def
 
@@ -2017,7 +2023,7 @@ fi
 %triggerpostun modules -- XFree86-modules < 4.0.2
 if [ -d /usr/X11R6/lib/X11/xkb ]; then
 	rm -rf /usr/X11R6/lib/X11/xkb
-	ln -sf /etc/X11/xkb /usr/X11R6/lib/X11/xkb
+	ln -sf /etc/X11/xkb /usr/lib/X11/xkb
 fi
 
 %post -n xdm
@@ -2473,6 +2479,7 @@ fi
 %{_includedir}/X11/Xcursor
 %{_includedir}/xf86*.h
 %{_libdir}/X11/config
+%{_pkgconfigdir}/xcursor.pc
 
 %{_mandir}/man3/[A-EH-Z]*
 
@@ -2780,7 +2787,7 @@ fi
 %dir %{_includedir}
 %dir %{_includedir}/X11
 %dir %{_sbindir}
-/usr/include/X11
+#/usr/include/X11
 %dir %{_datadir}/locale
 %dir %{_datadir}/misc
 %dir %{_datadir}/sounds
@@ -2834,7 +2841,7 @@ fi
 %{_mandir}/man4/dynapro*
 %{_mandir}/man4/keyboard*
 %{_mandir}/man4/microtouch*
-%{_mandir}/man4/mouse*
+#%{_mandir}/man4/mouse* - conflicts with man-pages - fixme
 %{_mandir}/man4/penmount.4*
 %{_mandir}/man4/v4l*
 %ifnarch sparc sparc64
