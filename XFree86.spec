@@ -1091,6 +1091,7 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console
 	$RPM_BUILD_ROOT/var/lib/xkb \
 	$RPM_BUILD_ROOT/usr/include \
 	$RPM_BUILD_ROOT/usr/bin \
+	$RPM_BUILD_ROOT/usr/lib \
 	$RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties \
 	$RPM_BUILD_ROOT{%{_appnkldir}/Utilities,%{_datadir}/pixmaps}
 
