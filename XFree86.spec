@@ -296,6 +296,7 @@ Wsparcie OpenGL dla systemu X11R6.
 %package OpenGL-libs
 Summary:	OpenGL libraries for X11R6
 Summary(pl):	Biblioteki OpenGL dla systemu X11R6
+License:	MIT (Mesa core), LGPL (libGLU)
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
@@ -315,6 +316,7 @@ Biblioteki OpenGL dla systemu X11R6.
 %package OpenGL-devel
 Summary:	OpenGL for X11R6 development
 Summary(pl):	Pliki nag³ówkowe dla OpenGL dla systemu X11R6
+License:	MIT (Mesa core), LGPL (glu.h), SGI (libGLw)
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
@@ -333,6 +335,7 @@ Pliki nag³ówkowe i manuale do OpenGL dla systemu X11R6.
 %package OpenGL-static
 Summary:	X11R6 static libraries with OpenGL
 Summary(pl):	Biblioteki statyczne do X11R6 ze wsparciem dla OpenGL
+License:	MIT (libGL), LGPL (libGLU)
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
@@ -1289,6 +1292,10 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console
 		"INSTBINFLAGS=-m 755" \
 		"INSTPGMFLAGS=-m 755" \
 		"RAWCPP=/lib/cpp" \
+		"BOOTSTRAPCFLAGS=%{rpmcflags}" \
+		"CCOPTIONS=%{rpmcflags}" \
+		"CXXOPTIONS=%{rpmcflags}" \
+		"CXXDEBUGFLAGS=" "CDEBUGFLAGS=" \
 		install install.man
 
 %{__make} -C Mesa*/src-glu install \
