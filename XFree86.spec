@@ -244,7 +244,6 @@ Group(pt_BR):	X11/Bibliotecas
 Group(ru):	X11/Библиотеки
 Group(uk):	X11/Б╕бл╕отеки
 Requires:	%{name}-libs = %{version}
-Obsoletes:	Mesa
 
 %description OpenGL-core
 OpenGL support for X11R6 system.
@@ -266,7 +265,9 @@ Group(uk):	X11/Б╕бл╕отеки
 Requires:	%{name}-OpenGL-libs = %{version}
 Requires:	%{name}-devel
 Provides:	OpenGL-devel
-Obsoletes:	Mesa-devel glxMesa-devel
+Obsoletes:	Mesa-devel
+Obsoletes:	glxMesa-devel
+Obsoletes:	XFree86-OpenGL-doc
 
 %description OpenGL-devel
 Headers and man pages for OpenGL for X11R6.
@@ -369,21 +370,13 @@ Group(pl):	X11/XFree86/Serwery
 Requires:	pam
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	/usr/X11R6/lib/X11/rgb.txt
-Obsoletes:	%{name}-VGA16 %{name}-SVGA %{name}-Mono
-Obsoletes:	XFree86-S3 XFree86-S3V XFree86-I128
-Obsoletes:	XFree86-Mach8 XFree86-Mach32 XFree86-Mach64
-Obsoletes:	XFree86-8514 XFree86-AGX XFree86-3DLabs
-Obsoletes:	XFree86-P9000 XFree86-W32
-Obsoletes:	XFree86-ATI XFree86-Alliance XFree86-ChipsTechnologies
-Obsoletes:	XFree86-Cirrus XFree86-Cyrix XFree86-FBDev
-Obsoletes:	XFree86-i740 XFree86-i810 XFree86-mga
-Obsoletes:	XFree86-NeoMagic XFree86-NVidia
-Obsoletes:	XFree86-Rage128 XFree86-Rendition
-Obsoletes:	XFree86-S3V XFree86-SiS XFree86-3dfx
-Obsoletes:	XFree86-Trident XFree86-Tseng XFree86-VGA16
-Obsoletes:	XFree86-TGA XFree86-FBDev
-Obsoletes:	XFree86-Sun XFree86-Sun24 XFree86-SunMono
-Obsoletes:	XFree86-XF86Setup, Xconfigurator
+Obsoletes:	XFree86-VGA16 XFree86-SVGA XFree86-Mono
+# obsoleted by many drivers: suncg3,suncg6,suncg14,sunffb,sunleo,suntcx
+Obsoletes:	XFree86-Sun XFree86-Sun24
+# still not supported in 4.2.0:
+#Obsoletes:	XFree86-Mach8 XFree86-8514 XFree86-AGX XFree86-P9000
+# (and many drivers from XF86_SVGA server... and some from others)
+Obsoletes:	XFree86-XF86Setup Xconfigurator
 
 %description Xserver
 Generally used X server which uses display hardware. It requires
@@ -522,6 +515,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-Alliance
 
 %description driver-apm
 Alliance Promotion driver.
@@ -552,6 +546,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-ATI XFree86-Mach32 XFree86-Mach64
 
 %description driver-ati
 ATI video driver.
@@ -567,6 +562,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-ChipsTechnologies
 
 %description driver-chips
 Chips and Technologies video driver.
@@ -582,6 +578,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-Cirrus
 
 %description driver-cirrus
 Cirrus Logic video driver.
@@ -597,6 +594,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-Cyrix
 
 %description driver-cyrix
 Cyrix video driver.
@@ -612,6 +610,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-FBDev
 
 %description driver-fbdev
 Non-accelerated video driver for framebuffer device.
@@ -658,6 +657,7 @@ Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
+Obsoletes:	XFree86-3DLabs
 
 %description driver-glint
 GLINT/Permedia video driver.
@@ -673,6 +673,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-I128
 
 %description driver-i128
 Number 9 I128 video driver.
@@ -688,6 +689,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-i740
 
 %description driver-i740
 Intel i740 video driver.
@@ -704,6 +706,7 @@ Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
+Obsoletes:	XFree86-i810
 
 %description driver-i810
 Intel i810/i815 video driver.
@@ -720,6 +723,7 @@ Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
+Obsoletes:	XFree86-mga
 
 %description driver-mga
 Matrox video driver.
@@ -735,6 +739,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-NeoMagic
 
 %description driver-neomagic
 NeoMagic video driver.
@@ -750,6 +755,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-NVidia
 
 %description driver-nv
 nVidia video driver. Supports Riva128, RivaTNT, GeForce.
@@ -766,6 +772,7 @@ Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
+Obsoletes:	XFree86-Rage128
 
 %description driver-r128
 ATI Rage 128 video driver.
@@ -797,6 +804,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-Rendition
 
 %description driver-rendition
 Rendition/Micron video driver.
@@ -812,6 +820,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-S3V
 
 %description driver-s3virge
 S3 ViRGE/Trio3D video driver.
@@ -827,6 +836,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-S3
 
 %description driver-s3
 S3 Trio video driver.
@@ -872,6 +882,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-SiS
 
 %description driver-sis
 SiS video driver.
@@ -887,6 +898,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-SunMono
 
 %description driver-sunbw2
 sunbw2 - Sun BW2 video driver.
@@ -994,6 +1006,7 @@ Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
 Requires:	Glide3-DRI
+Obsoletes:	XFree86-3dfx
 
 %description driver-tdfx
 3Dfx video driver. Supports Voodoo Banshee, Voodoo3, Voodoo4, Voodoo5.
@@ -1013,6 +1026,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-TGA
 
 %description driver-tga
 TGA video driver.
@@ -1028,6 +1042,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-Trident
 
 %description driver-trident
 Trident video driver.
@@ -1043,6 +1058,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-Tseng XFree86-W32
 
 %description driver-tseng
 Tseng Labs video driver.
@@ -1891,7 +1907,7 @@ fi
 %{_libdir}/libGL.a
 %{_libdir}/libGLU.a
 %ifnarch alpha
-%attr(755,root,root) %{_libdir}/libOSMesa*.a
+%{_libdir}/libOSMesa*.a
 %endif
 
 %files Xnest
