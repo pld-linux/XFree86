@@ -1,3 +1,33 @@
+--- xc/lib/GL/glx/Imakefile.redhat-libGL-exec-shield-fixes	2003-09-25 14:43:55.000000000 -0400
++++ xc/lib/GL/glx/Imakefile	2003-09-25 14:43:55.000000000 -0400
+@@ -43,6 +43,7 @@
+ #ifdef SparcArchitecture
+ LinkSourceFile(glapi_sparc.S, $(MESASRCDIR)/src/SPARC)
+ #endif
++LinkSourceFile(mem.c, $(MESASRCDIR)/src)
+ 
+ 
+ # Maybe some of these could come from
+@@ -70,7 +72,8 @@
+ 		single2.c \
+ 		singlepix.c \
+ 		vertarr.c \
+-	        xfont.c
++	        xfont.c \
++	        mem.c
+ 
+      GLX_OBJS = \
+ 	        clientattrib.o \
+@@ -94,7 +97,8 @@
+ 		single2.o \
+ 		singlepix.o \
+ 		vertarr.o \
+-	        xfont.o
++	        xfont.o \
++	        mem.o
+ 
+      GLX_DEFS = GlxDefines
+ 
 diff -urN xc.org/extras/Mesa/src/glapi.c xc/extras/Mesa/src/glapi.c
 --- xc.org/extras/Mesa/src/glapi.c	2004-06-07 22:45:05.571381120 +0200
 +++ xc/extras/Mesa/src/glapi.c	2004-06-07 23:11:34.201872576 +0200
@@ -19,13 +49,15 @@ diff -urN xc.org/extras/Mesa/src/glapi.c xc/extras/Mesa/src/glapi.c
     unsigned long glapi_addr = (unsigned long) &_glapi_Dispatch;
     if (code) {
        memcpy(code, insn_template, sizeof(insn_template));
-diff -urN xc.org/extras/Mesa/src/imports.c xc/extras/Mesa/src/imports.c
---- xc.org/extras/Mesa/src/imports.c	2004-06-07 22:45:05.943324576 +0200
-+++ xc/extras/Mesa/src/imports.c	2004-06-07 23:08:05.289632064 +0200
-@@ -59,6 +59,19 @@
- extern int vsnprintf(char *str, size_t count, const char *fmt, va_list arg);
- #endif
- 
+--- xc/extras/Mesa/src/mem.c.org	1970-01-01 01:00:00.000000000 +0100
++++ xc/extras/Mesa/src/mem.c	2004-06-09 02:02:29.152086688 +0200
+@@ -0,0 +1,325 @@
++#include <unistd.h>
++#include <sys/mman.h>
++#include "glheader.h"
++#include "config.h"
++#include "macros.h"
++
 +/* Define a struct for our private data. This is preferred over pointer
 + * arithmetic to access individual pieces of our private data because the
 + * compiler will help us get alignment correct in a portable way and it
@@ -39,13 +71,7 @@ diff -urN xc.org/extras/Mesa/src/imports.c xc/extras/Mesa/src/imports.c
 +} align_malloc_header;
 +
 +static unsigned long RoundUpPowerOf2(unsigned long val);
- 
- /**********************************************************************/
- /* Wrappers for standard C library functions                          */
-@@ -175,6 +188,310 @@
- #endif
- }
- 
++
 +/*
 + * Execute permission implementation notes:
 + * John Dennis - jdennis@redhat.com - Red Hat Inc.
@@ -350,9 +376,7 @@ diff -urN xc.org/extras/Mesa/src/imports.c xc/extras/Mesa/src/imports.c
 +   munmap(alloc_ptr, alloc_size);
 +}
 +#endif
- 
- void *
- _mesa_memcpy(void *dest, const void *src, size_t n)
++
 diff -urN xc.org/extras/Mesa/src/imports.h xc/extras/Mesa/src/imports.h
 --- xc.org/extras/Mesa/src/imports.h	2004-06-07 22:45:05.944324424 +0200
 +++ xc/extras/Mesa/src/imports.h	2004-06-07 23:04:42.561451432 +0200
@@ -378,17 +402,6 @@ diff -urN xc.org/extras/Mesa/src/imports.h xc/extras/Mesa/src/imports.h
  _mesa_memcpy( void *dest, const void *src, size_t n );
  
  extern void
-diff -urN xc.org/extras/Mesa/src/mtypes.h xc/extras/Mesa/src/mtypes.h
---- xc.org/extras/Mesa/src/mtypes.h	2004-06-07 22:45:05.956322600 +0200
-+++ xc/extras/Mesa/src/mtypes.h	2004-06-07 23:05:35.023475992 +0200
-@@ -36,6 +36,7 @@
- #include "config.h"		/* Hardwired parameters */
- #include "glapitable.h"
- #include "glthread.h"
-+#include <sys/mman.h>
- 
- #include "math/m_matrix.h"	/* GLmatrix */
- 
 diff -urN xc.org/extras/Mesa/src/tnl/t_vtx_exec.c xc/extras/Mesa/src/tnl/t_vtx_exec.c
 --- xc.org/extras/Mesa/src/tnl/t_vtx_exec.c	2004-06-07 22:45:06.597225168 +0200
 +++ xc/extras/Mesa/src/tnl/t_vtx_exec.c	2004-06-07 23:17:12.494444288 +0200
