@@ -32,7 +32,7 @@ Source12:	xconsole.desktop
 Source13:	xterm.desktop
 Source14:	xlogo64.png
 Source15:	http://papico.crl.go.jp/pub/linux/linuxppc/users/ajoshi/s3/s3-0.3.52.tgz
-Source16:	%{name}-non-english-Xman-pages.tar.bz2
+Source16:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
