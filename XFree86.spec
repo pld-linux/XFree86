@@ -27,7 +27,7 @@ Source15:	xlogo64.png
 Patch0:		XFree86-3.9.18-PLD.patch
 Patch1:		XFree86-HasZlib.patch
 Patch2:		XFree86-DisableDebug.patch
-Patch3:		XFree86-3.9.17-Xwrapper.patch
+Patch3:		XFree86-3.9.18-Xwrapper.patch
 Patch4:		XFree86-3.9.17-PAM.patch
 
 BuildRequires:	ncurses-devel
@@ -628,8 +628,8 @@ Czcionki rastrowe ISO-8859-2.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-#%patch3 -p1
-#%patch4 -p1
+%patch3 -p1
+%patch4 -p1
 
 #--- %build --------------------------
 
