@@ -1,10 +1,6 @@
 
 # TODO:
-# - cleanups
-# - man4/mouse from modules conflicts with man4/mouse from man-pages
-# - add missing files
 # - separate XFS to be standalone - is it possible without duplicated files?
-# - imstt and nsc video drivers
 
 #
 # Conditional build:
