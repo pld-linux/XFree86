@@ -5,14 +5,14 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	4.0
-Release:	5
+Release:	6
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0/source/X400src-1.tgz
 Source3:	xdm.pamd
-Source4:	xdm.initd
-Source5:	xfs.initd
+Source4:	xdm.init
+Source5:	xfs.init
 Source6:	xfs.config
 Source7:	xserver.pamd
 Source8:	XTerm.ad-pl
