@@ -8,7 +8,7 @@
 #
 
 %define		_sver	%(echo %{version} | tr -d .)
-%define		_synaptics_ver	0.11.3p6
+%define		_synaptics_ver	0.11.3p7
 
 Summary:	XFree86 Window System servers and basic programs
 Summary(de):	Xfree86 Window-System-Server und grundlegende Programme
@@ -62,7 +62,7 @@ Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-X
 #Source39:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
 # http://w1.894.telia.com/~u89404340/touchpad/index.html
 Source40:	http://w1.894.telia.com/~u89404340/touchpad/synaptics-%{_synaptics_ver}.tar.bz2
-# Source40-md5:	4f03ef44f8496f1efe639dada97379f6
+# Source40-md5:	2a034c949435a53cd71dd45a2ae9680e
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -2144,6 +2144,9 @@ rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/html
 
 # resolve conflict with man-pages
 mv -f $RPM_BUILD_ROOT%{_mandir}/man4/{mouse.4,mouse-x.4}
+
+# fix mkfontscale path
+perl -pi -e "s#mkfontscale#%{_bindir}/mkfontscale#g" $RPM_BUILD_ROOT%{_bindir}/mkfontdir
 
 # directories for applications locales
 echo '%defattr(644,root,root,755)' > XFree86-libs.lang
