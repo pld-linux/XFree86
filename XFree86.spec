@@ -7,7 +7,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(wa):	Sierveus di håynaedje XFree86 eyèt maisses programes
 Name: 		XFree86
 Version:	3.3.5
-Release:	17
+Release:	18
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -15,8 +15,8 @@ Source0:	ftp://ftp.xfree86.org/pub/XFree86/3.3.5/source/X335src-1.tgz
 Source1:	ftp://ftp.xfree86.org/pub/XFree86/3.3.5/source/X335src-2.tgz
 Source2:	ftp://ftp.dcs.ed.ac.uk/pub/jec/programs/xfsft/xfsft-1.1.6.tar.gz
 Source3:	xdm.pamd
-Source4:	xdm.initd
-Source5:	xfs.initd
+Source4:	xdm.init
+Source5:	xfs.init
 Source6:	xfs.config
 Source7:	xserver.pamd
 Source8:	XTerm.ad-pl
@@ -91,6 +91,7 @@ Patch50:	XFree86-sparcpckbd.patch
 Patch51:	XFree86-raptor.patch
 Patch52:	XFree86-ffb3.patch
 Patch53:	ftp://ftp.dcs.ed.ac.uk/pub/jec/programs/xfsft/xfsft-1.1.6-1.1.7.patch
+Patch54:	XFree86-3dfxalpha.patch
 
 BuildRequires:	ncurses-devel >= 5.0
 BuildRequires:	zlib-devel
@@ -99,6 +100,7 @@ BuildRequires:	tcl-devel
 Requires:	pam
 Requires:	xauth
 Requires: 	util-linux
+Requires:	cpp
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l
 Buildroot:	/tmp/%{name}-%{version}-root/
 
@@ -423,7 +425,7 @@ Il s'agit du serveur X pour les cartes S3 ViRGE.
 X serwer dla kart opartych na S3 Virge.
 
 %description -l tr S3V
-XFree86 S3 Virge sunucusu
+XFree86 S3 Virge sunucusu.
 
 %package Mach64
 Summary:	The XFree86 server for Mach64 based video cards
@@ -575,8 +577,6 @@ traitement en tâche de fonds, test de montée en charge, aide au portage d'un
 serveur X sur une nouvelle plate-forme, utilisation d'applications ne
 nécessitant pas réellement X mais l'utilisant, ...).
 
-%description -l pl Xvfb
-
 %package 3DLabs
 Summary:	XFree86 3DLabs server
 Summary(de):	XFree86 3DLabs Server
@@ -632,8 +632,6 @@ Requires:	%{name}-fonts = %{version}
 %description Xptr
 Xprt provides an X server with the print extension and special DDX
 implementation.
-
-%description -l pl Xptr
 
 %package 8514
 Summary:	The XFree86 server program for older IBM 8514 or compatible video cards
@@ -1008,8 +1006,6 @@ XFree86-TGA est un serveur 8 bits pour les cartes Digital TGA basées sur la
 puce DC21040. Ces cartes sont répandues sur les stations Alpha et sont
 incluses dans les Alpha UDN (Multia).
 
-%description -l pl TGA
-
 %package -n xdm
 Summary:	XDM
 Summary(pl):	XDM
@@ -1022,8 +1018,6 @@ Obsoletes:	XFree86-xdm
 
 %description -n xdm
 X Display Manager.
-
-%description -l pl -n xdm
 
 %package -n twm
 Summary:	Tab Window Manager for the X Window System
@@ -1039,8 +1033,6 @@ shaped windows, several forms of icon management, user-defined macro
 functions, click-to-type and pointerdriven keyboard focus, and
 user-specified key and pointer button bindings.
 
-%description -l pl -n twm
-
 %package -n xfs
 Summary:	Font server for XFree86
 Summary(de):	Font-Server für XFree86
@@ -1052,6 +1044,7 @@ Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	rc-scripts
 Obsoletes:	xfsft XFree86-xfs
+Provides:	XFree86-xfs
 
 %description -n xfs
 This is a font server for XFree86. You can serve fonts to other X servers
@@ -1063,8 +1056,6 @@ remote computer.
 xfs est un serveur de polices pour XFree86, en local ou à distance. Le
 système distant peut utiliser ces fontes même s'il ne les possède pas.
 
-%description -l pl -n xfs
-
 %package -n xauth
 Summary:	XAuth
 Group:		X11/XFree86
@@ -1072,8 +1063,6 @@ Group(pl):	X11/XFree86
 Summary(pl):	XAuth
 
 %description -n xauth
-
-%description -l pl -n xauth
 
 %package fonts
 Summary:	XFree86 Fonts
@@ -1262,6 +1251,7 @@ install xfsft-1.1.6/fonts.scale.Type1 xc/fonts/scaled/Type1/fonts.scale
 %patch51 -p1
 %patch52 -p1
 %patch53 -p0
+%patch54 -p1
 
 ## Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
@@ -1287,7 +1277,6 @@ install -d $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
 	$RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties
 
 make -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
-		"DOCDIR=%{_defaultdocdir}/%{name}-%{version}" \
 		"INSTBINFLAGS=-m 755" \
 		"INSTPGMFLAGS=-m 755" \
 		install install.man
@@ -1365,17 +1354,13 @@ ln -sf ../../../../../var/state/xkb \
 rm -f $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
 ln -sf ../../../bin/xkbcomp $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
 
-gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[135]/* \
-	$RPM_BUILD_ROOT%{_defaultdocdir}/%{name}-%{version}/*
+gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[135]/*
 
 #--- %post{un}, %preun, %verifyscript -
 
 %pre
 if [ -d /usr/X11R6/lib/X11/fonts ]; then
-	if [ -d /usr/share/fonts ]; then
-		mkdir /usr/share/fonts
-	fi
-
+	mkdir -p /usr/share/fonts
 	mv -a /usr/X11R6/lib/X11/fonts/* /usr/share/fonts
 	ln -sf /usr/share/fonts /usr/X11R6/lib/X11/fonts
 fi
@@ -1444,7 +1429,7 @@ umask 022
 
 %post -n xfs
 /sbin/chkconfig --add xfs
-if [ -f /var/run/xfs.pid ]; then
+if [ -f /var/lock/subsys/xfs ]; then
 	/etc/rc.d/init.d/xfs restart >&2
 else
 	echo "Run \"/etc/rc.d/init.d/xfs start\" to start font server." >&2
@@ -1452,7 +1437,7 @@ fi
 
 %post -n xdm
 /sbin/chkconfig --add xdm
-if [ -f /var/run/xdm.pid ]; then
+if [ -f /var/lock/subsys/xdm ]; then
 	/etc/rc.d/init.d/xdm restart >&2
 else
 	echo "Run \"/etc/rc.d/init.d/xdm start\" to start xdm." >&2
@@ -1477,7 +1462,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc %{_defaultdocdir}/%{name}-%{version}/*
 
 %doc %{_libdir}/X11/XF86Config.eg
 %doc %{_libdir}/X11/Cards
@@ -2004,6 +1988,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files XF86Setup
 %defattr(644,root,root,755)
+%{_libdir}/X11/doc
 %attr(755,root,root) %{_bindir}/XF86Setup
 %attr(755,root,root) %{_bindir}/xmseconfig
 %attr(755,root,root) %{_bindir}/xf86config
