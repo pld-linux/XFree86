@@ -11,7 +11,8 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0/source/X402src-1.tgz
-Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
+Source1:	ftp://download.sourceforge.net/pub/sourceforge/mesa3d/MesaLib-3.4.tar.bz2
+Source2:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source3:	xdm.pamd
 Source4:	xdm.init
 Source5:	xfs.init
@@ -243,6 +244,7 @@ Requires:	%{name}-devel = %{version}
 Obsoletes:	X11R6.1-devel
 %endif
 Obsoletes:	xpm-static
+#Obsoletes:	Mesa-static
 
 %description static
 X11R6 static libraries.
@@ -861,7 +863,7 @@ X11R6-contrib in older releases.
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c -a1
+%setup -q -c -a1 -a2
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -898,6 +900,37 @@ rm -f xc/config/cf/host.def
 	"CXXOPTIONS=%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
 	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 
+cd Mesa*
+
+%configure \
+	--enable-static \
+	--enable-shared \
+	--with-ggi="no" \
+	--with-svga="no" \
+	--disable-ggi-fbdev \
+	--disable-ggi-genkgi \
+%ifarch %{ix86} \
+	--enable-x86 \
+  %ifarch i586 i686 \
+	--enable-mmx \
+	--enable-3dnow \
+  %else \
+    %ifarch k6 \
+	--enable-mmx \
+	--enable-3dnow" \
+    %else \
+	--disable-mmx \
+	--disable-3dnow \
+    %endif \
+  %endif \
+%else \
+	--disable-x86 \
+	--disable-mmx \
+	--disable-3dnow
+%endif
+
+%{__make} -C src-glu
+	
 #--- %install ------------------------
 
 %install
@@ -916,6 +949,11 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console
 		"INSTPGMFLAGS=-m 755" \
 		"RAWCPP=/lib/cpp" \
 		install install.man
+
+%{__make} -C Mesa*/src-glu install \
+	DESTDIR=$RPM_BUILD_ROOT
+
+install Mesa*/include/GL/glu.h $RPM_BUILD_ROOT%{_includedir}/GL/
 
 # setting default X
 rm -f $RPM_BUILD_ROOT%{_bindir}/X
