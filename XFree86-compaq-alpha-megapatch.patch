@@ -1,0 +1,1472 @@
+Megapatch for 4.1.0 for alpha from Jay Estabrook <Jay.Estabrook@compaq.com>.
+Modified slightly to allow patching in rpm with -p0
+
+Modified again Aug 12, 2001 mharris@redhat.com to remove Savage fixes as they
+were applied to XFree86 CVS.
+
+
+diff -ur --exclude=CVS old/extras/x86emu/include/x86emu/regs.h new/extras/x86emu/include/x86emu/regs.h
+--- xc/extras/x86emu/include/x86emu/regs.h	Sat Jan 22 23:23:52 2000
++++ xc/extras/x86emu/include/x86emu/regs.h	Wed Jun  6 09:37:52 2001
+@@ -271,8 +271,7 @@
+      *  Extern interrupt        1 bits
+      *  Halted                  1 bits
+      */
+-    long                        mode;
+-    u8                          intno;
++    u32                         mode;
+     volatile int                intr;   /* mask of pending interrupts */
+ 	int                         debug;
+ #ifdef DEBUG
+@@ -284,6 +283,8 @@
+     char                        decode_buf[32]; /* encoded byte stream  */
+     char                        decoded_buf[256]; /* disassembled strings */
+ #endif
++    u8                          intno;
++    u8                          __pad[3];
+ 	} X86EMU_regs;
+ 
+ /****************************************************************************
+@@ -291,15 +292,16 @@
+ Structure maintaining the emulator machine state.
+ 
+ MEMBERS:
+-x86				- X86 registers
+ mem_base		- Base real mode memory for the emulator
+ mem_size		- Size of the real mode memory block for the emulator
++private			- private data pointer
++x86			- X86 registers
+ ****************************************************************************/
+ typedef struct {
+-	X86EMU_regs		x86;
+ 	unsigned long	mem_base;
+ 	unsigned long	mem_size;
+ 	void*        	private;
++	X86EMU_regs		x86;
+ 	} X86EMU_sysEnv;
+ 
+ #pragma pack()
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/drivers/ati/radeon_driver.c new/programs/Xserver/hw/xfree86/drivers/ati/radeon_driver.c
+--- xc/programs/Xserver/hw/xfree86/drivers/ati/radeon_driver.c	Fri Jun  1 18:27:06 2001
++++ xc/programs/Xserver/hw/xfree86/drivers/ati/radeon_driver.c	Mon Jun 11 12:58:02 2001
+@@ -855,6 +855,7 @@
+     int             offset = 0; /* RAM Type */
+     MessageType     from;
+     unsigned char   *RADEONMMIO;
++    unsigned int    agp_status_reg;
+ 
+ 				/* Chipset */
+     from = X_PROBED;
+@@ -965,6 +966,7 @@
+ 	pScrn->videoRam      = INREG(RADEON_CONFIG_MEMSIZE) / 1024;
+     info->MemCntl            = INREG(RADEON_SDRAM_MODE_REG);
+     info->BusCntl            = INREG(RADEON_BUS_CNTL);
++    agp_status_reg           = INREG(RADEON_AGP_STATUS);
+     RADEONMMIO               = NULL;
+     RADEONUnmapMMIO(pScrn);
+ 
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/drivers/glint/glint.h new/programs/Xserver/hw/xfree86/drivers/glint/glint.h
+--- xc/programs/Xserver/hw/xfree86/drivers/glint/glint.h	Tue May 29 18:51:20 2001
++++ xc/programs/Xserver/hw/xfree86/drivers/glint/glint.h	Wed Jun 13 12:03:06 2001
+@@ -189,6 +189,8 @@
+ 			((PCI_VENDOR_3DLABS << 16) | PCI_CHIP_PERMEDIA2V)
+ #define PCI_VENDOR_3DLABS_CHIP_PERMEDIA3	\
+ 			((PCI_VENDOR_3DLABS << 16) | PCI_CHIP_PERMEDIA3)
++#define PCI_VENDOR_3DLABS_CHIP_PERMEDIA4	\
++			((PCI_VENDOR_3DLABS << 16) | PCI_CHIP_PERMEDIA4)
+ #define PCI_VENDOR_3DLABS_CHIP_300SX	\
+ 			((PCI_VENDOR_3DLABS << 16) | PCI_CHIP_300SX)
+ #define PCI_VENDOR_3DLABS_CHIP_500TX	\
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/drivers/glint/glint_driver.c new/programs/Xserver/hw/xfree86/drivers/glint/glint_driver.c
+--- xc/programs/Xserver/hw/xfree86/drivers/glint/glint_driver.c	Tue May 29 18:51:22 2001
++++ xc/programs/Xserver/hw/xfree86/drivers/glint/glint_driver.c	Wed Jun 13 12:15:21 2001
+@@ -130,6 +130,7 @@
+ static SymTabRec GLINTVGAChipsets[] = {
+     { PCI_VENDOR_TI_CHIP_PERMEDIA2,		"ti_pm2" },
+     { PCI_VENDOR_TI_CHIP_PERMEDIA,		"ti_pm" },
++    { PCI_VENDOR_3DLABS_CHIP_PERMEDIA4,		"pm4" },
+     { PCI_VENDOR_3DLABS_CHIP_PERMEDIA3,		"pm3" },
+     { PCI_VENDOR_3DLABS_CHIP_PERMEDIA2V,	"pm2v" },
+     { PCI_VENDOR_3DLABS_CHIP_PERMEDIA2,		"pm2" },
+@@ -139,6 +140,7 @@
+ static PciChipsets GLINTVGAPciChipsets[] = {
+     { PCI_VENDOR_TI_CHIP_PERMEDIA2,	 PCI_VENDOR_TI_CHIP_PERMEDIA2,	    RES_SHARED_VGA },
+     { PCI_VENDOR_TI_CHIP_PERMEDIA,	 PCI_VENDOR_TI_CHIP_PERMEDIA,	    NULL },
++    { PCI_VENDOR_3DLABS_CHIP_PERMEDIA4, PCI_VENDOR_3DLABS_CHIP_PERMEDIA4, RES_SHARED_VGA },
+     { PCI_VENDOR_3DLABS_CHIP_PERMEDIA3, PCI_VENDOR_3DLABS_CHIP_PERMEDIA3, RES_SHARED_VGA },
+     { PCI_VENDOR_3DLABS_CHIP_PERMEDIA2V, PCI_VENDOR_3DLABS_CHIP_PERMEDIA2V, RES_SHARED_VGA },
+     { PCI_VENDOR_3DLABS_CHIP_PERMEDIA2,	 PCI_VENDOR_3DLABS_CHIP_PERMEDIA2,  RES_SHARED_VGA },
+@@ -150,6 +152,7 @@
+     { PCI_VENDOR_3DLABS_CHIP_GAMMA,		"gamma" },
+     { PCI_VENDOR_TI_CHIP_PERMEDIA2,		"ti_pm2" },
+     { PCI_VENDOR_TI_CHIP_PERMEDIA,		"ti_pm" },
++    { PCI_VENDOR_3DLABS_CHIP_PERMEDIA4,		"pm4" },
+     { PCI_VENDOR_3DLABS_CHIP_PERMEDIA3,		"pm3" },
+     { PCI_VENDOR_3DLABS_CHIP_PERMEDIA2V,	"pm2v" },
+     { PCI_VENDOR_3DLABS_CHIP_PERMEDIA2,		"pm2" },
+@@ -165,6 +168,7 @@
+     { PCI_VENDOR_3DLABS_CHIP_GAMMA,	 PCI_VENDOR_3DLABS_CHIP_GAMMA,	    NULL },
+     { PCI_VENDOR_TI_CHIP_PERMEDIA2,	 PCI_VENDOR_TI_CHIP_PERMEDIA2,	    RES_SHARED_VGA },
+     { PCI_VENDOR_TI_CHIP_PERMEDIA,	 PCI_VENDOR_TI_CHIP_PERMEDIA,	    NULL },
++    { PCI_VENDOR_3DLABS_CHIP_PERMEDIA4, PCI_VENDOR_3DLABS_CHIP_PERMEDIA4, RES_SHARED_VGA },
+     { PCI_VENDOR_3DLABS_CHIP_PERMEDIA3, PCI_VENDOR_3DLABS_CHIP_PERMEDIA3, RES_SHARED_VGA },
+     { PCI_VENDOR_3DLABS_CHIP_PERMEDIA2V, PCI_VENDOR_3DLABS_CHIP_PERMEDIA2V, RES_SHARED_VGA },
+     { PCI_VENDOR_3DLABS_CHIP_PERMEDIA2,	 PCI_VENDOR_3DLABS_CHIP_PERMEDIA2,  RES_SHARED_VGA },
+@@ -1490,6 +1494,7 @@
+ 	    	    pScrn->videoRam = (((GLINT_READ_REG(PMMemConfig) >> 29) &
+ 							0x03) + 1) * 2048;
+ 		    break;
++		case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
+ 		case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
+ 		    pScrn->videoRam = Permedia3MemorySizeDetect(pScrn);
+ 		    break;
+@@ -1627,6 +1632,7 @@
+ 		return FALSE;
+ 	    }
+ 	    break;
++	case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
+ 	case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
+ 	    pGlint->FIFOSize = 120;
+ 	    maxheight = 4096;
+@@ -1924,6 +1930,7 @@
+ 		}
+ 	}
+ 	if ((pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA3) ||
++	    (pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA4) ||
+ 	    ((pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_GAMMA) &&
+ 	     (pGlint->MultiChip == PCI_CHIP_PERMEDIA3)) )
+ 	    pGlint->MaxClock = 300000;
+@@ -1953,6 +1960,7 @@
+     /* Select valid modes from those available */
+     if ((pGlint->NoAccel) ||
+ 	(pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA3) ||
++	(pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA4) ||
+ 	((pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_GAMMA) && 
+ 	 (pGlint->MultiChip == PCI_CHIP_PERMEDIA3)) ) {
+ 	/*
+@@ -2256,6 +2264,7 @@
+     if ((pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA2) ||
+ 	(pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA2V) ||
+ 	(pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA3) ||
++	(pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA4) ||
+ 	(pGlint->Chipset == PCI_VENDOR_TI_CHIP_PERMEDIA2)) {
+ 	if (xf86LoadSubModule(pScrn, "i2c")) {
+ 	    I2CBusPtr pBus;
+@@ -2407,6 +2416,7 @@
+ 	Permedia2VSave(pScrn, glintReg);
+ 	break;
+     case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
++    case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
+ 	Permedia3Save(pScrn, glintReg);
+ 	break;
+     case PCI_VENDOR_TI_CHIP_PERMEDIA:
+@@ -2483,6 +2493,7 @@
+ 	ret = Permedia2VInit(pScrn, mode);
+ 	break;
+     case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
++    case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
+ 	ret = Permedia3Init(pScrn, mode, glintReg);
+ 	break;
+     case PCI_VENDOR_TI_CHIP_PERMEDIA:
+@@ -2540,6 +2551,7 @@
+ 	Permedia2VRestore(pScrn, glintReg);
+ 	break;
+     case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
++    case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
+ 	Permedia3Restore(pScrn, glintReg);
+ 	break;
+     case PCI_VENDOR_TI_CHIP_PERMEDIA:
+@@ -2623,6 +2635,7 @@
+ 	Permedia2VRestore(pScrn, glintReg);
+ 	break;
+     case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
++    case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
+ #ifdef PM3Video
+ 	TRACE("PM3Video : VideoLeaveVT");
+ 	Permedia3VideoLeaveVT(pScrn);
+@@ -2874,6 +2887,7 @@
+ 	    Permedia2AccelInit(pScreen);
+ 	    break;
+ 	case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
++	case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
+ 	    Permedia3AccelInit(pScreen);
+ 	    break;
+ 	case PCI_VENDOR_TI_CHIP_PERMEDIA:
+@@ -2923,6 +2937,7 @@
+ 	else
+ 	if ((pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA2V) ||
+ 	    (pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA3) || 
++	    (pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA4) || 
+ 	    ((pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_GAMMA) && 
+ 	     (pGlint->MultiChip == PCI_CHIP_PERMEDIA3)) )
+ 	    Permedia2vHWCursorInit(pScreen);
+@@ -2943,6 +2958,7 @@
+ 	return FALSE;
+ 
+     if ((pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA3) || 
++	(pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_PERMEDIA4) || 
+ 	((pGlint->Chipset == PCI_VENDOR_3DLABS_CHIP_GAMMA) &&
+ 	 (pGlint->MultiChip == PCI_CHIP_PERMEDIA3)) ) {
+     	if (!xf86HandleColormaps(pScreen, 256, pScrn->rgbBits,
+@@ -3023,6 +3039,7 @@
+ 	    break;
+ #ifdef PM3Video
+         case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
++        case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
+ 	    TRACE("PM3Video : VideoInit");
+ 	    Permedia3VideoInit(pScreen);
+ 	    break;
+@@ -3067,6 +3084,7 @@
+ 			Permedia2InitializeEngine(pScrn);
+ 			break;
+     		case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
++    		case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
+ 			Permedia3InitializeEngine(pScrn);
+ 			break;
+     		case PCI_VENDOR_TI_CHIP_PERMEDIA:
+@@ -3145,6 +3163,7 @@
+ 	GLINT_SLOW_WRITE_REG(base, PMScreenBase);
+ 	break;
+     case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
++    case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
+     	base = (y * pScrn->displayWidth + x) >> pGlint->BppShift;
+ 	GLINT_SLOW_WRITE_REG(base, PMScreenBase);
+ 	break;
+@@ -3196,6 +3215,7 @@
+ 	break;
+ #ifdef PM3Video
+     case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
++    case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
+ 	TRACE("PM3Video : VideoEnterVT");
+ 	Permedia3VideoEnterVT(pScrn);
+ 	break;
+@@ -3216,6 +3236,7 @@
+ 		Permedia2InitializeEngine(pScrn);
+ 		break;
+     	case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
++    	case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
+ 		Permedia3InitializeEngine(pScrn);
+ 		break;
+     	case PCI_VENDOR_TI_CHIP_PERMEDIA:
+@@ -3307,6 +3328,7 @@
+ 	    break;
+ #ifdef PM3Video
+         case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
++        case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
+ 	    TRACE("PM3Video : VideoUninit");
+ 	    Permedia3VideoUninit(pScrn);
+ 	case PCI_VENDOR_3DLABS_CHIP_GAMMA:
+@@ -3389,6 +3411,7 @@
+ 	 * side appears if not aligned properly */
+         switch (pGlint->Chipset) {
+         case PCI_VENDOR_TI_CHIP_PERMEDIA2:
++        case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
+         case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
+         case PCI_VENDOR_3DLABS_CHIP_PERMEDIA2V:
+         case PCI_VENDOR_3DLABS_CHIP_PERMEDIA2:
+@@ -3448,6 +3471,7 @@
+ 	switch (pGlint->Chipset) {
+ 	case PCI_VENDOR_TI_CHIP_PERMEDIA2:
+ 	case PCI_VENDOR_TI_CHIP_PERMEDIA:
++	case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
+ 	case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
+ 	case PCI_VENDOR_3DLABS_CHIP_PERMEDIA2V:
+ 	case PCI_VENDOR_3DLABS_CHIP_PERMEDIA2:
+@@ -3651,6 +3675,7 @@
+ 	    logbytesperaccess = 2;
+ 	    break;
+ 	case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
++	case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
+ 	    logbytesperaccess = 4;
+ 	    break;
+ 	case PCI_VENDOR_3DLABS_CHIP_300SX:
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/drivers/glint/glint_regs.h new/programs/Xserver/hw/xfree86/drivers/glint/glint_regs.h
+--- xc/programs/Xserver/hw/xfree86/drivers/glint/glint_regs.h	Tue May 29 18:51:22 2001
++++ xc/programs/Xserver/hw/xfree86/drivers/glint/glint_regs.h	Wed Jun 13 12:02:40 2001
+@@ -29,6 +29,7 @@
+ #define PCI_CHIP_3DLABS_GAMMA					0x08
+ #define PCI_CHIP_3DLABS_PERMEDIA2V				0x09
+ #define PCI_CHIP_3DLABS_PERMEDIA3				0x0A
++#define PCI_CHIP_3DLABS_PERMEDIA4				0x0C
+ #define PCI_CHIP_TI_PERMEDIA 	  				0x3d04
+ 
+ /* The boards we know */
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/drivers/glint/pm3_dac.c new/programs/Xserver/hw/xfree86/drivers/glint/pm3_dac.c
+--- xc/programs/Xserver/hw/xfree86/drivers/glint/pm3_dac.c	Wed May 16 03:56:07 2001
++++ xc/programs/Xserver/hw/xfree86/drivers/glint/pm3_dac.c	Wed Jun 13 12:54:03 2001
+@@ -159,6 +159,186 @@
+     return(actualclock);
+ }
+ 
++static unsigned long
++PM4DAC_CalculateClock
++(
++ unsigned long req_clock,		/* In kHz units */
++ unsigned long ref_clock,		/* In kHz units */
++ unsigned char *param_m,		/* ClkPreScale */
++ unsigned char *param_n, 		/* ClkFeedBackScale */
++ unsigned char *param_p			/* ClkPostScale */
++ )
++{
++#define INITIALFREQERR 10000000
++
++  const unsigned long int fMinVCO = 200000000;	/* min fVCO is 200MHz (in 10000Hz units) */
++  const unsigned long int fMaxVCO = 400000000;	/* max fVCO is 400MHz (in 10000Hz units) */
++  const unsigned long int fMinINTREF = 1000000;	/* min fINTREF is 1MHz (in 10000Hz units) */
++  const unsigned long int fMaxINTREF = 2000000; 	/* max fINTREF is 2MHz (in 10000Hz units) */
++  unsigned long int	M, N, P;
++  unsigned long int	fINTREF;
++  unsigned long int	fVCO;
++  unsigned long int	ActualClock;
++  int		Error;
++  int		LowestError = INITIALFREQERR;
++  short		bFoundFreq = FALSE;
++  int		cInnerLoopIterations = 0;
++  int		LoopCount;
++
++  /*
++   * Actual Equations:
++   *		fVCO = (ref_clock * M)/(N+1)
++   *		PIXELCLOCK = fVCO/(1<<p)
++   *		200 <= fVCO <= 400
++   *		24 <= N <= 80
++   *		1 <= M <= 15
++   *		0 <= P <= 3
++   *		1Mhz < ref_clock/(N+1) <= 2Mhz - not used
++   * For refclk == 14.318 we have the tighter equations:
++   *		32 <= N <= 80
++   *		3 <= M <= 12
++   * Notes:
++   *		The spec says that the PLLs will only do 260Mhz, but I have assumed 300Mhz 'cos
++   *		260Mhz is a crap limit.
++   */
++
++#define	P4RD_PLL_MIN_P	0
++#define	P4RD_PLL_MAX_P	3
++#define	P4RD_PLL_MIN_M	1
++#define	P4RD_PLL_MAX_M	12
++#define	P4RD_PLL_MIN_N	24
++#define	P4RD_PLL_MAX_N	80
++
++  req_clock *= 1000;
++  ref_clock *= 1000;
++
++/* VideoDebugPrint(("P4RD_CalculateMNPForClock: ref_clock = %d req_clock %d\n", ref_clock, req_clock)); */
++
++  for(P = P4RD_PLL_MIN_P; P <= P4RD_PLL_MAX_P; ++P)
++    {
++      unsigned long int fVCOLowest, fVCOHighest;
++
++      /* it's pointless going through the main loop if all values of N produce an fVCO 
++       * outside the acceptable range */
++
++      M = P4RD_PLL_MIN_M;
++      N = ((M + 1) * (1 << P) * req_clock) / ref_clock;
++
++      fVCOLowest = (ref_clock * N) / (M + 1);
++
++      M = P4RD_PLL_MAX_M;
++      N = ((M + 1) * (1 << P) * req_clock) / ref_clock;
++
++      fVCOHighest = (ref_clock * N) / (M + 1);
++
++      if(fVCOHighest < fMinVCO || fVCOLowest > fMaxVCO)
++	{
++	  /* VideoDebugPrint(("    ref_clock = %d fVCO range (%d .. %d) --- outside limits (%d .. %d) for P = %d\n", 
++	   *                   ref_clock, fVCOLowest, fVCOHighest, fMinVCO, fMaxVCO, P)); */
++	  /* printf("VCO range acceptable VCO-low> %d VCO-hi> %d \n", fVCOLowest, fVCOHighest); */
++	  continue;
++	}
++
++      for(M = P4RD_PLL_MIN_M; M <= P4RD_PLL_MAX_M; ++M, ++cInnerLoopIterations)
++	{
++#if 0
++	  fINTREF = ref_clock / (M + 1);
++	  if(fINTREF < fMinINTREF || fINTREF > fMaxINTREF)
++	    {
++	      /* VideoDebugPrint(("    ref_clock = %d, M = %d fINTREF = %d --- fINTREF outside limits (%d .. %d)\n", */
++	      /* 	             ref_clock, M, fINTREF, fMinINTREF, fMaxINTREF));*/
++
++	      if(fINTREF > fMaxINTREF)
++		{
++		  /*  hopefully we'll get into range as the prescale value increases*/
++		  /* printf("M> %d acceptable\n", N); */
++		  continue;
++		}
++	      else
++		{
++		  /*  already below minimum and it'll only get worse: move to the next postscale value*/
++		  break;
++		}
++	    }
++#endif	
++
++	  N = ((M + 1) * (1 << P) * req_clock) / ref_clock;
++
++	  if(N > P4RD_PLL_MAX_N || N < P4RD_PLL_MIN_N)
++	    {
++	      /*  N is only 7 bits wide*/
++	      /* VideoDebugPrint(("    ref_clock = %d, N = %d M = %d P = %d --- N over/under flowed\n", ref_clock, N, M, P));*/
++	      /* printf("N> %d ok\n", N); */
++	      continue;
++	      
++	    }
++
++	  /*  we can expect rounding errors in calculating M, which will always be rounded down. */
++	  /*  So we'll checkout our calculated value of M along with (M+1) */
++
++	  for(LoopCount = (N == P4RD_PLL_MAX_N) ? 1 : 2; --LoopCount >= 0; ++N)
++	    {
++	      fVCO = (ref_clock * N) / (M + 1);
++	      
++	      /* printf("fVCO> %d\n", fVCO); */
++
++	      if( (fVCO >= fMinVCO) && (fVCO <= fMaxVCO) )
++		{
++		  ActualClock = (fVCO / (1 << P));
++
++		  /* VideoDebugPrint(("    fVCO within range %d .. %d\n", fMinVCO, fMaxVCO));*/
++
++		  Error = ActualClock - req_clock;
++
++		  /* printf("Error> %d\n", Error); */
++
++		  if(Error < 0)
++		    {
++		      Error = -Error;
++		    }
++
++		  /* printf("want freq %d00Hz found freq %d00Hz, error = %d00Hz\n", req_clock, ActualClock, Error); */
++
++		  /*  It is desirable that we use the lowest value of M if the*/
++		  /*  frequencies are the same.*/
++		  if(Error < LowestError || (Error == LowestError && M < *param_m))
++		    {
++		      bFoundFreq = TRUE;
++		      LowestError = Error;
++		      *param_m = M;
++		      *param_n = N;
++		      *param_p = P;
++		      /* printf(" Actual> %d\n", ActualClock); */
++		      if(Error == 0)
++			goto Done;
++		    }
++		  else
++		    {
++		      /* VideoDebugPrint(("    ... not close enough\n"));*/
++		    }
++		}
++	      else
++		{
++		  /* VideoDebugPrint(("    ... ignoring: fVCO %d outside range %d .. %d\n", fVCO, fMinVCO, fMaxVCO));*/
++		}
++	    }
++	}
++    }
++
++Done:
++  /* VideoDebugPrint(("P4RD_CalculateMNPForClock: cInnerLoopIterations = %d bFoundFreq = %d\n", cInnerLoopIterations, bFoundFreq));*/
++	
++  if(bFoundFreq)
++    ActualClock = (ref_clock * (*param_n)) / (((*param_m) + 1) * (1 << (*param_p)));
++  else
++    ActualClock = 0;
++  
++/*  VideoDebugPrint(("P4RD_CalculateMNPForClock: Got M=%d, N=%d, P=%d, WantedClock = %d00 ActualClock = %d00 (Error %d00)\n", 
++		   *param_M, *param_N, *param_P, req_clock, ActualClock, LowestError)); */
++
++  return(ActualClock);
++}
++
+ void
+ Permedia3PreInit(ScrnInfoPtr pScrn)
+ {
+@@ -296,8 +476,15 @@
+     	unsigned long clockused;
+ 	
+ 	/* Let's program the dot clock */
+-    	clockused = PM3DAC_CalculateClock(mode->Clock,
+-	    pGlint->RefClock, &m,&n,&p);
++	switch (pGlint->Chipset) {
++	case PCI_VENDOR_3DLABS_CHIP_PERMEDIA4:
++	  clockused = PM4DAC_CalculateClock(mode->Clock * 1, /* HACK */
++					    pGlint->RefClock, &m,&n,&p);
++	  break;
++	case PCI_VENDOR_3DLABS_CHIP_PERMEDIA3:
++	  clockused = PM3DAC_CalculateClock(mode->Clock,
++					    pGlint->RefClock, &m,&n,&p);
++	}
+ 	STOREDAC(PM3RD_DClk0PreScale, m);
+ 	STOREDAC(PM3RD_DClk0FeedbackScale, n);
+ 	STOREDAC(PM3RD_DClk0PostScale, p);
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/drivers/mga/mga.h new/programs/Xserver/hw/xfree86/drivers/mga/mga.h
+--- xc/programs/Xserver/hw/xfree86/drivers/mga/mga.h	Fri May  4 15:05:41 2001
++++ xc/programs/Xserver/hw/xfree86/drivers/mga/mga.h	Wed Jun  6 09:48:16 2001
+@@ -259,7 +259,6 @@
+     unsigned long	BiosAddress;
+     MessageType		BiosFrom;
+     unsigned char *     IOBase;
+-    unsigned char *     IOBaseDense;
+     unsigned char *	FbBase;
+     unsigned char *	ILOADBase;
+     unsigned char *	FbStart;
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/drivers/mga/mga_driver.c new/programs/Xserver/hw/xfree86/drivers/mga/mga_driver.c
+--- xc/programs/Xserver/hw/xfree86/drivers/mga/mga_driver.c	Tue May 29 18:51:33 2001
++++ xc/programs/Xserver/hw/xfree86/drivers/mga/mga_driver.c	Wed Jun  6 09:47:47 2001
+@@ -2417,14 +2417,6 @@
+     if (pMga->IOBase == NULL)
+ 	return FALSE;
+ 
+-#ifdef __alpha__
+-    pMga->IOBaseDense = xf86MapPciMem(pScrn->scrnIndex,
+-				      VIDMEM_MMIO | VIDMEM_MMIO_32BIT,
+-				      pMga->PciTag, pMga->IOAddress, 0x4000);
+-    if (pMga->IOBaseDense == NULL)
+-	return FALSE;
+-#endif
+-
+     pMga->FbBase = xf86MapPciMem(pScrn->scrnIndex, VIDMEM_FRAMEBUFFER,
+ 				 pMga->PciTag, pMga->FbAddress,
+ 				 pMga->FbMapSize);
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/drivers/mga/mga_storm.c new/programs/Xserver/hw/xfree86/drivers/mga/mga_storm.c
+--- xc/programs/Xserver/hw/xfree86/drivers/mga/mga_storm.c	Thu May 10 17:53:48 2001
++++ xc/programs/Xserver/hw/xfree86/drivers/mga/mga_storm.c	Wed Jun  6 09:47:12 2001
+@@ -712,11 +712,7 @@
+     if(pMga->ILOADBase) {
+ 	pMga->ColorExpandBase = pMga->ILOADBase;
+     } else {
+-#ifdef __alpha__
+-	pMga->ColorExpandBase = pMga->IOBaseDense;
+-#else
+ 	pMga->ColorExpandBase = pMga->IOBase;
+-#endif
+     }
+     infoPtr->SetupForScanlineCPUToScreenColorExpandFill =
+ 		MGANAME(SetupForScanlineCPUToScreenColorExpandFill);
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/Makefile.linux new/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/Makefile.linux
+--- xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/Makefile.linux	Tue May 29 18:53:37 2001
++++ xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/Makefile.linux	Wed Jun  6 10:26:32 2001
+@@ -62,11 +62,12 @@
+ TDFXHEADERS =	tdfx.h $(DRMHEADERS) $(DRMTEMPLATES)
+ 
+ R128OBJS =	r128_drv.o r128_cce.o r128_state.o
+-R128HEADERS =	r128.h r128_drv.h r128_drm.h $(DRMHEADERS) $(DRMTEMPLATES)
++R128HEADERS =	r128.h r128_drv.h r128_drm.h $(DRMHEADERS) $(DRMTEMPLATES) \
++		ati_pcigart.h
+ 
+ RADEONOBJS =	radeon_drv.o radeon_cp.o radeon_state.o
+ RADEONHEADERS =	radeon.h radeon_drv.h radeon_drm.h $(DRMHEADERS) \
+-		$(DRMTEMPLATES)
++		$(DRMTEMPLATES) ati_pcigart.h
+ 
+ INC =		/usr/include
+ 
+@@ -270,11 +271,11 @@
+ 
+ $(GAMMAOBJS): $(GAMMAHEADERS)
+ $(TDFXOBJS): $(TDFXHEADERS)
++$(R128OBJS): $(R128HEADERS)
++$(RADEONOBJS): $(RADEONHEADERS)
+ ifeq ($(AGP),1)
+ $(MGAOBJS): $(MGAHEADERS)
+ $(I810OBJS): $(I810HEADERS)
+-$(R128OBJS): $(R128HEADERS)
+-$(RADEONOBJS): $(RADEONHEADERS)
+ endif
+ 
+ clean cleandir::
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/ati_pcigart.h new/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/ati_pcigart.h
+--- xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/ati_pcigart.h	Tue Apr 10 12:08:04 2001
++++ xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/ati_pcigart.h	Wed Jun  6 12:59:17 2001
+@@ -72,8 +72,6 @@
+ 	int i;
+ 	DRM_DEBUG( "%s\n", __FUNCTION__ );
+ 
+-	if ( !address ) return;
+-
+ 	page = virt_to_page( address );
+ 
+ 	for ( i = 0 ; i <= ATI_PCIGART_TABLE_PAGES ; i++, page++ ) {
+@@ -84,24 +82,45 @@
+ 	free_pages( address, ATI_PCIGART_TABLE_ORDER );
+ }
+ 
+-unsigned long DRM(ati_pcigart_init)( drm_device_t *dev )
++int DRM(ati_pcigart_init)( drm_device_t *dev,
++			   unsigned long *addr,
++			   dma_addr_t *bus_addr)
+ {
+ 	drm_sg_mem_t *entry = dev->sg;
+-	unsigned long address;
++	unsigned long address = 0;
+ 	unsigned long pages;
+-	u32 *pci_gart, page_base;
+-	int i, j;
++	u32 *pci_gart, page_base, bus_address = 0;
++	int i, j, ret = 0;
+ 
+ 	if ( !entry ) {
+ 		DRM_ERROR( "no scatter/gather memory!\n" );
+-		return 0;
++		goto done;
+ 	}
+ 
+ 	address = DRM(ati_alloc_pcigart_table)();
+ 	if ( !address ) {
+ 		DRM_ERROR( "cannot allocate PCI GART page!\n" );
+-		return 0;
++		goto done;
++	}
++
++#if defined(__alpha__) && (LINUX_VERSION_CODE >= 0x020400)
++	if ( !dev->pdev ) {
++		DRM_ERROR( "PCI device unknown!\n" );
++		goto done;
++	}
++
++	bus_address = pci_map_single(dev->pdev, (void *)address,
++				  ATI_PCIGART_TABLE_PAGES * PAGE_SIZE,
++				  PCI_DMA_TODEVICE);
++	if (bus_address == 0) {
++		DRM_ERROR( "unable to map PCIGART pages!\n" );
++		DRM(ati_free_pcigart_table)( address );
++		address = 0;
++		goto done;
+ 	}
++#else
++	bus_address = virt_to_bus( address );
++#endif
+ 
+ 	pci_gart = (u32 *)address;
+ 
+@@ -111,28 +130,78 @@
+ 	memset( pci_gart, 0, ATI_MAX_PCIGART_PAGES * sizeof(u32) );
+ 
+ 	for ( i = 0 ; i < pages ; i++ ) {
++#if defined(__alpha__) && (LINUX_VERSION_CODE >= 0x020400)
++		/* we need to support large memory configurations */
++		entry->busaddr[i] = pci_map_single(dev->pdev,
++						   entry->pagelist[i]->virtual,
++						   PAGE_SIZE,
++						   PCI_DMA_TODEVICE);
++		if (entry->busaddr[i] == 0) {
++			DRM_ERROR( "unable to map PCIGART pages!\n" );
++			DRM(ati_pcigart_cleanup)( dev, address, bus_address );
++			address = 0;
++			bus_address = 0;
++			goto done;
++		}
++		page_base = (u32) entry->busaddr[i];
++#else
+ 		page_base = virt_to_bus( entry->pagelist[i]->virtual );
++#endif
+ 		for (j = 0; j < (PAGE_SIZE / ATI_PCIGART_PAGE_SIZE); j++) {
+ 			*pci_gart++ = cpu_to_le32( page_base );
+ 			page_base += ATI_PCIGART_PAGE_SIZE;
+ 		}
+ 	}
+ 
++	ret = 1;
++
+ #if __i386__
+ 	asm volatile ( "wbinvd" ::: "memory" );
+ #else
+ 	mb();
+ #endif
+ 
+-	return address;
++done:
++	*addr = address;
++	*bus_addr = bus_address;
++	return ret;
+ }
+ 
+-int DRM(ati_pcigart_cleanup)( unsigned long address )
++int DRM(ati_pcigart_cleanup)( drm_device_t *dev,
++			      unsigned long addr,
++			      dma_addr_t bus_addr)
+ {
++#if defined(__alpha__) && (LINUX_VERSION_CODE >= 0x020400)
++	drm_sg_mem_t *entry = dev->sg;
++	unsigned long pages;
++	int i;
+ 
+-	if ( address ) {
+-		DRM(ati_free_pcigart_table)( address );
++	/* we need to support large memory configurations */
++	if ( !entry ) {
++		DRM_ERROR( "no scatter/gather memory!\n" );
++		return 0;
++	}
++
++	if ( bus_addr ) {
++		pci_unmap_single(dev->pdev, bus_addr,
++				 ATI_PCIGART_TABLE_PAGES * PAGE_SIZE,
++				 PCI_DMA_TODEVICE);
++
++		pages = ( entry->pages <= ATI_MAX_PCIGART_PAGES )
++		        ? entry->pages : ATI_MAX_PCIGART_PAGES;
++
++		for ( i = 0 ; i < pages ; i++ ) {
++			if ( !entry->busaddr[i] ) break;
++			pci_unmap_single(dev->pdev, entry->busaddr[i],
++					 PAGE_SIZE, PCI_DMA_TODEVICE);
++		}
++	}
++
++#endif
++
++	if ( addr ) {
++		DRM(ati_free_pcigart_table)( addr );
+ 	}
+ 
+-	return 0;
++	return 1;
+ }
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/drmP.h new/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/drmP.h
+--- xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/drmP.h	Wed May  2 11:06:10 2001
++++ xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/drmP.h	Wed Jun  6 10:31:24 2001
+@@ -619,6 +619,9 @@
+ 	void            *virtual;
+ 	int             pages;
+ 	struct page     **pagelist;
++#if defined(__alpha__) && (LINUX_VERSION_CODE >= 0x020400)
++	dma_addr_t	*busaddr;
++#endif
+ } drm_sg_mem_t;
+ 
+ typedef struct drm_sigdata {
+@@ -710,6 +713,7 @@
+ 	drm_agp_head_t    *agp;
+ #endif
+ #ifdef __alpha__
++	struct pci_dev *pdev;
+ #if LINUX_VERSION_CODE < 0x020403
+ 	struct pci_controler *hose;
+ #else
+@@ -1013,8 +1017,12 @@
+ #endif
+ 
+                                /* ATI PCIGART support (ati_pcigart.h) */
+-extern unsigned long  DRM(ati_pcigart_init)(drm_device_t *dev);
+-extern int            DRM(ati_pcigart_cleanup)(unsigned long address);
++extern int            DRM(ati_pcigart_init)(drm_device_t *dev,
++					    unsigned long *addr,
++					    dma_addr_t *bus_addr);
++extern int            DRM(ati_pcigart_cleanup)(drm_device_t *dev,
++					       unsigned long addr,
++					       dma_addr_t bus_addr);
+ 
+ #endif /* __KERNEL__ */
+ #endif
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/drm_ioctl.h new/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/drm_ioctl.h
+--- xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/drm_ioctl.h	Tue Apr 10 12:08:04 2001
++++ xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/drm_ioctl.h	Wed Jun  6 10:32:27 2001
+@@ -111,8 +111,10 @@
+                 if (*p) break;
+  
+                 pci_dev = pci_find_slot(b, PCI_DEVFN(d,f));
+-                if (pci_dev)
++                if (pci_dev) {
++			dev->pdev = pci_dev;
+                         dev->hose = pci_dev->sysdata;
++		}
+         } while(0);
+ #endif
+ 
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/drm_scatter.h new/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/drm_scatter.h
+--- xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/drm_scatter.h	Tue Apr 10 12:08:04 2001
++++ xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/drm_scatter.h	Wed Jun  6 12:42:33 2001
+@@ -47,12 +47,17 @@
+ 
+ 	vfree( entry->virtual );
+ 
++#if defined(__alpha__) && (LINUX_VERSION_CODE >= 0x020400)
++	DRM(free)( entry->busaddr,
++		   entry->pages * sizeof(*entry->busaddr),
++		   DRM_MEM_PAGES );
++#endif
+ 	DRM(free)( entry->pagelist,
+-		  entry->pages * sizeof(*entry->pagelist),
+-		  DRM_MEM_PAGES );
++		   entry->pages * sizeof(*entry->pagelist),
++		   DRM_MEM_PAGES );
+ 	DRM(free)( entry,
+-		  sizeof(*entry),
+-		  DRM_MEM_SGLISTS );
++		   sizeof(*entry),
++		   DRM_MEM_SGLISTS );
+ }
+ 
+ int DRM(sg_alloc)( struct inode *inode, struct file *filp,
+@@ -94,14 +99,34 @@
+ 		return -ENOMEM;
+ 	}
+ 
++#if defined(__alpha__) && (LINUX_VERSION_CODE >= 0x020400)
++	entry->busaddr = DRM(alloc)( pages * sizeof(*entry->busaddr),
++				     DRM_MEM_PAGES );
++	if ( !entry->busaddr ) {
++		DRM(free)( entry->pagelist,
++			   entry->pages * sizeof(*entry->pagelist),
++			   DRM_MEM_PAGES );
++		DRM(free)( entry,
++			   sizeof(*entry),
++			   DRM_MEM_SGLISTS );
++		return -ENOMEM;
++	}
++	memset( (void *)entry->busaddr, 0, pages * sizeof(*entry->busaddr) );
++#endif
++
+ 	entry->virtual = vmalloc_32( pages << PAGE_SHIFT );
+ 	if ( !entry->virtual ) {
++#if defined(__alpha__) && (LINUX_VERSION_CODE >= 0x020400)
++		DRM(free)( entry->busaddr,
++			   entry->pages * sizeof(*entry->busaddr),
++			   DRM_MEM_PAGES );
++#endif
+ 		DRM(free)( entry->pagelist,
+-			  entry->pages * sizeof(*entry->pagelist),
+-			  DRM_MEM_PAGES );
++			   entry->pages * sizeof(*entry->pagelist),
++			   DRM_MEM_PAGES );
+ 		DRM(free)( entry,
+-			  sizeof(*entry),
+-			  DRM_MEM_SGLISTS );
++			   sizeof(*entry),
++			   DRM_MEM_SGLISTS );
+ 		return -ENOMEM;
+ 	}
+ 
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/drm_vm.h new/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/drm_vm.h
+--- xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/drm_vm.h	Tue May 29 18:53:38 2001
++++ xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/drm_vm.h	Mon Jun 11 13:05:33 2001
+@@ -67,6 +67,64 @@
+ 			    int write_access)
+ #endif
+ {
++#if defined(__alpha__) && __REALLY_HAVE_AGP
++        drm_file_t *priv  = vma->vm_file->private_data;
++        drm_device_t *dev = priv->dev;
++        drm_map_t *map    = NULL;
++        drm_map_list_t  *r_list;
++        struct list_head *list;
++
++        /*
++         * Find the right map
++         */
++        list_for_each(list, &dev->maplist->head) {
++                r_list = (drm_map_list_t *)list;
++                map = r_list->map;
++                if (!map) continue;
++                if (map->offset == VM_OFFSET(vma)) break;
++        }
++
++        if (map && map->type == _DRM_AGP) {
++                unsigned long offset = address - vma->vm_start;
++                unsigned long baddr = VM_OFFSET(vma) + offset;
++                struct drm_agp_mem *agpmem;
++                struct page *page;
++
++                /*
++                 * Make it a bus-relative address
++                 */
++                baddr -= dev->hose->mem_space->start;
++
++                /*
++                 * It's AGP memory - find the real physical page to map
++                 */
++                for(agpmem = dev->agp->memory; agpmem; agpmem = agpmem->next) {
++                        if (agpmem->bound <= baddr &&
++                            agpmem->bound + agpmem->pages * PAGE_SIZE > baddr) 
++                                break;
++                }
++
++                if (!agpmem) {
++                        /*
++                         * Oops - no memory found
++                         */
++                        return NOPAGE_SIGBUS;   /* couldn't find it */
++                }
++
++                /*
++                 * Get the page, inc the use count, and return it
++                 */
++                offset = (baddr - agpmem->bound) >> PAGE_SHIFT;
++		agpmem->memory->memory[offset] &= ~1UL; /* HACK */
++                page = virt_to_page(__va(agpmem->memory->memory[offset]));
++#if 0
++DRM_ERROR("baddr = 0x%lx page = 0x%lx, offset = 0x%lx\n",
++          baddr, __va(agpmem->memory->memory[offset]), offset);
++#endif
++                get_page(page);
++                return page;
++        }
++#endif
+ 	return NOPAGE_SIGBUS;		/* Disallow mremap */
+ }
+ 
+@@ -415,9 +473,20 @@
+ 	}
+ 
+ 	switch (map->type) {
++        case _DRM_AGP:
++#if defined(__alpha__)
++                /*
++                 * On Alpha we can't talk to bus dma address from the
++                 * CPU, so for memory of type DRM_AGP, we'll deal with
++                 * sorting out the real physical pages and mappings
++                 * in nopage()
++                 */
++                vma->vm_ops = &drm_vm_ops;
++                break;
++#endif
++                /* fall through to _DRM_FRAME_BUFFER... */        
+ 	case _DRM_FRAME_BUFFER:
+ 	case _DRM_REGISTERS:
+-	case _DRM_AGP:
+ 		if (VM_OFFSET(vma) >= __pa(high_memory)) {
+ #if defined(__i386__)
+ 			if (boot_cpu_data.x86 > 3 && map->type != _DRM_AGP) {
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/mga_dma.c new/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/mga_dma.c
+--- xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/mga_dma.c	Tue Apr 10 12:08:04 2001
++++ xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/mga_dma.c	Mon Jun 11 16:08:27 2001
+@@ -53,11 +53,15 @@
+ {
+ 	u32 status = 0;
+ 	int i;
++	static int count = 0, fails = 0;
++
+ 	DRM_DEBUG( "%s\n", __FUNCTION__ );
+ 
++	count++;
++
+ 	for ( i = 0 ; i < dev_priv->usec_timeout ; i++ ) {
+-		status = MGA_READ( MGA_STATUS ) & MGA_ENGINE_IDLE_MASK;
+-		if ( status == MGA_ENDPRDMASTS ) {
++		status = MGA_READ( MGA_STATUS );
++		if ( ( status & MGA_ENGINE_IDLE_MASK ) == MGA_ENDPRDMASTS ) {
+ 			MGA_WRITE8( MGA_CRTC_INDEX, 0 );
+ 			return 0;
+ 		}
+@@ -65,8 +69,23 @@
+ 	}
+ 
+ #if MGA_DMA_DEBUG
++# if 0
+ 	DRM_ERROR( "failed!\n" );
+ 	DRM_INFO( "   status=0x%08x\n", status );
++# else
++	{
++	  fails++;
++	  if (fails % 1000 == 1) {
++	  DRM_ERROR( "failed! status=0x%08x (%d/%d)\n", status, fails, count );
++	  DRM_ERROR( " PRIMADDR=0x%08x  PRIMEND=0x%08x\n",
++		     MGA_READ(MGA_PRIMADDRESS), MGA_READ(MGA_PRIMEND) );
++	  DRM_ERROR( " SECADDR=0x%08x  SECEND=0x%08x\n",
++		     MGA_READ(MGA_SECADDRESS), MGA_READ(MGA_SECEND) );
++	  DRM_ERROR( " SETUPADDR=0x%08x  SETUPEND=0x%08x\n",
++		     MGA_READ(MGA_SETUPADDRESS), MGA_READ(MGA_SETUPEND) );
++	  }
++	}
++# endif
+ #endif
+ 	return -EBUSY;
+ }
+@@ -78,8 +97,9 @@
+ 	DRM_DEBUG( "%s\n", __FUNCTION__ );
+ 
+ 	for ( i = 0 ; i < dev_priv->usec_timeout ; i++ ) {
+-		status = MGA_READ( MGA_STATUS ) & MGA_DMA_IDLE_MASK;
+-		if ( status == MGA_ENDPRDMASTS ) return 0;
++		status = MGA_READ( MGA_STATUS );
++		if ( ( status  & MGA_DMA_IDLE_MASK ) == MGA_ENDPRDMASTS )
++			return 0;
+ 		udelay( 1 );
+ 	}
+ 
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/mga_drv.h new/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/mga_drv.h
+--- xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/mga_drv.h	Tue Apr 10 12:08:05 2001
++++ xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/mga_drv.h	Mon Jun 11 16:06:42 2001
+@@ -145,14 +145,37 @@
+ #define mga_flush_write_combine()	mb()
+ 
+ 
+-#define MGA_BASE( reg )		((u32)(dev_priv->mmio->handle))
++#define MGA_BASE( reg )		((unsigned long)(dev_priv->mmio->handle))
+ #define MGA_ADDR( reg )		(MGA_BASE(reg) + reg)
+ 
+ #define MGA_DEREF( reg )	*(volatile u32 *)MGA_ADDR( reg )
++#ifdef __alpha__
++#define MGA_READ(reg)          (_MGA_READ((u32 *)MGA_ADDR(reg)))
++static inline u32 _MGA_READ(u32 *addr)
++{
++        mb();
++        return *(volatile u32 *)addr;
++}
++#define MGA_WRITE(reg,val)                                              \
++do {                                                                    \
++        wmb();                                                          \
++        MGA_DEREF(reg) = val;                                           \
++} while (0)
++#else
+ #define MGA_READ( reg )		MGA_DEREF( reg )
+ #define MGA_WRITE( reg, val )	do { MGA_DEREF( reg ) = val; } while (0)
++#endif
++
+ #define MGA_DEREF8( reg )	*(volatile u8 *)MGA_ADDR( reg )
++#ifdef __alpha__
++#define MGA_WRITE8(reg,val)                                             \
++do {                                                                    \
++        wmb();                                                          \
++        MGA_DEREF8(reg) = val;                                          \
++} while (0)
++#else
+ #define MGA_WRITE8( reg, val )  do { MGA_DEREF8( reg ) = val; } while (0)
++#endif
+ 
+ #define DWGREG0 	0x1c00
+ #define DWGREG0_END 	0x1dff
+@@ -252,6 +275,7 @@
+ 
+ #define ADVANCE_DMA()							\
+ do {									\
++	mga_do_wait_for_idle(dev_priv); /* HACK FIXME */                \
+ 	dev_priv->prim.tail = write;					\
+ 	if ( MGA_VERBOSE ) {						\
+ 		DRM_INFO( "ADVANCE_DMA() tail=0x%05x sp=0x%x\n",	\
+@@ -336,7 +360,7 @@
+ #define MGA_DMA_IDLE_MASK		(MGA_SOFTRAPEN |		\
+ 					 MGA_ENDPRDMASTS)
+ 
+-#define MGA_DMA_DEBUG			0
++#define MGA_DMA_DEBUG			1
+ 
+ 
+ 
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/r128_cce.c new/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/r128_cce.c
+--- xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/r128_cce.c	Tue May 29 18:53:39 2001
++++ xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/r128_cce.c	Wed Jun  6 13:01:56 2001
+@@ -350,12 +350,19 @@
+ 		tmp_ofs = dev_priv->ring_rptr->offset - dev->sg->handle;
+ 		page_ofs = tmp_ofs >> PAGE_SHIFT;
+ 
++#if defined(__alpha__) && (LINUX_VERSION_CODE >= 0x020400)
++     		R128_WRITE( R128_PM4_BUFFER_DL_RPTR_ADDR,
++     			    entry->busaddr[page_ofs]);
++     		DRM_DEBUG( "ring rptr: offset=0x%08x handle=0x%08lx\n",
++     			   entry->busaddr[page_ofs],
++     			   entry->handle + tmp_ofs );
++#else
+ 		R128_WRITE( R128_PM4_BUFFER_DL_RPTR_ADDR,
+ 			    virt_to_bus(entry->pagelist[page_ofs]->virtual));
+-
+ 		DRM_DEBUG( "ring rptr: offset=0x%08lx handle=0x%08lx\n",
+ 			   virt_to_bus(entry->pagelist[page_ofs]->virtual),
+ 			   entry->handle + tmp_ofs );
++#endif
+ 	}
+ 
+ 	/* Set watermark control */
+@@ -551,17 +558,15 @@
+ 		    dev_priv->sarea_priv->last_dispatch );
+ 
+ 	if ( dev_priv->is_pci ) {
+-		dev_priv->phys_pci_gart = DRM(ati_pcigart_init)( dev );
+-		if ( !dev_priv->phys_pci_gart ) {
+-			DRM_DEBUG( "failed to init PCI GART!\n" );
++		if (!DRM(ati_pcigart_init)( dev, &dev_priv->phys_pci_gart,
++     					    &dev_priv->bus_pci_gart) ) {
+ 			DRM_ERROR( "failed to init PCI GART!\n" );
+ 			DRM(free)( dev_priv, sizeof(*dev_priv),
+ 				   DRM_MEM_DRIVER );
+ 			dev->dev_private = NULL;
+ 			return -EINVAL;
+ 		}
+-		R128_WRITE( R128_PCI_GART_PAGE,
+-			    virt_to_bus( (void *)dev_priv->phys_pci_gart ) );
++		R128_WRITE( R128_PCI_GART_PAGE, dev_priv->bus_pci_gart );
+ 	}
+ 
+ 	r128_cce_init_ring_buffer( dev );
+@@ -581,6 +586,12 @@
+ 			DRM_IOREMAPFREE( dev_priv->ring_rptr );
+ 			DRM_IOREMAPFREE( dev_priv->buffers );
+ 		}
++     		else {
++			if (!DRM(ati_pcigart_cleanup)( dev,
++     						       dev_priv->phys_pci_gart,
++     						       dev_priv->bus_pci_gart ))
++				DRM_ERROR( "failed to cleanup PCI GART!\n" );
++     		}
+ 
+ 		DRM(free)( dev->dev_private, sizeof(drm_r128_private_t),
+ 			   DRM_MEM_DRIVER );
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/r128_drv.h new/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/r128_drv.h
+--- xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/r128_drv.h	Tue Apr 10 12:08:05 2001
++++ xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/r128_drv.h	Wed Jun  6 12:53:48 2001
+@@ -72,6 +72,7 @@
+ 	int usec_timeout;
+ 	int is_pci;
+ 	unsigned long phys_pci_gart;
++	dma_addr_t bus_pci_gart;
+ 	unsigned long cce_buffers_offset;
+ 
+ 	atomic_t idle_count;
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/radeon_cp.c new/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/radeon_cp.c
+--- xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/radeon_cp.c	Fri Jun  1 18:28:07 2001
++++ xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/radeon_cp.c	Wed Jun  6 13:02:40 2001
+@@ -624,12 +624,19 @@
+ 		tmp_ofs = dev_priv->ring_rptr->offset - dev->sg->handle;
+ 		page_ofs = tmp_ofs >> PAGE_SHIFT;
+ 
++#if defined(__alpha__) && (LINUX_VERSION_CODE >= 0x020400)
++		RADEON_WRITE( RADEON_CP_RB_RPTR_ADDR,
++			      entry->busaddr[page_ofs]);
++		DRM_DEBUG( "ring rptr: offset=0x%08x handle=0x%08lx\n",
++			   entry->busaddr[page_ofs],
++			   entry->handle + tmp_ofs );
++#else
+ 		RADEON_WRITE( RADEON_CP_RB_RPTR_ADDR,
+ 			      virt_to_bus(entry->pagelist[page_ofs]->virtual));
+-
+ 		DRM_DEBUG( "ring rptr: offset=0x%08lx handle=0x%08lx\n",
+ 			   virt_to_bus(entry->pagelist[page_ofs]->virtual),
+ 			   entry->handle + tmp_ofs );
++#endif
+ 	}
+ 
+ 	/* Set ring buffer size */
+@@ -881,8 +888,8 @@
+ 		      dev_priv->sarea_priv->last_clear );
+ 
+ 	if ( dev_priv->is_pci ) {
+-		dev_priv->phys_pci_gart = DRM(ati_pcigart_init)( dev );
+-		if ( !dev_priv->phys_pci_gart ) {
++		if (!DRM(ati_pcigart_init)( dev, &dev_priv->phys_pci_gart,
++					    &dev_priv->bus_pci_gart)) {
+ 			DRM_ERROR( "failed to init PCI GART!\n" );
+ 			DRM(free)( dev_priv, sizeof(*dev_priv),
+ 				   DRM_MEM_DRIVER );
+@@ -897,8 +904,7 @@
+ 
+ 		/* set PCI GART page-table base address
+ 		 */
+-		RADEON_WRITE( RADEON_AIC_PT_BASE,
+-			      virt_to_bus( (void *)dev_priv->phys_pci_gart ) );
++		RADEON_WRITE( RADEON_AIC_PT_BASE, dev_priv->bus_pci_gart );
+ 
+ 		/* set address range for PCI address translate
+ 		 */
+@@ -940,6 +946,12 @@
+ 			DRM_IOREMAPFREE( dev_priv->cp_ring );
+ 			DRM_IOREMAPFREE( dev_priv->ring_rptr );
+ 			DRM_IOREMAPFREE( dev_priv->buffers );
++		}
++		else {
++			if (!DRM(ati_pcigart_cleanup)( dev,
++						       dev_priv->phys_pci_gart,
++						       dev_priv->bus_pci_gart ))
++				DRM_ERROR( "failed to cleanup PCI GART!\n" );
+ 		}
+ 
+ 		DRM(free)( dev->dev_private, sizeof(drm_radeon_private_t),
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/radeon_drv.h new/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/radeon_drv.h
+--- xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/radeon_drv.h	Wed May  2 11:06:10 2001
++++ xc/programs/Xserver/hw/xfree86/os-support/linux/drm/kernel/radeon_drv.h	Wed Jun  6 12:55:47 2001
+@@ -84,6 +84,7 @@
+ 	int usec_timeout;
+ 	int is_pci;
+ 	unsigned long phys_pci_gart;
++	dma_addr_t bus_pci_gart;
+ 
+ 	atomic_t idle_count;
+ 
+diff -ur --exclude=CVS old/programs/Xserver/hw/xfree86/os-support/linux/lnx_video.c new/programs/Xserver/hw/xfree86/os-support/linux/lnx_video.c
+--- xc/programs/Xserver/hw/xfree86/os-support/linux/lnx_video.c	Tue May 29 18:53:34 2001
++++ xc/programs/Xserver/hw/xfree86/os-support/linux/lnx_video.c	Wed Jun  6 10:05:07 2001
+@@ -42,6 +42,8 @@
+ #include <asm/mtrr.h>
+ #endif
+ 
++extern int ioperm(unsigned long from, unsigned long num, int turn_on);
++
+ #ifndef MAP_FAILED
+ #define MAP_FAILED ((void *)-1)
+ #endif
+@@ -358,7 +360,7 @@
+ #ifdef __alpha__
+ 	if (axpSystem == -1) {
+ 	  axpSystem = lnxGetAXP();
+-	  if (needSparse = (_bus_base_sparse() > 0)) {
++	  if ((needSparse = (_bus_base_sparse() > 0))) {
+ 	    hae_thresh = xf86AXPParams[axpSystem].hae_thresh;
+ 	    hae_mask = xf86AXPParams[axpSystem].hae_mask;
+ 	    sparse_size = xf86AXPParams[axpSystem].size;
+@@ -619,10 +621,6 @@
+ 
+ #define vuip    volatile unsigned int *
+ 
+-static unsigned long msb_set = 0;
+-static pointer lnxSBase = 0;
+-static pointer lnxBase = 0;
+-
+ extern int readDense8(pointer Base, register unsigned long Offset);
+ extern int readDense16(pointer Base, register unsigned long Offset);
+ extern int readDense32(pointer Base, register unsigned long Offset);
+@@ -655,10 +653,17 @@
+ static void
+ writeSparse32(int Value, pointer Base, register unsigned long Offset);
+ 
++#define DENSE_BASE	0x2ff00000000UL
++#define SPARSE_BASE	0x30000000000UL
++
++static unsigned long msb_set = 0;
++
+ static pointer
+ mapVidMemSparse(int ScreenNum, unsigned long Base, unsigned long Size, int flags)
+ {
+     int fd;
++    unsigned long ret, rets = 0;
++
+     static Bool was_here = FALSE;
+ 
+     if (!was_here) {
+@@ -673,34 +678,89 @@
+       xf86ReadMmio8 = readSparse8;
+       xf86ReadMmio16 = readSparse16;
+       xf86ReadMmio32 = readSparse32;
++    }
+ 	
+-      if ((fd = open(DEV_MEM, O_RDWR)) < 0) {
+-	FatalError("xf86MapVidMem: failed to open " DEV_MEM " (%s)\n",
++    if ((fd = open(DEV_MEM, O_RDWR)) < 0) {
++        FatalError("xf86MapVidMem: failed to open " DEV_MEM " (%s)\n",
+ 		   strerror(errno));
+-      }
+-      /* This requirers linux-0.99.pl10 or above */
+-      lnxBase = mmap((caddr_t)0, 0x100000000,
+-		     PROT_READ | PROT_WRITE,
+-		     MAP_SHARED, fd,
+-		     (off_t) bus_base);
+-      lnxSBase = mmap((caddr_t)0, 0x400000000,
+-		      PROT_READ | PROT_WRITE,
+-		      MAP_SHARED, fd,
+-		      (off_t) _bus_base_sparse());
+-      
+-      close(fd);
++    }
++
++#if 0
++    xf86Msg(X_INFO,"mapVidMemSparse: try Base 0x%lx size 0x%lx flags 0x%x\n",
++	    Base, Size, flags);
++#endif
++
++    /* This requirers linux-0.99.pl10 or above */
++
++    /*
++     * Always do DENSE mmap, since read32/write32 currently require it.
++     */
++    ret = (unsigned long)mmap((caddr_t)(DENSE_BASE + Base), Size,
++		   PROT_READ | PROT_WRITE,
++		   MAP_SHARED, fd,
++		   (off_t) (bus_base + Base));
++
++    /*
++     * Do SPARSE mmap only when MMIO and not MMIO_32BIT, or FRAMEBUFFER
++     * and SPARSE (which should require the use of read/write macros).
++     *
++     * By not SPARSE mmapping an 8MB framebuffer, we can save approx. 256K
++     * bytes worth of pagetable (32 pages).
++     */
++    if (((flags & VIDMEM_MMIO) && !(flags & VIDMEM_MMIO_32BIT)) ||
++	((flags & VIDMEM_FRAMEBUFFER) && (flags & VIDMEM_SPARSE)))
++    {
++        rets = (unsigned long)mmap((caddr_t)(SPARSE_BASE + (Base << 5)),
++				   Size << 5, PROT_READ | PROT_WRITE,
++				   MAP_SHARED, fd,
++				   (off_t) _bus_base_sparse() + (Base << 5));
++    }
++
++    close(fd);
+       
+-      if (lnxSBase == MAP_FAILED || lnxBase == MAP_FAILED)	{
+-	FatalError("xf86MapVidMem: Could not mmap framebuffer (%s)\n",
++    if (ret == (unsigned long)MAP_FAILED || ret != (DENSE_BASE + Base)) {
++        FatalError("xf86MapVidMemSparse: Could not (dense) mmap fb (%s)\n",
+ 		   strerror(errno));
+-      }
+     }
+-    return (pointer)((unsigned long)lnxBase + Base);
++
++    if (((flags & VIDMEM_MMIO) && !(flags & VIDMEM_MMIO_32BIT)) ||
++	((flags & VIDMEM_FRAMEBUFFER) && (flags & VIDMEM_SPARSE)))
++    {
++        if (rets == (unsigned long)MAP_FAILED ||
++	    rets != (SPARSE_BASE + (Base << 5)))
++	{
++	    FatalError("mapVidMemSparse: Could not (sparse) mmap fb (%s)\n",
++		       strerror(errno));
++	}
++    }
++
++#if 1
++    if (rets)
++        xf86Msg(X_INFO,"mapVidMemSparse: mapped Base 0x%lx size 0x%lx"
++		" to DENSE at 0x%lx and SPARSE at 0x%lx\n",
++		Base, Size, ret, rets);
++    else
++        xf86Msg(X_INFO,"mapVidMemSparse: mapped Base 0x%lx size 0x%lx"
++		" to DENSE only at 0x%lx\n",
++		Base, Size, ret);
++
++#endif
++    return (pointer)(DENSE_BASE + Base);
+ }
+ 
+ static void
+ unmapVidMemSparse(int ScreenNum, pointer Base, unsigned long Size)
+ {
++    unsigned long Offset = (unsigned long)Base - DENSE_BASE;
++#if 1
++    xf86Msg(X_INFO,"unmapVidMemSparse: unmapping Base 0x%lx Size 0x%lx\n",
++	    Base, Size);
++#endif
++    /* Unmap DENSE always. */
++    munmap((caddr_t)Base, Size);
++
++    /* Unmap SPARSE always, and ignore error in case we did not map it. */
++    munmap((caddr_t)(SPARSE_BASE + (Offset << 5)), Size << 5);
+ }
+ 
+ static int
+@@ -710,7 +770,7 @@
+     register unsigned long msb;
+ 
+     mem_barrier();
+-    Offset += (unsigned long)Base - (unsigned long)lnxBase;
++    Offset += (unsigned long)Base - DENSE_BASE;
+     shift = (Offset & 0x3) << 3;
+     if (Offset >= (hae_thresh)) {
+         msb = Offset & hae_mask;
+@@ -722,7 +782,7 @@
+     }
+ 
+     mem_barrier();
+-    result = *(vuip) ((unsigned long)lnxSBase + (Offset << 5));
++    result = *(vuip) (SPARSE_BASE + (Offset << 5));
+     result >>= shift;
+     return 0xffUL & result;
+ }
+@@ -734,7 +794,7 @@
+     register unsigned long msb;
+ 
+     mem_barrier();
+-    Offset += (unsigned long)Base - (unsigned long)lnxBase;
++    Offset += (unsigned long)Base - DENSE_BASE;
+     shift = (Offset & 0x2) << 3;
+     if (Offset >= hae_thresh) {
+         msb = Offset & hae_mask;
+@@ -746,7 +806,7 @@
+     }
+ 
+     mem_barrier();
+-    result = *(vuip)((unsigned long)lnxSBase+(Offset<<5)+(1<<(5-2)));
++    result = *(vuip)(SPARSE_BASE + (Offset<<5) + (1<<(5-2)));
+     result >>= shift;
+     return 0xffffUL & result;
+ }
+@@ -754,6 +814,7 @@
+ static int
+ readSparse32(pointer Base, register unsigned long Offset)
+ {
++    /* NOTE: this is really using DENSE. */
+     mem_barrier();
+     return *(vuip)((unsigned long)Base+(Offset));
+ }
+@@ -765,7 +826,7 @@
+     register unsigned int b = Value & 0xffU;
+ 
+     write_mem_barrier();
+-    Offset += (unsigned long)Base - (unsigned long)lnxBase;
++    Offset += (unsigned long)Base - DENSE_BASE;
+     if (Offset >= hae_thresh) {
+         msb = Offset & hae_mask;
+ 	Offset -= msb;
+@@ -776,7 +837,7 @@
+     }
+ 
+     write_mem_barrier();
+-    *(vuip) ((unsigned long)lnxSBase + (Offset << 5)) = b * 0x01010101;
++    *(vuip) (SPARSE_BASE + (Offset << 5)) = b * 0x01010101;
+ }
+ 
+ static void
+@@ -786,7 +847,7 @@
+     register unsigned int w = Value & 0xffffU;
+ 
+     write_mem_barrier();
+-    Offset += (unsigned long)Base - (unsigned long)lnxBase;
++    Offset += (unsigned long)Base - DENSE_BASE;
+     if (Offset >= hae_thresh) {
+         msb = Offset & hae_mask;
+ 	Offset -= msb;
+@@ -797,13 +858,13 @@
+     }
+ 
+     write_mem_barrier();
+-    *(vuip)((unsigned long)lnxSBase+(Offset<<5)+(1<<(5-2))) =
+-      w * 0x00010001;
++    *(vuip)(SPARSE_BASE + (Offset<<5) + (1<<(5-2))) = w * 0x00010001;
+ }
+ 
+ static void
+ writeSparse32(int Value, pointer Base, register unsigned long Offset)
+ {
++    /* NOTE: this is really using DENSE. */
+     write_mem_barrier();
+     *(vuip)((unsigned long)Base + (Offset)) = Value;
+     return;
+@@ -815,7 +876,7 @@
+     register unsigned long msb;
+     register unsigned int b = Value & 0xffU;
+ 
+-    Offset += (unsigned long)Base - (unsigned long)lnxBase;
++    Offset += (unsigned long)Base - DENSE_BASE;
+     if (Offset >= hae_thresh) {
+         msb = Offset & hae_mask;
+ 	Offset -= msb;
+@@ -824,7 +885,7 @@
+ 	    msb_set = msb;
+ 	}
+     }
+-    *(vuip) ((unsigned long)lnxSBase + (Offset << 5)) = b * 0x01010101;
++    *(vuip) (SPARSE_BASE + (Offset << 5)) = b * 0x01010101;
+ }
+ 
+ static void
+@@ -833,7 +894,7 @@
+     register unsigned long msb;
+     register unsigned int w = Value & 0xffffU;
+ 
+-    Offset += (unsigned long)Base - (unsigned long)lnxBase;
++    Offset += (unsigned long)Base - DENSE_BASE;
+     if (Offset >= hae_thresh) {
+         msb = Offset & hae_mask;
+ 	Offset -= msb;
+@@ -842,13 +903,13 @@
+ 	    msb_set = msb;
+ 	}
+     }
+-    *(vuip)((unsigned long)lnxSBase+(Offset<<5)+(1<<(5-2))) =
+-      w * 0x00010001;
++    *(vuip)(SPARSE_BASE+(Offset<<5)+(1<<(5-2))) = w * 0x00010001;
+ }
+ 
+ static void
+ writeSparseNB32(int Value, pointer Base, register unsigned long Offset)
+ {
++    /* NOTE: this is really using DENSE. */
+     *(vuip)((unsigned long)Base + (Offset)) = Value;
+     return;
+ }
