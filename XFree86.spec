@@ -80,7 +80,7 @@ BuildRequires:	Glide_V3-DRI-devel >= 1:3.10.0-0.20010309
 BuildRequires:	Glide2x_SDK
 %endif
 Requires:	xauth
-Requires:	XFree86-fonts-ISO88590-1 = %{version}
+Requires:	XFree86-fonts-ISO8859-1 = %{version}
 Prereq:		XFree86-libs
 Obsoletes:	xpm-progs
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
