@@ -1,0 +1,11 @@
+--- XFree86-3.3.3/xc/config/cf/xfree86.cf.joy	Mon Dec  7 15:50:14 1998
++++ XFree86-3.3.3/xc/config/cf/xfree86.cf	Mon Dec  7 15:50:36 1998
+@@ -684,7 +684,7 @@
+ #endif
+ #endif
+ #ifndef JoystickSupport
+-#define JoystickSupport		NO
++#define JoystickSupport		YES
+ #endif
+ 
+ /*

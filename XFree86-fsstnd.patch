@@ -1,0 +1,91 @@
+--- XFree86-3.3.2/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl.fsstnd	Mon Mar 30 10:46:28 1998
++++ XFree86-3.3.2/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl	Mon Mar 30 10:46:49 1998
+@@ -38,7 +38,7 @@
+ 	set devid [lindex $DeviceIDs $idx]
+         global Device_$devid
+         set server [set Device_${devid}(Server)]
+-	set linkname $Xwinhome/bin/X
++	set linkname /etc/X11/X
+ 	set lastlink $linkname
+ 	for {set nlinks 0} \
+ 		{[file exists $linkname] && [file type $linkname]=="link" \
+@@ -72,7 +72,7 @@
+ 	    cd $linkdir
+ 	    catch "unlink X" ret
+ 	    if !$pc98 {
+-	        if [catch "link $Xwinhome/bin/XF86_$server X" ret] {
++	        if [catch "link ../../usr/X11R6/bin/XF86_$server X" ret] {
+ 		    mesg "Link creation failed!\n\
+ 			    You'll have to do it yourself" okay
+ 	        } else {
+--- XFree86-3.3.2/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile.fsstnd	Mon Mar 30 10:46:28 1998
++++ XFree86-3.3.2/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile	Mon Mar 30 10:46:49 1998
+@@ -78,7 +78,7 @@
+ 
+  XCONFIG_DEFINES = $(EXT_DEFINES) -DXF86SETUP \
+ 		   '-DPROJECTROOT="$(PROJECTROOT)"' \
+-		   '-DSERVER_CONFIG_FILE="$(LIBDIR)/$(XCONFIGFILE)"'
++		   '-DSERVER_CONFIG_FILE="/etc/X11/$(XCONFIGFILE)"'
+ 
+  XF86SETUPLIBDIR = $(LIBDIR)/XF86Setup
+          DEFINES = -DCARD_DATABASE_FILE='"$(CARDDBFILE)"' \
+--- XFree86-3.3.2/xc/programs/Xserver/hw/xfree86/xf86config/xf86config.c.fsstnd	Mon Mar 30 10:46:36 1998
++++ XFree86-3.3.2/xc/programs/Xserver/hw/xfree86/xf86config/xf86config.c	Mon Mar 30 10:46:49 1998
+@@ -104,7 +104,7 @@
+ #endif
+ 
+ /*
+- * Define this to have /etc/XF86Config prompted for as the default
++ * Define this to have /etc/X11/XF86Config prompted for as the default
+  * location to write the XF86Config file to.
+  */
+ #define PREFER_XF86CONFIG_IN_ETC
+@@ -210,7 +210,7 @@
+ "This program will create a basic " CONFIGNAME " file, based on menu selections you\n"
+ "make.\n"
+ "\n"
+-"The " CONFIGNAME " file usually resides in " TREEROOTLX " or /etc. A sample\n"
++"The " CONFIGNAME " file usually resides in " TREEROOTLX " or /etc/X11. A sample\n"
+ CONFIGNAME " file is supplied with XFree86; it is configured for a standard\n"
+ "VGA card and monitor with 640x480 resolution. This program will ask for a\n"
+ "pathname when it is ready to write the file.\n"
+@@ -2827,11 +2827,11 @@
+ #ifndef __EMX__
+ 	if (getuid() == 0) {
+ #ifdef PREFER_XF86CONFIG_IN_ETC
+-		printf("Shall I write it to /etc/XF86Config? ");
++		printf("Shall I write it to /etc/X11/XF86Config? ");
+ 		getstring(s);
+ 		printf("\n");
+ 		if (answerisyes(s))
+-			return "/etc/XF86Config";
++			return "/etc/X11/XF86Config";
+ #endif
+ 
+ 		printf("Please answer the following question with either 'y' or 'n'.\n");
+@@ -2842,11 +2842,11 @@
+ 			return "/usr/X11R6/lib/X11/XF86Config";
+ 
+ #ifndef PREFER_XF86CONFIG_IN_ETC
+-		printf("Shall I write it to /etc/XF86Config? ");
++		printf("Shall I write it to /etc/X11/XF86Config? ");
+ 		getstring(s);
+ 		printf("\n");
+ 		if (answerisyes(s))
+-			return "/etc/XF86Config";
++			return "/etc/X11/XF86Config";
+ #endif
+ #else /* __EMX__ */
+ 	{
+--- XFree86-3.3.2/xc/programs/Xserver/os/wrapper.c.fsstnd	Mon Mar 30 10:59:11 1998
++++ XFree86-3.3.2/xc/programs/Xserver/os/wrapper.c	Mon Mar 30 10:59:57 1998
+@@ -42,6 +42,9 @@
+ #define XSERVER_PATH	"/usr/X11R6/bin/X"
+ #endif
+ 
++#undef XSERVER_PATH
++#define XSERVER_PATH "/etc/X11/X"
++
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>

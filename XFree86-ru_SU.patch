@@ -1,0 +1,14 @@
+--- XFree86-3.3.3.1/xc/nls/locale.alias.ru_SU	Tue Jan 26 15:58:06 1999
++++ XFree86-3.3.3.1/xc/nls/locale.alias	Tue Jan 26 16:00:01 1999
+@@ -214,9 +214,9 @@
+ ru						ru_RU.ISO8859-5
+ ru_RU						ru_RU.ISO8859-5
+ ru_RU.iso88595					ru_RU.ISO8859-5
+-ru_SU						ru_RU.ISO8859-5
++ru_SU						ru_RU.KOI8-R
++ru_SU.KOI8-R					ru_RU.KOI8-R
+ ru_SU.ISO8859-5					ru_RU.ISO8859-5
+-ru_SU.KOI8-R					ru_RU.KOI8-R
+ sh						sh_YU.ISO8859-2
+ sh_HR.iso88592					sh_HR.ISO8859-2
+ sh_YU						sh_YU.ISO8859-2

@@ -1,0 +1,36 @@
+diff -u --recursive --new-file XFree86-3.3.2.3.macro/xc/config/cf/linux.cf XFree86-3.3.2.3/xc/config/cf/linux.cf
+--- XFree86-3.3.2.3.macro/xc/config/cf/linux.cf	Mon Mar  2 11:55:22 1998
++++ XFree86-3.3.2.3/xc/config/cf/linux.cf	Thu Aug 27 12:12:50 1998
+@@ -163,7 +163,7 @@
+ #define AsmDefines		-D__ELF__
+ #define CplusplusCmd		c++
+ #if UseStaticTermcapLib
+-#define TermcapLibrary		StaticLibrary(/usr/lib/termcap,termcap)
++#define TermcapLibrary		StaticLibrary(/usr/lib,ncurses)
+ #endif
+ #else
+ #ifdef AlphaArchitecture
+diff -u --recursive --new-file XFree86-3.3.2.3.macro/xc/config/cf/xf86site.def XFree86-3.3.2.3/xc/config/cf/xf86site.def
+--- XFree86-3.3.2.3.macro/xc/config/cf/xf86site.def	Mon Mar  2 11:55:22 1998
++++ XFree86-3.3.2.3/xc/config/cf/xf86site.def	Thu Aug 27 12:14:33 1998
+@@ -93,8 +93,8 @@
+  * Some Linux releases don't have a libtermcap.  In this case you may need
+  * to uncomment the following
+  *
+-#define TermcapLibrary		-lncurses
+  */
++#define TermcapLibrary		-lncurses
+ 
+ /*
+  * If you have Tk (which is required to build XF86Setup), uncomment this
+--- XFree86-3.3.3.1.new/xc/programs/xterm/Imakefile	Tue Mar 23 14:01:57 1999
++++ XFree86-3.3.3.1/xc/programs/xterm/Imakefile	Sat Oct 24 09:58:19 1998
+@@ -73,7 +73,7 @@
+ 		  -DOSMINORVERSION=$(OSMINORVERSION)
+    MISC_DEFINES = /* -DALLOWLOGGING -DALLOWLOGFILEEXEC */ 
+     XKB_DEFINES = XkbClientDefines
+-        DEFINES = -I. $(XKB_DEFINES) $(TERMCAPDEFINES) $(FEATURE_DEFINES) $(SCROLLBAR_RIGHT)
++        DEFINES = -I. -I/usr/include/ncurses $(XKB_DEFINES) $(TERMCAPDEFINES) $(FEATURE_DEFINES) $(SCROLLBAR_RIGHT)
+ 
+ #ifdef OS2Architecture
+           MAINSRC = os2main.c

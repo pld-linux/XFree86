@@ -1,0 +1,720 @@
+--- XFree86-3.3.3.1/xc/include/Xpoll.h.alpha-sockets	Mon Jan 11 12:28:21 1999
++++ XFree86-3.3.3.1/xc/include/Xpoll.h	Mon Jan 11 12:30:05 1999
+@@ -40,7 +40,7 @@
+ 
+ #include <X11/Xos.h>
+ #if !defined(DGUX)
+-#if (defined(SVR4) || defined(CRAY) || defined(AIXV3)) && !defined(FD_SETSIZE)
++#if (defined(SVR4) || defined(CRAY) || defined(AIXV3) || defined(linux)) && !defined(FD_SETSIZE)
+ #include <sys/select.h>
+ #ifdef luna
+ #include <sysent.h>
+--- XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/common/compiler.h.alpha-sockets	Mon Oct 19 16:39:32 1998
++++ XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/common/compiler.h	Mon Jan 11 12:28:22 1999
+@@ -161,53 +161,93 @@
+  * from linux/include/asm-alpha/unaligned.h
+  */
+ 
+-static __inline__ unsigned long ldq_u(unsigned long * r11)
+-{
++/*
++ * This is a silly but good way to make sure that
++ * the get/put functions are indeed always optimized,
++ * and that we use the correct sizes.
++ */
++extern void bad_unaligned_access_length(void);
++
++/*
++ * EGCS 1.1 knows about arbitrary unaligned loads.  Define some
++ * packed structures to talk about such things with.
++ */
++
++struct __una_u64 { unsigned long  x __attribute__((packed)); };
++struct __una_u32 { unsigned int   x __attribute__((packed)); };
++struct __una_u16 { unsigned short x __attribute__((packed)); };
++
++/*
++ * Elemental unaligned loads 
++ */
++
++extern __inline__ unsigned long ldq_u(const unsigned long * r11)
++{
++#if __GNUC__ > 2 || __GNUC_MINOR__ >= 91
++	const struct __una_u64 *ptr = (const struct __una_u64 *) r11;
++	return ptr->x;
++#else
+ 	unsigned long r1,r2;
+ 	__asm__("ldq_u %0,%3\n\t"
+ 		"ldq_u %1,%4\n\t"
+ 		"extql %0,%2,%0\n\t"
+-		"extqh %1,%2,%1\n\t"
+-		"bis %1,%0,%0"
++		"extqh %1,%2,%1"
+ 		:"=&r" (r1), "=&r" (r2)
+ 		:"r" (r11),
+ 		 "m" (*r11),
+-		 "m" (*(unsigned long *)(7+(char *) r11)));
+-	return r1;
++		 "m" (*(const unsigned long *)(7+(char *) r11)));
++	return r1 | r2;
++#endif
+ }
+ 
+-static __inline__ unsigned long ldl_u(unsigned int * r11)
++extern __inline__ unsigned long ldl_u(const unsigned int * r11)
+ {
++#if __GNUC__ > 2 || __GNUC_MINOR__ >= 91
++	const struct __una_u32 *ptr = (const struct __una_u32 *) r11;
++	return ptr->x;
++#else
+ 	unsigned long r1,r2;
+ 	__asm__("ldq_u %0,%3\n\t"
+ 		"ldq_u %1,%4\n\t"
+ 		"extll %0,%2,%0\n\t"
+-		"extlh %1,%2,%1\n\t"
+-		"bis %1,%0,%0"
++		"extlh %1,%2,%1"
+ 		:"=&r" (r1), "=&r" (r2)
+ 		:"r" (r11),
+ 		 "m" (*r11),
+-		 "m" (*(unsigned long *)(3+(char *) r11)));
+-	return r1;
++		 "m" (*(const unsigned long *)(3+(char *) r11)));
++	return r1 | r2;
++#endif
+ }
+ 
+-static __inline__ unsigned long ldw_u(unsigned short * r11)
++extern __inline__ unsigned long ldw_u(const unsigned short * r11)
+ {
++#if __GNUC__ > 2 || __GNUC_MINOR__ >= 91
++	const struct __una_u16 *ptr = (const struct __una_u16 *) r11;
++	return ptr->x;
++#else
+ 	unsigned long r1,r2;
+ 	__asm__("ldq_u %0,%3\n\t"
+ 		"ldq_u %1,%4\n\t"
+ 		"extwl %0,%2,%0\n\t"
+-		"extwh %1,%2,%1\n\t"
+-		"bis %1,%0,%0"
++		"extwh %1,%2,%1"
+ 		:"=&r" (r1), "=&r" (r2)
+ 		:"r" (r11),
+ 		 "m" (*r11),
+-		 "m" (*(unsigned long *)(1+(char *) r11)));
+-	return r1;
++		 "m" (*(const unsigned long *)(1+(char *) r11)));
++	return r1 | r2;
++#endif
+ }
+ 
+-static __inline__ void stq_u(unsigned long r5, unsigned long * r11)
+-{
++/*
++ * Elemental unaligned stores 
++ */
++
++extern __inline__ void stq_u(unsigned long r5, unsigned long * r11)
++{
++#if __GNUC__ > 2 || __GNUC_MINOR__ >= 91
++	struct __una_u64 *ptr = (struct __una_u64 *) r11;
++	ptr->x = r5;
++#else
+ 	unsigned long r1,r2,r3,r4;
+ 
+ 	__asm__("ldq_u %3,%1\n\t"
+@@ -224,10 +264,15 @@
+ 		 "=m" (*(unsigned long *)(7+(char *) r11)),
+ 		 "=&r" (r1), "=&r" (r2), "=&r" (r3), "=&r" (r4)
+ 		:"r" (r5), "r" (r11));
++#endif
+ }
+ 
+-static __inline__ void stl_u(unsigned long r5, unsigned int * r11)
++extern __inline__ void stl_u(unsigned long r5, unsigned int * r11)
+ {
++#if __GNUC__ > 2 || __GNUC_MINOR__ >= 91
++	struct __una_u32 *ptr = (struct __una_u32 *) r11;
++	ptr->x = r5;
++#else
+ 	unsigned long r1,r2,r3,r4;
+ 
+ 	__asm__("ldq_u %3,%1\n\t"
+@@ -244,10 +289,15 @@
+ 		 "=m" (*(unsigned long *)(3+(char *) r11)),
+ 		 "=&r" (r1), "=&r" (r2), "=&r" (r3), "=&r" (r4)
+ 		:"r" (r5), "r" (r11));
++#endif
+ }
+ 
+-static __inline__ void stw_u(unsigned long r5, unsigned short * r11)
++extern __inline__ void stw_u(unsigned long r5, unsigned short * r11)
+ {
++#if __GNUC__ > 2 || __GNUC_MINOR__ >= 91
++	struct __una_u16 *ptr = (struct __una_u16 *) r11;
++	ptr->x = r5;
++#else
+ 	unsigned long r1,r2,r3,r4;
+ 
+ 	__asm__("ldq_u %3,%1\n\t"
+@@ -264,6 +314,7 @@
+ 		 "=m" (*(unsigned long *)(1+(char *) r11)),
+ 		 "=&r" (r1), "=&r" (r2), "=&r" (r3), "=&r" (r4)
+ 		:"r" (r5), "r" (r11));
++#endif
+ }
+ 
+ #define mem_barrier()        __asm__ __volatile__("mb"  : : : "memory")
+--- XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/common/xf86Summa.c.alpha-sockets	Mon Jan 11 12:28:16 1999
++++ XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/common/xf86Summa.c	Mon Jan 11 12:28:22 1999
+@@ -600,7 +600,7 @@
+ 	timeout.tv_sec = 0;
+ 	timeout.tv_usec = 200000;
+ 
+-	SYSCALL(err = select(FD_SETSIZE, &readfds, NULL, NULL, &timeout));
++	SYSCALL(err = select(fd+1, &readfds, NULL, NULL, &timeout));
+ 	if (err == -1) {
+ 	    Error("SummaSketch select");
+ 	    return NULL;
+--- XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/common/xf86Wacom.c.alpha-sockets	Mon Jan 11 12:28:16 1999
++++ XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/common/xf86Wacom.c	Mon Jan 11 12:28:23 1999
+@@ -692,7 +692,7 @@
+     
+     timeout.tv_sec = 1;
+     timeout.tv_usec = 0;
+-    SYSCALL(err = select(FD_SETSIZE, &readfds, NULL, NULL, &timeout));
++    SYSCALL(err = select(fd+1, &readfds, NULL, NULL, &timeout));
+ 
+     return err;
+ }
+--- XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/common/xf86_Mouse.c.alpha-sockets	Mon Jan 11 12:28:16 1999
++++ XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/common/xf86_Mouse.c	Mon Jan 11 12:28:23 1999
+@@ -437,7 +437,7 @@
+             write(mouse->mseFd, s, 1);
+ 	    FD_ZERO(&fds);
+ 	    FD_SET(mouse->mseFd, &fds);
+-	    if (select(FD_SETSIZE, &fds, NULL, NULL, NULL) <= 0)
++	    if (select(mouse->mseFd+1, &fds, NULL, NULL, NULL) <= 0)
+ 	      break;
+             read(mouse->mseFd, &c, 1);
+             if (c != *s)
+--- XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/common/xf86_PnPMouse.c.alpha-sockets	Mon Mar  2 05:23:21 1998
++++ XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/common/xf86_PnPMouse.c	Mon Jan 11 12:28:23 1999
+@@ -235,7 +235,7 @@
+     FD_SET(mouse->mseFd, &fds);
+     timeout.tv_sec = 0;
+     timeout.tv_usec = 200000;
+-    if (select(FD_SETSIZE, &fds, NULL, NULL, &timeout) <= 0) {
++    if (select(mouse->mseFd+1, &fds, NULL, NULL, &timeout) <= 0) {
+ 
+ 	/* port setup, 2nd phase (2.1.5) */
+         i = TIOCM_DTR | TIOCM_RTS;	/* DTR = 0, RTS = 0 */
+@@ -252,7 +252,7 @@
+         FD_SET(mouse->mseFd, &fds);
+         timeout.tv_sec = 0;
+         timeout.tv_usec = 200000;
+-        if (select(FD_SETSIZE, &fds, NULL, NULL, &timeout) <= 0)
++        if (select(mouse->mseFd+1, &fds, NULL, NULL, &timeout) <= 0)
+ 	    goto connect_idle;
+     }
+ #else
+@@ -277,7 +277,7 @@
+     FD_SET(mouse->mseFd, &fds);
+     timeout.tv_sec = 0;
+     timeout.tv_usec = 200000;
+-    if (select(FD_SETSIZE, &fds, NULL, NULL, &timeout) <= 0)
++    if (select(mouse->mseFd+1, &fds, NULL, NULL, &timeout) <= 0)
+         goto connect_idle;
+ #endif
+ 
+@@ -302,7 +302,7 @@
+         FD_SET(mouse->mseFd, &fds);
+         timeout.tv_sec = 0;
+         timeout.tv_usec = 200000;
+-        if (select(FD_SETSIZE, &fds, NULL, NULL, &timeout) <= 0)
++        if (select(mouse->mseFd+1, &fds, NULL, NULL, &timeout) <= 0)
+ 	    break;
+ 
+ 	read(mouse->mseFd, &buf[i], 1);
+--- XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/vga256/drivers/mga/mga_driver.c.alpha-sockets	Mon Jan 11 12:28:17 1999
++++ XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/vga256/drivers/mga/mga_driver.c	Mon Jan 11 12:28:23 1999
+@@ -1256,6 +1256,16 @@
+ MGASave(save)
+ vgaHWPtr save;
+ {
++#if NeedFunctionPrototypes
++	extern void *MGA3026Save(void*);
++	extern void *MGA1064Save(void*);
++	extern void *MGA200Save(void*);
++#else
++	extern void *MGA3026Save();
++	extern void *MGA1064Save();
++	extern void *MGA200Save();
++#endif
++
+ 	switch (MGAchipset)
+ 	{
+ 	case PCI_CHIP_MGA2064:
+--- XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/xaa/xf86bench.c.alpha-sockets	Mon Jan 11 12:28:19 1999
++++ XFree86-3.3.3.1/xc/programs/Xserver/hw/xfree86/xaa/xf86bench.c	Mon Jan 11 12:28:23 1999
+@@ -96,7 +96,7 @@
+     unsigned char *end;
+ #ifdef __alpha__
+     unsigned long data64;
+-    data64 = data | (data << 32);
++    data64 = (unsigned long)data | ((unsigned long)data << 32);
+ #endif
+     end = dest + nbytes;
+     while (dest <= end - 128) {
+--- XFree86-3.3.3.1/xc/programs/Xserver/include/os.h.alpha-sockets	Thu Jan 22 05:47:13 1998
++++ XFree86-3.3.3.1/xc/programs/Xserver/include/os.h	Mon Jan 11 12:28:23 1999
+@@ -773,4 +773,20 @@
+ /* stuff for FlushCallback */
+ extern CallbackListPtr FlushCallback;
+ 
++#ifdef LONG64
++
++/* Systems with 64-bit 'long' have their own quirks, like
++   select()'s fd_mask components are 64-bit long, but the
++   ffs() function works only on 'int', which at least at
++   an Alpha are 32-bit wide... */
++
++# define ffs mffs
++
++extern int mffs (
++#if NeedFunctionPrototypes
++		 unsigned long
++#endif
++);
++#endif /* LONG64 */
++
+ #endif /* OS_H */
+--- XFree86-3.3.3.1/xc/programs/Xserver/os/WaitFor.c.alpha-sockets	Sat Oct 24 03:56:28 1998
++++ XFree86-3.3.3.1/xc/programs/Xserver/os/WaitFor.c	Mon Jan 11 12:28:23 1999
+@@ -83,9 +83,10 @@
+ #include "dixstruct.h"
+ #include "opaque.h"
+ 
+-/* modifications by raphael */
+-#define ffs mffs
+-int mffs(fd_mask mask) {
++/* modifications by raphael, and [mea];
++   system uses this if LONG64 is defined.
++   See at the end of the "os.h" */
++int mffs(unsigned long mask) {
+     register i;
+     if ( ! mask ) return 0;
+     i = 1;
+@@ -423,17 +424,18 @@
+     if (XFD_ANYSET (&clientsReadable))
+     {
+ #ifndef WIN32
+-	for (i=0; i<howmany(XFD_SETSIZE, NFDBITS); i++)
++	for (i=0;
++	     i < (sizeof(clientsReadable)/sizeof(clientsReadable.fds_bits[0]));
++	     i++)
+ 	{
+ 	    int highest_priority;
+ 
+ 	    while (clientsReadable.fds_bits[i])
+ 	    {
+ 	        int client_priority, client_index;
+-
+ 		curclient = ffs (clientsReadable.fds_bits[i]) - 1;
+-		client_index = /* raphael: modified */
+-			ConnectionTranslation[curclient + (i * (sizeof(fd_mask) * 8))];
++		curclient += i * (8 * sizeof(fd_mask));
++		client_index = ConnectionTranslation[curclient];
+ #else
+ 	int highest_priority;
+ 	fd_set savedClientsReadable;
+@@ -476,11 +478,10 @@
+ 		{
+ 		    pClientsReady[nready++] = client_index;
+ 		}
++
++		FD_CLR(curclient, &clientsReadable);
+ #ifndef WIN32
+-		clientsReadable.fds_bits[i] &= ~(((fd_mask)1) << curclient);
+ 	    }
+-#else
+-	    FD_CLR(curclient, &clientsReadable);
+ #endif
+ 	}
+     }
+@@ -541,12 +542,13 @@
+ 	    COPYBITS(ClientsWithInput, clientsReadable);
+ 	    dbprintf(("WaitFor: "));
+ 	    nready = 0;
+-	    for (i=0; i < mskcnt; i++) {
++	    for (i=0; i < mskcnt;i++) {
+ 		while (clientsReadable[i]) {
+ 		    int client_priority, curclient, client_index;
+ 
+ 		    curclient = ffs (clientsReadable[i]) - 1;
+-		    client_index = ConnectionTranslation[curclient + (i << 5)];
++		    curclient += i * (8 * sizeof(clientsReadable[i]));
++		    client_index = ConnectionTranslation[curclient];
+ 		    dbprintf(("%d has input\n", curclient));
+ #ifdef XSYNC
+ 		    client_priority = clients[client_index]->priority;
+@@ -794,7 +796,7 @@
+ {
+     OsTimerPtr timer;
+ 
+-    while (timer = timers)
++    while ((timer = timers))
+     {
+ 	timers = timer->next;
+ 	xfree(timer);
+--- XFree86-3.3.3.1/xc/programs/Xserver/os/connection.c.alpha-sockets	Mon Jan 11 12:28:20 1999
++++ XFree86-3.3.3.1/xc/programs/Xserver/os/connection.c	Mon Jan 11 12:28:23 1999
+@@ -178,10 +178,6 @@
+ #include <netdnet/dn.h>
+ #endif /* DNETCONN */
+ 
+-/* added by raphael */
+-#define ffs mffs
+-extern int mffs(long);
+-
+ extern char *display;		/* The display number */
+ int lastfdesc;			/* maximum file descriptor */
+ 
+@@ -785,6 +781,8 @@
+ {
+ #ifndef WIN32
+     fd_mask readyconnections;     /* mask of listeners that are ready */
++    /* In UNIX environments we assume that all listeners fit into
++       the first 32 file descriptor ids. */
+ #else
+     fd_set  readyconnections;     /* set of listeners that are ready */
+ #endif
+@@ -981,9 +979,6 @@
+ void
+ CheckConnections()
+ {
+-#ifndef WIN32
+-    fd_mask		mask;
+-#endif
+     fd_set		tmask; 
+     register int	curclient, curoff;
+     int			i;
+@@ -994,23 +989,24 @@
+ #endif
+ 
+ #ifndef AMOEBA
+-    notime.tv_sec = 0;
+-    notime.tv_usec = 0;
+-
+ #ifndef WIN32
+-    for (i=0; i<howmany(XFD_SETSIZE, NFDBITS); i++)
++    for (i=0; i < (sizeof(AllClients)/sizeof(fd_mask)); i++)
+     {
+-	mask = AllClients.fds_bits[i];
++	fd_mask mask = AllClients.fds_bits[i];
+         while (mask)
+     	{
+ 	    curoff = ffs (mask) - 1;
+- 	    curclient = curoff + (i << 5);
++ 	    curclient = curoff + (i * 8 * sizeof(mask));
+             FD_ZERO(&tmask);
+             FD_SET(curclient, &tmask);
++	    /* there are operating systems which *do* alter the timeout
++	       variables -- it is good practice to initialize them always */
++	    notime.tv_sec = 0;
++	    notime.tv_usec = 0;
+             r = Select (curclient + 1, &tmask, NULL, NULL, &notime);
+             if (r < 0)
+ 		CloseDownClient(clients[ConnectionTranslation[curclient]]);
+-	    mask &= ~(1 << curoff);
++	    mask &= ~(((fd_mask)1) << curoff);
+ 	}
+     }	
+ #else
+--- XFree86-3.3.3.1/xc/programs/Xserver/os/io.c.alpha-sockets	Sat Oct 24 03:56:29 1998
++++ XFree86-3.3.3.1/xc/programs/Xserver/os/io.c	Mon Jan 11 12:28:23 1999
+@@ -85,10 +85,6 @@
+ #include "lbxserve.h"
+ #endif
+ 
+-/* added by raphael */
+-#define ffs mffs
+-extern int mffs(long);
+-
+ CallbackListPtr       ReplyCallback;
+ CallbackListPtr       FlushCallback;
+ 
+@@ -995,7 +991,7 @@
+     NewOutputPending = FALSE;
+ 
+ #ifndef WIN32
+-    for (base = 0; base < howmany(XFD_SETSIZE, NFDBITS); base++)
++    for (base = 0; base < (sizeof(OutputPending)/sizeof(fd_mask)); base++)
+     {
+ 	mask = OutputPending.fds_bits[ base ];
+ 	OutputPending.fds_bits[ base ] = 0;
+@@ -1003,7 +999,8 @@
+ 	{
+ 	    index = ffs(mask) - 1;
+ 	    mask &= ~lowbit(mask);
+-	    if ((index = ConnectionTranslation[(base << 5) + index]) == 0)
++	    index = ConnectionTranslation[ base * (8 * sizeof(mask)) + index ];
++	    if (index == 0)
+ 		continue;
+ 	    client = clients[index];
+ 	    if (client->clientGone)
+--- XFree86-3.3.3.1/xc/programs/lbxproxy/include/os.h.alpha-sockets	Sat Dec 21 23:16:36 1996
++++ XFree86-3.3.3.1/xc/programs/lbxproxy/include/os.h	Mon Jan 11 12:28:23 1999
+@@ -243,4 +243,20 @@
+ #endif
+ );
+ 
++#ifdef LONG64
++
++/* Systems with 64-bit 'long' have their own quirks, like
++   select()'s fd_mask components are 64-bit long, but the
++   ffs() function works only on 'int', which at least at
++   an Alpha are 32-bit wide... */
++
++# define ffs mffs
++
++extern int mffs (
++#if NeedFunctionPrototypes
++		 unsigned long
++#endif
++);
++#endif /* LONG64 */
++
+ #endif
+--- XFree86-3.3.3.1/xc/programs/lbxproxy/os/WaitFor.c.alpha-sockets	Sat Dec 21 23:16:30 1996
++++ XFree86-3.3.3.1/xc/programs/lbxproxy/os/WaitFor.c	Mon Jan 11 12:28:23 1999
+@@ -71,6 +71,20 @@
+ #include "osdep.h"
+ #include "os.h"
+ 
++/* modifications by raphael, and [mea];
++   system uses this if LONG64 is defined.
++   See at the end of the "os.h" */
++int mffs(unsigned long mask) {
++    register i;
++    if ( ! mask ) return 0;
++    i = 1;
++    while (! (mask & 1)) {
++		i++;
++		mask = mask >> 1;
++    }
++    return i;
++}
++
+ extern fd_set AllSockets;
+ extern fd_set AllClients;
+ extern fd_set LastSelectMask;
+@@ -192,17 +206,18 @@
+     nready = 0;
+     if (XFD_ANYSET(&clientsReadable))
+     {
+-	for (i=0; i<howmany(XFD_SETSIZE, NFDBITS); i++)
++	for (i=0; i < (sizeof(clientsReadable)/sizeof(fd_mask)); i++)
+ 	{
+ 	    while (clientsReadable.fds_bits[i])
+ 	    {
+                 int	client_index; 
+ 
+ 		curclient = ffs (clientsReadable.fds_bits[i]) - 1;
+-		client_index = ConnectionTranslation[curclient + (i << 5)];
+-		{
+-		    pClientsReady[nready++] = client_index;
+-		}
++		curclient += i * (8 * sizeof(fd_mask));
++		client_index = ConnectionTranslation[curclient];
++
++		pClientsReady[nready++] = client_index;
++
+ 		clientsReadable.fds_bits[i] &= ~(((fd_mask)1) << curclient);
+ 	    }
+ 	}	
+--- XFree86-3.3.3.1/xc/programs/lbxproxy/os/connection.c.alpha-sockets	Thu Nov  5 14:27:57 1998
++++ XFree86-3.3.3.1/xc/programs/lbxproxy/os/connection.c	Mon Jan 11 12:28:23 1999
+@@ -1746,7 +1746,7 @@
+     while (readyconnections) 
+     {
+ 	curconn = ffs (readyconnections) - 1;
+-	readyconnections &= ~(1 << curconn);
++	readyconnections &= ~(((fd_mask)1) << curconn);
+ 	if ((newconn = accept (curconn,
+ 			      (struct sockaddr *) NULL, 
+ 			      (int *)NULL)) < 0) 
+@@ -1905,19 +1905,19 @@
+     notime.tv_sec = 0;
+     notime.tv_usec = 0;
+ 
+-    for (i=0; i<howmany(XFD_SETSIZE, NFDBITS); i++)
++    for (i=0; i < (sizeof(AllClients)/sizeof(fd_mask)); i++)
+     {
+ 	mask = AllClients.fds_bits[i];
+         while (mask)
+     	{
+ 	    curoff = ffs (mask) - 1;
+- 	    curclient = curoff + (i << 5);
++ 	    curclient = curoff + i * (8 * sizeof(mask));
+             FD_ZERO(&tmask);
+             FD_SET(curclient, &tmask);
+             r = Select (curclient + 1, &tmask, NULL, NULL, &notime);
+             if (r < 0)
+ 		CloseDownClient(clients[ConnectionTranslation[curclient]]);
+-	    mask &= ~(1 << curoff);
++	    mask &= ~(((fd_mask)1) << curoff);
+ 	}
+     }	
+ }
+--- XFree86-3.3.3.1/xc/programs/lbxproxy/os/io.c.alpha-sockets	Wed Jan  1 22:02:48 1997
++++ XFree86-3.3.3.1/xc/programs/lbxproxy/os/io.c	Mon Jan 11 12:28:23 1999
+@@ -913,7 +913,8 @@
+ void
+ FlushAllOutput()
+ {
+-    register int index, base, mask;
++    register int index, base;
++    register fd_mask mask;
+     OsCommPtr oc;
+     register ClientPtr client;
+ 
+@@ -927,7 +928,7 @@
+      */
+     NewOutputPending = FALSE;
+ 
+-    for (base = 0; base < howmany(XFD_SETSIZE, NFDBITS); base++)
++    for (base = 0; base < (sizeof(OutputPending)/sizeof(mask)); base++)
+     {
+ 	mask = OutputPending.fds_bits[ base ];
+ 	OutputPending.fds_bits[ base ] = 0;
+@@ -935,7 +936,9 @@
+ 	{
+ 	    index = ffs(mask) - 1;
+ 	    mask &= ~lowbit(mask);
+-	    if ((index = ConnectionOutputTranslation[(base << 5) + index]) == 0)
++	    index += base * (8 * sizeof(mask));
++	    index = ConnectionOutputTranslation[index];
++	    if (index == 0)
+ 		continue;
+ 	    client = clients[index];
+ 	    if (client->clientGone)
+--- XFree86-3.3.3.1/xc/programs/xfs/include/os.h.alpha-sockets	Fri Jan  5 08:21:30 1996
++++ XFree86-3.3.3.1/xc/programs/xfs/include/os.h	Mon Jan 11 12:28:23 1999
+@@ -94,4 +94,19 @@
+ extern int  ListCatalogues();
+ extern int  ListAlternateServers();
+ 
++#ifdef LONG64
++
++/* Systems with 64-bit 'long' have their own quirks, like
++   select()'s fd_mask components are 64-bit long, but the
++   ffs() function works only on 'int', which at least at
++   an Alpha are 32-bit wide... */
++
++# define ffs mffs
++
++extern int mffs (
++#if NeedFunctionPrototypes
++		 unsigned long
++#endif
++);
++#endif /* LONG64 */
+ #endif				/* _OS_H_ */
+--- XFree86-3.3.3.1/xc/programs/xfs/os/connection.c.alpha-sockets	Thu Nov  5 14:28:31 1998
++++ XFree86-3.3.3.1/xc/programs/xfs/os/connection.c	Mon Jan 11 12:28:23 1999
+@@ -325,6 +325,9 @@
+ 
+ /*
+  * accepts new connections
++ *
++ * This assumes that all sockets in *listen* mode are numbered
++ * something below 32!  (likely true..)
+  */
+ void
+ MakeNewConnections()
+@@ -495,15 +498,15 @@
+     struct timeval notime;
+     int         r;
+ 
+-    notime.tv_sec = 0;
+-    notime.tv_usec = 0;
+-
+     XFD_COPYSET(&AllClients, &mask);
+     for (i = 0; i < howmany(XFD_SETSIZE, NFDBITS); i++) {
+ 	while (mask.fds_bits[i]) {
+-	    curclient = ffs(mask.fds_bits[i]) - 1 + (i << 5);
++	    curclient = ffs(mask.fds_bits[i]) - 1;
++	    curclient += i * (8 * sizeof(mask.fds_bits[i]));
+ 	    FD_ZERO(&tmask);
+ 	    FD_SET(curclient, &tmask);
++	    notime.tv_sec = 0;
++	    notime.tv_usec = 0;
+ 	    r = Select(curclient + 1, &tmask, NULL, NULL, &notime);
+ 	    if (r < 0)
+ 		CloseDownClient(clients[ConnectionTranslation[curclient]]);
+--- XFree86-3.3.3.1/xc/programs/xfs/os/io.c.alpha-sockets	Thu May 29 10:01:08 1997
++++ XFree86-3.3.3.1/xc/programs/xfs/os/io.c	Mon Jan 11 12:28:23 1999
+@@ -69,6 +69,7 @@
+ #include	"X11/Xpoll.h"
+ #include	"osdep.h"
+ #include	"globals.h"
++#include	"os.h"
+ 
+ #ifdef X_NOT_STDC_ENV
+ extern int errno;
+@@ -530,13 +531,14 @@
+ 
+     NewOutputPending = FALSE;
+ 
+-    for (base = 0; base < howmany(XFD_SETSIZE, NFDBITS); base++) {
++    for (base = 0; base < (sizeof(OutputPending)/sizeof(mask)); base++) {
+ 	mask = OutputPending.fds_bits[base];
+ 	OutputPending.fds_bits[base] = 0;
+ 	while (mask) {
+ 	    index = ffs(mask) - 1;
+ 	    mask &= ~lowbit(mask);
+-	    if ((index = ConnectionTranslation[(base << 5) + index]) == 0)
++	    index += base * (8 * sizeof(mask));
++	    if ((index = ConnectionTranslation[index]) == 0)
+ 		continue;
+ 	    client = clients[index];
+ 	    if (client->clientGone == CLIENT_GONE)
+--- XFree86-3.3.3.1/xc/programs/xfs/os/waitfor.c.alpha-sockets	Sat Jan 18 02:02:48 1997
++++ XFree86-3.3.3.1/xc/programs/xfs/os/waitfor.c	Mon Jan 11 12:28:23 1999
+@@ -65,6 +65,21 @@
+ #include	"globals.h"
+ #include	"X11/Xpoll.h"
+ #include	"osdep.h"
++#include	"os.h"
++
++/* modifications by raphael, and [mea];
++   system uses this if LONG64 is defined.
++   See at the end of the "os.h" */
++int mffs(unsigned long mask) {
++    register i;
++    if ( ! mask ) return 0;
++    i = 1;
++    while (! (mask & 1)) {
++		i++;
++		mask = mask >> 1;
++    }
++    return i;
++}
+ 
+ #ifdef MINIX
+ #include <sys/nbio.h>
+@@ -208,10 +223,11 @@
+ 
+ 	if (current_time)	/* may not have been set */
+ 	    current_time = GetTimeInMillis();
+-	for (i = 0; i < howmany(XFD_SETSIZE, NFDBITS); i++) {
++	for (i = 0; i < (sizeof(clientsReadable)/sizeof(fd_mask)); i++) {
+ 	    while (clientsReadable.fds_bits[i]) {
+ 		curclient = ffs(clientsReadable.fds_bits[i]) - 1;
+-		conn = ConnectionTranslation[curclient + (i << 5)];
++		curclient += i * (8 * sizeof(fd_mask));
++		conn = ConnectionTranslation[curclient];
+ 		FD_CLR (curclient, &clientsReadable);
+ 		client = clients[conn];
+ 		if (!client)
