@@ -1982,6 +1982,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch45 -p1
 %patch46 -p0
 %patch47 -p1
+tar xfz *.tar.gz
 %patch48 -p0
 
 rm -f xc/config/cf/host.def
@@ -2020,7 +2021,6 @@ rm -rf xc/fonts
 
 %ifarch %{ix86} mips alpha ppc arm
 olddir=$(pwd)
-tar xfz *.tar.gz
 cd LinuxDriver/2D
 sed -i -e 's#$(XF86OSSRC)/vbe#$(XF86SRC)/vbe#g' Imakefile
 xmkmf $olddir/xc .
