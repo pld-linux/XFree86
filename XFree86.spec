@@ -2684,7 +2684,7 @@ fi
 %attr(755,root,root) %{_libdir}/X11/xserver
 %dir /etc/X11/xserver
 /etc/X11/xserver/SecurityPolicy
-%{_mandir}/man1/xtr*
+#%{_mandir}/man1/xtr*
 %{_mandir}/man1/xkbcomp.1*
 %{_mandir}/man4/citron*
 %{_mandir}/man4/dmc.4*
@@ -2811,7 +2811,7 @@ fi
 %{_mandir}/man1/xlogo.1*
 %{_mandir}/man1/oclock.1*
 %{_mandir}/man1/rman.1*
-%{_mandir}/man1/xtrap.1*
+%{_mandir}/man1/xtr*
 %{_mandir}/man1/texteroids.1*
 
 %lang(it) %{_mandir}/it/man1/xload.1*
