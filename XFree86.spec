@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	4.0
-Release:	8
+Release:	9
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -36,7 +36,7 @@ Patch9:		XFree86-xfs-logger.patch
 Patch10:	XFree86-xterm-utempter.patch
 Patch11:	XFree86-app_defaults_dir.patch
 # From DRI CVS
-Patch12:	XFree86-DRI-20000522.patch.gz
+Patch12:	XFree86-DRI-20000612.patch.gz
 # from rawhide
 Patch13:	XFree86-startx_xauth.patch
 Patch14:	XFree86-alpha.patch
@@ -1615,12 +1615,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xcalc
 %attr(755,root,root) %{_bindir}/xclipboard
 %attr(755,root,root) %{_bindir}/xclock
-#%attr(755,root,root) %{_bindir}/xditview
+%attr(755,root,root) %{_bindir}/xditview
 %attr(755,root,root) %{_bindir}/xedit
 %attr(755,root,root) %{_bindir}/xev
 %attr(755,root,root) %{_bindir}/xeyes
 %attr(755,root,root) %{_bindir}/xfd
-#%attr(755,root,root) %{_bindir}/xfontsel
+%attr(755,root,root) %{_bindir}/xfontsel
 %attr(755,root,root) %{_bindir}/xgc
 %attr(755,root,root) %{_bindir}/xieperf
 %attr(755,root,root) %{_bindir}/xload
@@ -1643,12 +1643,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xcalc.1*
 %{_mandir}/man1/xclipboard.1*
 %{_mandir}/man1/xclock.1*
-#%{_mandir}/man1/xditview.1*
+%{_mandir}/man1/xditview.1*
 %{_mandir}/man1/xedit.1*
 %{_mandir}/man1/xev.1*
 %{_mandir}/man1/xeyes.1*
 %{_mandir}/man1/xfd.1*
-#%{_mandir}/man1/xfontsel.1*
+%{_mandir}/man1/xfontsel.1*
 %{_mandir}/man1/xgc.1*
 %{_mandir}/man1/xieperf.1*
 %{_mandir}/man1/xload.1*
