@@ -2091,6 +2091,7 @@ fi
 %{_libdir}/X11/app-defaults/XTerm
 %lang(pl) %{_libdir}/X11/app-defaults/pl/XTerm
 %{_libdir}/X11/app-defaults/XTerm-color
+%{_libdir}/X11/icons
 
 %attr(755,root,root) %{_libdir}/X11/lbxproxy
 %attr(755,root,root) %{_libdir}/X11/proxymngr
@@ -2151,6 +2152,7 @@ fi
 %attr(755,root,root) %{_bindir}/uxterm
 %attr(755,root,root) %{_bindir}/xcmsdb
 %attr(755,root,root) %{_bindir}/xconsole
+%attr(755,root,root) %{_bindir}/xcursorgen
 %attr(755,root,root) %{_bindir}/xcutsel
 %attr(755,root,root) %{_bindir}/xdpyinfo
 %attr(755,root,root) %{_bindir}/xfindproxy
@@ -2221,6 +2223,7 @@ fi
 %{_mandir}/man1/sxpm.1*
 %{_mandir}/man1/xcmsdb.1*
 %{_mandir}/man1/xconsole.1*
+%{_mandir}/man1/xcursorgen.1*
 %{_mandir}/man1/xcutsel.1*
 %{_mandir}/man1/xdpyinfo.1*
 %{_mandir}/man1/xfindproxy.1*
@@ -2409,6 +2412,7 @@ fi
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/bdftopcf
+%attr(755,root,root) %{_bindir}/xcursor-config
 %attr(755,root,root) %{_libdir}/libX[1Ta-eg-t]*.so
 %attr(755,root,root) %{_libdir}/libXfont*.so
 %attr(755,root,root) %{_libdir}/libI*.so
@@ -2420,6 +2424,7 @@ fi
 %{_libdir}/libI810XvMC.a
 %{_libdir}/liboldX.a
 %{_libdir}/libXau.a
+%{_libdir}/libXcursor.a
 %{_libdir}/libXdmcp.a
 %{_libdir}/libxf86config.a
 %{_libdir}/libXfontcache.a
@@ -2447,6 +2452,7 @@ fi
 %{_includedir}/X11/extensions/XI.h
 %{_includedir}/X11/extensions/XI[^E]*.h
 %{_includedir}/X11/fonts
+%{_includedir}/X11/Xcursor
 %{_includedir}/xf86*.h
 %{_libdir}/X11/config
 
