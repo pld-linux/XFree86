@@ -86,7 +86,7 @@ Obsoletes:	X11R6.1
 %define		_wmpropsdir	%{_datadir}/wm-properties
 
 # avoid Mesa dependency in XFree86-OpenGL-libs
-%define		_noautoreqdep	libGL.so.1
+%define		_noautoreqdep	libGL.so.1 libGLU.so.1
 
 %description
 If you want to install the X Window System (TM) on your machine,
@@ -291,7 +291,6 @@ Wsparcie OpenGL dla systemu X11R6.
 %package OpenGL-libs
 Summary:	OpenGL libraries for X11R6
 Summary(pl):	Biblioteki OpenGL dla systemu X11R6
-License:	MIT (Mesa core), LGPL (libGLU)
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
@@ -311,7 +310,6 @@ Biblioteki OpenGL dla systemu X11R6.
 %package OpenGL-devel
 Summary:	OpenGL for X11R6 development
 Summary(pl):	Pliki nag³ówkowe dla OpenGL dla systemu X11R6
-License:	MIT (Mesa core), LGPL (glu.h), SGI (libGLw)
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
@@ -330,7 +328,6 @@ Pliki nag³ówkowe i manuale do OpenGL dla systemu X11R6.
 %package OpenGL-static
 Summary:	X11R6 static libraries with OpenGL
 Summary(pl):	Biblioteki statyczne do X11R6 ze wsparciem dla OpenGL
-License:	MIT (libGL), LGPL (libGLU)
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
@@ -1793,7 +1790,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/glxinfo
 %attr(755,root,root) %{_libdir}/libGLU.so.*.*
-%{_libdir}/libGLw.a
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/libOSMesa.so.*.*
 %endif
@@ -1805,6 +1801,7 @@ rm -rf $RPM_BUILD_ROOT
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/libOSMesa*.so
 %endif
+%{_libdir}/libGLw.a
 %dir %{_includedir}/GL
 %attr(644,root,root) %{_includedir}/GL/*
 %{_mandir}/man3/glX*
