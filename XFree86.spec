@@ -902,7 +902,7 @@ Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name} = %{version}
 Requires:	pam >= 0.66
-Obsoletes:	xdm
+Obsoletes:	XFree86-xdm
 
 %description -n xdm
 X Display Manager.
