@@ -1,20 +1,21 @@
-Summary:        XFree86 Window System servers and basic programs
-Summary(de):    Xfree86 Window-System-Server und grundlegende Programme
-Summary(fr):    Serveurs du système XFree86 et programmes de base
-Summary(pl):    XFree86 Window System wraz z podstawowymi programami
-Summary(tr):    XFree86 Pencereleme Sistemi sunucularý ve temel programlar
-Name:           XFree86
-Version:        3.3.3.1
-Release:        22
-Copyright:      MIT
-Group:          X11/XFree86
-Group(pl):      X11/XFree86
-Requires:       XFree86-modules
+Summary:	XFree86 Window System servers and basic programs
+Summary(de):	Xfree86 Window-System-Server und grundlegende Programme
+Summary(fr):	Serveurs du système XFree86 et programmes de base
+Summary(pl):	XFree86 Window System wraz z podstawowymi programami
+Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
+Name: 		XFree86
+Version:	3.3.3.1
+Release:	50
+Copyright:	MIT
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	XFree86-modules
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/3.3.3/source/X333src-1.tgz
 Source1:	xdm.pamd
 Source2:	xdm.initd
 Source3:	xfs.initd
 Source4:	xfs.config
+Source5:	xserver.pamd
 Patch0:		ftp://ftp.xfree86.org/pub/XFree86/3.3.3/fixes/3.3.3-3.3.3.1.diff.gz
 Patch1:		XFree86-rh.patch
 Patch2:		XFree86-rhxdm.patch
@@ -74,7 +75,7 @@ BuildPrereq:	ncurses-devel
 BuildPrereq:	zlib-devel
 BuildPrereq:	utempter-devel
 Exclusivearch:	i386 i486 i586 i686 alpha sparc m68k armv4l
-Buildroot:      /tmp/%{name}-%{version}-root
+Buildroot:	/tmp/%{name}-%{version}-root
 
 %ifarch sparc
 Obsoletes: X11R6.1
@@ -89,14 +90,14 @@ user interfaces. Simply stated, X draws the elements of the GUI on the
 user's screen and builds methods for sending user interactions back to the
 application. X also supports remote application deployment--running an
 application on another computer while viewing the input/output on your
-machine.  X is a powerful environment which supports many different
+machine. X is a powerful environment which supports many different
 applications, such as games, programming tools, graphics programs, text
-editors, etc.  XFree86 is the version of X which runs on Linux, as well as
+editors, etc. XFree86 is the version of X which runs on Linux, as well as
 other platforms.
 
 This package contains the basic fonts, programs and documentation for an X
-workstation.  However, this package doesn't provide the program which you
-will need to drive your video hardware.  To control your video card, you'll
+workstation. However, this package doesn't provide the program which you
+will need to drive your video hardware. To control your video card, you'll
 need the particular X server package which corresponds to your computer's
 video card.
 
@@ -109,36 +110,35 @@ And finally, if you are going to develop applications that run as X clients,
 you will also need to install XFree86-devel.
 
 %description -l de
-X-Windows ist eine voll funktionsfähige grafische Benutzeroberfläche 
-mit mehreren Fenstern, mehreren Clients und verschiedenen Arten von 
-Fenstern. Es kommt auf den meisten Unix-Plattformen zum Einsatz. Die 
-Clients lassen sich auch mit Hilfe anderer Fenstersysteme anzeigen. 
-Das X-Protokoll gestattet die Ausführung der Applikationen direkt auf 
-lokalen Rechnern oder über ein Netz und bietet große Flexibilität bei 
-Client-Server-Implementierungen.
+X-Windows ist eine voll funktionsfähige grafische Benutzeroberfläche mit
+mehreren Fenstern, mehreren Clients und verschiedenen Arten von Fenstern. Es
+kommt auf den meisten Unix-Plattformen zum Einsatz. Die Clients lassen sich
+auch mit Hilfe anderer Fenstersysteme anzeigen. Das X-Protokoll gestattet
+die Ausführung der Applikationen direkt auf lokalen Rechnern oder über ein
+Netz und bietet große Flexibilität bei Client-Server-Implementierungen.
 
 %decription -l pl
-X Window System jest graficznym interfejsem u¿ytkownika, cechuje siê
-mo¿liwo¶ci± pracy w wielu oknach, z wieloma klientami i do tego w
-ró¿nych wystrojach okien. :) Jest u¿ywany na wiêkszo¶ci platform sytemów
-Unix, a klienci mog± byæ uruchamiani tak¿e pod innymi popularnymi 
-systemami okienkowymi. Protokó³ X pozwala na uruchamianie aplikacji 
-zarówno z lokalnej maszyny jak i poprzez sieæ - daj±c przez to elastyczn± 
-implementacjê architektury klient/serwer.
 
-Pakiet ten zawiera podstawowe fonty, programy oraz dokumentacje dla
-stacji X. Nie zawiera X serwera który jest po¶rednikiem z Twoj± kart± 
-graficzn± -- jest on w innym pakiecie.
+X Window System jest graficznym interfejsem u¿ytkownika, cechuje siê
+mo¿liwo¶ci± pracy w wielu oknach, z wieloma klientami i do tego w ró¿nych
+wystrojach okien. :) Jest u¿ywany na wiêkszo¶ci platform sytemów Unix, a
+klienci mog± byæ uruchamiani tak¿e pod innymi popularnymi systemami
+okienkowymi. Protokó³ X pozwala na uruchamianie aplikacji zarówno z lokalnej
+maszyny jak i poprzez sieæ - daj±c przez to elastyczn± implementacjê
+architektury klient/serwer.
+
+Pakiet ten nie zawiera X serwera który jest po¶rednikiem z Twoj± kart±
+graficzn± (jest on w innym pakiecie).
 
 %description -l tr
-X Window sistemi, çoklu pencere, çoklu istemci ve çeþitli pencere stilleriyle
-geniþ özelliklere sahip bir Grafik Kullanýcý Arabirimidir. Çoðu UNIX sisteminde
-çalýþtýðý gibi istemcileri de birçok pencereleme sistemiyle çalýþabilir. X
-protokolu kullanan uygulamalarýn yerel makina veya bilgisayar aðý üzerinden
-çalýþtýrýlabilmesi esnek bir istemci/sunucu ortamý saðlar. Bu paket bir X
-istasyonu için gerekli olan temel yazýtiplerini, programlarý ve belgeleri
-sunar. Ekran kartýnýzý sürmek için gerekli olan X sunucusu bu pakete dahil
-deðildir.
+X Window sistemi, çoklu pencere, çoklu istemci ve çeþitli pencere
+stilleriyle geniþ özelliklere sahip bir Grafik Kullanýcý Arabirimidir. Çoðu
+UNIX sisteminde çalýþtýðý gibi istemcileri de birçok pencereleme sistemiyle
+çalýþabilir. X protokolu kullanan uygulamalarýn yerel makina veya bilgisayar
+aðý üzerinden çalýþtýrýlabilmesi esnek bir istemci/sunucu ortamý saðlar. Bu
+paket bir X istasyonu için gerekli olan temel yazýtiplerini, programlarý ve
+belgeleri sunar. Ekran kartýnýzý sürmek için gerekli olan X sunucusu bu
+pakete dahil deðildir.
 
 %package modules
 Summary(pl):	Wspólne modu³y dla wszystkich serwerów graficznych.
@@ -155,7 +155,7 @@ Summary(pl):	Biblioteki dzielone dla X11R6
 Summary(fr):	Bibliothèques partagées X11R6
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Prereq:		grep 
+Prereq:		grep
 Prereq:		/sbin/ldconfig
 
 %ifarch sparc
@@ -169,19 +169,18 @@ reduce the disk space needed to run X applications on a machine without an X
 server (i.e, over a network).
 
 If you are installing the X Window System on your machine, you will need to
-install XFree86-libs.  You will also need to install the XFree86 package,
-the XFree86-75dpi-fonts package or the XFree86-100dpi-fonts package
-(depending upon your monitor's resolution), the Xconfigurator package and
-the X11R6-contrib package.  And, finally, if you are going to be developing
+install XFree86-libs. You will also need to install the XFree86 package, the
+XFree86-75dpi-fonts package or the XFree86-100dpi-fonts package (depending
+upon your monitor's resolution), the Xconfigurator package and the
+X11R6-contrib package. And, finally, if you are going to be developing
 applications that run as X clients, you will also need to install
 XFree86-devel.
 
 %description -l de libs
-Dieses Paket enthält die zur gemeinsamen Nutzung vorgesehenen Libraries,
-die die meisten X-Programme für den einwandfreien Betrieb benötigen. Sie
-wurden in einem separaten Paket untergebracht, um den
-Festplattenspeicherplatz auf Computern zu reduzieren, die ohne einen X-
-Server (über ein Netz) arbeiten.
+Dieses Paket enthält die zur gemeinsamen Nutzung vorgesehenen Libraries, die
+die meisten X-Programme für den einwandfreien Betrieb benötigen. Sie wurden
+in einem separaten Paket untergebracht, um den Festplattenspeicherplatz auf
+Computern zu reduzieren, die ohne einen X- Server (über ein Netz) arbeiten.
 
 %description -l fr libs
 Ce paquetage contient les bibliothèques partagées nécessaires à de nombreux
@@ -222,8 +221,8 @@ Associates.
 %description -l de devel
 Libraries, Header-Dateien und Dokumentation zum Entwickeln von Programmen,
 die als X-Clients laufen. Enthält die Xlib-Library und die Widget-Sätze Xt
-und Xaw. Information zum Programmieren mit diesen Libraries finden Sie 
-in der Buchreihe zur X-Programmierung von O'Reilly and Associates.
+und Xaw. Information zum Programmieren mit diesen Libraries finden Sie in
+der Buchreihe zur X-Programmierung von O'Reilly and Associates.
 
 %description -l fr devel
 Bibliothéques, fichiers d'en-tête, et documentation pour développer des
@@ -269,9 +268,9 @@ Requires:	%{name}-VGA16 = %{version}
 
 %description XF86Setup
 XF86Setup is a graphical configuration tool for the XFree86 family of
-servers. It allows you to configure video settings, keyboard layouts,
-mouse type, and other miscellaneous options. It is slow however, and
-requires the generic VGA 16 color server be available.
+servers. It allows you to configure video settings, keyboard layouts, mouse
+type, and other miscellaneous options. It is slow however, and requires the
+generic VGA 16 color server be available.
 
 %description -l pl XF86Setup
 Graficzny konfigurator dla XFree86
@@ -289,13 +288,13 @@ Group(pl):	X11/XFree86/Serwery
 XFree86-S3 is the X server for video cards based on S3 chips, including most
 #9 cards, many Diamond Stealth cards, Orchid Farenheits, Mirco Crystal 8S,
 most STB cards, and some motherboards with built-in graphics accelerators
-(such as the IBM ValuePoint line).  Note that if you have an S3 ViRGE based
+(such as the IBM ValuePoint line). Note that if you have an S3 ViRGE based
 video card, you'll need XFree86-S3V instead of XFree86-S3.
 
 If you are installing the X Window System and you have a video card based on
-an S3 chip, you should install XFree86-S3.  You will also need to install
+an S3 chip, you should install XFree86-S3. You will also need to install
 the XFree86 package, one or more XFree86 fonts packages, the X11R6-contrib
-package, the Xconfigurator package and the XFree86-libs package.  And,
+package, the Xconfigurator package and the XFree86-libs package. And,
 finally, if you are going to develop applications that run as X clients, you
 will also need to install XFree86-devel.
 
@@ -303,7 +302,7 @@ will also need to install XFree86-devel.
 X-Server für Steckkarten mit dem S3-Chipsatz (inkl. den meisten #9-Karten),
 Karten wie Diamond Stealth, Orchid Farenheit und Mirco Crystal 8S, den
 meisten STB-Karten sowie einigen Motherboards mit integrierten
-Grafikbeschleunigern (z.B.  die Reihe IBM ValuePoint).
+Grafikbeschleunigern (z.B. die Reihe IBM ValuePoint).
 
 %description -l fr S3
 Serveur X pour les cartes construites autour des circuits S3, dont la
@@ -312,10 +311,10 @@ Mirco Crystal 8S, la plupart des cartes STB et certaines cartes mères
 intégrant des accélérateurs graphiques (comme la gamme ValuePoint d'IBM).
 
 %description -l pl S3
-X serwer dla kart opartych na uk³adzie S3 - s± ta m.in. #9, wiele kart   
-Diamond Stealth, Orchid Farenheits, Mirco Crystal 8S, wiêkszo¶c kart STB
-a tak¿e niektóre p³yty g³ówne z wbudowanymi akcelatorami graficznymi
-(jak np. ValuePoint IBM'a).
+X serwer dla kart opartych na uk³adzie S3 - s± ta m.in. #9, wiele kart
+Diamond Stealth, Orchid Farenheits, Mirco Crystal 8S, wiêkszo¶c kart STB a
+tak¿e niektóre p³yty g³ówne z wbudowanymi akcelatorami graficznymi (jak np.
+ValuePoint IBM'a).
 
 %description -l tr S3
 S3 tabanlý ekran kartlarý için sunucular. Çoðu #9, Diamond Stealth, Orchid
@@ -359,10 +358,10 @@ Group(pl):	X11/XFree86/Serwery
 XFree86-S3V is the X server for video cards based on the S3 ViRGE chipset.
 
 If you are installing the X Window System and you have a video card based on
-an S3 ViRGE chip, you should install XFree86-S3V.  You will also need to
+an S3 ViRGE chip, you should install XFree86-S3V. You will also need to
 install the XFree86 package, one or more of the XFree86 fonts packages, the
 X11R6-contrib package, the Xconfigurator package and the XFree86-libs
-package.  And, finally, if you are going to develop applications that run as
+package. And, finally, if you are going to develop applications that run as
 X clients, you will also need to install XFree86-devel.
 
 %description -l de S3V
@@ -393,41 +392,41 @@ this server is known to have problems with some Mach64 cards. Check
 http://www.xfree86.org for current information on updating this server.
 
 If you are installing the X Window System and the video card in your system
-is based on the Mach64 chip, you need to install XFree86-Mach64.  You will
+is based on the Mach64 chip, you need to install XFree86-Mach64. You will
 also need to install the XFree86 package, one or more of the XFree86 fonts
 packages, the X11R6-contrib package, the Xconfigurator package and the
-XFree86-libs package.  And, finally, if you are going to be developing
+XFree86-libs package. And, finally, if you are going to be developing
 applications that run as X clients, you will also need to install
 XFree86-devel.
 
 %description -l de Mach64
-X-Server für ATI Mach64-Karten wie Graphics Xpression, GUP Turbo,
-und WinTurbo. Dieser Server verursacht gelegentlich Probleme mit Mach64-Karten,
-die aber von einer neueren Version von XFree86 (der als Beta-Version verfügbar ist)
-gelöst werden könnten. Unter
-http://www.xfree86.org finden Sie Informationen zum Aktualisieren dieses Servers.
+X-Server für ATI Mach64-Karten wie Graphics Xpression, GUP Turbo, und
+WinTurbo. Dieser Server verursacht gelegentlich Probleme mit Mach64-Karten,
+die aber von einer neueren Version von XFree86 (der als Beta-Version
+verfügbar ist) gelöst werden könnten. Unter http://www.xfree86.org finden
+Sie Informationen zum Aktualisieren dieses Servers.
 
 %description -l fr Mach64
-Serveur X pour les cartes basées sur l'ATI Mach64, comme les cartes GUP Turbo,
-Graphics Xpression et WinTurbo. Ce serveur est connu pour avoir des problèmes
-avec certaines cartes Mach64 que les versions plus récentes d'XFree86 corrigent
-(elles ne sont encore qu'en version BETA au moment de cette distribution).
-Consultez http://www.xfree86.org pour les informations de mise à jour du serveur.
+Serveur X pour les cartes basées sur l'ATI Mach64, comme les cartes GUP
+Turbo, Graphics Xpression et WinTurbo. Ce serveur est connu pour avoir des
+problèmes avec certaines cartes Mach64 que les versions plus récentes
+d'XFree86 corrigent (elles ne sont encore qu'en version BETA au moment de
+cette distribution). Consultez http://www.xfree86.org pour les informations
+de mise à jour du serveur.
 
 %description -l pl Mach64
 X serwer dla kart opartych na uk³adzie ATI Mach64 jak np. Graphics
-Xpression,
-GUP Turbo, a tak¿e WinTurbo. Serwer jest znany z problemów z niektórymi
-kartami Mach64, które jednak mog± byæ ju¿ poprawione w nowszej wersji
-XFree86 (osi±galna wy³±cznie jako wersja BETA). Spójrz na stronê
+Xpression, GUP Turbo, a tak¿e WinTurbo. Serwer jest znany z problemów z
+niektórymi kartami Mach64, które jednak mog± byæ ju¿ poprawione w nowszej
+wersji XFree86 (osi±galna wy³±cznie jako wersja BETA). Spójrz na stronê
 http://www.xfree86.org/ gdzie znajdziesz informacje nt. nowszych wersji
 XFree86.
 
 %description -l tr Mach64
 ATI Mach64 tabanlý kartlar için X sunucusu. Graphics Xpression, GUP Turbo ve
 WinTurbo gibi kartlarý destekler. Bazý Mach64 kartlarýn yeni XFree86 ile
-sorun yaþadýklarý bilinmektedir. Bu sorunla ilgili son bilgilere ulaþmak için
-lütfen http://www.xfree86.org adresine bakýn.
+sorun yaþadýklarý bilinmektedir. Bu sorunla ilgili son bilgilere ulaþmak
+için lütfen http://www.xfree86.org adresine bakýn.
 
 %package Sun
 Summary:	XFree86 Sun server (monochrome and 8-bit color SBUS framebuffers)
@@ -469,7 +468,7 @@ Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Obsoletes:	X11R6.1-Sun24
 Summary(pl):	Serwer XFree86 Sun (dla wszystkich SBUS framebufferów)
- 
+
 %description Sun24
 To run X Windows programs requires an X server for your specific hardware.
 This package includes the X server for Sun computers with all supported
@@ -606,7 +605,7 @@ Finally, if you are going to develop applications that run as X clients, you
 will also need to install the XFree86-devel package.
 
 %description -l de AGX
-X-Server für Karten auf AGX-Basis wie etwa Boca Vortex, Orchid Celsius, 
+X-Server für Karten auf AGX-Basis wie etwa Boca Vortex, Orchid Celsius,
 Spider Black Widow und Hercules Graphite.
 
 %description -l fr AGX
@@ -626,7 +625,7 @@ Group(pl):	X11/XFree86/Serwery
 
 %description FBDev
 X server for the generic frame buffer device used on the Amiga, Atari
-and Macintosh/m68k machines.  Support for Intel and Alpha architectures
+and Macintosh/m68k machines. Support for Intel and Alpha architectures
 is now included in the Linux 2.2 kernel as well.
 
 %description -l pl FBDev
@@ -647,15 +646,14 @@ XFree86-Mach32 is the X server package for video cards built around ATI's
 Mach32 chip, including the ATI Graphics Ultra Pro and Ultra Plus.
 
 If you are installing the X Window System and the video card in your system
-is based on the Mach32 chip, you need to install XFree86-Mach32.  You will
+is based on the Mach32 chip, you need to install XFree86-Mach32. You will
 also need to install the XFree86 package, one or more of the XFree86 fonts
 packages, the X11R6-contrib package, the Xconfigurator package and the
-XFree86-libs package.  And, finally, if you are going to develop
-applications that run as X clients, you will also need to install
-XFree86-devel.
+XFree86-libs package. And, finally, if you are going to develop applications
+that run as X clients, you will also need to install XFree86-devel.
 
 %description -l de Mach32
-X-Server für Karten auf der Basis des ATI Mach32-Chip, einschließlich 
+X-Server für Karten auf der Basis des ATI Mach32-Chip, einschließlich
 ATI Graphics Ultra Pro und Ultra Plus.
 
 %description -l fr Mach32
@@ -684,10 +682,10 @@ XFree86-Mach 8 is the X server for video cards built around ATI's Mach8
 chip, including the ATI 8514 Ultra and Graphics Ultra.
 
 If you are installing the X Window System and the video card in your system
-is based on the Mach8 chip, you need to install XFree86-Mach8.  You will
-also need to install the XFree86 package, one or more of the XFree86 fonts
+is based on the Mach8 chip, you need to install XFree86-Mach8. You will also
+need to install the XFree86 package, one or more of the XFree86 fonts
 packages, the X11R6-contrib package, the Xconfigurator package and the
-XFree86-libs package.  And, finally, if you are going to be developing
+XFree86-libs package. And, finally, if you are going to be developing
 applications that run as X clients, you will also need to install
 XFree86-devel.
 
@@ -723,14 +721,14 @@ support a monochrome display.
 
 If you are installing the X Window System and your VGA card is not currently
 supported, you should install and try either XFree86-Mono or XFree86-VGA16,
-depending upon the capabilities of your display.  You will also need to
+depending upon the capabilities of your display. You will also need to
 install the XFree86 package, one or more of the XFree86 fonts packages, the
 X11R6-contrib package, the Xconfigurator package and the XFree86-libs
-package.  And, finally, if you are going to develop applications that run as
+package. And, finally, if you are going to develop applications that run as
 X clients, you will also need to install XFree86-devel.
 
 %description -l de Mono
-Generischer monochromer (Schwarzweiß-) Server für VGA-Karten, der 
+Generischer monochromer (Schwarzweiß-) Server für VGA-Karten, der
 praktisch mit allen VGA-ähnlichen Karten mit beschränkter Auflösung
 funktioniert.
 
@@ -759,14 +757,14 @@ XFree86-P9000 is the X server for video cards built around the Weitek P9000
 chip, such as most Diamond Viper cards and the Orchid P9000 card.
 
 If you are installing the X Window System and you have a Weitek P9000 based
-video card, you should install XFree86-P9000.  You will also need to install
+video card, you should install XFree86-P9000. You will also need to install
 the XFree86 package, one or more of the XFree86 fonts packages, the
 X11R6-contrib package, the Xconfigurator package and the XFree86-libs
-package.  And, finally, if you are going to develop applications that run as
+package. And, finally, if you are going to develop applications that run as
 X clients, you will also need to install XFree86-devel.
 
 %description -l de P9000
-X-Server für Karten auf Basis des Weitek P9000-Chip, wie die meisten 
+X-Server für Karten auf Basis des Weitek P9000-Chip, wie die meisten
 Diamond Viper und Orchid P9000-Karten.
 
 %description -l fr P9000
@@ -847,11 +845,11 @@ low resolution, 16 color display.
 If you are installing the X Window System and your VGA video card is not
 specifically supported by another X server package, you should install
 either XFree86-Mono or XFree86-VGA16, depending upon the capabilities of
-your display.  You will also need to install the XFree86 package, one or
-more of the XFree86 fonts packages, the X11R6-contrib package, the
-Xconfigurator package and the XFree86-libs package.  And, finally, if you
-are going to be develop applications that run as X clients, you will also
-need to install XFree86-devel.
+your display. You will also need to install the XFree86 package, one or more
+of the XFree86 fonts packages, the X11R6-contrib package, the Xconfigurator
+package and the XFree86-libs package. And, finally, if you are going to be
+develop applications that run as X clients, you will also need to install
+XFree86-devel.
 
 %description -l de VGA16
 Generischer 16-Farben-Server für VGA-Karten. Funktioniert auf fast allen VGA-
@@ -893,7 +891,7 @@ XFree86-libs package. And, finally, if you are going to develop applications
 that run as X clients, you will also need to install XFree86-devel.
 
 %description -l de W32
-Genoa 8900 Phantom 32I, Hercules Dynamite, LeaTek WinFast S200, 
+Genoa 8900 Phantom 32I, Hercules Dynamite, LeaTek WinFast S200,
 Sigma Concorde, STB LightSpeed, TechWorks Thunderbolt und ViewTop PCI.
 
 %description -l fr W32
@@ -935,7 +933,7 @@ Summary(pl):	XDM
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name} = %{version}
-Requires:       pam >= 0.66
+Requires:	pam >= 0.66
 Obsoletes:	xdm
 
 %description -n xdm
@@ -958,10 +956,10 @@ remote computer.
 %description -l pl -n xfs
 
 %package -n xauth
-Summary:     XAuth
-Group:       X11/XFree86
-Group(pl):   X11/XFree86
-Summary(pl): XAuth
+Summary:	XAuth
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Summary(pl):	XAuth
 
 %description -n xauth
 
@@ -1028,10 +1026,10 @@ install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,lib/X11,share/man/man{1,3,5}} \
 	$RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,} \
 	$RPM_BUILD_ROOT/var/state/xkb
 
-make -C xc  "DESTDIR=$RPM_BUILD_ROOT" \
-	    "INSTBINFLAGS=-m 755" \
-	    "INSTPGMFLAGS=-m 755" \
-	     install install.man
+make -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
+		"INSTBINFLAGS=-m 755" \
+		"INSTPGMFLAGS=-m 755" \
+		install install.man
 
 strip $RPM_BUILD_ROOT/usr/X11R6/bin/* || :
 strip --strip-unneeded $RPM_BUILD_ROOT/usr/X11R6/lib/{lib*.so.*.*,modules/*} || :
@@ -1045,14 +1043,15 @@ install -d $RPM_BUILD_ROOT/etc/X11
 
 cp $RPM_BUILD_ROOT/usr/X11R6/lib/X11/XF86Config.eg \
 $RPM_BUILD_ROOT/etc/X11/XF86Config
+ln -sf ../../../../etc/X11/XF86Config $RPM_BUILD_ROOT/usr/X11R6/lib/X11/XF86Config
 
 # setting default X
-rm -f $RPM_BUILD_ROOT/usr/X11R6/bin/X 
-ln -sf Xwrapper $RPM_BUILD_ROOT/usr/X11R6/bin/X 
+rm -f $RPM_BUILD_ROOT/usr/X11R6/bin/X
+ln -sf Xwrapper $RPM_BUILD_ROOT/usr/X11R6/bin/X
 
 # setting ghost X in /etc/X11 -- xf86config will fix this ...
 ln -s ../../usr/X11R6/bin/Xwrapper $RPM_BUILD_ROOT/etc/X11/X
- 
+
 ln -sf ../../../../etc/X11/XF86Config \
 $RPM_BUILD_ROOT/usr/X11R6/lib/X11/XF86Config
 
@@ -1065,15 +1064,19 @@ done
 
 # make TrueType font dir, touch default .dir and .scale files
 install	-d $RPM_BUILD_ROOT/usr/share/fonts/TrueType
-echo 0	>  $RPM_BUILD_ROOT/usr/share/fonts/TrueType/fonts.dir
-echo 0	>  $RPM_BUILD_ROOT/usr/share/fonts/TrueType/fonts.scale
+echo 0 > $RPM_BUILD_ROOT/usr/share/fonts/TrueType/fonts.dir
+echo 0 > $RPM_BUILD_ROOT/usr/share/fonts/TrueType/fonts.scale
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/xdm
+install %{SOURCE5} $RPM_BUILD_ROOT/etc/pam.d/xserver
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
-install %{SOURCE4} $RPM_BUILD_ROOT/etc
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/xfs.config
 
-#ln -sf  ../../usr/X11R6/include/X11 $RPM_BUILD_ROOT/usr/include/X11 ##change
+touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
+
+#ln -sf ../../usr/X11R6/include/X11 $RPM_BUILD_ROOT/usr/include/X11 ##change
+ln -sf /usr/share/fonts $RPM_BUILD_ROOT/usr/X11R6/lib/X11/fonts
 
 for n in libX11.so.6.1 libICE.so.6.3 libSM.so.6.0 libXext.so.6.3 libXt.so.6.0 \
 	 libXmu.so.6.0 libXaw.so.6.1 libXIE.so.6.0 libXi.so.6.0 \
@@ -1099,7 +1102,7 @@ grep "^/usr/X11R6/lib$" /etc/ld.so.conf >/dev/null 2>&1
 
 %postun libs
 if [ "$1" = "0" ]; then
-        grep -v "/usr/X11R6/lib" /etc/ld.so.conf > /etc/ld.so.conf.new
+	grep -v "/usr/X11R6/lib" /etc/ld.so.conf > /etc/ld.so.conf.new
 	mv -f /etc/ld.so.conf.new /etc/ld.so.conf
 fi
 /sbin/ldconfig
@@ -1131,17 +1134,37 @@ rm -rf $RPM_BUILD_ROOT
 %config /usr/X11R6/lib/X11/XF86Config.eg
 %doc /usr/X11R6/lib/X11/Cards
 
+%ifarch ix86 alpha sparc
+%doc /usr/X11R6/lib/X11/Cards
+%endif
+
+%dir /usr/X11R6
 %dir /usr/X11R6/lib
 %dir /usr/X11R6/lib/X11
+%dir /usr/X11R6/lib/X11/rstart
+%dir /usr/X11R6/lib/X11/rstart/commands
+%dir /usr/X11R6/lib/X11/rstart/commands/x11r6
+%dir /usr/X11R6/lib/X11/rstart/contexts
+%dir /usr/X11R6/lib/X11/etc
+%dir /usr/X11R6/lib/X11/fonts
 %dir /usr/X11R6/lib/X11/xserver
-
 %dir /usr/X11R6/bin
 
-%config /etc/X11/twm/system.twmrc
-%config /etc/X11/fs/config
-%config /etc/X11/xsm/system.xsm
 %config /etc/X11/XF86Config
-%attr(755,root,root) /etc/X11/xinit/*
+%ghost /etc/X11/X
+%config /etc/pam.d/xserver
+%config(missingok) /etc/security/console.apps/xserver
+%config /etc/X11/twm/system.twmrc
+%config /etc/X11/xsm/system.xsm
+%config /etc/X11/xdm/xdm-config
+%config /etc/X11/xdm/chooser
+%config /etc/X11/xdm/Xsetup_0
+%config /etc/X11/xdm/Xsession
+%config /etc/X11/xdm/Xservers
+%config /etc/X11/xdm/Xresources
+%config /etc/X11/xdm/Xaccess
+%config /etc/X11/xdm/TakeConsole
+%config /etc/X11/xdm/GiveConsole
 %ghost /etc/X11/X
 
 /usr/X11R6/lib/X11/XErrorDB
@@ -1367,7 +1390,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/share/man/man1/xfs.1*
 /usr/X11R6/share/man/man1/fsinfo.1*
 /usr/X11R6/share/man/man1/fslsfonts.1*
-/usr/X11R6/share/man/man1/fstobdf.1*  
+/usr/X11R6/share/man/man1/fstobdf.1*
 
 %files -n xauth
 %defattr(644,root,root,755)
@@ -1583,7 +1606,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files FBDev
 %defattr(644,root,root,755)
-%ifarch m68k 
+%ifarch m68k
 %attr(755,root,root) /usr/X11R6/bin/XF68_FBDev
 /usr/X11R6/share/man/man1/XF68_FBDev.1*
 %else
@@ -1625,8 +1648,8 @@ rm -rf $RPM_BUILD_ROOT
 
 * Thu Dec 17 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
 - major changes
-	    -- Teriblle sorry -- but now it's not it ..;(
-- emergency build for PLD Tornado. 
+-- Teriblle sorry -- but now it's not it ..;(
+- emergency build for PLD Tornado.
 
 * Tue Dec 08 1998 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
 - separating binaries,
