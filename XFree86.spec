@@ -1974,14 +1974,14 @@ fi
 %{_mandir}/man1/xmkmf.1*
 %{_mandir}/man3/[A-EH-Z]*
 
-%ifnarch sparc sparc64 alpha
+%ifnarch sparc sparc64 alpha ppc
 %files driver-apm
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/apm_drv.o
 %{_mandir}/man4/apm*
 %endif
 
-%ifnarch sparc sparc64 alpha
+%ifnarch sparc sparc64 alpha ppc
 %files driver-ark
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/ark_drv.o
@@ -2001,14 +2001,14 @@ fi
 %{_mandir}/man4/chips*
 %endif
 
-%ifnarch sparc sparc64 alpha
+%ifnarch sparc sparc64 alpha ppc
 %files driver-cirrus
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/cirrus_*.o
 %{_mandir}/man4/cirrus*
 %endif
 
-%ifnarch sparc sparc64 alpha
+%ifnarch sparc sparc64 alpha ppc
 %files driver-cyrix
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/cyrix_drv.o
@@ -2022,7 +2022,7 @@ fi
 %{_mandir}/man4/fbdev*
 %endif
 
-%ifnarch sparc sparc64 alpha
+%ifnarch sparc sparc64 alpha ppc
 %files driver-glide
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/glide_drv.o
@@ -2037,21 +2037,21 @@ fi
 %endif
 %{_mandir}/man4/glint*
 
-%ifnarch sparc sparc64 alpha
+%ifnarch sparc sparc64 alpha ppc
 %files driver-i128
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i128_drv.o
 %{_mandir}/man4/i128*
 %endif
 
-%ifnarch sparc sparc64 alpha
+%ifnarch sparc sparc64 alpha ppc
 %files driver-i740
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i740_drv.o
 %{_mandir}/man4/i740*
 %endif
 
-%ifnarch sparc sparc64 alpha
+%ifnarch sparc sparc64 alpha ppc
 %files driver-i810
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i810_drv.o
@@ -2067,14 +2067,14 @@ fi
 %{_mandir}/man4/mga*
 %endif
 
-%ifnarch sparc sparc64 alpha
+%ifnarch sparc sparc64 alpha ppc
 %files driver-neomagic
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/neomagic_drv.o
 %{_mandir}/man4/neomagic*
 %endif
 
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 ppc
 %files driver-nv
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/nv_drv.o
@@ -2104,7 +2104,7 @@ fi
 %attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
 %endif
 
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 ppc
 %files driver-rendition
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/rendition_drv.o
@@ -2132,14 +2132,14 @@ fi
 %{_mandir}/man4/savage*
 %endif
 
-%ifnarch sparc sparc64 alpha
+%ifnarch sparc sparc64 alpha ppc
 %files driver-siliconmotion
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/siliconmotion_drv.o
 %{_mandir}/man4/siliconmotion*
 %endif
 
-%ifnarch sparc sparc64 alpha
+%ifnarch sparc sparc64 alpha ppc
 %files driver-sis
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
@@ -2205,7 +2205,7 @@ fi
 %{_mandir}/man4/tdfx*
 %endif
 
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 ppc
 %files driver-tga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tga_drv.o
@@ -2218,7 +2218,7 @@ fi
 %{_mandir}/man4/trident*
 %endif
 
-%ifnarch sparc sparc64 alpha
+%ifnarch sparc sparc64 alpha ppc
 %files driver-tseng
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tseng_drv.o
@@ -2270,7 +2270,7 @@ fi
 %dir %{_libdir}/modules/dri
 %endif
 %dir %{_libdir}/modules/drivers
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 ppc
 %{_libdir}/modules/*.uc
 %endif
 %attr(755,root,root) %{_libdir}/modules/*.a
@@ -2278,7 +2278,7 @@ fi
 %attr(755,root,root) %{_libdir}/modules/drivers/linux
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/drivers/vga_drv.o
-%ifnarch alpha
+%ifnarch alpha ppc
 %attr(755,root,root) %{_libdir}/modules/drivers/vesa_drv.o
 %endif
 %endif
@@ -2299,7 +2299,7 @@ fi
 %{_mandir}/man4/v4l*
 %ifnarch sparc sparc64
 %{_mandir}/man4/vga*
-%ifnarch alpha
+%ifnarch alpha ppc
 %{_mandir}/man4/vesa*
 %endif
 %endif
@@ -2321,10 +2321,14 @@ fi
 %files setup
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/pcitweak
+%ifnarch ppc
 %attr(755,root,root) %{_bindir}/scanpci
+%endif
 %attr(755,root,root) %{_bindir}/xf86cfg
 %attr(755,root,root) %{_bindir}/xf86config
+%ifnarch ppc
 %{_mandir}/man1/scanpci.1*
+%endif
 %{_mandir}/man1/pcitweak.1*
 %{_mandir}/man1/xf86cfg.1*
 %{_mandir}/man1/xf86config.1*
