@@ -2413,6 +2413,8 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/glxinfo
 %attr(755,root,root) %{_libdir}/libGLU.so.*.*
+# to be fixed: it contains unresolved symbols and would need -lXm
+#%attr(755,root,root) %{_libdir}/libGLw.so.*.*
 %attr(755,root,root) %{_libdir}/libOSMesa.so.*.*
 %{_mandir}/man1/glxinfo.1*
 
@@ -2458,33 +2460,42 @@ fi
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/bdftopcf
-%attr(755,root,root) %{_libdir}/libX[1Ta-eg-t]*.so
-%attr(755,root,root) %{_libdir}/libXfont*.so
-%attr(755,root,root) %{_libdir}/libI*.so
-%attr(755,root,root) %{_libdir}/libS*.so
-%attr(755,root,root) %{_libdir}/libx*.so
+%attr(755,root,root) %{_libdir}/libFS.so
+%attr(755,root,root) %{_libdir}/libI810XvMC.so
+%attr(755,root,root) %{_libdir}/libICE.so
+%attr(755,root,root) %{_libdir}/libSM.so
+%attr(755,root,root) %{_libdir}/libX11.so
+%attr(755,root,root) %{_libdir}/libXRes.so
+%attr(755,root,root) %{_libdir}/libXTrap.so
+%attr(755,root,root) %{_libdir}/libXaw.so
+%attr(755,root,root) %{_libdir}/libXext.so
+%attr(755,root,root) %{_libdir}/libXfont.so
+%attr(755,root,root) %{_libdir}/libXfontcache.so
+%attr(755,root,root) %{_libdir}/libXi.so
+%attr(755,root,root) %{_libdir}/libXinerama.so
+%attr(755,root,root) %{_libdir}/libXmu.so
+%attr(755,root,root) %{_libdir}/libXmuu.so
+%attr(755,root,root) %{_libdir}/libXp.so
+%attr(755,root,root) %{_libdir}/libXpm.so
+%attr(755,root,root) %{_libdir}/libXrandr.so
+%attr(755,root,root) %{_libdir}/libXss.so
+%attr(755,root,root) %{_libdir}/libXt.so
+%attr(755,root,root) %{_libdir}/libXtst.so
 %attr(755,root,root) %{_libdir}/libXv.so
-%{_libdir}/libfntstubs.a
-%{_libdir}/libfontenc.a
-%{_libdir}/libFS.a
-%{_libdir}/libI810XvMC.a
-%{_libdir}/liboldX.a
+%attr(755,root,root) %{_libdir}/libXvMC.so
+%attr(755,root,root) %{_libdir}/libXxf86dga.so
+%attr(755,root,root) %{_libdir}/libXxf86misc.so
+%attr(755,root,root) %{_libdir}/libXxf86rush.so
+%attr(755,root,root) %{_libdir}/libXxf86vm.so
+%attr(755,root,root) %{_libdir}/libfontenc.so
+%attr(755,root,root) %{_libdir}/libxkbfile.so
+%attr(755,root,root) %{_libdir}/libxkbui.so
+%attr(755,root,root) %{_libdir}/libxrx.so
 %{_libdir}/libXau.a
 %{_libdir}/libXdmcp.a
+%{_libdir}/libfntstubs.a
+%{_libdir}/liboldX.a
 %{_libdir}/libxf86config.a
-%{_libdir}/libXfontcache.a
-%{_libdir}/libXinerama.a
-%{_libdir}/libxkbfile.a
-%{_libdir}/libxkbui.a
-%{_libdir}/libXrandr.a
-%{_libdir}/libXss.a
-%{_libdir}/libXTrap.a
-%{_libdir}/libXv.a
-%{_libdir}/libXvMC.a
-%{_libdir}/libXxf86dga.a
-%{_libdir}/libXxf86misc.a
-%{_libdir}/libXxf86rush.a
-%{_libdir}/libXxf86vm.a
 %{_includedir}/X11/*.h
 %{_includedir}/X11/ICE
 %{_includedir}/X11/PM
@@ -2884,15 +2895,37 @@ fi
 %dir %{_soundsdir}
 %dir %{_wmpropsdir}
 %dir %{_xsessdir}
-%attr(755,root,root) %{_libdir}/libX[1Ta-eg-t]*.so.*.*
-%attr(755,root,root) %{_libdir}/libXfont*.so.*.*
-%attr(755,root,root) %{_libdir}/libI*.so.*.*
-%attr(755,root,root) %{_libdir}/libS*.so.*.*
-%attr(755,root,root) %{_libdir}/libx*.so.*.*
+%attr(755,root,root) %{_libdir}/libFS.so.*.*
+%attr(755,root,root) %{_libdir}/libI810XvMC.so.*.*
+%attr(755,root,root) %{_libdir}/libICE.so.*.*
+%attr(755,root,root) %{_libdir}/libSM.so.*.*
+%attr(755,root,root) %{_libdir}/libX11.so.*.*
+%attr(755,root,root) %{_libdir}/libXRes.so.*.*
+%attr(755,root,root) %{_libdir}/libXTrap.so.*.*
+%attr(755,root,root) %{_libdir}/libXaw.so.*.*
+%attr(755,root,root) %{_libdir}/libXext.so.*.*
+%attr(755,root,root) %{_libdir}/libXfont.so.*.*
+%attr(755,root,root) %{_libdir}/libXfontcache.so.*.*
+%attr(755,root,root) %{_libdir}/libXi.so.*.*
+%attr(755,root,root) %{_libdir}/libXinerama.so.*.*
+%attr(755,root,root) %{_libdir}/libXmu.so.*.*
+%attr(755,root,root) %{_libdir}/libXmuu.so.*.*
+%attr(755,root,root) %{_libdir}/libXp.so.*.*
+%attr(755,root,root) %{_libdir}/libXpm.so.*.*
+%attr(755,root,root) %{_libdir}/libXrandr.so.*.*
+%attr(755,root,root) %{_libdir}/libXss.so.*.*
+%attr(755,root,root) %{_libdir}/libXt.so.*.*
+%attr(755,root,root) %{_libdir}/libXtst.so.*.*
 %attr(755,root,root) %{_libdir}/libXv.so.*.*
-
-%exclude %{_libdir}/libXrender.so.*.*
-%exclude %{_libdir}/libXcursor.so.*.*
+%attr(755,root,root) %{_libdir}/libXvMC.so.*.*
+%attr(755,root,root) %{_libdir}/libXxf86dga.so.*.*
+%attr(755,root,root) %{_libdir}/libXxf86misc.so.*.*
+%attr(755,root,root) %{_libdir}/libXxf86rush.so.*.*
+%attr(755,root,root) %{_libdir}/libXxf86vm.so.*.*
+%attr(755,root,root) %{_libdir}/libfontenc.so.*.*
+%attr(755,root,root) %{_libdir}/libxkbfile.so.*.*
+%attr(755,root,root) %{_libdir}/libxkbui.so.*.*
+%attr(755,root,root) %{_libdir}/libxrx.so.*.*
 
 %files modules
 %defattr(644,root,root,755)
@@ -2971,20 +3004,36 @@ fi
 
 %files static
 %defattr(644,root,root,755)
+%{_libdir}/libFS.a
+%{_libdir}/libI810XvMC.a
 %{_libdir}/libICE.a
 %{_libdir}/libSM.a
 %{_libdir}/libX11.a
 %{_libdir}/libXRes.a
+%{_libdir}/libXTrap.a
 %{_libdir}/libXaw.a
 %{_libdir}/libXext.a
 %{_libdir}/libXfont.a
+%{_libdir}/libXfontcache.a
 %{_libdir}/libXi.a
+%{_libdir}/libXinerama.a
 %{_libdir}/libXmu.a
 %{_libdir}/libXmuu.a
 %{_libdir}/libXp.a
 %{_libdir}/libXpm.a
+%{_libdir}/libXrandr.a
+%{_libdir}/libXss.a
 %{_libdir}/libXt.a
 %{_libdir}/libXtst.a
+%{_libdir}/libXv.a
+%{_libdir}/libXvMC.a
+%{_libdir}/libXxf86dga.a
+%{_libdir}/libXxf86misc.a
+%{_libdir}/libXxf86rush.a
+%{_libdir}/libXxf86vm.a
+%{_libdir}/libfontenc.a
+%{_libdir}/libxkbfile.a
+%{_libdir}/libxkbui.a
 
 %files tools
 %defattr(644,root,root,755)
