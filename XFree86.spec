@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
 Version:	4.0.2
-Release:	4
+Release:	5
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -46,7 +46,7 @@ Patch16:	%{name}-HasXdmAuth.patch
 Patch17:	%{name}-xdm-fixes.patch
 Patch18:	%{name}-imake-kernel-version.patch
 Patch19:	%{name}-no-kernel-modules.patch
-
+Patch20:	%{name}-cirrus.patch
 BuildRequires:	flex
 BuildRequires:	bison
 BuildRequires:	ncurses-devel
@@ -1019,6 +1019,7 @@ X11R6-contrib in older releases.
 %patch17 -p1
 %patch18 -p1
 %patch19 -p1
+%patch20 -p0
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
