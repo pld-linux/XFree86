@@ -10,7 +10,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Name:		XFree86
 Version:	4.2.0
-Release:	2.5
+Release:	2.6
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/%{version}/source/X%{_sver}src-1.tgz
@@ -85,7 +85,6 @@ BuildRequires:	Glide2x_SDK
 %endif
 Requires:	xauth
 Requires:	%{name}-libs = %{version}
-Requires:	%{name}-common = %{version}
 ExclusiveArch:	%{ix86} alpha sparc m68k armv4l noarch ppc
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	xpm-progs
@@ -1058,6 +1057,7 @@ Summary(fr):	Bibliothèques partagées X11R6
 Summary(pt_BR):	Bibliotecas compartilhadas X11R6
 Group:		X11/XFree86
 PreReq:		grep
+Requires:	%{name}-common = %{version}
 Obsoletes:	xpm
 Provides:	xpm
 
@@ -1825,6 +1825,11 @@ fi
 
 %files common
 %defattr(644,root,root,755)
+/usr/bin/X11
+/usr/lib/X11
+%dir %{_bindir}
+%dir %{_libdir}
+%dir %{_libdir}/X11
 %{_libdir}/X11/rgb.txt
 
 %files DPS
@@ -2259,17 +2264,12 @@ fi
 
 %files libs -f XFree86-libs.lang
 %defattr(644,root,root,755)
-%dir %{_libdir}
-%dir %{_libdir}/X11
 %{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XKeysymDB
 %{_libdir}/X11/locale
 %dir %{_includedir}
 %dir %{_includedir}/X11
-%dir %{_bindir}
 %dir %{_sbindir}
-/usr/bin/X11
-/usr/lib/X11
 /usr/include/X11
 %dir %{_datadir}/locale
 %dir %{_datadir}/misc
