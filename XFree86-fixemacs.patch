@@ -1,0 +1,14 @@
+--- XFree86-3.3.6/xc/lib/X11/XlibInt.c.fixemacs	Mon Jan 24 17:09:48 2000
++++ XFree86-3.3.6/xc/lib/X11/XlibInt.c	Mon Jan 24 17:10:49 2000
+@@ -597,7 +597,10 @@
+ 	register char *bufindex;
+ 	_XExtension *ext;
+ 
+-	if (dpy->flags & XlibDisplayIOError) return;
++       if (dpy->flags & XlibDisplayIOError) {
++            dpy->bufptr = dpy->buffer;  /* reset to avoid buffer overflows */
++            return;
++       }
+ #ifdef XTHREADS
+ 	while (dpy->flags & XlibDisplayWriting) {
+ 	    ConditionWait(dpy, dpy->lock->writers);

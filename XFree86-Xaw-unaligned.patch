@@ -1,0 +1,25 @@
+--- XFree86-4.0/xc/lib/Xaw/Scrollbar.c.foo	Mon May 15 17:04:02 2000
++++ XFree86-4.0/xc/lib/Xaw/Scrollbar.c	Mon May 15 17:07:30 2000
+@@ -831,6 +831,10 @@
+ NotifyThumb(Widget gw, XEvent *event, String *params, Cardinal *num_params)
+ {
+     ScrollbarWidget w = (ScrollbarWidget)gw;
++    union {
++	    XtPointer xt_pt;
++	    float xt_top;
++    } foo;
+ 
+     if (w->scrollbar.direction == 0)	/* if no StartScroll */
+ 	return;
+@@ -841,7 +845,10 @@
+     /* thumbProc is not pretty, but is necessary for backwards
+        compatibility on those architectures for which it work{s,ed};
+        the intent is to pass a (truncated) float by value. */
+-    XtCallCallbacks(gw, XtNthumbProc, *(XtPointer*)&w->scrollbar.top);
++    
++    foo.xt_top = w->scrollbar.top;
++	
++    XtCallCallbacks(gw, XtNthumbProc, foo.xt_pt);
+     XtCallCallbacks(gw, XtNjumpProc, (XtPointer)&w->scrollbar.top);
+ 
+     PaintThumb(w);
