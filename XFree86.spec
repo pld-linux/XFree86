@@ -164,6 +164,7 @@ Obsoletes:	X11R6.1
 %define		_soundsdir	/usr/share/sounds
 %define		_themesdir	/usr/share/themes
 %define		_wmpropsdir	/usr/share/wm-properties
+%define		_xsessdir	/usr/share/xsessions
 
 # avoid Mesa dependency in XFree86-OpenGL-libs
 # Glide3 (libglide3.so.3) can be provided by Glide_V3-DRI or Glide_V5-DRI
@@ -1961,7 +1962,7 @@ install %{SOURCE30} %{SOURCE31} %{SOURCE32} %{SOURCE33} %{SOURCE34} \
 bzip2 -dc %{SOURCE38} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 
 # twm desktop file for gdm/kdm support
-install %{SOURCE42} $RPM_BUILD_ROOT%{_datadir}/xsessions/twm.desktop
+install %{SOURCE42} $RPM_BUILD_ROOT%{_xsessdir}/twm.desktop
 
 :> $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 :> $RPM_BUILD_ROOT/etc/security/blacklist.xserver
@@ -3110,7 +3111,7 @@ fi
 %files -n twm
 %defattr(644,root,root,755)
 %{_wmpropsdir}/twm.desktop
-%{_datadir}/xsessions/twm.desktop
+%{_xsessdir}/twm.desktop
 %attr(755,root,root) %{_bindir}/twm
 %dir %{_sysconfdir}/X11/twm
 %config %{_sysconfdir}/X11/twm/system.twmrc
