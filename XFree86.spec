@@ -10,7 +10,7 @@ Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0/source/X401src-1.tgz
-Source1:	ftp://ftp.mesa3d.org/mesa/MesaLib-3.2.tar.bz2
+Source1:	ftp://ftp.mesa3d.org/mesa/MesaLib-3.2.1.tar.bz2
 Source3:	xdm.pamd
 Source4:	xdm.init
 Source5:	xfs.init
