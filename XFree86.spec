@@ -360,6 +360,7 @@ Modu³y rozszerzeñ X serwera obs³uguj±ce OpenGL.
 Summary:	OpenGL support for X11R6 - GL library
 Summary(pl):	Wsparcie OpenGL dla systemu X11R6 - biblioteka GL
 Group:		X11/Libraries
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Obsoletes:	XFree86-driver-firegl
 Obsoletes:	XFree86-driver-nvidia
 
@@ -369,23 +370,22 @@ OpenGL support for X11R6 system - GL library.
 %description OpenGL-libGL -l pl
 Wsparcie OpenGL dla systemu X11R6 - biblioteka GL.
 
-%package OpenGL-devel
-Summary:	OpenGL for X11R6 development
-Summary(pl):	Pliki nag³ówkowe OpenGL dla systemu X11R6
-Group:		X11/Development/Libraries
-Requires:	%{name}-OpenGL-libs = %{epoch}:%{version}-%{release}
-Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
-Requires:	OpenGL-devel-base
-Provides:	OpenGL-devel
-Obsoletes:	Mesa-devel
-Obsoletes:	XFree86-OpenGL-doc
-Obsoletes:	glxMesa-devel
+%package OpenGL-libs
+Summary:	OpenGL libraries for X11R6
+Summary(pl):	Biblioteki OpenGL dla systemu X11R6
+Group:		X11/Libraries
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Provides:	OpenGL = 1.4
+Provides:	OpenGL-GLU = 1.3
+Provides:	OpenGL-GLX = 1.4
+Obsoletes:	Mesa
+Obsoletes:	XFree86-OpenGL
 
-%description OpenGL-devel
-Headers and man pages for OpenGL for X11R6.
+%description OpenGL-libs
+OpenGL libraries for X11R6 system.
 
-%description OpenGL-devel -l pl
-Pliki nag³ówkowe i manuale do OpenGL dla systemu X11R6.
+%description OpenGL-libs -l pl
+Biblioteki OpenGL dla systemu X11R6.
 
 %package OpenGL-devel-base
 Summary:	OpenGL for X11R6 development (GL and GLX only)
@@ -402,27 +402,33 @@ Base headers (GL and GLX only) for OpenGL for X11R6.
 %description OpenGL-devel-base -l pl
 Podstawowe pliki nag³ówkowe (tylko GL i GLX) OpenGL dla systemu X11R6.
 
-%package OpenGL-libs
-Summary:	OpenGL libraries for X11R6
-Summary(pl):	Biblioteki OpenGL dla systemu X11R6
-Group:		X11/Libraries
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Provides:	OpenGL
-Obsoletes:	Mesa
-Obsoletes:	XFree86-OpenGL
+%package OpenGL-devel
+Summary:	OpenGL for X11R6 development
+Summary(pl):	Pliki nag³ówkowe OpenGL dla systemu X11R6
+Group:		X11/Development/Libraries
+Requires:	%{name}-OpenGL-libs = %{epoch}:%{version}-%{release}
+Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
+Requires:	OpenGL-devel-base
+Provides:	OpenGL-devel = 1.4
+Provides:	OpenGL-GLU-devel = 1.3
+Provides:	OpenGL-GLX-devel = 1.4
+Obsoletes:	Mesa-devel
+Obsoletes:	XFree86-OpenGL-doc
+Obsoletes:	glxMesa-devel
 
-%description OpenGL-libs
-OpenGL libraries for X11R6 system.
+%description OpenGL-devel
+Headers and man pages for OpenGL for X11R6.
 
-%description OpenGL-libs -l pl
-Biblioteki OpenGL dla systemu X11R6.
+%description OpenGL-devel -l pl
+Pliki nag³ówkowe i manuale do OpenGL dla systemu X11R6.
 
 %package OpenGL-static
 Summary:	X11R6 static libraries with OpenGL
 Summary(pl):	Biblioteki statyczne do X11R6 ze wsparciem dla OpenGL
 Group:		X11/Development/Libraries
 Requires:	%{name}-OpenGL-devel = %{epoch}:%{version}-%{release}
-Provides:	OpenGL-static
+Provides:	OpenGL-static = 1.4
+Provides:	OpenGL-GLU-static = 1.3
 Obsoletes:	Mesa-static
 
 %description OpenGL-static
@@ -770,11 +776,15 @@ Sterownik do kart ATI.
 Summary:	ATI Rage 128 video driver
 Summary(pl):	Sterownik do kart ATI Rage 128
 Group:		X11/Servers
-Requires:	OpenGL
 Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
+%ifarch %{ix86} ia64 amd64 alpha ppc arm
+# for dri
+Requires:	%{name}-OpenGL-core = %{epoch}:%{version}-%{release}
+Requires:	%{name}-OpenGL-libGL = %{epoch}:%{version}-%{release}
+# -libs already required by -OpenGL-libGL
+%endif
 Obsoletes:	XFree86-Rage128
-Conflicts:	XFree86-driver-nvidia
 
 %description driver-r128
 ATI Rage 128 video driver.
@@ -786,11 +796,15 @@ Sterownik do kart ATI Rage 128.
 Summary:	ATI Radeon video driver
 Summary(pl):	Sterownik do kart ATI Radeon
 Group:		X11/Servers
-Requires:	OpenGL
 Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
 Requires:	%{name}-driver-ati = %{epoch}:%{version}-%{release}
-Conflicts:	XFree86-driver-nvidia
+%ifarch %{ix86} ia64 amd64 alpha ppc arm
+# for dri
+Requires:	%{name}-OpenGL-core = %{epoch}:%{version}-%{release}
+Requires:	%{name}-OpenGL-libGL = %{epoch}:%{version}-%{release}
+# -libs already required by -OpenGL-libGL
+%endif
 
 %description driver-radeon
 ATI Radeon video driver.
@@ -886,10 +900,14 @@ Sterownik do kart Voodoo1 i Voodoo2 firmy 3Dfx.
 Summary:	GLINT/Permedia video driver
 Summary(pl):	Sterownik do kart GLINT i Permedia
 Group:		X11/Servers
-Requires:	OpenGL
 Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
-Conflicts:	XFree86-driver-nvidia
+%ifarch %{ix86} ia64 amd64 alpha ppc arm
+# for dri
+Requires:	%{name}-OpenGL-core = %{epoch}:%{version}-%{release}
+Requires:	%{name}-OpenGL-libGL = %{epoch}:%{version}-%{release}
+# -libs already required by -OpenGL-libGL
+%endif
 Obsoletes:	XFree86-3DLabs
 
 %description driver-glint
@@ -930,10 +948,14 @@ Sterownik do kart na uk³adzie Intel i740.
 Summary:	Intel i810/i815/i830 video driver
 Summary(pl):	Sterownik do grafiki na uk³adach Intel i810/i815/i830
 Group:		X11/Servers
-Requires:	OpenGL
 Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
-Conflicts:	XFree86-driver-nvidia
+%ifarch %{ix86} ia64
+# for dri
+Requires:	%{name}-OpenGL-core = %{epoch}:%{version}-%{release}
+Requires:	%{name}-OpenGL-libGL = %{epoch}:%{version}-%{release}
+# -libs already required by -OpenGL-libGL
+%endif
 Obsoletes:	XFree86-i810
 
 %description driver-i810
@@ -959,10 +981,14 @@ Sterownik do kart Integrated Micro Solutions Twin Turbo 128.
 Summary:	Matrox video driver
 Summary(pl):	Sterownik do kart Matrox
 Group:		X11/Servers
-Requires:	OpenGL
 Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
-Conflicts:	XFree86-driver-nvidia
+%ifarch %{ix86} ia64 amd64 alpha ppc arm
+# for dri
+Requires:	%{name}-OpenGL-core = %{epoch}:%{version}-%{release}
+Requires:	%{name}-OpenGL-libGL = %{epoch}:%{version}-%{release}
+# -libs already required by -OpenGL-libGL
+%endif
 Obsoletes:	XFree86-mga
 
 %description driver-mga
@@ -1104,6 +1130,12 @@ Summary(pl):	Sterownik do kart na uk³adach SiS
 Group:		X11/Servers
 Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
+%ifarch %{ix86} ia64
+# for dri
+Requires:	%{name}-OpenGL-core = %{epoch}:%{version}-%{release}
+Requires:	%{name}-OpenGL-libGL = %{epoch}:%{version}-%{release}
+# -libs already required by -OpenGL-libGL
+%endif
 Obsoletes:	XFree86-SiS
 
 %description driver-sis
@@ -1210,11 +1242,15 @@ Summary(pl):	Sterownik do kart 3Dfx
 Group:		X11/Servers
 Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
+%ifarch %{ix86} ia64 alpha arm ppc
+# for dri
+Requires:	%{name}-OpenGL-core = %{epoch}:%{version}-%{release}
+Requires:	%{name}-OpenGL-libGL = %{epoch}:%{version}-%{release}
+# -libs already required by -OpenGL-libGL
 # dlopens libglide3x.so
 Requires:	Glide3-DRI
-Requires:	OpenGL
+%endif
 Obsoletes:	XFree86-3dfx
-Conflicts:	XFree86-driver-nvidia
 
 %description driver-tdfx
 3Dfx video driver. Supports Voodoo Banshee, Voodoo3, Voodoo4, Voodoo5.
@@ -1260,7 +1296,8 @@ Summary(pl):	Sterownik do kart Tseng Labs
 Group:		X11/Servers
 Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
-Obsoletes:	XFree86-Tseng XFree86-W32
+Obsoletes:	XFree86-Tseng
+Obsoletes:	XFree86-W32
 
 %description driver-tseng
 Tseng Labs video driver.
@@ -1560,7 +1597,6 @@ Summary:	Cursors Theme "handhelds"
 Summary(pl):	Motyw kursorów "handhelds"
 Group:		Themes
 Requires:	XFree86-libs
-Requires:	xcursor
 Conflicts:	XFree86 < 4.3.99.901-0.2
 
 %description -n XcursorTheme-handhelds
@@ -1574,7 +1610,6 @@ Summary:	Cursors theme "redglass"
 Summary(pl):	Motyw kursorów "redglass"
 Group:		Themes
 Requires:	XFree86-libs
-Requires:	xcursor
 Conflicts:	XFree86 < 4.3.99.901-0.2
 
 %description -n XcursorTheme-redglass
@@ -1588,7 +1623,6 @@ Summary:	Cursors theme "whiteglass"
 Summary(pl):	Motyw kursorów "whiteglass"
 Group:		Themes
 Requires:	XFree86-libs
-Requires:	xcursor
 Conflicts:	XFree86 < 4.3.99.901-0.2
 
 %description -n XcursorTheme-whiteglass
@@ -1707,9 +1741,9 @@ Requires:	%{name}-sessreg = %{epoch}:%{version}-%{release}
 Requires:	/usr/X11R6/bin/sessreg
 Provides:	XDM
 Provides:	xdm = %{epoch}:%{version}-%{release}
-Obsoletes:	X11-xdm
 Obsoletes:	gdm
 Obsoletes:	kdm
+Obsoletes:	wdm
 Obsoletes:	xdm
 
 %description xdm
@@ -1982,6 +2016,9 @@ rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/html
 
 # resolve conflict with man-pages
 mv -f $RPM_BUILD_ROOT%{_mandir}/man4/{mouse.4,mouse-x.4}
+
+# help rpm to detect deps
+chmod 755 $RPM_BUILD_ROOT%{_libdir}/modules/dri/*.so
 
 %ifnarch sparc sparc64
 gzip -9nf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
@@ -2365,6 +2402,26 @@ fi
 %attr(755,root,root) /usr/%{_lib}/libGL.so.1
 %attr(755,root,root) /usr/%{_lib}/libGL.so
 
+%files OpenGL-libs
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/glxinfo
+%attr(755,root,root) %{_bindir}/glxgears
+%attr(755,root,root) %{_libdir}/libGLU.so.*.*
+# to be fixed: it contains unresolved symbols and would need -lXm
+#%attr(755,root,root) %{_libdir}/libGLw.so.*.*
+%attr(755,root,root) %{_libdir}/libOSMesa.so.*.*
+# Linux OpenGL ABI compatibility symlink
+%attr(755,root,root) /usr/%{_lib}/libGLU.so.1
+%{_mandir}/man1/glxinfo.1*
+%{_mandir}/man1/glxgears.1*
+
+%files OpenGL-devel-base
+%defattr(644,root,root,755)
+/usr/include/GL/gl.h
+/usr/include/GL/glx.h
+/usr/include/GL/glext.h
+/usr/include/GL/glxtokens.h
+
 %files OpenGL-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libGLU.so
@@ -2386,26 +2443,6 @@ fi
 %{_mandir}/man3/gl[A-Z]*
 %{_mandir}/man3/glu*
 %{_mandir}/man3/GLw*
-
-%files OpenGL-devel-base
-%defattr(644,root,root,755)
-/usr/include/GL/gl.h
-/usr/include/GL/glx.h
-/usr/include/GL/glext.h
-/usr/include/GL/glxtokens.h
-
-%files OpenGL-libs
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/glxinfo
-%attr(755,root,root) %{_bindir}/glxgears
-%attr(755,root,root) %{_libdir}/libGLU.so.*.*
-# to be fixed: it contains unresolved symbols and would need -lXm
-#%attr(755,root,root) %{_libdir}/libGLw.so.*.*
-%attr(755,root,root) %{_libdir}/libOSMesa.so.*.*
-# Linux OpenGL ABI compatibility symlink
-%attr(755,root,root) /usr/%{_lib}/libGLU.so.1
-%{_mandir}/man1/glxinfo.1*
-%{_mandir}/man1/glxgears.1*
 
 %files OpenGL-static
 %defattr(644,root,root,755)
@@ -2452,6 +2489,11 @@ fi
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/bdftopcf
+%ifnarch ppc sparc sparc64 sparcv9
+%attr(755,root,root) %{_bindir}/ioport
+%endif
+%attr(755,root,root) %{_bindir}/mmapr
+%attr(755,root,root) %{_bindir}/mmapw
 %attr(755,root,root) %{_bindir}/xcursor-config
 %attr(755,root,root) %{_bindir}/xft-config
 %attr(755,root,root) %{_libdir}/libFS.so
@@ -2506,11 +2548,11 @@ fi
 %{_includedir}/X11/fonts
 %{_includedir}/xf86*.h
 %{_libx11dir}/config
+%{_mandir}/man1/bdftopcf.1*
+%{_mandir}/man3/[A-FH-Z]*
 %{_pkgconfigdir}/xcursor.pc
 %{_pkgconfigdir}/xft.pc
 %{_pkgconfigdir}/xrender.pc
-%{_mandir}/man1/bdftopcf.1*
-%{_mandir}/man3/[A-FH-Z]*
 
 %files Xserver-devel
 %defattr(644,root,root,755)
@@ -2613,7 +2655,7 @@ fi
 %{_mandir}/man4/imstt.4*
 %endif
 
-%ifarch %{ix86} sparc sparc64 mips alpha ppc arm amd64
+%ifarch %{ix86} ia64 amd64 sparc sparc64 mips alpha ppc arm
 %files driver-mga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/mga_drv.o
@@ -2988,9 +3030,9 @@ fi
 %{_libdir}/libXaw.a
 %{_libdir}/libXcursor.a
 %{_libdir}/libXext.a
-%{_libdir}/libXft.a
 %{_libdir}/libXfont.a
 %{_libdir}/libXfontcache.a
+%{_libdir}/libXft.a
 %{_libdir}/libXi.a
 %{_libdir}/libXinerama.a
 %{_libdir}/libXmu.a
