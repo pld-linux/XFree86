@@ -146,7 +146,7 @@ BuildRequires:	tcl-devel
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires:	xauth
+Requires:	%{name}-xauth = %{epoch}:%{version}-%{release}
 Requires:	pam >= 0.77.3
 Obsoletes:	xpm-progs
 Obsoletes:	xterm
@@ -642,7 +642,7 @@ Summary(tr):	X11R6 ile geliþtirme için gerekli dosyalar
 Summary(uk):	â¦ÂÌ¦ÏÔÅËÉ ÐÒÏÇÒÁÍ¦ÓÔÁ, ÈÅÄÅÒÉ ÔÁ ÄÏËÕÍÅÎÔÁÃ¦Ñ ÐÏ ÐÒÏÇÒÁÍÕ×ÁÎÎÀ X11R6
 Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires:	imake = %{epoch}:%{version}-%{release}
+Requires:	%{name}-imake = %{epoch}:%{version}-%{release}
 Requires:	fontconfig-devel >= 1:1.0.0
 Provides:	render = 0.8
 Provides:	xcursor-devel = 1.0
@@ -1601,19 +1601,21 @@ Cursors theme "whiteglass" for X11.
 %description -n XcursorTheme-whiteglass -l pl
 Motyw kursorów "whiteglass" dla X11.
 
-%package -n imake
+%package imake
 Summary:	C preprocessor interface to the make utility
 Summary(pl):	Miedzymordzie do make oparte o preprocesor C
 Group:		Development/Building
+Provides:	imake = %{epoch}:%{version}-%{release}
+Obsoletes:	imake
 
-%description -n imake
+%description imake
 Imake is used to generate Makefiles from a template, a set of cpp
 macro functions, and a per-directory input file called an Imakefile.
 This allows machine dependencies (such as compiler options, alternate
 command names, and special make rules) to be kept separate from the
 descriptions of the various items to be built.
 
-%description -n imake -l pl
+%description imake -l pl
 Imake jest u¿ywany do generowania plików Makefile na bazie szablonu,
 zbioru makr preprocesora C oraz (dla ka¿dego podkatalogu) pliku
 wej¶ciowego Imakefile. Pozwala to na oddzielenie informacji zale¿nych
@@ -1621,12 +1623,14 @@ od ¶rodowiska kompilacji (takich jak opcje kompilatora, alternatywne
 nazwy komend i regu³y specjalne) od opisu ró¿nych elementów które maj±
 byæ kompilowane.
 
-%package -n sessreg
+%package sessreg
 Summary:	sessreg - manage utmp/wtmp entries for non-init clients
 Summary(pl):	Program do zarz±dzania wpisami w utmp/wtmp
 Group:		X11
+Provides:	sessreg = %{epoch}:%{version}-%{release}
+Obsoletes:	sessreg
 
-%description -n sessreg
+%description sessreg
 sessreg is a simple program for managing utmp/wtmp entries for xdm
 sessions.
 
@@ -1634,7 +1638,7 @@ System V has a better interface to /var/run/utmp than BSD; it
 dynamically allocates entries in the file, instead of writing them at
 fixed positions indexed by position in /etc/ttys.
 
-%description -n sessreg -l pl
+%description sessreg -l pl
 sessreg jest prostym programem do zarz±dzania wpisami w utmp/wtmp dla
 sesji xdm.
 
@@ -1642,53 +1646,57 @@ System V ma lepszy ni¿ BSD interfejs do /var/run/utmp; dynamicznie
 alokuje wpisy w pliku, zamiast zapisywania ich na ustalonych pozycjach
 indeksowanych po³o¿eniem w /etc/ttys.
 
-%package -n twm
+%package twm
 Summary:	Tab Window Manager for the X Window System
 Summary(pl):	Twm - podstawowy zarz±dca okien dla X Window System
 Summary(ru):	ðÒÏÓÔÏÊ ÏËÏÎÎÙÊ ÍÅÎÅÄÖÅÒ
 Summary(uk):	ðÒÏÓÔÉÊ ×¦ËÏÎÎÉÊ ÍÅÎÅÄÖÅÒ
 Group:		X11/Window Managers
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Provides:	twm = %{epoch}:%{version}-%{release}
+Obsoletes:	twm
 
-%description -n twm
+%description twm
 Twm is a window manager for the X Window System. It provides
 titlebars, shaped windows, several forms of icon management,
 user-defined macro functions, click-to-type and pointerdriven keyboard
 focus, and user-specified key and pointer button bindings.
 
-%description -n twm -l pl
+%description twm -l pl
 Twm jest zarz±dc± okien dla X Window System. Daje belki tytu³owe,
 ramki okien, parê form zarz±dzania ikonami, definiowalne makra,
 ustawianie focusu klikniêciem lub po³o¿eniem wska¼nika myszy,
 definiowalne przypisania klawiszy i przycisków myszy.
 
-%description -n twm -l ru
+%description twm -l ru
 ðÒÏÓÔÏÊ ËÏÍÐÁËÔÎÉÊ ÏËÏÎÎÙÊ ÍÅÎÅÄÖÅÒ.
 
-%description -n twm -l uk
+%description twm -l uk
 ðÒÏÓÔÉÊ ËÏÍÐÁËÔÎÉÊ ×¦ËÏÎÎÉÊ ÍÅÎÅÄÖÅÒ.
 
-%package -n xauth
+%package xauth
 Summary:	xauth - X authority file utility
 Summary(pl):	xauth - narzêdzie do plików X authority
 Group:		X11
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
+Provides:	xauth = %{epoch}:%{version}-%{release}
+Obsoletes:	xauth
 
-%description -n xauth
+%description xauth
 The xauth program is used to edit and display the authorization
 information used in connecting to the X server. This program is
 usually used to extract authorization records from one machine and
 merge them in on another (as is the case when using remote logins or
 granting access to other users).
 
-%description -n xauth -l pl
+%description xauth -l pl
 Program xauth s³u¿y do edycji i wy¶wietlania informacji
 autoryzacyjnych u¿ywanych przy ³±czeniu z Xserwerem. Ten program
 przewa¿nie jest u¿ywany do wyci±gania rekordów autoryzacji z jednej
 maszyny i do³±czania ich na innej (w celu umo¿liwienia zdalnego
 logowania lub udostêpnienia innym u¿ytkownikom).
 
-%package -n xdm
+%package xdm
 Summary:	xdm - X Display Manager with support for XDMCP, host chooser
 Summary(pl):	XDM - zarz±dca ekranów z obs³ug± XDMCP i wybieraniem hostów
 Summary(ru):	íÅÎÅÄÖÅÒ ÄÉÓÐÌÅÑ X
@@ -1699,32 +1707,33 @@ Requires(post,preun):	/sbin/chkconfig
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	pam >= 0.71
-Requires:	sessreg = %{epoch}:%{version}-%{release}
+Requires:	%{name}-sessreg = %{epoch}:%{version}-%{release}
 Requires:	/usr/X11R6/bin/sessreg
 Provides:	XDM
-Obsoletes:	XFree86-xdm
+Provides:	xdm = %{epoch}:%{version}-%{release}
 Obsoletes:	X11-xdm
 Obsoletes:	gdm
 Obsoletes:	kdm
+Obsoletes:	xdm
 
-%description -n xdm
+%description xdm
 Xdm manages a collection of X displays, which may be on the local host
 or remote servers. The design of xdm was guided by the needs of X
 terminals as well as the X Consortium standard XDMCP, the X Display
 Manager Control Protocol.
 
-%description -n xdm -l pl
+%description xdm -l pl
 Xdm zarz±dza zestawem ekranów X, które mog± byæ lokalne lub na
 zdalnych serwerach. Zosta³ zaprojektowany zgodnie z potrzebami X
 terminali oraz standardem X Consortium XDMCP.
 
-%description -n xdm -l ru
+%description xdm -l ru
 íÅÎÅÄÖÅÒ ÄÉÓÐÌÅÑ X.
 
-%description -n xdm -l uk
+%description xdm -l uk
 íÅÎÅÄÖÅÒ ÄÉÓÐÌÅÀ X.
 
-%package -n xfs
+%package xfs
 Summary:	Font server for XFree86
 Summary(pl):	Serwer fontów dla XFree86
 Summary(ru):	æÏÎÔÓÅÒ×ÅÒ ÄÌÑ X Window System
@@ -1740,22 +1749,23 @@ Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	XFree86-fonts-base
+Provides:	xfs = %{epoch}:%{version}-%{release}
 Provides:	group(xfs)
 Provides:	user(xfs)
-Obsoletes:	XFree86-xfs
+Obsoletes:	xfs
 Obsoletes:	xfsft
 
-%description -n xfs
+%description xfs
 This is a font server for XFree86. You can serve fonts to other X
 servers remotely with this package, and the remote system will be able
 to use all fonts installed on the font server, even if they are not
 installed on the remote computer.
 
-%description -n xfs -l pl
+%description xfs -l pl
 Pakiet zawiera serwer fontów dla XFree86. Mo¿e udostêpniaæ fonty dla X
 serwerów lokalnych lub zdalnych.
 
-%description -n xfs -l ru
+%description xfs -l ru
 XFree86-xfs ÓÏÄÅÒÖÉÔ ÓÅÒ×ÅÒ ÛÒÉÆÔÏ× ÄÌÑ XFree86. Xfs ÔÁËÖÅ ÍÏÖÅÔ
 ÐÒÅÄÏÓÔÁ×ÌÑÔØ ÛÒÉÆÔÙ ÕÄÁÌÅÎÎÙÍ X-ÓÅÒ×ÅÒÁÍ. õÄÁÌÅÎÎÁÑ ÓÉÓÔÅÍÁ ÂÕÄÅÔ
 ÓÐÏÓÏÂÎÁ ÉÓÐÏÌØÚÏ×ÁÔØ ×ÓÅ ÛÒÉÆÔÙ, ÕÓÔÁÎÏ×ÌÅÎÎÙÅ ÎÁ ÓÅÒ×ÅÒÅ ÛÒÉÆÔÏ×,
@@ -1766,7 +1776,7 @@ System. ôÁËÖÅ ×ÁÍ ÐÒÉÄÅÔÓÑ ÕÓÔÁÎÏ×ÉÔØ ÓÌÅÄÕÀÝÉÅ ÐÁËÅÔÙ: XFree86,
 ÐÁËÅÔ(Ù) ÛÒÉÆÔÏ× XFree86, ÎÅÏÂÈÏÄÉÍÙÅ ÄÌÑ ×ÁÛÅÊ ÓÉÓÔÅÍÙ, Xconfigurator
 É XFree86-libs.
 
-%description -n xfs -l uk
+%description xfs -l uk
 XFree86-xfs Í¦ÓÔÉÔØ ÓÅÒ×ÅÒ ÛÒÉÆÔ¦× ÄÌÑ XFree86. Xfs ÔÁËÏÖ ÍÏÖÅ
 ÎÁÄÁ×ÁÔÉ ÛÒÉÆÔÉ ×¦ÄÄÁÌÅÎÉÍ X-ÓÅÒ×ÅÒÁÍ. ÷¦ÄÄÁÌÅÎÁ ÓÉÓÔÅÍÁ ÚÍÏÖÅ
 ×ÉËÏÒÉÓÔÏ×Õ×ÁÔÉ ÕÓ¦ ÛÒÉÆÔÉ, ÑË¦ ×ÓÔÁÎÏ×ÌÅÎ¦ ÎÁ ÓÅÒ×ÅÒ¦ ÛÒÉÆÔ¦×, ÎÁ×¦ÔØ
@@ -2042,7 +2052,7 @@ if [ -d /usr/X11R6/lib/X11/xkb ]; then
 	ln -sf /etc/X11/xkb /usr/X11R6/lib/X11/xkb
 fi
 
-%post -n xdm
+%post xdm
 /sbin/chkconfig --add xdm
 if [ -f /var/lock/subsys/xdm ]; then
 	echo "Run \"/etc/rc.d/init.d/xdm restart\" to restart xdm." >&2
@@ -2051,7 +2061,7 @@ else
 	echo "Run \"/etc/rc.d/init.d/xdm start\" to start xdm." >&2
 fi
 
-%preun -n xdm
+%preun xdm
 if [ "$1" = "0" ]; then
 	if [ -f /var/lock/subsys/xdm ]; then
 		/etc/rc.d/init.d/xdm stop >&2
@@ -2059,7 +2069,7 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del xdm
 fi
 
-%pre -n xfs
+%pre xfs
 if [ -n "`/usr/bin/getgid xfs`" ]; then
 	if [ "`/usr/bin/getgid xfs`" != "56" ]; then
 		echo "Error: group xfs doesn't have GID=56. Correct this before installing xfs." 1>&2
@@ -2077,7 +2087,7 @@ else
 	/usr/sbin/useradd -u 56 -r -d /etc/X11/fs -s /bin/false -c "X Font Server" -g xfs xfs 1>&2
 fi
 
-%post -n xfs
+%post xfs
 /sbin/chkconfig --add xfs
 if [ -f /var/lock/subsys/xfs ]; then
 	/etc/rc.d/init.d/xfs restart >&2
@@ -2085,7 +2095,7 @@ else
 	echo "Run \"/etc/rc.d/init.d/xfs start\" to start font server." >&2
 fi
 
-%preun -n xfs
+%preun xfs
 if [ "$1" = "0" ]; then
 	if [ -f /var/lock/subsys/xfs ]; then
 		/etc/rc.d/init.d/xfs stop >&2
@@ -2093,7 +2103,7 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del xfs
 fi
 
-%postun -n xfs
+%postun xfs
 if [ "$1" = "0" ]; then
 	%userremove xfs
 	%groupremove xfs
@@ -3127,7 +3137,7 @@ fi
 %{_iconsdir}/whiteglass
 %endif
 
-%files -n imake
+%files imake
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/ccmakedep
 %attr(755,root,root) %{_bindir}/cleanlinks
@@ -3143,12 +3153,12 @@ fi
 %{_mandir}/man1/makedepend.1*
 %{_mandir}/man1/xmkmf.1*
 
-%files -n sessreg
+%files sessreg
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/sessreg
 %{_mandir}/man1/sessreg.1*
 
-%files -n twm
+%files twm
 %defattr(644,root,root,755)
 %{_wmpropsdir}/twm.desktop
 %{_xsessdir}/twm.desktop
@@ -3158,12 +3168,12 @@ fi
 %attr(755,root,root) %{_libx11dir}/twm
 %{_mandir}/man1/twm.1*
 
-%files -n xauth
+%files xauth
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/xauth
 %{_mandir}/man1/xauth.1*
 
-%files -n xdm
+%files xdm
 %defattr(644,root,root,755)
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/pam.d/xdm
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.xdm
@@ -3191,7 +3201,7 @@ fi
 /etc/X11/xdm/pixmaps
 /etc/X11/xdm/authdir
 
-%files -n xfs
+%files xfs
 %defattr(644,root,root,755)
 %attr(754,root,root) /etc/rc.d/init.d/xfs
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/xfs
