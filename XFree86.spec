@@ -11,8 +11,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0/source/X402src-1.tgz
-#Source1:	ftp://download.sourceforge.net/pub/sourceforge/mesa3d/MesaLib-3.4.tar.bz2
-Source2:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
+Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source3:	xdm.pamd
 Source4:	xdm.init
 Source5:	xfs.init
@@ -26,34 +25,26 @@ Source12:	xclipboard.desktop
 Source13:	xconsole.desktop
 Source14:	xterm.desktop
 Source15:	xlogo64.png
-Patch0:		%{name}-%{version}-PLD.patch
+Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
-Patch3:		%{name}-%{version}-Xwrapper.patch
-Patch4:		%{name}-%{version}-xfs.patch
+Patch3:		%{name}-Xwrapper.patch
+Patch4:		%{name}-xfs.patch
 Patch5:		%{name}-xfs-fix.patch
-#Patch6:		%{name}-xfs-logger.patch
+Patch6:		%{name}-xfs-logger.patch
 Patch7:		%{name}-xterm-utempter.patch
 Patch8:		%{name}-app_defaults_dir.patch
-Patch9:		%{name}-%{version}-startx_xauth.patch
+Patch9:		%{name}-startx_xauth.patch
 Patch10:	%{name}-v4l.patch
-#Patch11:	%{name}-fixemacs.patch
-Patch14:	%{name}-sparc3.patch.gz
-Patch15:	%{name}-sparc4.patch.gz
-#Patch16:	%{name}-shared.patch
-Patch17:	%{name}-broken-includes.patch
-#Patch18:	%{name}-Xaw-unaligned.patch
-#Patch19:	%{name}-4.0.1-alpha-pcibus-lemming.patch
-#Patch21:	%{name}-xlib-textmeasure.patch
-Patch22:	%{name}-fhs.patch
-#Patch23:	%{name}-xdmsecurity.patch
-#Patch24:	%{name}-moresecurity.patch
-Patch25:	%{name}-%{version}-xman.patch
-#Patch26:	%{name}-glide3.patch
-#Patch27:	%{name}-tdfxdrmfixes.patch
-Patch28:	%{name}-HasXdmAuth.patch
-#Patch29:	%{name}-Xserver_observe_XAUTHORITY.patch
-Patch30:	%{name}-%{version}-xdm-fixes.patch
+Patch11:	%{name}-sparc3.patch.gz
+Patch12:	%{name}-sparc4.patch.gz
+Patch13:	%{name}-broken-includes.patch
+Patch14:	%{name}-alpha-pcibus-lemming.patch
+Patch15:	%{name}-fhs.patch
+Patch16:	%{name}-xdmsecurity.patch
+Patch17:	%{name}-xman.patch
+Patch18:	%{name}-HasXdmAuth.patch
+Patch19:	%{name}-xdm-fixes.patch
 
 BuildRequires:	flex
 BuildRequires:	ncurses-devel
@@ -871,8 +862,7 @@ X11R6-contrib in older releases.
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c -a2
-#%setup -q -c -a1 -a2
+%setup -q -c -a1
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -885,29 +875,19 @@ X11R6-contrib in older releases.
 %patch8 -p1
 %patch9 -p0
 %patch10 -p1
-#%patch11 -p1 #not needed, included in 4.0.2 
-#%patch12 -p0 #patch not exist
-#%patch13 -p1 #patch not exist
 %ifarch sparc64
-%patch14 -p1
+%patch11 -p1
 %endif
 %ifarch alpha
-%patch15 -p0
+%patch12 -p0
 %endif 
-#%patch16 -p1 #not needed, included in 4.0.2
+%patch13 -p1
+%patch14 -p0
+%patch15 -p1
+%patch16 -p1
 %patch17 -p1
-#%patch18 -p1 #not needed, included in 4.0.2
-#%patch19 -p0 #not needed, included in 4.0.2
-#%patch21 -p0 #not needed, included in 4.0.2
-%patch22 -p1
-#%patch23 -p1 #not needed, included in 4.0.2
-#%patch24 -p1 #not needed, included in 4.0.2
-%patch25 -p1
-#%patch26 -p0 #not needed, included in 4.0.2
-#%patch27 -p1 #not needed, included in 4.0.2
-%patch28 -p1
-#%patch29 -p0 #not needed, included in 4.0.2
-%patch30 -p1
+%patch18 -p1
+%patch19 -p1
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
