@@ -12,7 +12,7 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Name:		XFree86
 Version:	4.2.0
-Release:	3.4
+Release:	4
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/%{version}/source/X%{_sver}src-1.tgz
@@ -61,7 +61,7 @@ Patch25:	%{name}-mkfontdir-chmod_644.patch
 Patch26:	%{name}-HasFreetype2.patch
 Patch27:	%{name}-config-s3.patch
 Patch28:	%{name}-sparc_pci_domains.patch
-
+Patch29:	%{name}-xkb-us_intl-missing-commas.patch
 Patch30:	%{name}-dri_directory_mode_fix.patch
 Patch31:	%{name}-alpha_GLX_align_fix.patch
 Patch32:	%{name}-XftConfig_in_correct_place.patch
@@ -69,7 +69,14 @@ Patch33:	%{name}-PEX+XIE.patch
 Patch34:	%{name}-xman-manpaths.patch
 Patch35:	%{name}-ppc_drivers.patch
 Patch36:	%{name}-4.2.0-branch-20020524.patch
-Patch37:        %{name}-clearrts.patch
+Patch37:	%{name}-clearrts.patch
+Patch38:	%{name}-mga020414.patch
+
+Patch40:	%{name}-i815m.patch
+Patch41:	%{name}-nv020414.patch
+Patch42:	%{name}-fix-07-s3trio64v2gx+netfinity.patch
+Patch43:	%{name}-prosavage.patch
+Patch44:	%{name}-xtt-null-pointer.patch
 
 BuildRequires:	bison
 BuildRequires:	flex
@@ -917,8 +924,8 @@ Intel i740 video driver.
 Sterownik do kart na ukЁadzie Intel i740.
 
 %package driver-i810
-Summary:	Intel i810/i815 video driver
-Summary(pl):	Sterownik do grafiki na ukЁadach Intel i810 i i815
+Summary:	Intel i810/i815/i830 video driver
+Summary(pl):	Sterownik do grafiki na ukЁadach Intel i810/i815/i830
 Group:		X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
@@ -927,10 +934,10 @@ Conflicts:	XFree86-driver-nvidia
 Obsoletes:	XFree86-i810
 
 %description driver-i810
-Intel i810/i815 video driver.
+Intel i810/i815/i830 video driver.
 
 %description driver-i810 -l pl
-Sterownik do grafiki na ukЁadach Intel i810 i i815.
+Sterownik do grafiki na ukЁadach Intel i810/i815/i830.
 
 %package driver-mga
 Summary:	Matrox video driver
@@ -1700,6 +1707,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 # needs updating (14 rejects)
 #%patch28 -p1
 %endif
+%patch29 -p1
 %patch30 -p1
 %patch31 -p1
 %patch32 -p1
@@ -1712,6 +1720,13 @@ cd xc
 %patch36 -p0
 cd ..
 %patch37 -p1
+%patch38 -p1
+#%patch39 -p1
+%patch40 -p1
+%patch41 -p1
+%patch42 -p1
+%patch43 -p1
+%patch44 -p1
 
 rm -f xc/config/cf/host.def
 
@@ -1954,6 +1969,7 @@ fi
 %doc %{_libdir}/X11/doc
 %endif
 
+%{_libdir}/X11/app-defaults/UXTerm
 %{_libdir}/X11/app-defaults/XCalc
 %{_libdir}/X11/app-defaults/XCalc-color
 %{_libdir}/X11/app-defaults/XClipboard
@@ -2009,6 +2025,7 @@ fi
 %attr(755,root,root) %{_bindir}/iceauth
 %attr(755,root,root) %{_bindir}/lbxproxy
 %attr(755,root,root) %{_bindir}/lndir
+%attr(755,root,root) %{_bindir}/luit
 %attr(755,root,root) %{_bindir}/makeg
 %attr(755,root,root) %{_bindir}/makestrs
 %attr(755,root,root) %{_bindir}/mergelib
@@ -2024,6 +2041,7 @@ fi
 %attr(755,root,root) %{_bindir}/smproxy
 %attr(755,root,root) %{_bindir}/startx
 %attr(755,root,root) %{_bindir}/sxpm
+%attr(755,root,root) %{_bindir}/uxterm
 %attr(755,root,root) %{_bindir}/xcmsdb
 %attr(755,root,root) %{_bindir}/xconsole
 %attr(755,root,root) %{_bindir}/xcutsel
@@ -2081,6 +2099,7 @@ fi
 %{_mandir}/man1/libxrx.1*
 %endif
 %{_mandir}/man1/lndir.1*
+%{_mandir}/man1/luit.1x*
 %{_mandir}/man1/makestrs.1*
 %{_mandir}/man1/makeg.1*
 %{_mandir}/man1/mkdirhier.1*
@@ -2205,12 +2224,12 @@ fi
 
 %files OpenGL-core
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/glxgears
 %attr(755,root,root) %{_libdir}/libGL.so.*.*
 %attr(755,root,root) %{_libdir}/libGL.so
-%ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/extensions/libglx.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libGLcore.a
-%endif
+%{_mandir}/man1/glxgears.1x*
 
 %files OpenGL-devel
 %defattr(644,root,root,755)
@@ -2283,22 +2302,27 @@ fi
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/libx*.so
 %endif
+%{_libdir}/libfntstubs.a
+%{_libdir}/libfontenc.a
 %{_libdir}/libFS.a
+%{_libdir}/libI810XvMC.a
+%{_libdir}/liboldX.a
 %{_libdir}/libXau.a
 %{_libdir}/libXdmcp.a
+%{_libdir}/libxf86config.a
 %{_libdir}/libXfontcache.a
+%{_libdir}/libXinerama.a
+%{_libdir}/libxkbfile.a
+%{_libdir}/libxkbui.a
+%{_libdir}/libXrandr.a
 %{_libdir}/libXss.a
+%{_libdir}/libXTrap.a   
+%{_libdir}/libXv.a
+%{_libdir}/libXvMC.a  
 %{_libdir}/libXxf86dga.a
 %{_libdir}/libXxf86misc.a
 %{_libdir}/libXxf86rush.a
 %{_libdir}/libXxf86vm.a
-%{_libdir}/liboldX.a
-%{_libdir}/libxkbfile.a
-%{_libdir}/libxkbui.a
-%{_libdir}/libXv.a
-%{_libdir}/libfntstubs.a
-%{_libdir}/libxf86config.a
-%{_libdir}/libXinerama.a
 %{_includedir}/X11/*.h
 %{_includedir}/X11/ICE
 %{_includedir}/X11/PM
@@ -2392,6 +2416,7 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i810_drv.o
 %attr(755,root,root) %{_libdir}/modules/dri/i810_dri.so
+%attr(755,root,root) %{_libdir}/modules/dri/i830_dri.so
 %{_mandir}/man4/i810*
 %endif
 
@@ -2466,6 +2491,7 @@ fi
 %files driver-radeon.2
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/ati.2/radeon*_drv.o
+%attr(755,root,root) %{_libdir}/modules/drivers/ati.2/saa7114_drv.o
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
 %endif
@@ -2674,12 +2700,15 @@ fi
 %attr(755,root,root) %{_libdir}/X11/xserver
 %dir /etc/X11/xserver
 /etc/X11/xserver/SecurityPolicy
+%{_mandir}/man1/xtr*
 %{_mandir}/man1/xkbcomp.1*
 %{_mandir}/man4/citron*
+%{_mandir}/man4/dmc.4*
 %{_mandir}/man4/dynapro*
 %{_mandir}/man4/keyboard*
 %{_mandir}/man4/microtouch*
 %{_mandir}/man4/mouse*
+%{_mandir}/man4/penmount.4*
 %{_mandir}/man4/v4l*
 %ifnarch sparc sparc64
 %{_mandir}/man4/vga*
@@ -2710,6 +2739,7 @@ fi
 %endif
 %attr(755,root,root) %{_bindir}/xf86cfg
 %attr(755,root,root) %{_bindir}/xf86config
+%{_libdir}/X11/app-defaults/XF86Cfg
 %ifnarch ppc
 %{_mandir}/man1/scanpci.1*
 %endif
@@ -2767,6 +2797,7 @@ fi
 %attr(755,root,root) %{_bindir}/rman
 %attr(755,root,root) %{_bindir}/xtrap*
 %attr(755,root,root) %{_bindir}/texteroids
+%{_libdir}/X11/xedit
 %{_libdir}/X11/xman.help
 %{_mandir}/man1/beforelight.1*
 %{_mandir}/man1/ico.1*
