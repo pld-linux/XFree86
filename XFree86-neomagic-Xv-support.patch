@@ -1,0 +1,2152 @@
+--- XFree86-4.2.0/xc.orig/programs/Xserver/hw/xfree86/drivers/neomagic/Imakefile	Wed Jan 24 01:06:21 2001
++++ XFree86-4.2.0/xc/programs/Xserver/hw/xfree86/drivers/neomagic/Imakefile	Thu Apr  4 16:05:44 2002
+@@ -2,12 +2,12 @@
+ #define IHaveModules
+ #include <Server.tmpl>
+ 
+ 
+ SRCS = neo_driver.c neo_bank.c neo_cursor.c neo_2097.c neo_2070.c \
+-	neo_2090.c neo_2200.c neo_i2c.c neo_shadow.c neo_dga.c
++	neo_2090.c neo_2200.c neo_i2c.c neo_shadow.c neo_dga.c neo_video.c
+ 
+ OBJS = neo_driver.o neo_bank.o neo_cursor.o neo_2097.o neo_2070.o \
+-	neo_2090.o neo_2200.o neo_i2c.o neo_shadow.o neo_dga.o
++	neo_2090.o neo_2200.o neo_i2c.o neo_shadow.o neo_dga.o neo_video.o
+ 
+ DEFINES = -DPSZ=8
+ 
+--- XFree86-4.2.0/xc.orig/programs/Xserver/hw/xfree86/drivers/neomagic/NM-reg.txt	Thu Jan  1 01:00:00 1970
++++ XFree86-4.2.0/xc/programs/Xserver/hw/xfree86/drivers/neomagic/NM-reg.txt	Thu Apr  4 16:05:44 2002
+@@ -0,0 +1,69 @@
++NM2160 Register GUESS  
++   --- Overlay and ZV capture ---
++
++2002,2.3.
++
++1. Overlay
++  GRB0  bit5    Format; 0:YUY2/1:RGB
++        bit1    1
++        bit0    Enable overlay ; 1:enable/0:disable
++  GRB1  bit7:4  X2[11:8]
++        bit3:0  X1[11:8]
++  GRB2          X1[7:0]
++  GRB3          X2[7:0]
++  GRB4  bit7:4  Y2[11:8]
++        bit3:0  Y1[11:8]
++  GRB5          Y1[7:0]
++  GRB6          Y2[7:0]
++  GRB7          VRAM offset[24:17]
++  GRB8          VRAM offset[16:9]
++  GRB9          VRAM offset[8:1]
++  GRBA          Width in byte[15:8]
++  GRBB          Width in byte[7:0]
++  GRBC          0x4f
++  GRBD          -
++  GRBE          -
++  GRBF  bit2    0:normal/1:mirror
++        bit1:0  b'10'
++  GRC0          X scale[15:8] ; x1.0 == 0x1000
++  GRC1          X scale[7:0]
++  GRC2          Y scale[15:8] ; x1.0 == 0x1000
++  GRC3          Y scale[7:0]
++  GRC4          brightness   ; -128 to +127
++  GRC5          Color key(R)
++  GRC6          Color key(G) / Color key(8bpp)
++  GRC7          Color key(B)
++
++2. ZV capture
++  GR0A  bit5    Enable extended SR reg. ; 1:enable/0:disable
++        bit0    1
++
++  SR08  bit7:1  b'1010000'
++        bit0    Enable capture ; 1:enable/0:disable
++  SR09          0x11
++  SR0A          0x00
++  SR0B          -
++  SR0C          VRAM offset[8:1]
++  SR0D          VRAM offset[16:9]
++  SR0E          VRAM offset[24:17]
++  SR0F          -
++  SR10          -
++  SR11          -
++  SR12          -
++  SR13          -
++  SR14          Y1[7:0]
++  SR15          Y2[7:0]
++  SR16  bit7:4  Y2[11:4]
++        bit3:0  Y1[11:4]
++  SR17          X1[7:0]
++  SR18          X2[7:0]
++  SR19  bit7:4  X2[11:8]
++        bit3:0  X1[11:8]
++  SR1A          Width in byte[7:0]
++  SR1B          Width in byte[15:8]
++  SR1C          0xfb
++  SR1D          0x00
++  SR1E          0xe2
++  SR1F          0x02
++
++s.nomura@mba.nifty.ne.jp
+--- XFree86-4.2.0/xc.orig/programs/Xserver/hw/xfree86/drivers/neomagic/neo.h	Mon Oct  1 15:44:07 2001
++++ XFree86-4.2.0/xc/programs/Xserver/hw/xfree86/drivers/neomagic/neo.h	Thu Apr  4 16:05:44 2002
+@@ -60,6 +60,11 @@
+ 
+ #include "xf86i2c.h"
+ 
++#ifdef XvExtension
++# include "xf86xv.h"
++# include "Xv.h"
++#endif /* XvExtension */
++
+ /*
+  * Driver data structures.
+  */
+@@ -121,6 +126,10 @@
+ /* in neo_dga.c */
+ Bool NEODGAInit(ScreenPtr pScreen);
+ 
++/* in neo_video.c */
++extern void NEOInitVideo(ScreenPtr pScreen);
++extern void NEOResetVideo(ScrnInfoPtr pScrn);
++
+ /* shadow regs */
+ 
+ #define NEO_EXT_CR_MAX 0x85
+@@ -199,6 +208,8 @@
+     unsigned long NeoMMIOAddr;
+     unsigned long NeoLinearAddr;
+     unsigned char* NeoMMIOBase;
++    unsigned long NeoMMIOAddr2;
++    unsigned char* NeoMMIOBase2;
+     unsigned char* NeoFbBase;
+     long NeoFbMapSize;
+     unsigned long vgaIOBase;
+@@ -249,6 +260,17 @@
+     RefreshAreaFuncPtr refreshArea;
+     void	(*PointerMoved)(int index, int x, int y);
+     int rotate;
++    Bool showcache;
++#ifdef XvExtension
++    Bool video;
++    double videoHZoom;
++    double videoVZoom;
++    XF86VideoAdaptorPtr overlayAdaptor;
++    int overlay;
++    int overlay_offset;
++    int videoKey;
++    int interlace;
++#endif /* XvExtension */
+ } NEORec, *NEOPtr;
+ 
+ typedef struct {
+@@ -264,18 +286,20 @@
+ #define GRAX	0x3CE
+ 
+ /* vga IO functions */
+-#define VGArCR(index) hwp->readCrtc(hwp,index)
+-#define VGAwCR(index,val) hwp->writeCrtc(hwp,index,val)
+-#define VGArGR(index) hwp->readGr(hwp,index)
+-#define VGAwGR(index,val) hwp->writeGr(hwp,index,val)
++#define VGArCR(index)		(*hwp->readCrtc)(hwp, index)
++#define VGAwCR(index, val)	(*hwp->writeCrtc)(hwp, index, val)
++#define VGArGR(index)		(*hwp->readGr)(hwp, index)
++#define VGAwGR(index, val)	(*hwp->writeGr)(hwp, index, val)
++#define VGArSR(index)		(*hwp->readSeq)(hwp, index)
++#define VGAwSR(index, val)	(*hwp->writeSeq)(hwp, index, val)
+ 
+ /* memory mapped register access macros */
+-#define INREG8(addr) MMIO_IN8(nPtr->NeoMMIOBase, (addr))
+-#define INREG16(addr) MMIO_IN16(nPtr->NeoMMIOBase, (addr))
+-#define INREG(addr) MMIO_IN32(nPtr->NeoMMIOBase, (addr))
+-#define OUTREG8(addr, val) MMIO_OUT8(nPtr->NeoMMIOBase, (addr), (val))
+-#define OUTREG16(addr, val) MMIO_OUT16(nPtr->NeoMMIOBase, (addr), (val))
+-#define OUTREG(addr, val) MMIO_OUT32(nPtr->NeoMMIOBase, (addr), (val))
++#define INREG8(addr)		MMIO_IN8(nPtr->NeoMMIOBase, addr)
++#define INREG16(addr)		MMIO_IN16(nPtr->NeoMMIOBase, addr)
++#define INREG(addr)		MMIO_IN32(nPtr->NeoMMIOBase, addr)
++#define OUTREG8(addr, val)	MMIO_OUT8(nPtr->NeoMMIOBase, addr, val)
++#define OUTREG16(addr, val)	MMIO_OUT16(nPtr->NeoMMIOBase, addr, val)
++#define OUTREG(addr, val)	MMIO_OUT32(nPtr->NeoMMIOBase, addr, val)
+ 
+ /* This swizzle macro is to support the manipulation of cursor masks when
+  * the sprite moves off the left edge of the display.  This code is
+--- XFree86-4.2.0/xc.orig/programs/Xserver/hw/xfree86/drivers/neomagic/neo_2070.c	Tue Sep 26 01:57:08 2000
++++ XFree86-4.2.0/xc/programs/Xserver/hw/xfree86/drivers/neomagic/neo_2070.c	Thu Apr  4 16:05:44 2002
+@@ -104,8 +104,6 @@
+     ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+     NEOPtr nPtr = NEOPTR(pScrn);
+     NEOACLPtr nAcl = NEOACLPTR(pScrn);
+-    BoxRec AvailFBArea;
+-    int lines;
+ 
+     nPtr->AccelInfoRec = infoPtr = XAACreateInfoRec();
+     if(!infoPtr) return FALSE;
+@@ -158,23 +156,7 @@
+     default:
+ 	return FALSE;
+     }
+-
+-    /* Initialize for widths */
+-    nAcl->Pitch = pScrn->displayWidth * nAcl->PixelWidth;
+-    lines = nAcl->cacheEnd /
+-      (pScrn->displayWidth * (pScrn->bitsPerPixel >> 3));
+-    if(lines > 1024) lines = 1024;
+-
+-    AvailFBArea.x1 = 0;
+-    AvailFBArea.y1 = 0;
+-    AvailFBArea.x2 = pScrn->displayWidth;
+-    AvailFBArea.y2 = lines;
+-    xf86InitFBManager(pScreen, &AvailFBArea); 
+-
+-    xf86DrvMsg(pScrn->scrnIndex, X_INFO, 
+-               "Using %i scanlines of offscreen memory for pixmap caching\n",
+-                lines - pScrn->virtualY);
+-
++    
+     return(XAAInit(pScreen, infoPtr));
+ 
+ }
+--- XFree86-4.2.0/xc.orig/programs/Xserver/hw/xfree86/drivers/neomagic/neo_2090.c	Mon Oct  1 15:44:07 2001
++++ XFree86-4.2.0/xc/programs/Xserver/hw/xfree86/drivers/neomagic/neo_2090.c	Thu Apr  4 16:05:44 2002
+@@ -101,8 +101,6 @@
+     ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+     NEOPtr nPtr = NEOPTR(pScrn);
+     NEOACLPtr nAcl = NEOACLPTR(pScrn);
+-    BoxRec AvailFBArea;
+-    int lines;
+ 
+     nPtr->AccelInfoRec = infoPtr = XAACreateInfoRec();
+     if(!infoPtr) return FALSE;
+@@ -197,20 +195,6 @@
+ 
+     nAcl->BltCntlFlags |= NEO_BC3_FIFO_EN;
+ 
+-    lines =  nAcl->cacheEnd /
+-      (pScrn->displayWidth * (pScrn->bitsPerPixel >> 3));
+-    if(lines > 1024) lines = 1024;
+-
+-    AvailFBArea.x1 = 0;
+-    AvailFBArea.y1 = 0;
+-    AvailFBArea.x2 = pScrn->displayWidth;
+-    AvailFBArea.y2 = lines;
+-    xf86InitFBManager(pScreen, &AvailFBArea); 
+-
+-    xf86DrvMsg(pScrn->scrnIndex, X_INFO, 
+-               "Using %i scanlines of offscreen memory for pixmap caching\n",
+-                lines - pScrn->virtualY);
+-
+     return(XAAInit(pScreen, infoPtr));
+ }
+ 
+--- XFree86-4.2.0/xc.orig/programs/Xserver/hw/xfree86/drivers/neomagic/neo_2097.c	Mon Oct  1 15:44:07 2001
++++ XFree86-4.2.0/xc/programs/Xserver/hw/xfree86/drivers/neomagic/neo_2097.c	Thu Apr  4 16:05:44 2002
+@@ -123,8 +123,6 @@
+     ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+     NEOPtr nPtr = NEOPTR(pScrn);
+     NEOACLPtr nAcl = NEOACLPTR(pScrn);
+-    int lines;
+-    BoxRec AvailFBArea;
+ 
+     nPtr->AccelInfoRec = infoPtr = XAACreateInfoRec();
+     if(!infoPtr) return FALSE;
+@@ -245,21 +243,7 @@
+     default:
+ 	return FALSE;
+     }
+-
+-    lines =  nAcl->cacheEnd /
+-      (pScrn->displayWidth * (pScrn->bitsPerPixel >> 3));
+-    if(lines > 1024) lines = 1024;
+-
+-    AvailFBArea.x1 = 0;
+-    AvailFBArea.y1 = 0;
+-    AvailFBArea.x2 = pScrn->displayWidth;
+-    AvailFBArea.y2 = lines;
+-    xf86InitFBManager(pScreen, &AvailFBArea); 
+-
+-    xf86DrvMsg(pScrn->scrnIndex, X_INFO, 
+-               "Using %i scanlines of offscreen memory for pixmap caching\n",
+-	        lines - pScrn->virtualY);
+-
++    
+     return(XAAInit(pScreen, infoPtr));
+ }
+ 
+--- XFree86-4.2.0/xc.orig/programs/Xserver/hw/xfree86/drivers/neomagic/neo_2200.c	Sun Oct 28 04:33:42 2001
++++ XFree86-4.2.0/xc/programs/Xserver/hw/xfree86/drivers/neomagic/neo_2200.c	Thu Apr  4 16:05:44 2002
+@@ -120,8 +120,6 @@
+     ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+     NEOPtr nPtr = NEOPTR(pScrn);
+     NEOACLPtr nAcl = NEOACLPTR(pScrn);
+-    BoxRec AvailFBArea;
+-    int lines;
+ 
+     nPtr->AccelInfoRec = infoPtr = XAACreateInfoRec();
+     if(!infoPtr) return FALSE;
+@@ -251,19 +249,6 @@
+ 	return FALSE;
+     }
+ 
+-    lines =  nAcl->cacheEnd /
+-      (pScrn->displayWidth * (pScrn->bitsPerPixel >> 3));
+-    if(lines > 1024) lines = 1024;
+-
+-    AvailFBArea.x1 = 0;
+-    AvailFBArea.y1 = 0;
+-    AvailFBArea.x2 = pScrn->displayWidth;
+-    AvailFBArea.y2 = lines;
+-    xf86InitFBManager(pScreen, &AvailFBArea); 
+-
+-    xf86DrvMsg(pScrn->scrnIndex, X_INFO, 
+-               "Using %i scanlines of offscreen memory for pixmap caching\n",
+-                lines - pScrn->virtualY);
+ 
+     return(XAAInit(pScreen, infoPtr));
+ }
+@@ -482,7 +467,7 @@
+     NEOPtr nPtr = NEOPTR(pScrn);
+ 
+     WAIT_ENGINE_IDLE();
+-    OUTREG(NEOREG_DSTSTARTOFF, (y<<16) | (x & 0xffff));
++    OUTREG(NEOREG_DSTSTARTOFF, (y <<16) | (x & 0xffff));
+     OUTREG(NEOREG_XYEXT, (h<<16) | (w & 0xffff));
+ }
+ 
+--- XFree86-4.2.0/xc.orig/programs/Xserver/hw/xfree86/drivers/neomagic/neo_dga.c	Mon Oct  1 15:44:07 2001
++++ XFree86-4.2.0/xc/programs/Xserver/hw/xfree86/drivers/neomagic/neo_dga.c	Thu Apr  4 16:05:44 2002
+@@ -43,8 +43,10 @@
+ static void NEO_SetViewport(ScrnInfoPtr, int, int, int);
+ static void NEO_FillRect(ScrnInfoPtr, int, int, int, int, unsigned long);
+ static void NEO_BlitRect(ScrnInfoPtr, int, int, int, int, int, int);
++#if 0
+ static void NEO_BlitTransRect(ScrnInfoPtr, int, int, int, int, int, int, 
+ 					unsigned long);
++#endif
+ 
+ static
+ DGAFunctionRec NEODGAFuncs = {
+@@ -76,7 +78,7 @@
+    imlines =  (pScrn->videoRam * 1024) /
+       (pScrn->displayWidth * (pScrn->bitsPerPixel >> 3));
+ 
+-   pixlines = (imlines > 1024 && !pNEO->noAccel)  ? 1024 : imlines;
++   pixlines =  (imlines > 1024 && !pNEO->noAccel)  ? 1024 : imlines;
+ 
+    pMode = firstMode = pScrn->modes;
+ 
+@@ -184,7 +186,7 @@
+ ){
+    NEOPtr pNEO = NEOPTR(pScrn);
+    vgaHWPtr hwp = VGAHWPTR(pScrn);
+-
++   
+    NEOAdjustFrame(pScrn->pScreen->myNum, x, y, flags);
+    /* wait for retrace */
+    while((hwp->readST01(hwp) & 0x08));
+@@ -240,7 +242,7 @@
+     }
+ }
+ 
+-
++#if 0
+ static void 
+ NEO_BlitTransRect(
+    ScrnInfoPtr pScrn, 
+@@ -252,7 +254,7 @@
+   /* this one should be separate since the XAA function would
+      prohibit usage of ~0 as the key */
+ }
+-
++#endif
+ 
+ static Bool 
+ NEO_OpenFramebuffer(
+--- XFree86-4.2.0/xc.orig/programs/Xserver/hw/xfree86/drivers/neomagic/neo_driver.c	Fri Nov 30 13:11:57 2001
++++ XFree86-4.2.0/xc/programs/Xserver/hw/xfree86/drivers/neomagic/neo_driver.c	Sat Apr  6 19:49:40 2002
+@@ -299,7 +307,11 @@
+     OPTION_PROG_LCD_MODE_REGS,
+     OPTION_PROG_LCD_MODE_STRETCH,
+     OPTION_OVERRIDE_VALIDATE_MODE,
++    OPTION_SHOWCACHE,
+     OPTION_ROTATE,
++    OPTION_VIDEO_KEY,
++    OPTION_OVERLAYMEM,
++    OPTION_VIDEO_INTERLACE,
+     OPTION_DISPLAY_HEIGHT_480,
+     OPTION_STRANGE_LOCKUPS
+ } NEOOpts;
+@@ -314,6 +326,7 @@
+     { OPTION_LCD_STRETCH, "NoStretch",	OPTV_BOOLEAN,	{0}, FALSE },
+     { OPTION_SHADOW_FB,   "ShadowFB",	OPTV_BOOLEAN,	{0}, FALSE },
+     { OPTION_PCI_BURST,	 "pciBurst",	OPTV_BOOLEAN,   {0}, FALSE },
++    { OPTION_SHOWCACHE,  "ShowCache",   OPTV_BOOLEAN,	{0}, FALSE },
+     { OPTION_ROTATE, 	 "Rotate",	OPTV_ANYSTR,	{0}, FALSE },
+     { OPTION_PROG_LCD_MODE_REGS, "progLcdModeRegs",
+       OPTV_BOOLEAN, {0}, FALSE },
+@@ -321,6 +334,10 @@
+       OPTV_BOOLEAN, {0}, FALSE },
+     { OPTION_OVERRIDE_VALIDATE_MODE, "overrideValidateMode",
+       OPTV_BOOLEAN, {0}, FALSE },
++    { OPTION_VIDEO_KEY, "VideoKey",     OPTV_INTEGER,   {0}, FALSE },
++    { OPTION_OVERLAYMEM, "OverlayMem",  OPTV_INTEGER,   {0}, FALSE },
++    { OPTION_VIDEO_INTERLACE, "Interlace",
++      OPTV_INTEGER,   {0}, FALSE },
+     { -1,                  NULL,           OPTV_NONE,	{0}, FALSE }
+ };
+ 
+@@ -335,6 +352,7 @@
+     { OPTION_SHADOW_FB,  "ShadowFB",	OPTV_BOOLEAN,	{0}, FALSE },
+     { OPTION_LCD_STRETCH,"NoStretch",	OPTV_BOOLEAN,	{0}, FALSE },
+     { OPTION_PCI_BURST,	 "pciBurst",	OPTV_BOOLEAN,	{0}, FALSE },
++    { OPTION_SHOWCACHE,  "ShowCache",   OPTV_BOOLEAN,	{0}, FALSE },
+     { OPTION_ROTATE, 	 "Rotate",	OPTV_ANYSTR,	{0}, FALSE },
+     { OPTION_STRANGE_LOCKUPS, "StrangeLockups", OPTV_BOOLEAN, {0}, FALSE },
+     { OPTION_DISPLAY_HEIGHT_480, "DisplayHeight480",
+@@ -345,6 +363,10 @@
+       OPTV_BOOLEAN, {0}, FALSE },
+     { OPTION_OVERRIDE_VALIDATE_MODE, "overrideValidateMode",
+       OPTV_BOOLEAN, {0}, FALSE },
++    { OPTION_VIDEO_KEY, "VideoKey",     OPTV_INTEGER,   {0}, FALSE },
++    { OPTION_OVERLAYMEM, "OverlayMem",  OPTV_INTEGER,   {0}, FALSE },
++    { OPTION_VIDEO_INTERLACE, "Interlace",
++      OPTV_INTEGER,   {0}, FALSE },
+     { -1,                  NULL,           OPTV_NONE,	{0}, FALSE }
+ };
+ 
+@@ -979,6 +1001,7 @@
+     xf86GetOptValBool(nPtr->Options, OPTION_LCD_CENTER,&nPtr->lcdCenter);
+     xf86GetOptValBool(nPtr->Options, OPTION_LCD_STRETCH,&nPtr->noLcdStretch);
+     xf86GetOptValBool(nPtr->Options, OPTION_SHADOW_FB,&nPtr->shadowFB);
++    xf86GetOptValBool(nPtr->Options, OPTION_SHOWCACHE,&nPtr->showcache);
+     nPtr->onPciBurst = TRUE;
+     xf86GetOptValBool(nPtr->Options, OPTION_PCI_BURST,&nPtr->onPciBurst);
+     xf86GetOptValBool(nPtr->Options,
+@@ -1014,6 +1037,39 @@
+ 		       "Valid options are \"CW\" or \"CCW\"\n");
+       }
+     }
++#ifdef XvExtension
++    if(xf86GetOptValInteger(nPtr->Options,
++			    OPTION_VIDEO_KEY, &(nPtr->videoKey))) {
++        xf86DrvMsg(pScrn->scrnIndex, X_CONFIG, "video key set to 0x%x\n",
++		   nPtr->videoKey);
++    } else {
++        nPtr->videoKey = (1 << pScrn->offset.red) | 
++	    (1 << pScrn->offset.green) |
++	    (((pScrn->mask.blue >> pScrn->offset.blue) - 1)
++	     << pScrn->offset.blue); 
++    }
++    if(xf86GetOptValInteger(nPtr->Options, OPTION_OVERLAYMEM,
++			    &(nPtr->overlay))) {
++        xf86DrvMsg(pScrn->scrnIndex, X_CONFIG,
++		   "reserve %d bytes for overlay.\n", nPtr->overlay);
++    } else {
++	nPtr->overlay = 0;
++    }
++    nPtr->interlace = 0;
++    if(xf86GetOptValInteger(nPtr->Options, OPTION_VIDEO_INTERLACE,
++			    &(nPtr->interlace))) {
++	if (nPtr->interlace >= 0  &&  nPtr->interlace <= 2){
++	    xf86DrvMsg(pScrn->scrnIndex, X_CONFIG, "interlace flag = %d\n",
++		       nPtr->interlace);
++	} else {
++	    xf86DrvMsg(pScrn->scrnIndex, X_CONFIG,
++		       "\"%s\" is not a valid value for "
++		       "Option \"Interlaced\"\n", s);
++	    xf86DrvMsg(pScrn->scrnIndex, X_INFO, "Valid options are  0..2\n");
++        }
++    }
++#endif /* XvExtension */
++
+ 
+     if (height_480 && nPtr->NeoPanelWidth == 800) {
+ 	xf86DrvMsg(pScrn->scrnIndex,X_CONFIG,
+@@ -1069,6 +1125,9 @@
+     if (nPtr->strangeLockups)
+ 	xf86DrvMsg(pScrn->scrnIndex,X_CONFIG,
+ 		   "Option StrangeLockups set: disabling some acceleration\n");
++    if (nPtr->showcache)
++	xf86DrvMsg(pScrn->scrnIndex,X_CONFIG,
++		   "Show chache for debugging\n");
+     if (nPtr->shadowFB) {
+ 	if (nPtr->noLinear) {
+     	    xf86DrvMsg(pScrn->scrnIndex, X_WARNING,
+@@ -1096,6 +1155,8 @@
+ 	nPtr->NeoLinearAddr = 0;
+     }
+ 
++    nPtr->NeoMMIOAddr2 = 0;
++    nPtr->NeoMMIOBase2 = NULL;
+     if (nPtr->pEnt->device->IOBase && !nPtr->noMMIO) {
+ 	/* XXX Check this matches a PCI base address */
+ 	nPtr->NeoMMIOAddr = nPtr->pEnt->device->IOBase;
+@@ -1113,7 +1174,7 @@
+ 		       "FB base address is set at 0x%X.\n",
+ 		       nPtr->NeoLinearAddr);
+ 	}
+-	if (!nPtr->NeoMMIOAddr) {
++	if (!nPtr->NeoMMIOAddr && !nPtr->noMMIO) {
+ 	    switch (nPtr->NeoChipset) {
+ 	    case NM2070 :
+ 		nPtr->NeoMMIOAddr = nPtr->NeoLinearAddr + 0x100000;
+@@ -1129,11 +1190,17 @@
+ 	    case NM2360:
+ 	    case NM2380:
+ 		nPtr->NeoMMIOAddr = nPtr->PciInfo->memBase[1];
++		nPtr->NeoMMIOAddr2 = nPtr->PciInfo->memBase[2];
+ 		break;
+ 	    }
+ 	    xf86DrvMsg(pScrn->scrnIndex, X_PROBED,
+ 		       "MMIO base address is set at 0x%X.\n",
+ 		       nPtr->NeoMMIOAddr);
++	    if (nPtr->NeoMMIOAddr2 != 0){
++	        xf86DrvMsg(pScrn->scrnIndex, X_PROBED,
++		           "MMIO base address2 is set at 0x%X.\n",
++		           nPtr->NeoMMIOAddr2);
++	    }
+ 	}
+ 	/* XXX What about VGA resources in OPERATING mode? */
+ 	if (xf86RegisterResources(nPtr->pEnt->index, NULL, ResExclusive))
+@@ -1152,7 +1219,7 @@
+ 		       "FB base address is set at 0x%X.\n",
+ 		       nPtr->NeoLinearAddr);
+ 	}
+-	if (!nPtr->NeoMMIOAddr) {
++	if (!nPtr->NeoMMIOAddr && !nPtr->noMMIO) {
+ 	    nPtr->NeoMMIOAddr = nPtr->NeoLinearAddr + 0x100000;
+ 	    xf86DrvMsg(pScrn->scrnIndex, X_PROBED,
+ 		       "MMIO base address is set at 0x%X.\n",
+@@ -1293,6 +1360,10 @@
+     /* Should we re-save the text mode on each VT enter? */
+     if(!neoModeInit(pScrn, pScrn->currentMode))
+       return FALSE;
++#ifdef XvExtension
++    if (nPtr->video)
++	NEOResetVideo(pScrn);
++#endif
+     if (nPtr->NeoHWCursorShown) 
+ 	NeoShowCursor(pScrn);
+     NEOAdjustFrame(pScrn->scrnIndex, pScrn->frameX0, pScrn->frameY0, 0);    
+@@ -1384,12 +1455,12 @@
+     /* Map the Neo memory and possible MMIO areas */
+     if (!neoMapMem(pScrn))
+ 	return FALSE;
+-
++    
+     /*
+      * next we save the current state and setup the first mode
+      */
+     neoSave(pScrn);
+-
++    
+     if (!neoModeInit(pScrn,pScrn->currentMode))
+ 	return FALSE;
+     vgaHWSaveScreen(pScreen,SCREEN_SAVER_ON);
+@@ -1431,7 +1502,7 @@
+ 	nPtr->ShadowPtr = NULL;
+ 	FBStart = nPtr->NeoFbBase;
+     }
+-
++    
+     ret = fbScreenInit(pScreen, FBStart,
+ 			    width, height,
+ 			    pScrn->xDpi, pScrn->yDpi,
+@@ -1509,13 +1580,13 @@
+ 		   nPtr->NeoLinearAddr);
+ 	/* Setup pointers to free space in video ram */
+ 	allocatebase = (pScrn->videoRam << 10);
+-	freespace = allocatebase - pScrn->displayWidth * 
++	freespace = allocatebase - pScrn->displayWidth *
+ 	    pScrn->virtualY * (pScrn->bitsPerPixel >> 3);
+ 	currentaddr = allocatebase;
+ 	xf86DrvMsg(scrnIndex, X_PROBED,
+ 		   "%d bytes off-screen memory available\n", freespace);
+ 
+-	if (nPtr->swCursor || nPtr->noMMIO) {
++	if (nPtr->swCursor || !nPtr->NeoMMIOBase) {
+ 	    xf86DrvMsg(scrnIndex, X_CONFIG,
+ 		       "Using Software Cursor.\n");
+ 	} else if (nPtr->NeoCursorMem <= freespace) {
+@@ -1530,19 +1601,52 @@
+ 	} else xf86DrvMsg(scrnIndex, X_ERROR,
+ 			  "Too little space for H/W cursor.\n");
+ 	
+-	if (!nPtr->noAccel && nPtr->noMMIO)
++	if (!nPtr->noAccel && !nPtr->NeoMMIOBase)
+ 	  xf86DrvMsg(pScrn->scrnIndex,X_INFO,
+ 		     "Acceleration disabled when not using MMIO\n");
+-
+-	/* Setup the acceleration primitives */
+-	if (!nPtr->noAccel && !nPtr->noMMIO) {
++	{
++#ifdef XvExtension
++	    if (nPtr->overlay > 0){
++		if (nPtr->overlay > freespace){
++		    xf86DrvMsg(pScrn->scrnIndex,X_INFO,
++			       "Can not reserve %d bytes for overlay. "
++			       "Resize to %d bytes.\n",
++			       nPtr->overlay, freespace);
++		    nPtr->overlay = freespace;
++		}
++		currentaddr -= nPtr->overlay;
++		freespace -= nPtr->overlay;
++		nPtr->overlay_offset = currentaddr;
++		xf86DrvMsg(pScrn->scrnIndex,X_INFO,"Overlay at 0x%x\n",
++			   nPtr->overlay_offset);
++	    }
++#endif /* XvExtension */
+ 	    nAcl->cacheStart = currentaddr - freespace;
+ 	    nAcl->cacheEnd = currentaddr;
+ 	    freespace = 0;
++	    if (nAcl->cacheStart < nAcl->cacheEnd) {
++		BoxRec AvailFBArea;
++		int lines = nAcl->cacheEnd /
++		    (pScrn->displayWidth * (pScrn->bitsPerPixel >> 3));
++  		if (!nPtr->noAccel && nPtr->NeoMMIOBase && lines > 1024) 
++  		    lines = 1024;
++ 		AvailFBArea.x1 = 0;
++		AvailFBArea.y1 = 0;
++		AvailFBArea.x2 = pScrn->displayWidth;
++		AvailFBArea.y2 = lines;
++		xf86InitFBManager(pScreen, &AvailFBArea); 
++
++		xf86DrvMsg(pScrn->scrnIndex, X_INFO, 
++			   "Using %i scanlines of offscreen memory \n"
++			   , lines - pScrn->virtualY);
++	    }
++	}
++	/* Setup the acceleration primitives */
++	if (!nPtr->noAccel && nPtr->NeoMMIOBase) {
+ 	    if (nAcl->cacheStart >= nAcl->cacheEnd) {
+ 		xf86DrvMsg(scrnIndex, X_ERROR,
+ 			   "Too little space for pixmap cache.\n");
+-	    }
++	    } 	    
+ 	    switch(nPtr->NeoChipset) {
+ 	    case NM2070 :
+ 		Neo2070AccelInit(pScreen);
+@@ -1624,6 +1728,8 @@
+ 
+     pScrn->racIoFlags = pScrn->racMemFlags = racflag;
+ 
++    NEOInitVideo(pScreen);
++
+     pScreen->SaveScreen = vgaHWSaveScreen;
+ 
+     /* Setup DPMS mode */
+@@ -1635,18 +1741,7 @@
+         pScrn->memPhysBase = (unsigned long)nPtr->NeoFbBase;
+ 	pScrn->fbOffset = 0;
+     }
+-
+-#ifdef XvExtension
+-    {
+-        XF86VideoAdaptorPtr *ptr;
+-	int n;
+-	
+-	n = xf86XVListGenericAdaptors(pScrn,&ptr);
+-	if (n)
+-	    xf86XVScreenInit(pScreen, ptr, n);
+-    }
+-#endif
+-
++    
+     /* Wrap the current CloseScreen function */
+     nPtr->CloseScreen = pScreen->CloseScreen;
+     pScreen->CloseScreen = NEOCloseScreen;
+@@ -1677,11 +1772,21 @@
+     int Base; 
+ 
+     pScrn = xf86Screens[scrnIndex];
+-    Base = (y * pScrn->displayWidth + x) >> 2;
+     hwp = VGAHWPTR(pScrn);
+     nPtr = NEOPTR(pScrn);
+-    /* Scale Base by the number of bytes per pixel. */
+ 
++    if (nPtr->showcache && y) {
++	int lastline = nPtr->NeoFbMapSize / 
++	    ((pScrn->displayWidth * pScrn->bitsPerPixel) / 8);
++	
++	lastline -= pScrn->currentMode->VDisplay;
++	y += pScrn->virtualY - 1;
++        if (y > lastline) y = lastline;
++    }
++
++    Base = (y * pScrn->displayWidth + x) >> 2;
++
++    /* Scale Base by the number of bytes per pixel. */
+     switch (pScrn->depth) {
+     case  8 :
+ 	break;
+@@ -1730,6 +1835,7 @@
+ 	if (nPtr->NeoHWCursorShown)
+ 	    NeoHideCursor(pScrn);
+ 	neoRestore(pScrn, &(VGAHWPTR(pScrn))->SavedReg, &nPtr->NeoSavedReg, TRUE);
++
+ 	neoLock(pScrn);
+ 	neoUnmapMem(pScrn);
+     }
+@@ -1845,12 +1951,18 @@
+ 
+     if (!nPtr->noLinear) {
+ 	if (!nPtr->noMMIO) {
+-	    if (nPtr->pEnt->location.type == BUS_PCI)
++	    if (nPtr->pEnt->location.type == BUS_PCI){
+ 		nPtr->NeoMMIOBase =
+ 		    xf86MapPciMem(pScrn->scrnIndex, VIDMEM_MMIO,
+ 				  nPtr->PciTag, nPtr->NeoMMIOAddr,
+ 				  0x200000L);
+-	    else
++		if (nPtr->NeoMMIOAddr2 != 0){
++		    nPtr->NeoMMIOBase2 =
++		        xf86MapPciMem(pScrn->scrnIndex, VIDMEM_MMIO,
++				      nPtr->PciTag, nPtr->NeoMMIOAddr2,
++				      0x100000L);
++		}
++	    } else
+ 		nPtr->NeoMMIOBase =
+ 		    xf86MapVidMem(pScrn->scrnIndex,
+ 				  VIDMEM_MMIO, nPtr->NeoMMIOAddr,
+@@ -1889,8 +2001,14 @@
+     NEOPtr nPtr = NEOPTR(pScrn);
+ 
+     if (!nPtr->noLinear) {
+-      xf86UnMapVidMem(pScrn->scrnIndex, (pointer)nPtr->NeoMMIOBase, 0x200000L);
++      if (nPtr->NeoMMIOBase)
++	  xf86UnMapVidMem(pScrn->scrnIndex, (pointer)nPtr->NeoMMIOBase,
++			  0x200000L);
+       nPtr->NeoMMIOBase = NULL;
++      if (nPtr->NeoMMIOBase2)
++	  xf86UnMapVidMem(pScrn->scrnIndex, (pointer)nPtr->NeoMMIOBase2,
++			  0x100000L);
++      nPtr->NeoMMIOBase2 = NULL;
+       xf86UnMapVidMem(pScrn->scrnIndex, (pointer)nPtr->NeoFbBase,
+ 		    nPtr->NeoFbMapSize); 
+     }
+@@ -2200,7 +2318,7 @@
+     unsigned char temp;
+     int i;
+     Bool clock_hi = FALSE;
+-    
++
+     vgaHWProtect(pScrn,TRUE);		/* Blank the screen */
+     
+     VGAwGR(0x09,0x26);
+@@ -2220,6 +2338,7 @@
+      * any reserved bits.
+      */
+     temp = VGArGR(0x90);
++
+     switch (nPtr->NeoChipset) {
+     case NM2070 :
+ 	temp &= 0xF0; /* Save bits 7:4 */
+@@ -2238,6 +2357,7 @@
+ 	break;
+     }
+     VGAwGR(0x90,temp);
++
+     /*
+      * In some rare cases a lockup might occur if we don't delay
+      * here. (Reported by Miles Lane)
+@@ -2256,7 +2376,6 @@
+      * had time to take effect.
+      */
+     xf86UDelay(200000);
+-
+     /*
+      * This function handles restoring the generic VGA registers.  */
+     vgaHWRestore(pScrn, VgaReg,
+@@ -2273,6 +2392,7 @@
+     VGAwGR(0x11, restore->SysIfaceCntl2);
+     VGAwGR(0x15, restore->SingleAddrPage);
+     VGAwGR(0x16, restore->DualAddrPage);
++
+     temp = VGArGR(0x20);
+     switch (nPtr->NeoChipset) {
+     case NM2070 :
+@@ -2349,7 +2469,7 @@
+     }
+     if (restore->biosMode)
+ 	VGAwCR(0x23,restore->biosMode);
+-    
++
+     if (restore->reg) {
+ 	VGAwCR(0x23,restore->reg->CR[0x23]);
+ 	VGAwCR(0x25,restore->reg->CR[0x25]);
+@@ -2371,13 +2491,13 @@
+ 	    VGAwGR(i, restore->reg->GR[i]);
+ 	}
+     }
++
+     /* Program vertical extension register */
+     if (nPtr->NeoChipset == NM2200 || nPtr->NeoChipset == NM2230
+ 	|| nPtr->NeoChipset == NM2360 || nPtr->NeoChipset == NM2380) {
+ 	VGAwCR(0x70, restore->VerticalExt);
+     }
+-
+-
++    
+     vgaHWProtect(pScrn, FALSE);		/* Turn on screen */
+ 
+ }
+@@ -2574,7 +2694,7 @@
+     NeoNew->PanelHorizCenterReg3 = 0x00;
+     NeoNew->PanelHorizCenterReg4 = 0x00;
+     NeoNew->PanelHorizCenterReg5 = 0x00;
+-
++    
+     if (nPtr->lcdCenter &&
+ 	(NeoNew->PanelDispCntlReg1 & 0x02)) {
+ 	if (mode->HDisplay == nPtr->NeoPanelWidth) {
+@@ -2632,6 +2752,18 @@
+ 	    }
+ 	}
+     }
++#ifdef XvExtension
++    if (!noLcdStretch)  {
++	if (mode->HDisplay != nPtr->NeoPanelWidth)
++	    nPtr->videoHZoom = (double)nPtr->NeoPanelWidth/mode->HDisplay;
++	if (mode->VDisplay != nPtr->NeoPanelHeight)
++	    nPtr->videoVZoom = (double)nPtr->NeoPanelHeight/mode->VDisplay;
++    } else {
++	nPtr->videoHZoom = 1.0;
++	nPtr->videoVZoom = 1.0;
++    }
++#endif
++    
+     NeoNew->biosMode = neoFindMode(mode->HDisplay,mode->VDisplay,pScrn->depth);
+     
+     /*
+@@ -2764,9 +2896,8 @@
+     }
+ 
+     /* Turn the screen on/off */
+-    outb(0x3C4, 0x01);
+-    SEQ01 |= inb(0x3C5) & ~0x20;
+-    outb(0x3C5, SEQ01);
++    SEQ01 |= VGArSR(0x01) & ~0x20;
++    VGAwSR(0x01, SEQ01);
+ 
+     /* Turn the LCD on/off */
+     LCD_on |= VGArGR(0x20) & ~0x02;
+--- XFree86-4.2.0/xc.orig/programs/Xserver/hw/xfree86/drivers/neomagic/neo_video.c	Thu Jan  1 01:00:00 1970
++++ XFree86-4.2.0/xc/programs/Xserver/hw/xfree86/drivers/neomagic/neo_video.c	Thu Apr  4 16:05:44 2002
+@@ -0,0 +1,1232 @@
++/**********************************************************************
++Copyright 2002 by Shigehiro Nomura.
++
++                        All Rights Reserved
++
++Permission to use, copy, modify, distribute, and sell this software and
++its documentation for any purpose is hereby granted without fee,
++provided that the above copyright notice appear in all copies and that
++both that copyright notice and this permission notice appear in
++supporting documentation, and that the name of Shigehiro Nomura not be
++used in advertising or publicity pertaining to distribution of the
++software without specific, written prior permission.  Shigehiro Nomura
++and its suppliers make no representations about the suitability of this
++software for any purpose.  It is provided "as is" without express or 
++implied warranty.
++
++SHIGEHIRO NOMURA DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
++INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
++EVENT SHALL SHIGEHIRO NOMURA AND/OR ITS SUPPLIERS BE LIABLE FOR ANY
++SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
++RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
++CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
++CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++**********************************************************************/
++
++/*
++ * Copyright 2002 SuSE Linux AG, Author: Egbert Eich
++ */
++
++#include "neo.h"
++#include "neo_video.h"
++
++#define nElems(x)		(sizeof(x) / sizeof(x[0]))
++#define MAKE_ATOM(a)	MakeAtom(a, sizeof(a) - 1, TRUE)
++
++#if defined(XvExtension)
++
++#include "dixstruct.h"
++#include "xaa.h"
++#include "xaalocal.h"
++
++static XF86VideoAdaptorPtr NEOSetupVideo(ScreenPtr);
++
++static int NEOPutVideo(ScrnInfoPtr, short, short, short, short, 
++		       short, short, short, short, RegionPtr, pointer);
++
++static void NEOStopVideo(ScrnInfoPtr, pointer, Bool);
++static int NEOSetPortAttribute(ScrnInfoPtr, Atom, INT32, pointer);
++static int NEOGetPortAttribute(ScrnInfoPtr, Atom, INT32 *, pointer);
++static void NEOQueryBestSize(ScrnInfoPtr, Bool, short, short, short, 
++			     short, unsigned int *, unsigned int *, pointer);
++static int NEOPutImage(ScrnInfoPtr, short, short, short, short, short, short, 
++		       short, short, int, unsigned char *, short, short, Bool,
++		       RegionPtr, pointer);
++static int NEOQueryImageAttributes(ScrnInfoPtr, int, unsigned short *, 
++				   unsigned short *, int *, int *);
++
++static Bool RegionsEqual(RegionPtr, RegionPtr);
++static void NEODisplayVideo(ScrnInfoPtr, int, int, short, short, int, int, 
++			    int, int, int, BoxPtr, short, short, short, short);
++
++static void NEOInitOffscreenImages(ScreenPtr);
++static FBLinearPtr NEOAllocateMemory(ScrnInfoPtr, FBLinearPtr, int);
++static void NEOCopyData(unsigned char *, unsigned char *, int, int, int, int);
++static void NEOCopyYV12Data(unsigned char *, unsigned char *, unsigned char *,
++			    unsigned char *, int, int, int, int, int);
++
++static int NEOAllocSurface(ScrnInfoPtr, int, unsigned short, unsigned short, 
++			   XF86SurfacePtr);
++static int NEOFreeSurface(XF86SurfacePtr);
++static int NEODisplaySurface(XF86SurfacePtr, short, short, short, short, 
++			     short, short, short, short, RegionPtr clipBoxes);
++static int NEOStopSurface(XF86SurfacePtr);
++static int NEOGetSurfaceAttribute(ScrnInfoPtr, Atom, INT32 *);
++static int NEOSetSurfaceAttribute(ScrnInfoPtr, Atom, INT32);
++
++static Atom xvColorKey, xvBrightness, xvInterlace;
++
++void
++NEOInitVideo(ScreenPtr pScreen)
++{
++    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
++    NEOPtr nPtr = NEOPTR(pScrn);
++    XF86VideoAdaptorPtr *overlayAdaptors, *newAdaptors = NULL;
++    XF86VideoAdaptorPtr newAdaptor = NULL;
++    int numAdaptors;
++
++    numAdaptors = xf86XVListGenericAdaptors(pScrn, &overlayAdaptors);
++
++    if (nPtr->NeoChipset >= NM2160 
++	&& !nPtr->noLinear 
++	&& nPtr->NeoMMIOBase2 != NULL){
++	nPtr->video = TRUE;
++	newAdaptor = NEOSetupVideo(pScreen);
++	NEOInitOffscreenImages(pScreen);
++    } else
++	nPtr->video = FALSE;
++
++    if (newAdaptor){
++	if (!numAdaptors){
++	    numAdaptors = 1;
++	    overlayAdaptors = &newAdaptor;
++	} else {
++	    newAdaptors = xalloc((numAdaptors + 1) 
++				 * sizeof(XF86VideoAdaptorPtr*));
++	    if (newAdaptors){
++		memcpy(newAdaptors, overlayAdaptors, 
++		       numAdaptors * sizeof(XF86VideoAdaptorPtr));
++		newAdaptors[numAdaptors++] = newAdaptor;
++		overlayAdaptors = newAdaptors;
++	    }
++	}
++    }
++
++    if (numAdaptors)
++	xf86XVScreenInit(pScreen, overlayAdaptors, numAdaptors);
++
++    if (newAdaptors)
++	xfree(newAdaptors);
++}
++
++static XF86VideoEncodingRec NEOVideoEncodings[] =
++{
++    {
++	NEO_VIDEO_VIDEO,
++	"XV_VIDEO",
++	1024, 1024,
++	{1, 1}
++    },
++    {
++	NEO_VIDEO_IMAGE,
++	"XV_IMAGE",
++	1024, 1024,
++	{1, 1}
++    }
++};
++
++static XF86VideoFormatRec NEOVideoFormats[] =
++{
++    {  8, PseudoColor },
++    { 15, TrueColor },
++    { 16, TrueColor },
++    { 24, TrueColor },
++};
++
++static XF86AttributeRec NEOVideoAttributes[] =
++{
++    {
++	XvSettable | XvGettable,
++	0x000000, 0xFFFFFF,
++	"XV_COLORKEY"
++    },
++    {
++	XvSettable | XvGettable,
++	-128, 127,
++	"XV_BRIGHTNESS"
++    },
++    {
++	XvSettable | XvGettable,
++	0,2,
++	"XV_INTERLACE"
++    },
++};
++
++static XF86ImageRec NEOVideoImages[] =
++{
++    XVIMAGE_YUY2,
++    XVIMAGE_YV12,
++    XVIMAGE_I420,
++    {
++	FOURCC_RV15,
++	XvRGB,
++	LSBFirst,
++	{ 'R', 'V' ,'1', '5',
++	  0x00,'5',0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00},
++	16,
++	XvPacked,
++	1,
++	15, 0x001F, 0x03E0, 0x7C00,
++	0, 0, 0,
++	0, 0, 0,
++	0, 0, 0,
++	{ 'R', 'V', 'B' },
++	XvTopToBottom
++    },
++    {
++	FOURCC_RV16,
++	XvRGB,
++	LSBFirst,
++	{ 'R', 'V' ,'1', '6',
++	  0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
++	16,
++	XvPacked,
++	1,
++	16, 0x001F, 0x07E0, 0xF800,
++	0, 0, 0,
++	0, 0, 0,
++	0, 0, 0,
++	{ 'R', 'V', 'B' },
++	XvTopToBottom
++    }
++};
++
++static XF86VideoAdaptorPtr
++NEOSetupVideo(ScreenPtr pScreen)
++{
++    ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
++    NEOPtr nPtr = NEOPTR(pScrn);
++    NEOPortPtr pPriv;
++    XF86VideoAdaptorPtr overlayAdaptor;
++    int i;
++
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOSetupVideo\n");
++#endif
++    if ((overlayAdaptor = xcalloc(1, sizeof(XF86VideoAdaptorRec) +
++			      sizeof(DevUnion) + 
++			      sizeof(NEOPortRec))) == NULL){
++	return (NULL);
++    }
++
++    overlayAdaptor->type = XvInputMask | XvImageMask | XvWindowMask 
++	| XvOutputMask | XvVideoMask;
++    overlayAdaptor->flags = VIDEO_OVERLAID_IMAGES | VIDEO_CLIP_TO_VIEWPORT;
++    overlayAdaptor->name = "NeoMagic Video Engine";
++    overlayAdaptor->nEncodings = nElems(NEOVideoEncodings);
++    overlayAdaptor->pEncodings = NEOVideoEncodings;
++    for (i = 0; i < nElems(NEOVideoEncodings); i++){
++	NEOVideoEncodings[i].width = 1024;
++	NEOVideoEncodings[i].height = 1024;
++    }
++    overlayAdaptor->nFormats = nElems(NEOVideoFormats);
++    overlayAdaptor->pFormats = NEOVideoFormats;
++    overlayAdaptor->nPorts = 1;
++    overlayAdaptor->pPortPrivates = (DevUnion*) &overlayAdaptor[1];
++    overlayAdaptor->pPortPrivates[0].ptr = 
++	(pointer) &overlayAdaptor->pPortPrivates[1];
++    overlayAdaptor->nAttributes = nElems(NEOVideoAttributes);
++    overlayAdaptor->pAttributes = NEOVideoAttributes;
++    overlayAdaptor->nImages = nElems(NEOVideoImages);
++    overlayAdaptor->pImages = NEOVideoImages;
++
++    overlayAdaptor->PutVideo = NEOPutVideo;
++    overlayAdaptor->PutStill = NULL;
++    overlayAdaptor->GetVideo = NULL;
++    overlayAdaptor->GetStill = NULL;
++
++    overlayAdaptor->StopVideo = NEOStopVideo;
++    overlayAdaptor->SetPortAttribute = NEOSetPortAttribute;
++    overlayAdaptor->GetPortAttribute = NEOGetPortAttribute;
++    overlayAdaptor->QueryBestSize = NEOQueryBestSize;
++    overlayAdaptor->PutImage = NEOPutImage;
++    overlayAdaptor->QueryImageAttributes = NEOQueryImageAttributes;
++
++    pPriv = (NEOPortPtr)overlayAdaptor->pPortPrivates[0].ptr;
++    pPriv->colorKey = nPtr->videoKey;
++    pPriv->interlace = nPtr->interlace;
++    pPriv->videoStatus = 0;
++    pPriv->brightness = 0;
++    REGION_INIT(pScreen, &pPriv->clip, NullBox, 0);
++    nPtr->overlayAdaptor = overlayAdaptor;
++
++    xvBrightness = MAKE_ATOM("XV_BRIGHTNESS");
++    xvColorKey = MAKE_ATOM("XV_COLORKEY");
++    xvInterlace = MAKE_ATOM("XV_INTERLACE");
++    
++    NEOResetVideo(pScrn);
++
++    return (overlayAdaptor);
++}
++
++void
++NEOResetVideo(ScrnInfoPtr pScrn)
++{
++    NEOPtr nPtr = NEOPTR(pScrn);
++    NEOPortPtr pPriv = (NEOPortPtr)nPtr->overlayAdaptor->pPortPrivates[0].ptr;
++    int r, g, b;
++    VGA_HWP(pScrn);
++
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOResetVideo\n");
++#endif
++    switch (pScrn->depth){
++    case 8:
++	OUTGR(0xc6, pPriv->colorKey & 0);
++	OUTGR(0xc5, pPriv->colorKey & 0xff);
++	OUTGR(0xc7, pPriv->colorKey & 0);
++	break;
++    default:
++	r = (pPriv->colorKey & pScrn->mask.red) >> pScrn->offset.red;
++	g = (pPriv->colorKey & pScrn->mask.green) >> pScrn->offset.green;
++	b = (pPriv->colorKey & pScrn->mask.blue) >> pScrn->offset.blue;
++	OUTGR(0xc5, r);
++	OUTGR(0xc6, g);
++	OUTGR(0xc7, b);
++	break;
++    }
++    OUTGR(0xc4, pPriv->brightness);
++}
++
++static int
++NEOPutVideo(ScrnInfoPtr pScrn, 
++	     short src_x, short src_y, short drw_x, short drw_y,
++	     short src_w, short src_h, short drw_w, short drw_h,
++	     RegionPtr clipBoxes, pointer data)
++{
++    NEOPortPtr pPriv = (NEOPortPtr)data;
++    NEOPtr nPtr = NEOPTR(pScrn);
++    CARD32 src_pitch, offset;
++    int xscale, yscale;
++    BoxRec dstBox;
++    INT32 x1, y1, x2, y2;
++    int size, bpp;
++    unsigned char capctrl;
++    VGA_HWP(pScrn);
++
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOPutVideo: src: %d %d %d %d\n", 
++	       src_x, src_y, src_w, src_h);
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOPutVideo: drw: %d %d %d %d\n", 
++	       drw_x, drw_y, drw_w, drw_h);
++#endif
++    if (src_w > 720)
++	src_w = 720;
++    if (src_h > 576)
++        src_h = 576;
++    if (pPriv->interlace != 2)
++	src_h /= 2;
++    x1 = src_x;
++    y1 = src_y;
++    x2 = src_x + src_w;
++    y2 = src_y + src_h;
++
++    dstBox.x1 = drw_x;
++    dstBox.y1 = drw_y;
++    dstBox.x2 = drw_x + drw_w;
++    dstBox.y2 = drw_y + drw_h;
++
++    if (!xf86XVClipVideoHelper(&dstBox, &x1, &x2, &y1, &y2,
++			       clipBoxes, src_w, src_h)){
++	return(Success);
++    }
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOPutVideo: %d %d %d %d\n", 
++	       x1, y1, x2, y2);
++#endif
++
++    dstBox.x1 -= pScrn->frameX0;
++    dstBox.y1 -= pScrn->frameY0;
++    dstBox.x2 -= pScrn->frameX0;
++    dstBox.y2 -= pScrn->frameY0;
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOPutVideo: dstBox %d %d %d %d\n", 
++	       dstBox.x1, dstBox.y1, dstBox.x2, dstBox.y2);
++#endif
++
++    bpp = (pScrn->bitsPerPixel + 1) >> 3;
++    src_pitch = (src_w + 7) & ~7;
++
++    xscale = 0x1000;
++    if (src_w <= drw_w){
++	xscale = (src_w * 0x1000 / drw_w) & 0xffff;
++    }
++
++    yscale = 0x1000;
++    if (src_h <= drw_h){
++ 	yscale = (src_h * 0x1000 / drw_h) & 0xffff;
++    }
++
++    size = src_h * src_pitch * 2;
++
++    if (size > nPtr->overlay){
++	if ((pPriv->linear = NEOAllocateMemory(pScrn, pPriv->linear, size)) 
++	    == NULL){
++	    return (BadAlloc);
++	}
++    } else {
++	pPriv->linear = NULL;
++    }
++    
++    if (pPriv->linear == NULL){
++	offset = nPtr->overlay_offset;
++    } else {
++	offset = pPriv->linear->offset * bpp;
++    }
++    
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOPutVideo: offset=0x%x\n", offset);
++#endif
++     WAIT_ENGINE_IDLE();
++     memset(nPtr->NeoFbBase + offset, 0, size);
++
++    if (!RegionsEqual(&pPriv->clip, clipBoxes)){
++	REGION_COPY(pScreen, &pPriv->clip, clipBoxes);
++	xf86XVFillKeyHelper(pScrn->pScreen, pPriv->colorKey,
++			    clipBoxes);
++    }
++
++    x1 >>= 16;
++    y1 >>= 16;
++    x2 >>= 16;
++    y2 >>= 16;
++
++    switch (nPtr->NeoChipset) {
++    default:
++    case NM2160: 
++	offset/=2;
++	OUTGR(0xbc, 0x4f);
++ 	break;
++    case NM2200:
++    case NM2230:
++    case NM2360:
++    case NM2380:
++	OUTGR(0xbc, 0x2e);
++ 	break;
++    }
++ 
++
++    OUTGR(0xb1, (((dstBox.x2-1) >> 4) & 0xf0) | ((dstBox.x1 >> 8) & 0x0f));
++    OUTGR(0xb2, dstBox.x1);
++    OUTGR(0xb3, dstBox.x2 - 1);
++    OUTGR(0xb4, (((dstBox.y2 - 1) >> 4) & 0xf0) | ((dstBox.y1 >> 8) & 0x0f));
++    OUTGR(0xb5, dstBox.y1);
++    OUTGR(0xb6, dstBox.y2 - 1);
++    OUTGR(0xb7, offset >> 16);
++    OUTGR(0xb8, offset >> 8);
++    OUTGR(0xb9, offset );
++    OUTGR(0xba, src_pitch >> 8);
++    OUTGR(0xbb, src_pitch);
++
++    OUTGR(0xc0, xscale >> 8);
++    OUTGR(0xc1, xscale);
++    OUTGR(0xc2, yscale >> 8);
++    OUTGR(0xc3, yscale);
++    OUTGR(0xbf, 0x02);
++
++    OUTGR(0x0a, 0x21);
++
++    OUTSR(0x0c, offset );
++    OUTSR(0x0d, offset >> 8);
++    OUTSR(0x0e, offset >> 16);
++    OUTSR(0x1a, src_pitch);
++    OUTSR(0x1b, src_pitch>>8);
++
++    OUTSR(0x17, 0 + x1);
++    OUTSR(0x18, 0 + x2 -1);
++    OUTSR(0x19, (((0 + x2 - 1) >> 4) & 0xf0) | (((0 + x1) >> 8) & 0x0f));
++
++    OUTSR(0x14, 14 + y1);
++    OUTSR(0x15, 14 + y2 - 2);
++    OUTSR(0x16, (((14 + y2 - 1) >> 4) & 0xf0) | (((14 + y1) >> 8) & 0x0f));
++
++    OUTSR(0x1c, 0xfb);
++    OUTSR(0x1d, 0x00);
++    OUTSR(0x1e, 0xe2);
++    OUTSR(0x1f, 0x02);
++
++    OUTSR(0x09, 0x11);
++    OUTSR(0x0a, 0x00);
++
++    capctrl = 0x21;
++    switch (pPriv->interlace){
++    case 0: /* Combine 2 fields */
++	break;
++    case 1: /* one field only */
++	capctrl |= 0x80;
++	break;
++    case 2: /* Interlaced fields */
++	capctrl |= 0x40;
++	break;
++    }
++    OUTSR(0x08, capctrl);
++
++#if 0
++    OUTGR(0x0a, 0x01);
++#endif
++    OUTGR(0xb0, 0x03);
++
++    pPriv->videoStatus = CLIENT_VIDEO_ON;
++    return (Success);
++}
++
++static void
++NEOStopVideo(ScrnInfoPtr pScrn, pointer data, Bool exit)
++{
++    NEOPortPtr pPriv = (NEOPortPtr)data;
++    NEOPtr nPtr = NEOPTR(pScrn);
++    VGA_HWP(pScrn);
++
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOStopVideo\n");
++#endif
++    REGION_EMPTY(pScrn->pScreen, &pPriv->clip);
++
++    if (exit){
++	if (pPriv->videoStatus & CLIENT_VIDEO_ON){
++#ifdef DEBUG
++            xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOStopVideo: stop capture\n");
++#endif
++	    OUTGR(0xb0, 0x02);
++	    OUTGR(0x0a, 0x21);
++	    OUTSR(0x08, 0xa0);
++#if 0
++	    OUTGR(0x0a, 0x01);
++#endif
++	}
++	if (pPriv->linear != NULL){
++	    xf86FreeOffscreenLinear(pPriv->linear);
++	    pPriv->linear = NULL;
++	}
++	pPriv->videoStatus = 0;
++    } else {
++	if (pPriv->videoStatus & CLIENT_VIDEO_ON){
++	    OUTGR(0xb0, 0x02);
++	    OUTGR(0x0a, 0x21);
++	    OUTSR(0x08, 0xa0);
++#if 0
++	    OUTGR(0x0a, 0x01);
++#endif
++	    pPriv->videoStatus |= OFF_TIMER;
++	    pPriv->offTime = currentTime.milliseconds + OFF_DELAY;
++	}
++    }
++}
++
++static int
++NEOSetPortAttribute(ScrnInfoPtr pScrn, Atom attribute, INT32 value, 
++		    pointer data)
++{
++    NEOPortPtr pPriv = (NEOPortPtr)data;
++    NEOPtr nPtr = NEOPTR(pScrn);
++    VGA_HWP(pScrn);
++
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOSetPortAttribute\n");
++#endif
++    if (attribute == xvColorKey){
++	int r, g, b;
++
++	pPriv->colorKey = value;
++	switch (pScrn->depth){
++	case 8:
++	    OUTGR(0xc6, pPriv->colorKey & 0xff);
++	    OUTGR(0xc5, 0x00);
++	    OUTGR(0xc7, 0x00);
++	    break;
++	default:
++	    r = (pPriv->colorKey & pScrn->mask.red) >> pScrn->offset.red;
++	    g = (pPriv->colorKey & pScrn->mask.green) >> pScrn->offset.green;
++	    b = (pPriv->colorKey & pScrn->mask.blue) >> pScrn->offset.blue;
++	    OUTGR(0xc5, r);
++	    OUTGR(0xc6, g);
++	    OUTGR(0xc7, b);
++	}
++    } else if (attribute == xvBrightness){
++	if ((value < -128) || (value > 127)){
++	    return (BadValue);
++	}
++	pPriv->brightness = value;
++	OUTGR(0xc4, value);
++    } else if (attribute == xvInterlace){
++	if (value < 0  ||  value > 2){
++	    return (BadValue);
++	}
++	pPriv->interlace = value;
++    } else {
++	return (BadMatch);
++    }
++    return (Success);
++}
++
++static int
++NEOGetPortAttribute(ScrnInfoPtr pScrn, Atom attribute, INT32 *value, 
++		    pointer data)
++{
++    NEOPortPtr pPriv = (NEOPortPtr)data;
++
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOGetPortAttribute\n");
++#endif
++    if (attribute == xvColorKey){
++	*value = pPriv->colorKey;
++    } else if (attribute == xvBrightness){
++	*value = pPriv->brightness;
++    } else if (attribute == xvInterlace){
++	*value = pPriv->interlace;
++    } else {
++	return (BadMatch);
++    }
++    return (Success);
++}
++
++static void
++NEOQueryBestSize(ScrnInfoPtr pScrn, Bool motion, 
++		 short vid_w, short vid_h, short drw_w, short drw_h,
++		 unsigned int *p_w, unsigned int *p_h,
++		 pointer data)
++{
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOQueryBestSize\n");
++#endif
++    *p_w = min(drw_w, 1024);
++    *p_h = min(drw_h, 1024);
++}
++
++static int
++NEOPutImage(ScrnInfoPtr pScrn, 
++	    short src_x, short src_y, short drw_x, short drw_y,
++	    short src_w, short src_h, short drw_w, short drw_h,
++	    int id, unsigned char *buf, short width, short height,
++	    Bool sync, RegionPtr clipBoxes, pointer data)
++{
++    NEOPtr nPtr = NEOPTR(pScrn);
++    NEOPortPtr pPriv = (NEOPortPtr)nPtr->overlayAdaptor->pPortPrivates[0].ptr;
++    INT32 x1, y1, x2, y2;
++    int bpp;
++    int srcPitch, srcPitch2 = 0, dstPitch, size;
++    BoxRec dstBox;
++    CARD32 offset, offset2 = 0, offset3 = 0, tmp;
++    int left, top, nPixels, nLines;
++    unsigned char *dstStart;
++
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOPutImage\n");
++#endif
++
++    x1 = src_x;
++    y1 = src_y;
++    x2 = src_x + src_w;
++    y2 = src_y + src_h;
++    
++    dstBox.x1 = drw_x;
++    dstBox.y1 = drw_y;
++    dstBox.x2 = drw_x + drw_w;
++    dstBox.y2 = drw_y + drw_h;
++
++    if (!xf86XVClipVideoHelper(&dstBox, &x1, &x2, &y1, &y2,
++			       clipBoxes, width, height)){
++	return (Success);
++    }
++
++    dstBox.x1 -= pScrn->frameX0;
++    dstBox.y1 -= pScrn->frameY0;
++    dstBox.x2 -= pScrn->frameX0;
++    dstBox.y2 -= pScrn->frameY0;    
++    
++    bpp = ((pScrn->bitsPerPixel + 1) >> 3);
++    
++    switch (id){
++    case FOURCC_YV12:
++	srcPitch  = (width + 3) & ~3;
++	offset2   = srcPitch * height;
++	srcPitch2 = ((width >> 1) + 3) & ~3;
++	offset3   = offset2 + (srcPitch2 * (height >> 1));
++  	dstPitch  = ((width << 1) + 15) & ~15; 
++	break;
++    case FOURCC_I420:
++	srcPitch  = (width + 3) & ~3;
++	offset3   = srcPitch * height;
++	srcPitch2 = ((width >> 1) + 3) & ~3;
++	offset2   = offset3 + (srcPitch2 * (height >> 1));
++  	dstPitch  = ((width << 1) + 15) & ~15;
++	break;
++    case FOURCC_YUY2:
++    case FOURCC_RV15:
++    case FOURCC_RV16:
++    default:
++	srcPitch = width << 1;
++  	dstPitch = (srcPitch + 15) & ~15;
++	break;
++    }
++    
++    size = dstPitch * height;
++    if (size > nPtr->overlay){
++	if ((pPriv->linear = NEOAllocateMemory(pScrn, pPriv->linear, size)) 
++	    == NULL){
++	    return (BadAlloc);
++	}
++    } else {
++	pPriv->linear = NULL;
++    }
++
++    top = y1 >> 16;
++    left = (x1 >> 16) & ~1;
++    nPixels = ((((x2 + 0xFFFF) >> 16) + 1) & ~1) - left;
++    left <<= 1;
++
++    if (pPriv->linear == NULL){
++	offset = nPtr->overlay_offset;
++    } else {
++	offset =  pPriv->linear->offset * bpp;
++    }
++    
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"offset=%x\n", offset);
++#endif
++
++    dstStart = (unsigned char *)(nPtr->NeoFbBase + offset + left);
++    
++    switch (id){
++    case FOURCC_YV12:
++    case FOURCC_I420:
++	top &= ~1;
++	tmp = ((top >> 1) * srcPitch2) + (left >> 2);
++	offset2 += tmp;
++	offset3 += tmp;
++	nLines = ((((y2 + 0xFFFF) >> 16) + 1) & ~1) - top;
++	NEOCopyYV12Data(buf + (top * srcPitch) + (left >> 1), buf + offset2, 
++			buf + offset3, dstStart, srcPitch, srcPitch2, 
++			dstPitch, nLines, nPixels);
++	break;
++    default:
++	buf += (top * srcPitch) + left;
++	nLines = ((y2 + 0xFFFF) >> 16) - top;
++	NEOCopyData(buf, dstStart, srcPitch, dstPitch, nLines, nPixels << 1);
++    }
++
++    if (!RegionsEqual(&pPriv->clip, clipBoxes)){
++	REGION_COPY(pScreen, &pPriv->clip, clipBoxes);
++        xf86XVFillKeyHelper(pScrn->pScreen, pPriv->colorKey, clipBoxes);
++    }
++	NEODisplayVideo(pScrn, id, offset, width, height, dstPitch, x1, y1,
++			x2, y2,	&dstBox, src_w, src_h, drw_w, drw_h);
++    
++    pPriv->videoStatus = CLIENT_VIDEO_ON;
++    return (Success);
++	
++}
++
++static int
++NEOQueryImageAttributes(ScrnInfoPtr pScrn, int id, 
++			unsigned short *width, unsigned short *height,
++			int *pitches, int *offsets)
++{
++    int size, tmp;
++
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOQueryImageAttributes\n");
++#endif
++    if (*width > 1024){
++	*width = 1024;
++    }
++    if (*height > 1024){
++	*height = 1024;
++    }
++
++    *width = (*width + 1) & ~1;
++    if (offsets != NULL){
++	offsets[0] = 0;
++    }
++
++    switch (id){
++    case FOURCC_YV12:
++    case FOURCC_I420:
++	*height = (*height + 1) & ~1;
++	size = (*width + 3) & ~3;
++	if (pitches != NULL){
++	    pitches[0] = size;
++	}
++	size *= *height;
++	if (offsets != NULL){
++	    offsets[1] = size;
++	}
++	tmp = ((*width >> 1) + 3) & ~3;
++	if (pitches != NULL){
++	    pitches[1] = pitches[2] = tmp;
++	}
++	tmp *= (*height >> 1);
++	size += tmp;
++	if (offsets != NULL){
++	    offsets[2] = size;
++	}
++	size += tmp;
++	break;
++    case FOURCC_YUY2:
++    case FOURCC_RV15:
++    case FOURCC_RV16:
++    default:
++	size = *width * 2;
++	if (pitches != NULL){
++	    pitches[0] = size;
++	}
++	size *= *height;
++	break;
++    }
++    return (size);
++}
++
++static Bool
++RegionsEqual(RegionPtr A, RegionPtr B)
++{
++    int *dataA, *dataB;
++    int num;
++
++    num = REGION_NUM_RECTS(A);
++    if (num != REGION_NUM_RECTS(B)){
++	return (FALSE);
++    }
++
++    if ((A->extents.x1 != B->extents.x1)
++	|| (A->extents.y1 != B->extents.y1)
++	|| (A->extents.x2 != B->extents.x2)
++	|| (A->extents.y2 != B->extents.y2)){
++	return (FALSE);
++    }
++
++    dataA = (int*) REGION_RECTS(A);
++    dataB = (int*) REGION_RECTS(B);
++
++    while (num--){
++	if ((dataA[0] != dataB[0]) || (dataA[1] != dataB[1])){
++	    return (FALSE);
++	}
++	dataA += 2;
++	dataB += 2;
++    }
++    return (TRUE);
++}
++
++static void
++NEODisplayVideo(ScrnInfoPtr pScrn, int id, int offset, 
++		 short width, short height, int pitch,
++		 int x1, int y1, int x2, int y2, BoxPtr dstBox,
++		 short src_w, short src_h, short drw_w, short drw_h)
++{
++    NEOPtr nPtr = NEOPTR(pScrn);
++    int hstretch, vstretch, fmt;
++    VGA_HWP(pScrn);
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEODisplayVideo\n");
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEODisplayVideo src_w=%d, src_h=%d, pitch=%d, drw_w=%d, drw_h=%d\n", src_w, src_h, pitch, drw_w, drw_h);
++#endif
++#define WIDTH_THRESHOLD 160
++    if (dstBox->x2 >= pScrn->virtualX) {
++	/*
++	 * This is a hack to work around a problem when video is moved
++	 * accross the right border.
++	 */
++	int diff_s = (width - ((x2 - x1) >> 16)) & ~1;
++	int diff_d = (drw_w - dstBox->x2 + dstBox->x1) & ~1;
++
++	offset -= 2 * ((diff_s > diff_d) ? diff_d : diff_s);
++	dstBox->x1 -= diff_d;
++    } else if (dstBox->x2 - dstBox->x1 < WIDTH_THRESHOLD) {
++	/*
++	 * When the video window is less than about 160 pixel wide
++	 * it will be distoreted. We attempt to fix it by actually
++	 * making it wider and relying on the color key to prevent
++	 * it from appearanig outside of the video.
++	 */
++	int pre, post;
++	int scale = 1;
++	
++	if (dstBox->x1 < WIDTH_THRESHOLD) {
++	    pre = dstBox->x1;
++	    post = 160 - pre;
++	} else {
++	    pre = 160;
++	    post = 0;
++	}
++	offset -= 2 * scale * pre;
++	dstBox->x1 -= pre;
++	dstBox->x2 += post;
++    }
++    if (nPtr->videoHZoom != 1.0) {
++	if ((dstBox->x2 += 5) > pScrn->virtualX)
++	    dstBox->x2 = pScrn->virtualX;
++	if (dstBox->x1 > 0) dstBox->x1 += 2;
++    }
++    
++    fmt = 0x00;
++    switch (id){
++    case FOURCC_YV12:
++    case FOURCC_I420:
++    case FOURCC_YUY2:
++	fmt = 0x00;
++	break;
++    case FOURCC_RV15:
++    case FOURCC_RV16:
++	fmt = 0x20;
++	break;
++    }
++
++    offset += (x1 >> 15) & ~0x03;
++    
++    switch (nPtr->NeoChipset) {
++    default:
++    case NM2160: 
++        offset/=2;
++	pitch/=2;
++        OUTGR(0xbc, 0x4f);
++	break;
++    case NM2200:
++    case NM2230:
++    case NM2360:
++    case NM2380:
++        OUTGR(0xbc, 0x2e);
++	break;
++    }
++
++    /* factor 4 for granularity */
++    hstretch = (double)0x1000 * 4 / (int)(nPtr->videoHZoom * 4);
++    if (drw_w > src_w)
++	hstretch = (((int)src_w) * hstretch) / (int) drw_w;
++    
++    vstretch = (double)0x1000 / nPtr->videoVZoom;
++    if (drw_h > src_h)
++	vstretch = (((int)src_h) * vstretch )/ (int) drw_h;
++
++    OUTGR(0xb1, (((dstBox->x2 - 1) >> 4) & 0xf0) | ((dstBox->x1 >> 8) & 0x0f));
++    OUTGR(0xb2, dstBox->x1);
++    OUTGR(0xb3, dstBox->x2 - 1);
++    OUTGR(0xb4, (((dstBox->y2 - 1) >> 4) & 0xf0) | ((dstBox->y1 >> 8) & 0x0f));
++    OUTGR(0xb5, dstBox->y1);
++    OUTGR(0xb6, dstBox->y2 - 1);
++    OUTGR(0xb7, offset >> 16);
++    OUTGR(0xb8, offset >> 8);
++    OUTGR(0xb9, offset );
++    OUTGR(0xba, pitch >> 8);
++    OUTGR(0xbb, pitch);
++     
++    OUTGR(0xbd, 0x02);
++    OUTGR(0xbe, 0x00);
++    OUTGR(0xbf, 0x02);
++
++    OUTGR(0xc0, hstretch >> 8);
++    OUTGR(0xc1, hstretch);
++    OUTGR(0xc2, vstretch >> 8);
++    OUTGR(0xc3, vstretch);
++
++    OUTGR(0xb0, fmt | 0x03);
++
++    OUTGR(0x0a, 0x21);
++    OUTSR(0x08, 0xa0);
++    OUTGR(0x0a, 0x01);
++}
++
++static void
++NEOInitOffscreenImages(ScreenPtr pScreen)
++{
++    XF86OffscreenImagePtr offscreenImages;
++
++#ifdef DEBUG
++    xf86DrvMsg(xf86Screens[pScreen->myNum]->scrnIndex,X_INFO,"NEOInitOffscreenImages\n");
++#endif
++    if ((offscreenImages = xalloc(sizeof(XF86OffscreenImageRec))) == NULL){
++	return;
++    }
++
++    offscreenImages->image = NEOVideoImages;
++    offscreenImages->flags = VIDEO_OVERLAID_IMAGES | VIDEO_CLIP_TO_VIEWPORT;
++    offscreenImages->alloc_surface = NEOAllocSurface;
++    offscreenImages->free_surface = NEOFreeSurface;
++    offscreenImages->display = NEODisplaySurface;
++    offscreenImages->stop = NEOStopSurface;
++    offscreenImages->getAttribute = NEOGetSurfaceAttribute;
++    offscreenImages->setAttribute = NEOSetSurfaceAttribute;
++    offscreenImages->max_width = 1024;
++    offscreenImages->max_height = 1024;
++    offscreenImages->num_attributes = nElems(NEOVideoAttributes);
++    offscreenImages->attributes = NEOVideoAttributes;
++
++    xf86XVRegisterOffscreenImages(pScreen, offscreenImages, 1);
++}
++
++static FBLinearPtr
++NEOAllocateMemory(ScrnInfoPtr pScrn, FBLinearPtr linear, int size)
++{
++    ScreenPtr pScreen;
++    FBLinearPtr new_linear;
++    int bytespp = pScrn->bitsPerPixel >> 3;
++
++    /* convert size in bytes into number of pixels */
++    size = (size + bytespp - 1) / bytespp;
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,
++	       "NEOAllocateMemory: linear=%x, size=%d\n", linear, size);
++#endif
++    if (linear){
++#ifdef DEBUG
++        xf86DrvMsg(pScrn->scrnIndex,X_INFO,
++		   "NEOAllocateMemory: linear->size=%d\n", linear->size);
++#endif
++	if (linear->size >= size){
++	    return (linear);
++	}
++
++	if (xf86ResizeOffscreenLinear(linear, size)){
++	    return (linear);
++	}
++
++	xf86FreeOffscreenLinear(linear);
++    }
++
++
++    pScreen = screenInfo.screens[pScrn->scrnIndex];
++    if ((new_linear = xf86AllocateOffscreenLinear(pScreen, size, 16, NULL,
++						  NULL, NULL)) == NULL){
++	int max_size;
++
++	xf86QueryLargestOffscreenLinear(pScreen, &max_size, 16, 
++					PRIORITY_EXTREME);
++#ifdef DEBUG
++        xf86DrvMsg(pScrn->scrnIndex,X_INFO,
++		   "NEOAllocateMemory: max_size=%d\n", max_size);
++#endif
++	if (max_size < size){
++	    return (NULL);
++	}
++
++	xf86PurgeUnlockedOffscreenAreas(pScreen);
++	new_linear = xf86AllocateOffscreenLinear(pScreen, 
++						 size, 16, NULL, NULL, NULL);
++    }
++    
++    return (new_linear);
++}
++
++static void
++NEOCopyData(unsigned char *src, unsigned char *dst, 
++	    int srcPitch, int dstPitch,
++	    int height, int width)
++{
++    while (height-- > 0){
++	memcpy(dst, src, width);
++	src += srcPitch;
++	dst += dstPitch;
++    }
++}
++
++static void
++NEOCopyYV12Data(unsigned char *src1, unsigned char *src2,
++		unsigned char *src3, unsigned char *dst,
++		int srcPitch1, int srcPitch2, int dstPitch,
++		int height, int width)
++{
++    CARD32 *pDst = (CARD32 *) dst;
++    int i;
++
++    width >>= 1;
++    height >>= 1;
++    dstPitch >>= 2;
++    while (--height >= 0){
++	for (i =0; i < width; i++){
++	    pDst[i] = src1[i << 1] | (src1[(i << 1) + 1] << 16) |
++		(src3[i] << 8) | (src2[i] << 24);
++	}
++	pDst += dstPitch;
++	src1 += srcPitch1;
++
++	for (i =0; i < width; i++){
++	    pDst[i] = src1[i << 1] | (src1[(i << 1) + 1] << 16) |
++		(src3[i] << 8) | (src2[i] << 24);
++	}
++	pDst += dstPitch;
++	src1 += srcPitch1;
++	    src2 += srcPitch2;
++	    src3 += srcPitch2;
++    }
++}
++
++static int
++NEOAllocSurface(ScrnInfoPtr pScrn, int id, 
++		unsigned short width, unsigned short height,
++		XF86SurfacePtr surface)
++{
++    int pitch, bpp, size;
++    NEOOffscreenPtr pPriv;
++    FBLinearPtr linear;
++
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOAllocSurface\n");
++#endif
++    if (width > 1024  || height > 1024){
++	return (BadAlloc);
++    }
++
++    width = (width + 1) & ~1;
++    bpp = ((pScrn->bitsPerPixel + 1) >> 3);
++    pitch = ((width << 1) + 15) & ~15;
++    size = pitch * height;
++
++    if ((linear = NEOAllocateMemory(pScrn, NULL, size)) == NULL){
++	return (BadAlloc);
++    }
++
++    surface->width = width;
++    surface->height = height;
++    if ((surface->pitches = xalloc(sizeof(int))) == NULL){
++	xf86FreeOffscreenLinear(linear);
++	return (BadAlloc);
++    }
++    if ((surface->offsets = xalloc(sizeof(int))) == NULL){
++	xfree(surface->pitches);
++	xf86FreeOffscreenLinear(linear);
++	return (BadAlloc);
++    }
++
++    if ((pPriv = xalloc(sizeof(NEOOffscreenRec))) == NULL){
++	xfree(surface->pitches);
++	xfree(surface->offsets);
++	xf86FreeOffscreenLinear(linear);
++	return (BadAlloc);
++    }
++
++    pPriv->linear = linear;
++    pPriv->isOn = FALSE;
++
++    surface->pScrn = pScrn;
++    surface->id = id;
++    surface->pitches[0] = pitch;
++    surface->offsets[0] = linear->offset << 1;
++    surface->devPrivate.ptr = (pointer)pPriv;
++    return (Success);
++}
++
++static int
++NEOFreeSurface(XF86SurfacePtr surface)
++{
++    NEOOffscreenPtr pPriv = (NEOOffscreenPtr)surface->devPrivate.ptr;
++
++#ifdef DEBUG
++    xf86DrvMsg(0,X_INFO,"NEOFreeSurface\n");
++#endif
++    if (pPriv->isOn)
++	NEOStopSurface(surface);
++
++    xf86FreeOffscreenLinear(pPriv->linear);
++    xfree(surface->pitches);
++    xfree(surface->offsets);
++    xfree(surface->devPrivate.ptr);
++    return (Success);
++}
++
++static int
++NEODisplaySurface(XF86SurfacePtr surface,
++		  short src_x, short src_y, short drw_x, short drw_y,
++		  short src_w, short src_h, short drw_w, short drw_h,
++		  RegionPtr clipBoxes)
++{
++    NEOOffscreenPtr pPriv = (NEOOffscreenPtr)surface->devPrivate.ptr;
++    NEOPtr nPtr = NEOPTR(surface->pScrn);
++    NEOPortPtr portPriv = nPtr->overlayAdaptor->pPortPrivates[0].ptr;
++    INT32 x1, y1, x2, y2;
++    BoxRec dstBox;
++
++#ifdef DEBUG
++    xf86DrvMsg(surface->pScrn->scrnIndex,X_INFO,"NEODisplaySurface\n");
++#endif
++    x1 = src_x;
++    x2 = src_x + src_w;
++    y1 = src_y;
++    y2 = src_y + src_h;
++
++    dstBox.x1 = drw_x;
++    dstBox.x2 = drw_x + drw_w;
++    dstBox.y1 = drw_y;
++    dstBox.y2 = drw_y + drw_h;
++    if (!xf86XVClipVideoHelper( &dstBox, &x1, &x2, &y1, &y2,
++			       clipBoxes, surface->width, surface->height)){
++	return (Success);
++    }
++
++    dstBox.x1 -= surface->pScrn->frameX0;
++    dstBox.y1 -= surface->pScrn->frameY0;
++    dstBox.x2 -= surface->pScrn->frameX0;
++    dstBox.y2 -= surface->pScrn->frameY0;
++
++    xf86XVFillKeyHelper(surface->pScrn->pScreen, portPriv->colorKey,
++			clipBoxes);
++    NEOResetVideo(surface->pScrn);
++    NEODisplayVideo(surface->pScrn, surface->id, surface->offsets[0],
++		    surface->width, surface->height, surface->pitches[0], 
++		    x1, y1, x2, y2, &dstBox, src_w, src_h, drw_w, drw_h);
++    
++    pPriv->isOn = TRUE;
++    if (portPriv->videoStatus & CLIENT_VIDEO_ON){
++	REGION_EMPTY(pScrn->pScreen, &portPriv->clip);
++	UpdateCurrentTime();
++	portPriv->videoStatus = FREE_TIMER;
++	portPriv->freeTime = currentTime.milliseconds + FREE_DELAY;
++    }
++    return (Success);
++}
++
++static int
++NEOStopSurface(XF86SurfacePtr surface)
++{
++    NEOOffscreenPtr pPriv = (NEOOffscreenPtr)surface->devPrivate.ptr;
++
++#ifdef DEBUG
++    xf86DrvMsg(surface->pScrn->scrnIndex,X_INFO,"NEOStopSurface\n");
++#endif
++    if (pPriv->isOn){
++	NEOPtr nPtr = NEOPTR(surface->pScrn);
++	VGA_HWP(surface->pScrn);
++	OUTGR(0xb0, 0x02);
++	pPriv->isOn = FALSE;
++    }
++    return (Success);
++}
++
++static int
++NEOGetSurfaceAttribute(ScrnInfoPtr pScrn, Atom attr, INT32 *value)
++{
++    NEOPtr nPtr = NEOPTR(pScrn);
++
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOGetSurfaceAttribute\n");
++#endif
++    return (NEOGetPortAttribute(pScrn, 
++            attr, value, (pointer)nPtr->overlayAdaptor->pPortPrivates[0].ptr));
++}
++
++static int
++NEOSetSurfaceAttribute(ScrnInfoPtr pScrn, Atom attr, INT32 value)
++{
++    NEOPtr nPtr = NEOPTR(pScrn);
++
++#ifdef DEBUG
++    xf86DrvMsg(pScrn->scrnIndex,X_INFO,"NEOSetSurfaceAttribute\n");
++#endif
++    return (NEOSetPortAttribute(pScrn, 
++            attr, value, (pointer)nPtr->overlayAdaptor->pPortPrivates[0].ptr));
++}
++
++#else /* XvExtension */
++
++void NEOInitVideo(ScreenPtr pScreen) {}
++void NEOResetVideo(ScreenPtr pScreen) {}
++
++#endif
+--- XFree86-4.2.0/xc.orig/programs/Xserver/hw/xfree86/drivers/neomagic/neo_video.h	Thu Jan  1 01:00:00 1970
++++ XFree86-4.2.0/xc/programs/Xserver/hw/xfree86/drivers/neomagic/neo_video.h	Thu Apr  4 16:05:44 2002
+@@ -0,0 +1,83 @@
++/**********************************************************************
++Copyright 2002 by Shigehiro Nomura.
++
++                        All Rights Reserved
++
++Permission to use, copy, modify, distribute, and sell this software and
++its documentation for any purpose is hereby granted without fee,
++provided that the above copyright notice appear in all copies and that
++both that copyright notice and this permission notice appear in
++supporting documentation, and that the name of Shigehiro Nomura not be
++used in advertising or publicity pertaining to distribution of the
++software without specific, written prior permission.  Shigehiro Nomura
++and its suppliers make no representations about the suitability of this
++software for any purpose.  It is provided "as is" without express or 
++implied warranty.
++
++SHIGEHIRO NOMURA DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
++INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
++EVENT SHALL SHIGEHIRO NOMURA AND/OR ITS SUPPLIERS BE LIABLE FOR ANY
++SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
++RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
++CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
++CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++**********************************************************************/
++
++#ifndef _NEO_VIDEO_H
++#define _NEO_VIDEO_H
++
++#define ACC_MMIO
++
++#include "vgaHW.h"
++#include "fourcc.h"
++#include "Xv.h"
++
++#define NEO_VIDEO_VIDEO		0
++#define NEO_VIDEO_IMAGE		1
++
++#define FOURCC_RV15			0x35315652
++#define FOURCC_RV16			0x36315652
++
++#define OFF_DELAY			200		/* milliseconds */
++#define FREE_DELAY			60000	/* milliseconds */
++
++#define OFF_TIMER			0x01
++#define FREE_TIMER			0x02
++#define CLIENT_VIDEO_ON		0x04
++#define TIMER_MASK			(OFF_TIMER | FREE_TIMER)
++
++typedef struct
++{
++    FBLinearPtr	linear;
++    RegionRec	clip;
++    CARD32	colorKey;
++    CARD32	interlace;
++    CARD32	brightness;
++    CARD32	videoStatus;
++    Time	offTime;
++    Time	freeTime;
++} NEOPortRec, *NEOPortPtr;
++
++typedef struct
++{
++    FBLinearPtr	linear;
++    Bool	isOn;
++} NEOOffscreenRec, *NEOOffscreenPtr;
++
++/* I/O Functions */
++# define OUTGR(idx,dat) \
++   if (nPtr->NeoMMIOBase2) \
++     (*(unsigned short *)(nPtr->NeoMMIOBase2+VGA_GRAPH_INDEX)\
++                                                     =(idx)|((dat)<<8));\
++   else \
++      VGAwGR((idx),(dat));
++
++#  define OUTSR(idx,dat) \
++if (nPtr->NeoMMIOBase2) \
++   (*(unsigned short *)(nPtr->NeoMMIOBase2+VGA_SEQ_INDEX)=(idx)|((dat)<<8));\
++else \
++   VGAwSR((idx),(dat));
++
++# define VGA_HWP(x)     vgaHWPtr hwp = VGAHWPTR(x)
++
++#endif /* _NEO_VIDEO_H */
