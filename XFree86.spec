@@ -27,7 +27,7 @@ BuildRequires:	tcl-devel
 Requires:	pam
 Requires:	xauth
 Exclusivearch:	i386 i486 i586 i686 alpha sparc m68k armv4l
-Buildroot:	/home/baggins/praca/tmp/%{name}-%{version}-root/
+Buildroot:	/tmp/%{name}-%{version}-root/
 
 %ifarch sparc
 Obsoletes: X11R6.1
