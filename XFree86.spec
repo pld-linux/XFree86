@@ -72,10 +72,10 @@ stacji X. Nie zawiera X serwera który jest po¶rednikiem z Twoj± kart±
 graficzn± -- jest on w innym pakiecie.
 
 %package modules
-Summary:     XFree86 modules
-Group:       X11/XFree86
-Group(pl):   X11/XFree86
-Summary(pl): Wspólne modu³y dla wszystkich serwerów graficznych.
+Summary(pl):	Wspólne modu³y dla wszystkich serwerów graficznych.
+Summary:	XFree86 modules
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
 
 %description -l de modules
 %description -l fr modules
@@ -83,14 +83,13 @@ Summary(pl): Wspólne modu³y dla wszystkich serwerów graficznych.
 %description -l pl modules
 
 %package libs
-Summary:     X11R6 shared libraries
-Group:       X11/XFree86
-Group(pl):   X11/XFree86
-Prereq:      grep 
-Summary(de): X11R6 shared Libraries
-Summary(pl): Biblioteki dzielone dla X11R6
-Summary(fr): Bibliothèques partagées X11R6
-
+Summary:	X11R6 shared libraries
+Summary(de):	X11R6 shared Libraries
+Summary(pl):	Biblioteki dzielone dla X11R6
+Summary(fr):	Bibliothèques partagées X11R6
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Prereq:		grep 
 %ifarch sparc
 Obsoletes: X11R6.1-libs
 %endif
@@ -100,31 +99,90 @@ This package contains the shared libraries most X programs need to run
 properly. They are in a separate package to reduce the disk space needed
 to run X applications on a machine w/o an X server (over a network).
 
-%package devel
-Summary:     X11R6 static libraries, headers and programming man pages
-Group:       X11/XFree86
-Group(pl):   X11/XFree86
-Summary(de): X11R6 statische Libraries, Headers und man pages für Programmierer
-Summary(fr): Bibliothèques X11R6 statiques et pages man de programmation
-Summary(pl): Biblioteki statyczne, pliki nag³ówkowe dla X11R6
-Summary(tr): X11R6 ile geliþtirme için gerekli dosyalar
+%description -l de libs
+Dieses Paket enthält die zur gemeinsamen Nutzung vorgesehenen Libraries,
+die die meisten X-Programme für den einwandfreien Betrieb benötigen. Sie
+wurden in einem separaten Paket untergebracht, um den
+Festplattenspeicherplatz auf Computern zu reduzieren, die ohne einen X-
+Server (über ein Netz) arbeiten.
 
+%description -l fr libs
+Ce paquetage contient les bibliothèques partagées nécessaires à de nombreux
+programmes X. Elles se trouvent dans un paquetage séparé afin de réduire
+l'espace disque nécessaire à l'exécution des applications X sur une machine
+sans serveur X (en réseau).
+
+%description -l pl libs
+Pakiet zawieraj±cy podstawowe biblioteki dla programów kozystaj±cych z
+systemu X Window. Wydzielony w celu oszczednosci miejsca, nie wp³ywa na
+mo¿liwo¶ci pracy aplikacji X Windows poprzez np. sieæ. Nie potrzebny dla
+komputerów nie posiadaj±cych X serwerów.
+
+%description -l tr libs
+Bu paket X programlarýnýn düzgün çalýþabilmeleri için gereken kitaplýklarý
+içerir. Bunlar, X programlarýný (sunucu olsun olmasýn) çalýþtýrmak için
+gerekli disk alanýný azaltmak için ayrý bir paket olarak sunulmuþtur.
+
+%package devel
+Summary:	X11R6 static libraries, headers and programming man pages
+Summary(de):	X11R6 statische Libraries, Headers und man pages für Programmierer
+Summary(fr):	Bibliothèques X11R6 statiques et pages man de programmation
+Summary(pl):	Biblioteki statyczne, pliki nag³ówkowe dla X11R6
+Summary(tr):	X11R6 ile geliþtirme için gerekli dosyalar
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
 %ifarch sparc
-Obsoletes: X11R6.1-devel
+Obsoletes:	X11R6.1-devel
 %endif
 
 %description devel
-Libraries, header files, and documentation for developing programs that
-run as X clients. It includes the base Xlib library as well as the Xt
-and Xaw widget sets. For information on programming with these libraries,
-PLD recommends the series of books on X Programming produced by
+Libraries, header files, and documentation for developing programs that run
+as X clients. It includes the base Xlib library as well as the Xt and Xaw
+widget sets. For information on programming with these libraries, PLD
+recommends the series of books on X Programming produced by O'Reilly and
+Associates.
+
+%description -l tr
+X Window sistemi, çoklu pencere, çoklu istemci ve çeþitli pencere stilleriyle
+geniþ özelliklere sahip bir Grafik Kullanýcý Arabirimidir. Çoðu UNIX sisteminde
+çalýþtýðý gibi istemcileri de birçok pencereleme sistemiyle çalýþabilir. X
+protokolu kullanan uygulamalarýn yerel makina veya bilgisayar aðý üzerinden
+çalýþtýrýlabilmesi esnek bir istemci/sunucu ortamý saðlar. Bu paket bir X
+istasyonu için gerekli olan temel yazýtiplerini, programlarý ve belgeleri
+sunar. Ekran kartýnýzý sürmek için gerekli olan X sunucusu bu pakete dahil
+deðildir.
+
+%description -l de devel
+Libraries, Header-Dateien und Dokumentation zum Entwickeln von Programmen,
+die als X-Clients laufen. Enthält die Xlib-Library und die Widget-Sätze Xt
+und Xaw. Information zum Programmieren mit diesen Libraries finden Sie 
+in der Buchreihe zur X-Programmierung von O'Reilly and Associates.
+
+%description -l fr devel
+Bibliothéques, fichiers d'en-tête, et documentation pour développer des
+programmes s'exécutant en clients X. Cela comprend la Bibliothéque Xlib
+de base aussi bien que les ensembles de widgets Xt et Xaw. Pour des
+informations sur la programmation avec ces Bibliothéques, Red Hat 
+recommande la série d'ouvrages sur la programmation  X editée par
 O'Reilly and Associates.
 
+%description -l pl devel
+Pliki nag³ówkowe, dokumentcja dla programistów rozwijaj±cych aplikacje
+klienckie pod X'y. Zawiera podstatwow± bibliotekê Xlib a tak¿e Xt i Xaw.
+Wiêcej informacji nt. pisania programów przy u¿yciu tych bibliotek mo¿esz
+znale¼æ w ksi±¿kach wydawnictwa O'Reilly and Associates (X Programming)
+polecanych przez Red Hat'a.
+
+%description -l tr devel
+X istemcisi olarak çalýþacak programlar geliþtirmek için gereken statik
+kitaplýklar, baþlýk dosyalarý ve belgeler. Xlib kitaplýðýnýn yanýsýra Xt ve
+Xaw arayüz kitaplýklarýný da içerir.
+
 %package	XF86Setup
-Group:		X11/XFree86
-Group(pl):	X11/XFree86
 Summary:	Graphical configuration tool for XFree86
 Summary(pl):	Graficzny konfigurator dla XFree86
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
 Requires:	%{name}-VGA16 = %{version}
 
 %description XF86Setup
@@ -137,13 +195,13 @@ requires the generic VGA 16 color server be available.
 Graficzny konfigurator dla XFree86
 
 %package S3
-Summary:     XFree86 S3 server
-Group:       X11/XFree86/Servers
-Group(pl):   X11/XFree86/Serwery
-Summary(de): XFree86 S3 Server
-Summary(fr): Serveur XFree86 pour S3
-Summary(pl): XFree86 serwer dla kart S3
-Summary(tr): XFree86 S3 sunucularý
+Summary:	XFree86 S3 server
+Summary(de):	XFree86 S3 Server
+Summary(fr):	Serveur XFree86 pour S3
+Summary(pl):	XFree86 serwer dla kart S3
+Summary(tr):	XFree86 S3 sunucularý
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description S3
 X server for cards built around chips from S3, including most #9 cards,
@@ -151,26 +209,49 @@ many Diamond Stealth cards, Orchid Farenheits, Mirco Crystal 8S, most STB
 cards, and some motherboards with built in graphics accelerators (such
 as the IBM ValuePoint line).
 
+%description -l de S3
+X-Server für Steckkarten mit dem S3-Chipsatz (inkl. den meisten #9-Karten),
+Karten wie Diamond Stealth, Orchid Farenheit und Mirco Crystal 8S, den
+meisten STB-Karten sowie einigen Motherboards mit integrierten
+Grafikbeschleunigern (z.B.  die Reihe IBM ValuePoint).
+
+%description -l fr S3
+Serveur X pour les cartes construites autour des circuits S3, dont la
+plupart des cartes #9, de nombreuses Diamond Stealth, Orchid Farenheits,
+Mirco Crystal 8S, la plupart des cartes STB et certaines cartes mères
+intégrant des accélérateurs graphiques (comme la gamme ValuePoint d'IBM).
+
+%description -l pl S3
+X serwer dla kart opartych na uk³adzie S3 - s± ta m.in. #9, wiele kart   
+Diamond Stealth, Orchid Farenheits, Mirco Crystal 8S, wiêkszo¶c kart STB
+a tak¿e niektóre p³yty g³ówne z wbudowanymi akcelatorami graficznymi
+(jak np. ValuePoint IBM'a).
+
+%description -l tr S3
+S3 tabanlý ekran kartlarý için sunucular. Çoðu #9, Diamond Stealth, Orchid
+Fahrenheit, Mirco Crystal 8S, çoðu STB ve bazý anakarta tümleþik grafik
+hýzlandýrýcýlar bu gruba girer. S3 Virge sunucusu ayrý bir pakette yer alýr.
+
 %package I128
-Summary:     XFree86 #9 Imagine 128 Server
-Group:       X11/XFree86/Servers
-Group(pl):   X11/XFree86/Serwery
-Summary(de): XFree86 #9 Imagine 128 Server
-Summary(fr): Serveur Xfree86 pour #9 Imagine 128
-Summary(pl): XFree86 serwer dla kart Number Nine Imagine 128
-Summary(tr): XFree86 #9 Imagine 128 sunucusu
+Summary:	XFree86 #9 Imagine 128 Server
+Summary(de):	XFree86 #9 Imagine 128 Server
+Summary(fr):	Serveur Xfree86 pour #9 Imagine 128
+Summary(pl):	XFree86 serwer dla kart Number Nine Imagine 128
+Summary(tr):	XFree86 #9 Imagine 128 sunucusu
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description I128
 X server for the #9 Imagine 128 board.
 
 %package S3V
-Summary:     XFree86 S3 Virge server
-Group:       X11/XFree86/Servers
-Group(pl):   X11/XFree86/Serwery
-Summary(de): Xfree86 S3 Virge-Server
-Summary(fr): Serveur XFree86 pour S3 Virge
-Summary(pl): XFree86 serwer dla kart S3 Virge
-Summary(tr): XFree86 S3 Virge sunucusu
+Summary:	XFree86 S3 Virge server
+Summary(de):	Xfree86 S3 Virge-Server
+Summary(fr):	Serveur XFree86 pour S3 Virge
+Summary(pl):	XFree86 serwer dla kart S3 Virge
+Summary(tr):	XFree86 S3 Virge sunucusu
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 
 %description S3V
 X server for cards built around the S3 Virge chipset.
@@ -436,12 +517,6 @@ Summary(pl): XAuth
 Genoa 8900 Phantom 32I, Hercules Dynamite, LeaTek WinFast S200, 
 Sigma Concorde, STB LightSpeed, TechWorks Thunderbolt und ViewTop PCI.
 
-%description -l de devel
-Libraries, Header-Dateien und Dokumentation zum Entwickeln von Programmen,
-die als X-Clients laufen. Enthält die Xlib-Library und die Widget-Sätze Xt
-und Xaw. Information zum Programmieren mit diesen Libraries finden Sie 
-in der Buchreihe zur X-Programmierung von O'Reilly and Associates.
-
 %description -l de Mono
 Generischer monochromer (Schwarzweiß-) Server für VGA-Karten, der 
 praktisch mit allen VGA-ähnlichen Karten mit beschränkter Auflösung
@@ -462,22 +537,9 @@ Spider Black Widow und Hercules Graphite.
 Generischer 16-Farben-Server für VGA-Karten. Funktioniert auf fast allen VGA-
 Grafikkarten, allerdings nur bei geringer Auflösung und wenigen Farben.
 
-%description -l de S3
-X-Server für Steckkarten mit dem S3-Chipsatz (inkl. den meisten #9-Karten),
-Karten wie Diamond Stealth, Orchid Farenheit und Mirco Crystal 8S, den meisten STB-Karten
-sowie einigen Motherboards mit integrierten Grafikbeschleunigern (z.B. 
-die Reihe IBM ValuePoint).
-
 %description -l de Mach32
 X-Server für Karten auf der Basis des ATI Mach32-Chip, einschließlich 
 ATI Graphics Ultra Pro und Ultra Plus.
-
-%description -l de libs
-Dieses Paket enthält die zur gemeinsamen Nutzung vorgesehenen Libraries,
-die die meisten X-Programme für den einwandfreien Betrieb benötigen. Sie
-wurden in einem separaten Paket untergebracht, um den
-Festplattenspeicherplatz auf Computern zu reduzieren, die ohne einen X-
-Server (über ein Netz) arbeiten.
 
 %description -l de SVGA
 X-Server für die elementarsten Framebuffer-SVGA-Geräte, einschließlich 
@@ -524,14 +586,6 @@ Serveur X pour les cartes basée sur les chips ET4000/W32, dontla Genoa 8900 Phan
 S200, la Sigma Concorde, la STB LightSpeed, la TechWorks Thunderbolt,
 et la ViewTop PCI.
 
-%description -l fr devel
-Bibliothéques, fichiers d'en-tête, et documentation pour développer des
-programmes s'exécutant en clients X. Cela comprend la Bibliothéque Xlib
-de base aussi bien que les ensembles de widgets Xt et Xaw. Pour des
-informations sur la programmation avec ces Bibliothéques, Red Hat 
-recommande la série d'ouvrages sur la programmation  X editée par
-O'Reilly and Associates.
-
 %description -l fr Mono
 Serveur générique monochrome (2 couleurs) pour les cartes VGA, fonctionne avec
 pratiquement toutes les cartes VGA ayant des résolutions limitées.
@@ -551,21 +605,9 @@ Serveur X pour les cartes à base d'AGX comme la Boca Vortex, l'Orchid
 Serveur 16 couleurs générique pour cartes VGA. Fonctionne avec presque
 toutes les cartes VGA, mais seulement en faible résolution avec peu de couleurs.
 
-%description -l fr S3
-Serveur X pour les cartes construites autour des circuits S3, dont la
-plupart des cartes #9, de nombreuses Diamond Stealth, Orchid Farenheits,
-Mirco Crystal 8S, la plupart des cartes STB et certaines cartes mères
-intégrant des accélérateurs graphiques (comme la gamme ValuePoint d'IBM).
-
 %description -l fr Mach32
 Serveur X pour les cartes utilisant le circuit ATI Mach32, dont les
 cartes ATI Graphics Ultra Pro et Ultra Plus.
-
-%description -l fr libs
-Ce paquetage contient les bibliothèques partagées nécessaires à de nombreux
-programmes X. Elles se trouvent dans un paquetage séparé afin de réduire
-l'espace disque nécessaire à l'exécution des applications X sur une machine
-sans serveur X (en réseau).
 
 %description -l fr SVGA
 Serveur X pour les circuits SVGA les plus simples, dont les cartes construites
@@ -603,11 +645,6 @@ Genoa 8900 Phantom 32i, Hercules Dynamite kartlarý, LeadTek WinFast S200,
 Sigma Concorde, STB LightSpeed, TechWorks Thunderbolt, ve ViewTop PCI
 gibi kartlarýn kullandýðý ET4000/W32 tabanlý kartlar için X sunucusu.
 
-%description -l tr devel
-X istemcisi olarak çalýþacak programlar geliþtirmek için gereken statik
-kitaplýklar, baþlýk dosyalarý ve belgeler. Xlib kitaplýðýnýn yanýsýra Xt ve
-Xaw arayüz kitaplýklarýný da içerir.
-
 %description -l tr Mono
 Mono (2 renk) VGA kartlarý için genel X sunucusu. Kýsýtlý bir çözünürlük
 altýnda birçok VGA kart ile çalýþýr.
@@ -627,19 +664,9 @@ tabanlý kartlar için X sunucusu.
 VGA kartlarý için genel 16 renk sunucusu. Çoðu VGA tipi kart ile düþük renk
 ve çözünürlükte çalýþýr.
 
-%description -l tr S3
-S3 tabanlý ekran kartlarý için sunucular. Çoðu #9, Diamond Stealth, Orchid
-Fahrenheit, Mirco Crystal 8S, çoðu STB ve bazý anakarta tümleþik grafik
-hýzlandýrýcýlar bu gruba girer. S3 Virge sunucusu ayrý bir pakette yer alýr.
-
 %description -l tr Mach32
 ATI Mach32 tabanlý ATI Graphics Ultra Pro ve Ultra Plus kartlarý için X
 sunucusu.
-
-%description -l tr libs
-Bu paket X programlarýnýn düzgün çalýþabilmeleri için gereken kitaplýklarý
-içerir. Bunlar, X programlarýný (sunucu olsun olmasýn) çalýþtýrmak için
-gerekli disk alanýný azaltmak için ayrý bir paket olarak sunulmuþtur.
 
 %description -l tr SVGA
 ET4000, Cirrus Logic, Chips and Technologies dizüstü, Trident 8900 ve 9000
@@ -667,26 +694,6 @@ sunucusu.
 %description -l tr -n xdm
 %description -l tr -n xfs
 %description -l tr -n xauth
-
-%description -l tr
-X Window sistemi, çoklu pencere, çoklu istemci ve çeþitli pencere stilleriyle
-geniþ özelliklere sahip bir Grafik Kullanýcý Arabirimidir. Çoðu UNIX sisteminde
-çalýþtýðý gibi istemcileri de birçok pencereleme sistemiyle çalýþabilir. X
-protokolu kullanan uygulamalarýn yerel makina veya bilgisayar aðý üzerinden
-çalýþtýrýlabilmesi esnek bir istemci/sunucu ortamý saðlar. Bu paket bir X
-istasyonu için gerekli olan temel yazýtiplerini, programlarý ve belgeleri
-sunar. Ekran kartýnýzý sürmek için gerekli olan X sunucusu bu pakete dahil
-deðildir.
-
-%description -l pl libs
-Pakiet zawieraj±cy podstawowe biblioteki dla programów kozystaj±cych
-z systemu X-Window. Wydzielony w celu oszczednosci miejsca, nie
-wp³ywa na mo¿liwo¶ci pracy aplikacji X-Windows poprzez np. sieæ.
-Nie potrzebny dla komputerów nie posiadaj±cych X-serwerów.
-
-%description -l pl devel
-
-%description -l pl S3
 
 %description -l pl I128
 
