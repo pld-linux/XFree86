@@ -63,6 +63,7 @@ Patch33:	%{name}-mga-busmstr.patch
 Patch34:	%{name}-g450.patch
 Patch35:	%{name}-agpgart-load.patch
 Patch36:	%{name}-mkfontdir-chmod_644.patch
+Patch37:	%{name}-DEC.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1232,6 +1233,9 @@ X11R6-contrib in older releases.
 %patch34 -p1
 %patch35 -p1
 %patch36 -p1
+%ifarch alpha
+%patch37 -p0
+%endif
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
