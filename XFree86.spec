@@ -1702,6 +1702,7 @@ Requires:	sessreg = %{epoch}:%{version}-%{release}
 Requires:	/usr/X11R6/bin/sessreg
 Provides:	XDM
 Obsoletes:	XFree86-xdm
+Obsoletes:	X11-xdm
 Obsoletes:	gdm
 Obsoletes:	kdm
 
@@ -1738,6 +1739,8 @@ Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	XFree86-fonts-base
+Provides:	group(xfs)
+Provides:	user(xfs)
 Obsoletes:	XFree86-xfs
 Obsoletes:	xfsft
 
@@ -2088,8 +2091,8 @@ fi
 
 %postun -n xfs
 if [ "$1" = "0" ]; then
-	/usr/sbin/userdel xfs 2>/dev/null
-	/usr/sbin/groupdel xfs 2>/dev/null
+	%userremove xfs
+	%groupremove xfs
 fi
 
 #--- %files --------------------------
