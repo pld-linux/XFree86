@@ -1985,9 +1985,6 @@ fi
 %{_libdir}/X11/app-defaults/XTerm
 %lang(pl) %{_libdir}/X11/app-defaults/pl/XTerm
 %{_libdir}/X11/app-defaults/XTerm-color
-%ifnarch sparc sparc64
-%{_libdir}/X11/app-defaults/XF86Cfg
-%endif
 
 %attr(755,root,root) %{_libdir}/X11/lbxproxy
 %attr(755,root,root) %{_libdir}/X11/proxymngr
