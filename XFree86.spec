@@ -91,7 +91,6 @@ Patch31:	%{name}-alpha_GLX_align_fix.patch
 #Patch32:	%{name}-XftConfig_in_correct_place.patch
 Patch33:	%{name}-PEX+XIE.patch
 Patch34:	%{name}-xman-manpaths.patch
-Patch35:	%{name}-ppc_drivers.patch
 #Patch36:	ftp://ftp.xfree86.org/pub/XFree86/4.2.1/patches/4.2.0-4.2.1.diff.gz
 Patch37:	%{name}-clearrts.patch
 #Patch38:	%{name}-mga020414.patch
