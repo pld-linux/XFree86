@@ -2015,8 +2015,9 @@ rm -rf xc/fonts
 %endif
 
 %ifnarch sparc sparc64
+TOPDIR=$(pwd)/xc
 %{__make} -S -C synaptics clean all \
-	TOP=$(pwd)/../xc \
+	TOP="$TOPDIR" \
         CC="%{__cc}" \
         BOOTSTRAPCFLAGS="%{rpmcflags}" \
         CCOPTIONS="%{rpmcflags}" \
@@ -2030,7 +2031,6 @@ cd synaptics
 for f in COMPATIBILITY FEATURES INSTALL NEWS PARAMETER; do
 	cp -f ${f} ${f}.synaptics
 done
-
 %endif
 
 #--- %install ------------------------
@@ -2061,7 +2061,7 @@ install -d $RPM_BUILD_ROOT/etc/{X11/fs,pam.d,rc.d/init.d,security/console.apps,s
 	LINUXDIR="%{_kernelsrcdir}"
 
 %ifnarch sparc sparc64
-install synaptics/synaptics_drv.o $RPM_BUILD_ROOT%{_libdir}/modules/input/
+install synaptics/synaptics_drv.o $RPM_BUILD_ROOT%{_libdir}/modules/input
 %endif
 
 %ifnarch alpha
@@ -2158,7 +2158,7 @@ done
 
 %ifnarch sparc sparc64
 install synaptics/synclient   $RPM_BUILD_ROOT%{_bindir}
-install synaptics/*.synaptics $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/
+install synaptics/*.synaptics $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
 %endif
 
 %ifnarch sparc sparc64
@@ -2280,12 +2280,11 @@ if [ "$1" = "0" ]; then
 	/usr/sbin/groupdel xfs 2>/dev/null
 fi
 
+%post	xrender -p /sbin/ldconfig
+%postun	xrender -p /sbin/ldconfig
 
-%post xrender -p /sbin/ldconfig
-%postun xrender -p /sbin/ldconfig
-
-%post xcursor -p /sbin/ldconfig
-%postun xcursor -p /sbin/ldconfig
+%post	xcursor -p /sbin/ldconfig
+%postun	xcursor -p /sbin/ldconfig
 
 #--- %files --------------------------
 
