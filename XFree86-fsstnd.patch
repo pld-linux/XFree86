@@ -1,6 +1,6 @@
-diff -urN XFree86-3.3.5.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile XFree86-3.3.5/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile
---- XFree86-3.3.5.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile	Sat Jan  9 15:19:00 1999
-+++ XFree86-3.3.5/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile	Thu Sep  2 15:17:02 1999
+diff -urN XFree86-3.3.6.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile XFree86-3.3.6/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile
+--- XFree86-3.3.6.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile	Sat Apr 17 17:51:10 1999
++++ XFree86-3.3.6/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile	Sat Mar 11 04:36:27 2000
 @@ -81,7 +81,7 @@
  
   XCONFIG_DEFINES = $(EXT_DEFINES) -DXF86SETUP \
@@ -10,9 +10,9 @@ diff -urN XFree86-3.3.5.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile 
  
   XF86SETUPLIBDIR = $(LIBDIR)/XF86Setup
           DEFINES = -DCARD_DATABASE_FILE='"$(CARDDBFILE)"' \
-diff -urN XFree86-3.3.5.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl XFree86-3.3.5/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl
---- XFree86-3.3.5.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl	Sat Feb 21 07:07:02 1998
-+++ XFree86-3.3.5/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl	Thu Sep  2 15:17:02 1999
+diff -urN XFree86-3.3.6.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl XFree86-3.3.6/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl
+--- XFree86-3.3.6.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl	Tue Oct 12 20:06:52 1999
++++ XFree86-3.3.6/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl	Sat Mar 11 04:38:12 2000
 @@ -38,7 +38,7 @@
  	set devid [lindex $DeviceIDs $idx]
          global Device_$devid
@@ -22,18 +22,18 @@ diff -urN XFree86-3.3.5.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl
  	set lastlink $linkname
  	for {set nlinks 0} \
  		{[file exists $linkname] && [file type $linkname]=="link" \
-@@ -72,7 +72,7 @@
- 	    cd $linkdir
- 	    catch "unlink X" ret
- 	    if !$pc98 {
--	        if [catch "link $Xwinhome/bin/XF86_$server X" ret] {
-+	        if [catch "link ../../usr/X11R6/bin/XF86_$server X" ret] {
+@@ -75,7 +75,7 @@
+ 		if [string match XFCom* $server] {
+ 		    set serverpath $Xwinhome/bin/$server
+ 		} else {
+-		    set serverpath $Xwinhome/bin/XF86_$server
++		    set serverpath ../../usr/X11R6/bin/XF86_$server
+ 		}
+ 		if [catch "link $serverpath X" ret] {
  		    mesg "Link creation failed!\n\
- 			    You'll have to do it yourself" okay
- 	        } else {
-diff -urN XFree86-3.3.5.orig/xc/programs/Xserver/hw/xfree86/xf86config/xf86config.c XFree86-3.3.5/xc/programs/Xserver/hw/xfree86/xf86config/xf86config.c
---- XFree86-3.3.5.orig/xc/programs/Xserver/hw/xfree86/xf86config/xf86config.c	Tue Aug 17 09:39:39 1999
-+++ XFree86-3.3.5/xc/programs/Xserver/hw/xfree86/xf86config/xf86config.c	Thu Sep  2 15:19:14 1999
+diff -urN XFree86-3.3.6.orig/xc/programs/Xserver/hw/xfree86/xf86config/xf86config.c XFree86-3.3.6/xc/programs/Xserver/hw/xfree86/xf86config/xf86config.c
+--- XFree86-3.3.6.orig/xc/programs/Xserver/hw/xfree86/xf86config/xf86config.c	Mon Dec 20 17:40:07 1999
++++ XFree86-3.3.6/xc/programs/Xserver/hw/xfree86/xf86config/xf86config.c	Sat Mar 11 04:36:27 2000
 @@ -107,7 +107,7 @@
  #endif
  
@@ -84,9 +84,9 @@ diff -urN XFree86-3.3.5.orig/xc/programs/Xserver/hw/xfree86/xf86config/xf86confi
  #endif
  #else /* __EMX__ */
  	{
-diff -urN XFree86-3.3.5.orig/xc/programs/Xserver/os/wrapper.c XFree86-3.3.5/xc/programs/Xserver/os/wrapper.c
---- XFree86-3.3.5.orig/xc/programs/Xserver/os/wrapper.c	Thu Jul 29 11:23:02 1999
-+++ XFree86-3.3.5/xc/programs/Xserver/os/wrapper.c	Thu Sep  2 15:17:02 1999
+diff -urN XFree86-3.3.6.orig/xc/programs/Xserver/os/wrapper.c XFree86-3.3.6/xc/programs/Xserver/os/wrapper.c
+--- XFree86-3.3.6.orig/xc/programs/Xserver/os/wrapper.c	Fri Jul 30 15:07:09 1999
++++ XFree86-3.3.6/xc/programs/Xserver/os/wrapper.c	Sat Mar 11 04:36:27 2000
 @@ -42,6 +42,9 @@
  #define XSERVER_PATH	"/usr/X11R6/bin/X"
  #endif
