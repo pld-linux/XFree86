@@ -8,7 +8,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(wa):	Sierveus di håynaedje XFree86 eyèt maisses programes
 Name:		XFree86
 Version:	3.3.6
-Release:	1
+Release:	21
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -1007,6 +1007,19 @@ XFree86-TGA est un serveur 8 bits pour les cartes Digital TGA basées sur la
 puce DC21040. Ces cartes sont répandues sur les stations Alpha et sont
 incluses dans les Alpha UDN (Multia).
 
+%package -n sessreg
+Summary:	sessreg - manage utmp/wtmp entries for non-init clients
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-libs = %{version}
+
+%description -n sessreg
+Sessreg is a simple program for managing utmp/wtmp entries for xdm sessions.
+
+System V has a better interface to /var/run/utmp than BSD; it dynamically
+allocates entries in the file, instead of writing them at fixed positions
+indexed by position in /etc/ttys.
+
 %package -n xdm
 Summary:	XDM
 Summary(pl):	XDM
@@ -1014,8 +1027,14 @@ Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name} = %{version}
 Requires:	pam >= 0.66
-Requires:	rc-scripts
+Requires:	rc-scripts >= 0.2.0
+Requires:	sessreg = %{version}
+Requires:	/usr/X11R6/bin/sessreg
+Provides:	XDM
+Prereq:		chkconfig
 Obsoletes:	XFree86-xdm
+Obsoletes:	gdm
+Obsoletes:	kdm
 
 %description -n xdm
 X Display Manager.
@@ -1043,7 +1062,7 @@ Summary(pl):	Serwer fontów do XFree86
 Summary(wa):	Sierveu de fontes di XFree86
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Requires:	rc-scripts
+Requires:	rc-scripts >= 0.2.0
 Obsoletes:	xfsft XFree86-xfs
 Provides:	XFree86-xfs
 
@@ -1691,18 +1710,23 @@ rm -rf $RPM_BUILD_ROOT
 
 %endif
 
-%files -n xdm
+%files -n sessreg
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/sessreg
+%{_mandir}/man1/sessreg.1*
+
+%files -n xdm
+%defattr(644,root,root,755) 
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xdm
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/security/blacklist.xdm
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/xdm
 %attr(754,root,root) /etc/rc.d/init.d/xdm
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/xdm
+/var/state/xdm
 
 %config %{_libdir}/X11/app-defaults/Chooser
 
 %attr(755,root,root) %{_libdir}/X11/xdm
 %attr(755,root,root) %{_bindir}/xdm
-%attr(755,root,root) %{_bindir}/sessreg
 %{_mandir}/man1/xdm.1*
 
 %dir /etc/X11/xdm
