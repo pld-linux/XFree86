@@ -17,7 +17,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.2.1
-Release:	8
+Release:	9
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
@@ -2896,6 +2896,7 @@ fi
 %{_applnkdir}/Utilities/xclock.desktop
 %{_applnkdir}/Editors/xedit.desktop
 %{_applnkdir}/Amusements/xeyes.desktop
+%{_pixmapsdir}/oclock*
 
 %files -n imake
 %defattr(644,root,root,755)
