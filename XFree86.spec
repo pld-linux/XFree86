@@ -132,7 +132,6 @@ BuildRequires:	tcl-devel
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	Xft-devel >= 2.1
 %ifarch %{ix86} alpha
 %{!?_without_tdfx:BuildRequires:	Glide3-DRI-devel}
 %endif
@@ -142,7 +141,6 @@ BuildRequires:	Xft-devel >= 2.1
 %endif
 Requires:	xauth
 Requires:	%{name}-libs = %{version}
-Requires:	Xft >= 2.1
 ExclusiveArch:	%{ix86} alpha sparc m68k armv4l noarch ppc
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	xpm-progs
