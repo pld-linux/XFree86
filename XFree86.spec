@@ -1800,7 +1800,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #--- %prep ---------------------------
 
 %prep
-%setup -qcT -b0 -b1 -b2 -b3 -b4 -b5 -b6
+%setup -qcT -b0 -b1 -b2 -b3 -b4 -b5 -b6 -b7
 
 %patch0 -p0
 %patch1 -p1
