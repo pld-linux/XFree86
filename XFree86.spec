@@ -3,11 +3,12 @@ Summary(de):	Xfree86 Window-System-Server und grundlegende Programme
 Summary(fr):	Serveurs du système XFree86 et programmes de base
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
-Name: 		XFree86
+Name:		XFree86
 Version:	4.0.1
-Release:	3
+Release:	4
 Copyright:	MIT
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0/source/X401src-1.tgz
 Source1:	ftp://ftp.mesa3d.org/mesa/MesaLib-3.2.1.tar.bz2
@@ -24,28 +25,28 @@ Source12:	xclipboard.desktop
 Source13:	xconsole.desktop
 Source14:	xterm.desktop
 Source15:	xlogo64.png
-Patch0:		XFree86-4.0-PLD.patch
-Patch1:		XFree86-HasZlib.patch
-Patch2:		XFree86-DisableDebug.patch
-Patch3:		XFree86-Xwrapper.patch
-Patch4:		XFree86-xfsredhat.patch
-Patch5:		XFree86-xfs-fix.patch
-Patch6:		XFree86-xfs-logger.patch
-Patch7:		XFree86-xterm-utempter.patch
-Patch8:		XFree86-app_defaults_dir.patch
+Patch0:		%{name}-4.0-PLD.patch
+Patch1:		%{name}-HasZlib.patch
+Patch2:		%{name}-DisableDebug.patch
+Patch3:		%{name}-Xwrapper.patch
+Patch4:		%{name}-xfsredhat.patch
+Patch5:		%{name}-xfs-fix.patch
+Patch6:		%{name}-xfs-logger.patch
+Patch7:		%{name}-xterm-utempter.patch
+Patch8:		%{name}-app_defaults_dir.patch
 # From DRI CVS
-#Patch9:		XFree86-DRI-20000624.patch.gz
+#Patch9:	%{name}-DRI-20000624.patch.gz
 # from rawhide
-Patch10:	XFree86-startx_xauth.patch
-Patch11:	XFree86-v4l.patch
-Patch12:	XFree86-fixemacs.patch
-Patch13:	XFree86-sparc1.patch.gz
-Patch14:	XFree86-sparc2.patch.gz
-Patch15:	XFree86-sparc3.patch.gz
-Patch16:	XFree86-sparc4.patch.gz
-Patch17:	XFree86-shared.patch
-Patch18:	XFree86-broken-includes.patch
-Patch19:	XFree86-Xaw-unaligned.patch
+Patch10:	%{name}-startx_xauth.patch
+Patch11:	%{name}-v4l.patch
+Patch12:	%{name}-fixemacs.patch
+Patch13:	%{name}-sparc1.patch.gz
+Patch14:	%{name}-sparc2.patch.gz
+Patch15:	%{name}-sparc3.patch.gz
+Patch16:	%{name}-sparc4.patch.gz
+Patch17:	%{name}-shared.patch
+Patch18:	%{name}-broken-includes.patch
+Patch19:	%{name}-Xaw-unaligned.patch
 
 BuildRequires:	flex
 BuildRequires:	ncurses-devel
@@ -62,7 +63,7 @@ Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
 Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %ifarch sparc
-Obsoletes: X11R6.1
+Obsoletes:	X11R6.1
 %endif
 
 %define		_fontdir	/usr/share/fonts
@@ -71,59 +72,62 @@ Obsoletes: X11R6.1
 %define		_appnkldir	%{_datadir}/applnk
 
 %description
-If you want to install the X Window System (TM) on your machine, you'll
-need to install XFree86.
+If you want to install the X Window System (TM) on your machine,
+you'll need to install XFree86.
 
-The X Window System provides the base technology for developing graphical
-user interfaces. Simply stated, X draws the elements of the GUI on the
-user's screen and builds methods for sending user interactions back to the
-application. X also supports remote application deployment--running an
-application on another computer while viewing the input/output on your
-machine. X is a powerful environment which supports many different
-applications, such as games, programming tools, graphics programs, text
-editors, etc. XFree86 is the version of X which runs on Linux, as well as
-other platforms.
+The X Window System provides the base technology for developing
+graphical user interfaces. Simply stated, X draws the elements of the
+GUI on the user's screen and builds methods for sending user
+interactions back to the application. X also supports remote
+application deployment--running an application on another computer
+while viewing the input/output on your machine. X is a powerful
+environment which supports many different applications, such as games,
+programming tools, graphics programs, text editors, etc. XFree86 is
+the version of X which runs on Linux, as well as other platforms.
 
-This package contains the basic fonts, programs and documentation for an X
-workstation. However, this package doesn't provide the program which you
-will need to drive your video hardware. To control your video card, you'll
-need the particular X server package which corresponds to your computer's
-video card.
+This package contains the basic fonts, programs and documentation for
+an X workstation. However, this package doesn't provide the program
+which you will need to drive your video hardware. To control your
+video card, you'll need the particular X server package which
+corresponds to your computer's video card.
 
 %description -l de
-X-Windows ist eine voll funktionsfähige grafische Benutzeroberfläche mit
-mehreren Fenstern, mehreren Clients und verschiedenen Arten von Fenstern. Es
-kommt auf den meisten Unix-Plattformen zum Einsatz. Die Clients lassen sich
-auch mit Hilfe anderer Fenstersysteme anzeigen. Das X-Protokoll gestattet
-die Ausführung der Applikationen direkt auf lokalen Rechnern oder über ein
-Netz und bietet große Flexibilität bei Client-Server-Implementierungen.
+X-Windows ist eine voll funktionsfähige grafische Benutzeroberfläche
+mit mehreren Fenstern, mehreren Clients und verschiedenen Arten von
+Fenstern. Es kommt auf den meisten Unix-Plattformen zum Einsatz. Die
+Clients lassen sich auch mit Hilfe anderer Fenstersysteme anzeigen.
+Das X-Protokoll gestattet die Ausführung der Applikationen direkt auf
+lokalen Rechnern oder über ein Netz und bietet große Flexibilität bei
+Client-Server-Implementierungen.
 
 %description -l pl
 X Window System jest graficznym interfejsem u¿ytkownika, cechuje siê
-mo¿liwo¶ci± pracy w wielu oknach, z wieloma klientami i do tego w ró¿nych
-wystrojach okien. :) Jest u¿ywany na wiêkszo¶ci platform sytemów Unix, a
-klienci mog± byæ uruchamiani tak¿e pod innymi popularnymi systemami
-okienkowymi. Protokó³ X pozwala na uruchamianie aplikacji zarówno z lokalnej
-maszyny jak i poprzez sieæ - daj±c przez to elastyczn± implementacjê
-architektury klient/serwer.
+mo¿liwo¶ci± pracy w wielu oknach, z wieloma klientami i do tego w
+ró¿nych wystrojach okien. :) Jest u¿ywany na wiêkszo¶ci platform
+sytemów Unix, a klienci mog± byæ uruchamiani tak¿e pod innymi
+popularnymi systemami okienkowymi. Protokó³ X pozwala na uruchamianie
+aplikacji zarówno z lokalnej maszyny jak i poprzez sieæ - daj±c przez
+to elastyczn± implementacjê architektury klient/serwer.
 
 Pakiet ten nie zawiera X serwera który jest po¶rednikiem z Twoj± kart±
 graficzn± (jest on w innym pakiecie).
 
 %description -l tr
 X Window sistemi, çoklu pencere, çoklu istemci ve çeþitli pencere
-stilleriyle geniþ özelliklere sahip bir Grafik Kullanýcý Arabirimidir. Çoðu
-UNIX sisteminde çalýþtýðý gibi istemcileri de birçok pencereleme sistemiyle
-çalýþabilir. X protokolu kullanan uygulamalarýn yerel makina veya bilgisayar
-aðý üzerinden çalýþtýrýlabilmesi esnek bir istemci/sunucu ortamý saðlar. Bu
-paket bir X istasyonu için gerekli olan temel yazýtiplerini, programlarý ve
-belgeleri sunar. Ekran kartýnýzý sürmek için gerekli olan X sunucusu bu
-pakete dahil deðildir.
+stilleriyle geniþ özelliklere sahip bir Grafik Kullanýcý Arabirimidir.
+Çoðu UNIX sisteminde çalýþtýðý gibi istemcileri de birçok pencereleme
+sistemiyle çalýþabilir. X protokolu kullanan uygulamalarýn yerel
+makina veya bilgisayar aðý üzerinden çalýþtýrýlabilmesi esnek bir
+istemci/sunucu ortamý saðlar. Bu paket bir X istasyonu için gerekli
+olan temel yazýtiplerini, programlarý ve belgeleri sunar. Ekran
+kartýnýzý sürmek için gerekli olan X sunucusu bu pakete dahil
+deðildir.
 
 %package modules
 Summary:	Modules with X servers extensions
 Summary(pl):	Wspólne modu³y rozszerzeñ dla wszystkich X serwerów
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 
 %description modules
@@ -138,42 +142,45 @@ Summary(de):	X11R6 shared Libraries
 Summary(pl):	Biblioteki dzielone dla X11R6
 Summary(fr):	Bibliothèques partagées X11R6
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Prereq:		grep
 Prereq:		/sbin/ldconfig
 
 %ifarch sparc
-Obsoletes: X11R6.1-libs
+Obsoletes:	X11R6.1-libs
 %endif
 
 %description libs
-XFree86-libs contains the shared libraries that most X programs need to run
-properly. These shared libraries are in a separate package in order to
-reduce the disk space needed to run X applications on a machine without an X
-server (i.e, over a network).
+XFree86-libs contains the shared libraries that most X programs need
+to run properly. These shared libraries are in a separate package in
+order to reduce the disk space needed to run X applications on a
+machine without an X server (i.e, over a network).
 
 %description -l de libs
-Dieses Paket enthält die zur gemeinsamen Nutzung vorgesehenen Libraries, die
-die meisten X-Programme für den einwandfreien Betrieb benötigen. Sie wurden
-in einem separaten Paket untergebracht, um den Festplattenspeicherplatz auf
-Computern zu reduzieren, die ohne einen X- Server (über ein Netz) arbeiten.
+Dieses Paket enthält die zur gemeinsamen Nutzung vorgesehenen
+Libraries, die die meisten X-Programme für den einwandfreien Betrieb
+benötigen. Sie wurden in einem separaten Paket untergebracht, um den
+Festplattenspeicherplatz auf Computern zu reduzieren, die ohne einen
+X- Server (über ein Netz) arbeiten.
 
 %description -l fr libs
-Ce paquetage contient les bibliothèques partagées nécessaires à de nombreux
-programmes X. Elles se trouvent dans un paquetage séparé afin de réduire
-l'espace disque nécessaire à l'exécution des applications X sur une machine
-sans serveur X (en réseau).
+Ce paquetage contient les bibliothèques partagées nécessaires à de
+nombreux programmes X. Elles se trouvent dans un paquetage séparé afin
+de réduire l'espace disque nécessaire à l'exécution des applications X
+sur une machine sans serveur X (en réseau).
 
 %description -l pl libs
 Pakiet zawieraj±cy podstawowe biblioteki dla programów kozystaj±cych z
-systemu X Window. Wydzielony w celu oszczednosci miejsca, nie wp³ywa na
-mo¿liwo¶ci pracy aplikacji X Window poprzez np. sieæ. Nie potrzebny dla
-komputerów nie posiadaj±cych X serwerów.
+systemu X Window. Wydzielony w celu oszczednosci miejsca, nie wp³ywa
+na mo¿liwo¶ci pracy aplikacji X Window poprzez np. sieæ. Nie potrzebny
+dla komputerów nie posiadaj±cych X serwerów.
 
 %description -l tr libs
-Bu paket X programlarýnýn düzgün çalýþabilmeleri için gereken kitaplýklarý
-içerir. Bunlar, X programlarýný (sunucu olsun olmasýn) çalýþtýrmak için
-gerekli disk alanýný azaltmak için ayrý bir paket olarak sunulmuþtur.
+Bu paket X programlarýnýn düzgün çalýþabilmeleri için gereken
+kitaplýklarý içerir. Bunlar, X programlarýný (sunucu olsun olmasýn)
+çalýþtýrmak için gerekli disk alanýný azaltmak için ayrý bir paket
+olarak sunulmuþtur.
 
 %package devel
 Summary:	X11R6 headers and programming man pages
@@ -182,6 +189,7 @@ Summary(fr):	Pages man de programmation
 Summary(pl):	Pliki nag³ówkowe dla X11R6
 Summary(tr):	X11R6 ile geliþtirme için gerekli dosyalar
 Group:		X11/Libraries
+Group(de):	X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-libs = %{version}
 %ifarch sparc
@@ -189,42 +197,44 @@ Obsoletes:	X11R6.1-devel
 %endif
 
 %description devel
-Libraries, header files, and documentation for developing programs that run
-as X clients. It includes the base Xlib library as well as the Xt and Xaw
-widget sets. For information on programming with these libraries, PLD
-recommends the series of books on X Programming produced by O'Reilly and
-Associates.
+Libraries, header files, and documentation for developing programs
+that run as X clients. It includes the base Xlib library as well as
+the Xt and Xaw widget sets. For information on programming with these
+libraries, PLD recommends the series of books on X Programming
+produced by O'Reilly and Associates.
 
 %description -l de devel
-Libraries, Header-Dateien und Dokumentation zum Entwickeln von Programmen,
-die als X-Clients laufen. Enthält die Xlib-Library und die Widget-Sätze Xt
-und Xaw. Information zum Programmieren mit diesen Libraries finden Sie in
-der Buchreihe zur X-Programmierung von O'Reilly and Associates.
+Libraries, Header-Dateien und Dokumentation zum Entwickeln von
+Programmen, die als X-Clients laufen. Enthält die Xlib-Library und die
+Widget-Sätze Xt und Xaw. Information zum Programmieren mit diesen
+Libraries finden Sie in der Buchreihe zur X-Programmierung von
+O'Reilly and Associates.
 
 %description -l fr devel
-Bibliothéques, fichiers d'en-tête, et documentation pour développer des
-programmes s'exécutant en clients X. Cela comprend la Bibliothéque Xlib de
-base aussi bien que les ensembles de widgets Xt et Xaw. Pour des
-informations sur la programmation avec ces Bibliothéques, Red Hat recommande
-la série d'ouvrages sur la programmation X editée par O'Reilly and
-Associates.
+Bibliothéques, fichiers d'en-tête, et documentation pour développer
+des programmes s'exécutant en clients X. Cela comprend la Bibliothéque
+Xlib de base aussi bien que les ensembles de widgets Xt et Xaw. Pour
+des informations sur la programmation avec ces Bibliothéques, Red Hat
+recommande la série d'ouvrages sur la programmation X editée par
+O'Reilly and Associates.
 
 %description -l pl devel
 Pliki nag³ówkowe, dokumentcja dla programistów rozwijaj±cych aplikacje
-klienckie pod X'y. Zawiera podstatwow± bibliotekê Xlib a tak¿e Xt i Xaw.
-Wiêcej informacji nt. pisania programów przy u¿yciu tych bibliotek mo¿esz
-znale¼æ w ksi±¿kach wydawnictwa O'Reilly and Associates (X Programming)
-polecanych przez Red Hat'a.
+klienckie pod X'y. Zawiera podstatwow± bibliotekê Xlib a tak¿e Xt i
+Xaw. Wiêcej informacji nt. pisania programów przy u¿yciu tych
+bibliotek mo¿esz znale¼æ w ksi±¿kach wydawnictwa O'Reilly and
+Associates (X Programming) polecanych przez Red Hat'a.
 
 %description -l tr devel
-X istemcisi olarak çalýþacak programlar geliþtirmek için gereken statik
-kitaplýklar, baþlýk dosyalarý ve belgeler. Xlib kitaplýðýnýn yanýsýra Xt ve
-Xaw arayüz kitaplýklarýný da içerir.
+X istemcisi olarak çalýþacak programlar geliþtirmek için gereken
+statik kitaplýklar, baþlýk dosyalarý ve belgeler. Xlib kitaplýðýnýn
+yanýsýra Xt ve Xaw arayüz kitaplýklarýný da içerir.
 
 %package static
 Summary:	X11R6 static libraries
 Summary(pl):	Biblioteki sytatyczne do X11R6
 Group:		X11/Libraries
+Group(de):	X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-devel = %{version}
 %ifarch sparc
@@ -242,6 +252,7 @@ Biblioteki sytatyczne do X11R6.
 Summary:	OpenGL support for X11R6
 Summary(pl):	Wsparciem OpenGL dla systemu X11R6
 Group:		X11/Libraries
+Group(de):	X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-libs = %{version}
 Obsoletes:	Mesa
@@ -256,6 +267,7 @@ Wsparcie OpenGL dla systemu X11R6
 Summary:	OpenGL libraries for X11R6
 Summary(pl):	Biblioteki OpenGL dla systemu X11R6
 Group:		X11/Libraries
+Group(de):	X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-libs = %{version}
 Requires:	%{name}-OpenGL-core
@@ -273,6 +285,7 @@ Biblioteki OpenGL dla systemu X11R6
 Summary:	OpenGL for X11R6 development
 Summary(pl):	Pliki nag³ówkowe dla OpenGL dla systemu X11R6
 Group:		X11/Libraries
+Group(de):	X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-OpenGL-libs = %{version}
 Provides:	OpenGL-devel
@@ -288,6 +301,7 @@ Pliki nag³ówkowe dla OpenGL dla systemu X11R6.
 Summary:	X11R6 static libraries with OpenGL
 Summary(pl):	Biblioteki sytatyczne do X11R6 ze wsparciem dla OpenGL
 Group:		X11/Libraries
+Group(de):	X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-OpenGL-devel = %{version}
 Provides:	OpenGL-static
@@ -303,14 +317,15 @@ Biblioteki sytatyczne zawieraj±ce wsparcie dla OpenGL do X11R6.
 Summary:	Graphical configuration tool for XFree86
 Summary(pl):	Graficzny konfigurator dla XFree86
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-VGA16 = %{version}
 
 %description XF86Setup
 XF86Setup is a graphical configuration tool for the XFree86 family of
-servers. It allows you to configure video settings, keyboard layouts, mouse
-type, and other miscellaneous options. It is slow however, and requires the
-generic VGA 16 color server be available.
+servers. It allows you to configure video settings, keyboard layouts,
+mouse type, and other miscellaneous options. It is slow however, and
+requires the generic VGA 16 color server be available.
 
 %description -l pl XF86Setup
 Graficzny konfigurator dla XFree86.
@@ -319,47 +334,51 @@ Graficzny konfigurator dla XFree86.
 Summary:	XFree86 Xvfb server
 Summary(pl):	Serwer XFree86 Xvfb
 Group:		X11/XFree86/Servers
+Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-fonts = %{version}
 
 %description Xvfb
-Xvfb (X Virtual Frame Buffer) is an X Windows System server that is capable
-of running on machines with no display hardware and no physical input
-devices. Xvfb emulates a dumb framebuffer using virtual memory. Xvfb doesn't
-open any devices, but behaves otherwise as an X display. Xvfb is normally
-used for testing servers. Using Xvfb, the mfb or cfb code for any depth can
-be exercised without using real hardware that supports the desired depths.
-Xvfb has also been used to test X clients against unusual depths and screen
-configurations, to do batch processing with Xvfb as a background rendering
-engine, to do load testing, to help with porting an X server to a new
-platform, and to provide an unobtrusive way of running applications which
-really don't need an X server but insist on having one.
+Xvfb (X Virtual Frame Buffer) is an X Windows System server that is
+capable of running on machines with no display hardware and no
+physical input devices. Xvfb emulates a dumb framebuffer using virtual
+memory. Xvfb doesn't open any devices, but behaves otherwise as an X
+display. Xvfb is normally used for testing servers. Using Xvfb, the
+mfb or cfb code for any depth can be exercised without using real
+hardware that supports the desired depths. Xvfb has also been used to
+test X clients against unusual depths and screen configurations, to do
+batch processing with Xvfb as a background rendering engine, to do
+load testing, to help with porting an X server to a new platform, and
+to provide an unobtrusive way of running applications which really
+don't need an X server but insist on having one.
 
-If you need to test your X server or your X clients, you may want to install
-Xvfb for that purpose.
+If you need to test your X server or your X clients, you may want to
+install Xvfb for that purpose.
 
 %package Xnest
 Summary:	XFree86 Xnest server
 Summary(pl):	Serwer XFree86 Xnest
 Group:		X11/XFree86/Servers
+Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-fonts = %{version}
 
 %description Xnest
-Xnest is an X Window System server which runs in an X window. Xnest is a
-'nested' window server, actually a client of the real X server, which
-manages windows and graphics requests for Xnest, while Xnest manages the
-windows and graphics requests for its own clients.
+Xnest is an X Window System server which runs in an X window. Xnest is
+a 'nested' window server, actually a client of the real X server,
+which manages windows and graphics requests for Xnest, while Xnest
+manages the windows and graphics requests for its own clients.
 
-You will need to install Xnest if you require an X server which will run as
-a client of your real X server (perhaps for testing purposes).
+You will need to install Xnest if you require an X server which will
+run as a client of your real X server (perhaps for testing purposes).
 
 %package Xprt
 Summary:	X print server
 Summary(pl):	X print server
 Group:		X11/XFree86/Servers
+Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-fonts = %{version}
@@ -375,6 +394,7 @@ Summary(fr):	Serveur XFree86
 Summary(pl):	XFree86 serwer
 Summary(tr):	XFree86 sunucusu
 Group:		X11/XFree86/Servers
+Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	pam
 Requires:	%{name}-modules = %{version}-%{release}
@@ -390,54 +410,57 @@ Obsoletes:	XFree86-i740 XFree86-i810 XFree86-mga
 Obsoletes:	XFree86-NeoMagic XFree86-NVidia
 Obsoletes:	XFree86-Rage128 XFree86-Rendition
 Obsoletes:	XFree86-S3V XFree86-SiS XFree86-3dfx
-Obsoletes: 	XFree86-Trident XFree86-Tseng XFree86-VGA16
+Obsoletes:	XFree86-Trident XFree86-Tseng XFree86-VGA16
 Obsoletes:	XFree86-TGA XFree86-FBDev
 Obsoletes:	XFree86-Sun XFree86-Sun24 XFree86-SunMono
 Obsoletes:	XFree86-XF86Setup, Xconfigurator
 
 %description Xserver
-X server for most simple framebuffer SVGA devices, including cards built
-from ET4000 chips, Cirrus Logic chips, Chips and Technologies laptop chips,
-Trident 8900 and 9000 chips. It works for Diamond Speedstar, Orchid Kelvins,
-STB Nitros and Horizons, Genoa 8500VL, most Actix boards, the Spider VLB
-Plus. It also works for many other chips and cards, so try this server if
-you are having problems.
+X server for most simple framebuffer SVGA devices, including cards
+built from ET4000 chips, Cirrus Logic chips, Chips and Technologies
+laptop chips, Trident 8900 and 9000 chips. It works for Diamond
+Speedstar, Orchid Kelvins, STB Nitros and Horizons, Genoa 8500VL, most
+Actix boards, the Spider VLB Plus. It also works for many other chips
+and cards, so try this server if you are having problems.
 
 %description -l de Xserver
 X-Server für die elementarsten Framebuffer-SVGA-Geräte, einschließlich
-Karten, die aus ET4000-Chips, Cirrus Logic-Chips, Chips and Technologies
-Laptop-Chips sowie Trident 8900 und 9000 Chips gebaut sind. Funktioniert mit
-Diamond Speedstar, Orchid Kelvins, STB Nitros und Horizons, Genoa 8500VL,
-den meisten Actix-Karten sowie Spider VLB Plus und außerdem mit vielen
-anderen Chips und Karten. Es lohnt sich, diesen Server auszuprobieren, wenn
-Sie Probleme haben.
+Karten, die aus ET4000-Chips, Cirrus Logic-Chips, Chips and
+Technologies Laptop-Chips sowie Trident 8900 und 9000 Chips gebaut
+sind. Funktioniert mit Diamond Speedstar, Orchid Kelvins, STB Nitros
+und Horizons, Genoa 8500VL, den meisten Actix-Karten sowie Spider VLB
+Plus und außerdem mit vielen anderen Chips und Karten. Es lohnt sich,
+diesen Server auszuprobieren, wenn Sie Probleme haben.
 
 %description -l fr Xserver
 Serveur X pour les circuits SVGA les plus simples, dont les cartes
-construites avec les circuits ET4000, Cirrus Logic, Chips and Technologies
-laptop, Trident 8900 et 9000. Fonctionne pour les cartes Diamond Speedstar,
-Orchid Kelvins, STB Nitros et Horizons, Genoa 8500VL, la plupart des Actix
-et la Spider VLB Plus. Fonctionne aussi pour de nombreux autres circuits et
-cartes. Essayez ce serveur si vous avez des problèmes.
+construites avec les circuits ET4000, Cirrus Logic, Chips and
+Technologies laptop, Trident 8900 et 9000. Fonctionne pour les cartes
+Diamond Speedstar, Orchid Kelvins, STB Nitros et Horizons, Genoa
+8500VL, la plupart des Actix et la Spider VLB Plus. Fonctionne aussi
+pour de nombreux autres circuits et cartes. Essayez ce serveur si vous
+avez des problèmes.
 
 %description -l pl Xserver
-X serwer dla wiêkszo¶ci prostych kart SVGA, w³±czaj±c karty zbudowane na
-uk³adach ET4000, Cirrus Logic, Trident 8900 i 9000, oraz uk³ady wystêpuj±ce
-w laptopach. Dzia³a tak¿e z kartami Diamnod Speedstar, Orchid Kelvins, STB
-Nitros i Horizons, Genoa 8500VL, wiêkszo¶æ Actix, Spider VLB Plus. Dzia³a
-równie¿ na wielu innych kartach opartych na innych uk³adach wiêc spróbuj tego
-serwera je¶li masz jakie¶ problemy.
+X serwer dla wiêkszo¶ci prostych kart SVGA, w³±czaj±c karty zbudowane
+na uk³adach ET4000, Cirrus Logic, Trident 8900 i 9000, oraz uk³ady
+wystêpuj±ce w laptopach. Dzia³a tak¿e z kartami Diamnod Speedstar,
+Orchid Kelvins, STB Nitros i Horizons, Genoa 8500VL, wiêkszo¶æ Actix,
+Spider VLB Plus. Dzia³a równie¿ na wielu innych kartach opartych na
+innych uk³adach wiêc spróbuj tego serwera je¶li masz jakie¶ problemy.
 
 %description -l tr Xserver
-ET4000, Cirrus Logic, Chips and Technologies dizüstü, Trident 8900 ve 9000
-gibi basit 'framebuffer' SVGA kullananan kartlar için X sunucusu. Ayný
-zamanda Diamond Speedstar, Orchid Kelvins, STB Nitros / Horizons, Genoa
-8500VL, çoðu Actix kartlarý, Spider VLB Plus gibi kartlar ve birçok diðer
-kart ile de çalýþýr. Herhangi bir sorun yaþarsanýz bu sunucuyu deneyin.
+ET4000, Cirrus Logic, Chips and Technologies dizüstü, Trident 8900 ve
+9000 gibi basit 'framebuffer' SVGA kullananan kartlar için X sunucusu.
+Ayný zamanda Diamond Speedstar, Orchid Kelvins, STB Nitros / Horizons,
+Genoa 8500VL, çoðu Actix kartlarý, Spider VLB Plus gibi kartlar ve
+birçok diðer kart ile de çalýþýr. Herhangi bir sorun yaþarsanýz bu
+sunucuyu deneyin.
 
 %package driver-apm
 Summary:	Alliance Promotion video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 
@@ -447,6 +470,7 @@ Alliance Promotion driver for XFree86 4.0+.
 %package driver-ati
 Summary:	ATI video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 
@@ -456,6 +480,7 @@ ATI video driver.
 %package driver-chips
 Summary:	Chips and Technologies video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 
@@ -465,6 +490,7 @@ Chips and Technologies video driver.
 %package driver-cirrus
 Summary:	Cirrus Logic video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 
@@ -474,6 +500,7 @@ Cirrus Logic video driver.
 %package driver-cyrix
 Summary:	Cyrix video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 
@@ -483,6 +510,7 @@ Cyrix video driver.
 %package driver-fbdev
 Summary:	Video driver for framebuffer device
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 
@@ -492,6 +520,7 @@ Video driver for framebuffer device.
 %package driver-glide
 Summary:	Voodoo 1 and Voodoo 2 video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 
@@ -501,6 +530,7 @@ Voodoo 1 and Voodoo 2 video driver.
 %package driver-glint
 Summary:	GLINT/Permedia video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	OpenGL
@@ -511,6 +541,7 @@ GLINT/Permedia video driver.
 %package driver-i740
 Summary:	Intel i740 video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 
@@ -520,6 +551,7 @@ Intel i740 video driver.
 %package driver-i810
 Summary:	Intel i810 video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	OpenGL
@@ -530,6 +562,7 @@ Intel i810 video driver.
 %package driver-mga
 Summary:	Matrox video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	OpenGL
@@ -540,6 +573,7 @@ Matrox video driver.
 %package driver-neomagic
 Summary:	NeoMagic video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 
@@ -549,6 +583,7 @@ NeoMagic video driver.
 %package driver-nv
 Summary:	NVIDIA video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 
@@ -558,6 +593,7 @@ NVIDIA video driver.
 %package driver-r128
 Summary:	ATI Rage 128 video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	OpenGL
@@ -568,6 +604,7 @@ ATI Rage 128 video driver.
 %package driver-rendition
 Summary:	Rendition video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 
@@ -577,6 +614,7 @@ Rendition video driver.
 %package driver-s3virge
 Summary:	S3 ViRGE video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 
@@ -586,6 +624,7 @@ S3 ViRGE video driver.
 %package driver-sis
 Summary:	SiS video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 
@@ -595,6 +634,7 @@ SiS video driver.
 %package driver-tdfx
 Summary:	3Dfx video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	OpenGL
@@ -605,6 +645,7 @@ Requires:	OpenGL
 %package driver-tga
 Summary:	TGA video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 
@@ -614,6 +655,7 @@ TGA video driver.
 %package driver-trident
 Summary:	Trident video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 
@@ -623,6 +665,7 @@ Trident video driver.
 %package driver-tseng
 Summary:	Tseng Labs video driver
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 
@@ -633,75 +676,81 @@ Tseng Labs video driver.
 Summary:	XFree86 Sun server (monochrome and 8-bit color SBUS framebuffers)
 Summary(pl):	Serwer XFree86 Sun (dla framebuffera)
 Group:		X11/XFree86/Servers
+Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-fonts = %{version}
 Obsoletes:	X11R6.1-Sun
 
 %description Sun
-To run X Windows programs requires an X server for your specific hardware.
-This package includes the X server for Sun computers with monochrome and
-8-bit color SBUS framebuffers.
+To run X Windows programs requires an X server for your specific
+hardware. This package includes the X server for Sun computers with
+monochrome and 8-bit color SBUS framebuffers.
 
 %description -l pl Sun
 Aby uruchomiæ X Window System potrzebujesz X serwera dostosowanego do
-Twojego sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun z
-monochromatycznymi lub te¿ 8-bitowymi kolorowymi framebufferami SBUS.
+Twojego sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun
+z monochromatycznymi lub te¿ 8-bitowymi kolorowymi framebufferami
+SBUS.
 
 %package SunMono
 Summary:	XFree86 Sun server for monochrome SBUS framebuffers only
 Summary(pl):	Serwer XFree86 Sun (tylko dla monitorów monochromatycznych)
 Group:		X11/XFree86/Servers
+Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-fonts = %{version}
 Obsoletes:	X11R6.1-SunMono
 
 %description SunMono
-To run X Windows programs requires an X server for your specific hardware.
-This package includes the X server for Sun computers with monochrome
-SBUS framebuffers only.
+To run X Windows programs requires an X server for your specific
+hardware. This package includes the X server for Sun computers with
+monochrome SBUS framebuffers only.
 
 %description -l pl SunMono
 Aby uruchomiæ X Window System potrzebujesz X serwera dostosowanego do
-Twojego sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun z
-wy³±cznie monochromatycznymi framebufferami SBUS.
+Twojego sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun
+z wy³±cznie monochromatycznymi framebufferami SBUS.
 
 %package Sun24
 Summary:	XFree86 Sun server for all supported SBUS framebuffers
 Summary(pl):	Serwer XFree86 Sun (dla wszystkich SBUS framebufferów)
 Group:		X11/XFree86/Servers
+Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-fonts = %{version}
 Obsoletes:	X11R6.1-Sun24
 
 %description Sun24
-To run X Windows programs requires an X server for your specific hardware.
-This package includes the X server for Sun computers with all supported
-SBUS framebuffers.
+To run X Windows programs requires an X server for your specific
+hardware. This package includes the X server for Sun computers with
+all supported SBUS framebuffers.
 
 %description -l pl Sun24
 Aby uruchomiæ X Window System potrzebujesz X serwera dostosowanego do
-Twojego sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun dla
-wszystkich wspieranych framebufferów SBUS.
+Twojego sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun
+dla wszystkich wspieranych framebufferów SBUS.
 
 %package DPS
 Summary:	Display PostScript
 Summary(pl):	Display PostScript
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Obsoletes:	dgs
 
 %description DPS
-X-Windows Display PostScript is device-independent imaging model 
-for displaying information on a screen.
+X-Windows Display PostScript is device-independent imaging model for
+displaying information on a screen.
 
 %description -l pl DPS
-X-Windows Display PostScript, to niezale¿ny od urz±dzenia model 
+X-Windows Display PostScript, to niezale¿ny od urz±dzenia model
 wy¶wietlania informacji na ekranie.
 
 %package DPS-devel
 Summary:	Display PostScript
 Summary(pl):	Display PostScript
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-DPS = %{version}
 Obsoletes:	dgs-devel
@@ -716,6 +765,7 @@ Pliki nag³ówkowe do biblioteki do X-Windows Display PostScript.
 Summary:	Display PostScript
 Summary(pl):	Display PostScript
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-DPS-devel = %{version}
 Obsoletes:	dgs-static
@@ -729,20 +779,23 @@ Statyczne biblioteko do X-Windows Display PostScript.
 %package -n sessreg
 Summary:	sessreg - manage utmp/wtmp entries for non-init clients
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-libs = %{version}
 
 %description -n sessreg
-Sessreg is a simple program for managing utmp/wtmp entries for xdm sessions.
+Sessreg is a simple program for managing utmp/wtmp entries for xdm
+sessions.
 
-System V has a better interface to /var/run/utmp than BSD; it dynamically
-allocates entries in the file, instead of writing them at fixed positions
-indexed by position in /etc/ttys.
+System V has a better interface to /var/run/utmp than BSD; it
+dynamically allocates entries in the file, instead of writing them at
+fixed positions indexed by position in /etc/ttys.
 
 %package -n xdm
 Summary:	xdm - X Display Manager with support for XDMCP, host chooser
 Summary(pl):	XDM
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name} = %{version}
 Requires:	pam >= 0.71
@@ -756,73 +809,78 @@ Obsoletes:	gdm
 Obsoletes:	kdm
 
 %description -n xdm
-Xdm manages a collection of X displays, which may be on the local host or
-remote servers. The design of xdm was guided by the needs of X terminals as
-well as the X Consortium standard XDMCP, the X Display Manager Control
-Protocol.
+Xdm manages a collection of X displays, which may be on the local host
+or remote servers. The design of xdm was guided by the needs of X
+terminals as well as the X Consortium standard XDMCP, the X Display
+Manager Control Protocol.
 
 %package -n twm
 Summary:	Tab Window Manager for the X Window System
 Summary(pl):	Twm - podstawowy zarz±dca okien dla X Window System
 Group:		X11/Window Managers/Tools
+Group(de):	X11/Fenstermanager/Werkzeuge
 Group(es):	X11/Administraadores De Ventanas
 Group(fr):	X11/Gestionnaires De Fenêtres
 Group(pl):	X11/Zarz±dcy Okien/Narzêdzia
 
 %description -n twm
-Twm is a window manager for the X Window System. It provides titlebars,
-shaped windows, several forms of icon management, user-defined macro
-functions, click-to-type and pointerdriven keyboard focus, and
-user-specified key and pointer button bindings.
+Twm is a window manager for the X Window System. It provides
+titlebars, shaped windows, several forms of icon management,
+user-defined macro functions, click-to-type and pointerdriven keyboard
+focus, and user-specified key and pointer button bindings.
 
 %package -n xfs
 Summary:	Font server for XFree86
 Summary(pl):	Serwer fontów do XFree86
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-libs = %{version}
 Prereq:		chkconfig
 Obsoletes:	xfsft XFree86-xfs
 
 %description -n xfs
-This is a font server for XFree86. You can serve fonts to other X servers
-remotely with this package, and the remote system will be able to use all
-fonts installed on the font server, even if they are not installed on the
-remote computer.
+This is a font server for XFree86. You can serve fonts to other X
+servers remotely with this package, and the remote system will be able
+to use all fonts installed on the font server, even if they are not
+installed on the remote computer.
 
 %package -n xauth
 Summary:	xauth - X authority file utility
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-libs = %{version}
 
 %description -n xauth
-The xauth program is used to edit and display the authorization information
-used in connecting to the X server. This program is usually used to extract
-authorization records from one machine and merge them in on another (as is
-the case when using remote logins or granting access to other users).
+The xauth program is used to edit and display the authorization
+information used in connecting to the X server. This program is
+usually used to extract authorization records from one machine and
+merge them in on another (as is the case when using remote logins or
+granting access to other users).
 
 %package tools
 Summary:	Various tools for XFree86
 Group:		X11/XFree86
+Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name} = %{version}
 Obsoletes:	X11R6-contrib
 
 %description tools
-Various tools for X, including listres, xbiff, xedit, xeyes, xcalc, xload
-and xman, among others.
+Various tools for X, including listres, xbiff, xedit, xeyes, xcalc,
+xload and xman, among others.
 
-If you're using X, you should install XFree86-tools.  You will also
+If you're using X, you should install XFree86-tools. You will also
 need to install the XFree86 package, the XFree86 package which
 corresponds to your video card, one of the XFree86 fonts packages, the
 Xconfigurator package and the XFree86-libs package.
 
-Finally, if you are going to develop applications that run as X clients,
-you will also need to install XFree86-devel.
+Finally, if you are going to develop applications that run as X
+clients, you will also need to install XFree86-devel.
 
-This package contains all applications that used to be in X11R6-contrib
-in older releases.
+This package contains all applications that used to be in
+X11R6-contrib in older releases.
 
 #--- %prep ---------------------------
 
@@ -860,16 +918,14 @@ rm -f xc/config/cf/host.def
 mv -f xc/Makefile ./
 sed 's/^WORLDOPTS.*//g' Makefile > xc/Makefile
 %{__make} -S -C xc World \
-	"BOOTSTRAPCFLAGS=$RPM_OPT_FLAGS" \
-	"CDEBUGFLAGS=" "CCOPTIONS=$RPM_OPT_FLAGS" \
-	"CXXDEBUGFLAGS=" "CXXOPTIONS=$RPM_OPT_FLAGS" \
+	"BOOTSTRAPCFLAGS=%{!?debug:$RPM_OPT_FLAGS}%{!?debug:-O -g}" \
+	"CDEBUGFLAGS=" "CCOPTIONS=%{!?debug:$RPM_OPT_FLAGS}%{!?debug:-O -g}" \
+	"CXXDEBUGFLAGS=" "CXXOPTIONS=%{!?debug:$RPM_OPT_FLAGS}%{!?debug:-O -g}" \
 	"RAWCPP=/lib/cpp" \
 	"WORLDOPTS=-S"
 
 cd Mesa*
 
-LDFLAGS="-s"; export LDFLAGS
-CFLAGS="$RPM_OPT_FLAGS"; export CFLAGS
 %configure \
 	--enable-static \
 	--enable-shared \
@@ -921,10 +977,7 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console
 %{__make} -C Mesa*/src-glu install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install -m 644 Mesa*/include/GL/glu.h $RPM_BUILD_ROOT%{_includedir}/GL/
-
-strip $RPM_BUILD_ROOT%{_bindir}/* || :
-strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*
+install Mesa*/include/GL/glu.h $RPM_BUILD_ROOT%{_includedir}/GL/
 
 # Move config stuff to /etc/X11
 cp $RPM_BUILD_ROOT%{_libdir}/X11/XF86Config.eg \
@@ -986,11 +1039,10 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
 
 rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/html
 
-gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[13457]/* \
-	$RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
+gzip -9nf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
 
 # don't gzip README.* files, they are needed by XF86Setup
-gzip -dnf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
+gunzip $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
 
 #--- %post{un}, %preun, %verifyscript -
 
@@ -1317,7 +1369,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xdm
 %{_mandir}/man1/xdm.1*
 
-%dir    /etc/X11/xdm
+%dir /etc/X11/xdm
 %attr(755,root,root) %config /etc/X11/xdm/GiveConsole
 %attr(755,root,root) %config /etc/X11/xdm/TakeConsole
 %attr(755,root,root) %config /etc/X11/xdm/Xsession
