@@ -112,6 +112,10 @@ Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Prereq:		grep
 Prereq:		/sbin/ldconfig
+Obsoletes:	Mesa
+Obsoletes:	Mesa-devel
+Obsoletes:	Mesa-glut
+Obsoletes:	Mesa-glut-devel
 
 %ifarch sparc
 Obsoletes: X11R6.1-libs
@@ -201,6 +205,8 @@ Requires:	%{name}-devel = %{version}
 %ifarch sparc
 Obsoletes:	X11R6.1-devel
 %endif
+Obsoletes:	Mesa-static
+Obsoletes:	Mesa-glut-static
 
 %description static
 X11R6 static libraries.
@@ -414,7 +420,7 @@ Group(pl):	X11/XFree86
 Requires:	%{name} = %{version}
 Requires:	pam >= 0.66
 Requires:	%{name}-libs = %{version}
-Prereq:		chkcongig
+Prereq:		chkconfig
 Obsoletes:	XFree86-xdm
 
 %description -n xdm
@@ -440,7 +446,7 @@ Summary(pl):	Serwer fontów do XFree86
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-libs = %{version}
-Prereq:		chkcongig
+Prereq:		chkconfig
 Obsoletes:	xfsft XFree86-xfs
 
 %description -n xfs
@@ -824,7 +830,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xserver
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xserver
 %config(missingok) /etc/security/console.apps/xserver
-%ghost /etc/X11/X
 
 %{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XKeysymDB
@@ -1161,6 +1166,7 @@ rm -rf $RPM_BUILD_ROOT
 %files Xserver
 %defattr(644,root,root,755)
 %attr(4755,root,root) %{_bindir}/XFree86
+%ghost /etc/X11/X
 %{_mandir}/man1/XFree86.1*
 %{_mandir}/man1/Xserver.1*
 %{_mandir}/man5/XF86Config.5*
