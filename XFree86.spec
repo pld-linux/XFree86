@@ -1434,12 +1434,16 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/modules/dri
 %endif
 %dir %{_libdir}/modules/drivers
+%ifnarch sparc sparc64
 %{_libdir}/modules/*.uc
+%endif
 %attr(755,root,root) %{_libdir}/modules/*.a
 %attr(755,root,root) %{_libdir}/modules/codeconv
 %attr(755,root,root) %{_libdir}/modules/drivers/linux
+%ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/drivers/vga_drv.o
 %attr(755,root,root) %{_libdir}/modules/drivers/vesa_drv.o
+%endif
 %dir %{_libdir}/modules/extensions
 %attr(755,root,root) %{_libdir}/modules/extensions/libdbe.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libdri.a
@@ -1456,8 +1460,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/microtouch*
 %{_mandir}/man4/mouse*
 %{_mandir}/man4/v4l*
+%ifnarch sparc sparc64
 %{_mandir}/man4/vga*
 %{_mandir}/man4/vesa*
+%endif
 %{_mandir}/man4/void*
 %{_mandir}/man4/wacom*
 %{_mandir}/man4/elographics*
