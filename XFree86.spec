@@ -20,7 +20,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.99.902
-Release:	2
+Release:	3
 Epoch:		1
 License:	MIT
 Group:		X11/XFree86
@@ -2012,6 +2012,10 @@ gzip -9nf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
 
 # don't gzip README.* files, they are needed by XF86Setup
 gunzip $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
+%endif
+
+%ifnarch sparc sparc64 ppc
+chmod 0 $RPM_BUILD_ROOT%{_libdir}/modules/*.uc
 %endif
 
 # kill some stuff for cleaner build
