@@ -19,7 +19,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.4.0
-Release:	8
+Release:	9
 Epoch:		1
 License:	XFree86 1.1
 Group:		X11/XFree86
@@ -644,9 +644,9 @@ Requires:	imake = %{epoch}:%{version}-%{release}
 Requires:	fontconfig-devel
 Provides:	render
 Provides:	xcursor-devel
-Provides:	xft-devel
+Provides:	xft-devel = 2.1.6
 Provides:	xpm-devel
-Provides:	xrender-devel
+Provides:	xrender-devel = 0.8.4
 %ifarch sparc sparc64
 Obsoletes:	X11R6.1-devel
 %endif
