@@ -8,7 +8,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(wa):	Sierveus di håynaedje XFree86 eyèt maisses programes
 Name:		XFree86
 Version:	3.3.5
-Release:	20
+Release:	21
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -70,7 +70,7 @@ Patch32:	XFree86-ssa50.patch
 Patch33:	XFree86-sis.patch
 # fix trident cards
 Patch34:	XFree86-tridentfix.patch
-# SECURITY:	fix symlink attack on xkbcomp file
+# SECURITY: fix symlink attack on xkbcomp file
 Patch35:	XFree86-xkm.patch
 # fix banshee cards
 Patch36:	XFree86-TDFX.patch
@@ -1773,6 +1773,17 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/gccmakedep
 %attr(755,root,root) %{_libdir}/lib*.so
+%{_libdir}/libFS.a
+%{_libdir}/libXau.a
+%{_libdir}/libXdmcp.a
+%{_libdir}/libXdpms.a
+%{_libdir}/libXss.a
+%{_libdir}/libXxf86dga.a
+%{_libdir}/libXxf86misc.a
+%{_libdir}/libXxf86vm.a
+%{_libdir}/liboldX.a
+%{_libdir}/libxkbfile.a
+%{_libdir}/libxkbui.a
 
 %{_includedir}/X11/*.h
 %{_includedir}/X11/ICE
@@ -1797,7 +1808,20 @@ rm -rf $RPM_BUILD_ROOT
 /usr/include/X11
 
 %files static
-%attr(644,root,root) %{_libdir}/lib*.a
+%defattr(644,root,root,755)
+%{_libdir}/libICE.a
+%{_libdir}/libPEX5.a
+%{_libdir}/libSM.a
+%{_libdir}/libX11.a
+%{_libdir}/libXIE.a
+%{_libdir}/libXaw.a
+%{_libdir}/libXext.a
+%{_libdir}/libXi.a  
+%{_libdir}/libXmu.a
+%{_libdir}/libXp.a
+%{_libdir}/libXt.a
+%{_libdir}/libXtst.a   
+%{_libdir}/libXxf86rush.a
 
 %files Xvfb
 %defattr(644,root,root,755)
