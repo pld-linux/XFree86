@@ -10,7 +10,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Name:		XFree86
 Version:	4.2.0
-Release:	1
+Release:	2
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -2367,6 +2367,8 @@ fi
 %attr(755,root,root) %{_bindir}/xlogo
 %attr(755,root,root) %{_bindir}/xkill
 %attr(755,root,root) %{_bindir}/rman
+%attr(755,root,root) %{_bindir}/xtrap*
+%attr(755,root,root) %{_bindir}/texteroids
 %{_libdir}/X11/xman.help
 %{_mandir}/man1/beforelight.1*
 %{_mandir}/man1/ico.1*
@@ -2396,6 +2398,8 @@ fi
 %{_mandir}/man1/xlogo.1*
 %{_mandir}/man1/oclock.1*
 %{_mandir}/man1/rman.1*
+%{_mandir}/man1/xtrap.1*
+%{_mandir}/man1/texteroids.1*
 
 %lang(it) %{_mandir}/it/man1/xload.1*
 
