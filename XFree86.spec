@@ -1,3 +1,6 @@
+
+%define         _sver %(echo %{version} | tr -d .)
+
 Summary:	XFree86 Window System servers and basic programs
 Summary(de):	Xfree86 Window-System-Server und grundlegende Programme
 Summary(es):	Programas básicos y servidores para el sistema de ventanas XFree86
@@ -6,8 +9,8 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Name:		XFree86
-Version:	4.1.0
-Release:	15
+Version:	4.2.0
+Release:	1
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -16,7 +19,7 @@ Group(fr):	X11/XFree86
 Group(pl):	X11/XFree86
 Group(pt_BR):	X11/XFree86
 Group(tr):	X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.1.0/source/X410src-1.tgz
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/%{version}/source/X%{_sver}src-1.tgz
 Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source2:	xdm.pamd
 Source3:	xserver.pamd
@@ -31,8 +34,7 @@ Source11:	xclipboard.desktop
 Source12:	xconsole.desktop
 Source13:	xterm.desktop
 Source14:	xlogo64.png
-Source15:	http://papico.crl.go.jp/pub/linux/linuxppc/users/ajoshi/s3/s3-0.3.52.tgz
-Source16:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
+Source15:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -54,25 +56,19 @@ Patch17:	%{name}-imake-kernel-version.patch
 Patch18:	%{name}-no-kernel-modules.patch
 Patch19:	%{name}-parallelmake.patch
 Patch20:	%{name}-pic.patch
-Patch21:	%{name}-defmodes-1400.patch
-Patch22:	%{name}-r128-busmstr2.patch
-Patch23:	%{name}-neomagic_swcursor.patch
-Patch24:	%{name}-mga-busmstr.patch
-Patch25:	%{name}-agpgart-load.patch
-Patch26:	%{name}-mkfontdir-chmod_644.patch
-Patch27:	%{name}-HasFreetype2.patch
-Patch28:	%{name}-libXfont-put-eof.patch
-Patch29:	%{name}-config-s3.patch
-Patch30:	%{name}-stolen_from_HEAD.patch
-Patch31:	%{name}-sparc_pci_domains.patch
-Patch32:	%{name}-s3virge_mx_console_corruption_fix.patch
-Patch33:	%{name}-cirrus_driver_fix.patch
-Patch34:	%{name}-dri_directory_mode_fix.patch
-Patch35:	%{name}-alpha_GLX_align_fix.patch
-Patch36:	%{name}-manpage_link_fixes.patch
-Patch37:	%{name}-XftConfig_in_correct_place.patch
-Patch38:	%{name}-i740.patch
-Patch39:        %{name}-compaq-alpha-megapatch.patch
+Patch21:	%{name}-r128-busmstr2.patch
+Patch22:	%{name}-neomagic_swcursor.patch
+Patch23:	%{name}-mga-busmstr.patch
+Patch24:	%{name}-agpgart-load.patch
+Patch25:	%{name}-mkfontdir-chmod_644.patch
+Patch26:	%{name}-HasFreetype2.patch
+Patch27:	%{name}-config-s3.patch
+Patch28:	%{name}-sparc_pci_domains.patch
+Patch29:	%{name}-s3virge_mx_console_corruption_fix.patch
+Patch30:	%{name}-dri_directory_mode_fix.patch
+Patch31:	%{name}-alpha_GLX_align_fix.patch
+Patch32:	%{name}-XftConfig_in_correct_place.patch
+Patch33:	%{name}-PEX+XIE.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -90,10 +86,10 @@ BuildRequires:	Glide3-DRI-devel
 %ifarch %{ix86}
 BuildRequires:	Glide2x_SDK
 %endif
-Requires:	XFree86-fonts-ISO8859-1 = %{version}
-Requires:	XFree86-libs = %{version}
 Requires:	xauth
-ExclusiveArch:	%{ix86} alpha sparc64 sparc m68k armv4l noarch
+Requires:	%{name}-libs = %{version}
+Requires:	%{name}-common = %{version}
+ExclusiveArch:	%{ix86} alpha sparc m68k armv4l noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	xpm-progs
 Obsoletes:	xterm
@@ -108,7 +104,7 @@ Obsoletes:	X11R6.1
 
 # avoid Mesa dependency in XFree86-OpenGL-libs
 # Glide3 (libglide3.so.3) can be provided by Glide_V3-DRI or Glide_V5-DRI
-%define		_noautoreqdep	libGL.so.1 libGLU.so.1 libglade3.so.3
+%define		_noautoreqdep	libGL.so.1 libGLU.so.1 libOSMesa.so.3.3   libglide3.so.3
 
 %description
 If you want to install the X Window System (TM) on your machine,
@@ -186,6 +182,19 @@ Este pacote contém as fontes básicas, programas e documentação para
 uma estação de trabalho X. Ele não fornece um servidor X que acessa
 seu hardware de vídeo -- estes são disponibilizados em outro pacote.
 
+%package common
+Summary:	XFree86 files required both on server and client side
+Summary(pl):	Pliki XFree86 wymagane zarówno po stronie serwera jak i klienta
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+
+%description common
+XFree86 files required both on server and client side.
+
+%description common -l pl
+Pliki XFree86 wymagane zarówno po stronie serwera jak i klienta.
+
 %package DPS
 Summary:	Display PostScript
 Summary(pl):	Display PostScript
@@ -233,6 +242,94 @@ X-Window Display PostScript static libraries.
 %description DPS-static -l pl
 Statyczne biblioteki X-Window Display PostScript.
 
+%package PEX
+Summary:	PEX extension library
+Summary(pl):	Biblioteka rozszerzenia PEX
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-libs = %{version}
+
+%description PEX
+PEX extension library. Since XFree86 4.2.0 it's no longer included by
+default.
+
+%description PEX -l pl
+Biblioteka rozszerzenia PEX. Od wersji XFree86 4.2.0 nie jest ju¿
+do³±czane domy¶lnie.
+
+%package PEX-devel
+Summary:	PEX extension headers
+Summary(pl):	Pliki nag³ówkowe rozszerzenia PEX
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-PEX = %{version}
+
+%description PEX-devel
+PEX extension headers.
+
+%description PEX-devel -l pl
+Pliki nag³ówkowe rozszerzenia PEX.
+
+%package PEX-static
+Summary:	PEX extension static library
+Summary(pl):	Statyczna biblioteka rozszerzenia PEX
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-PEX-devel = %{version}
+
+%description PEX-static
+PEX extension static library.
+
+%description PEX-static -l pl
+Statyczna biblioteka rozszerzenia PEX.
+
+%package XIE
+Summary:	XIE extension library
+Summary(pl):	Biblioteka rozszerzenia XIE
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-libs = %{version}
+
+%description XIE
+XIE (X Image Extension) extension library. Since XFree86 4.2.0 it's no
+longer included by default.
+
+%description XIE -l pl
+Biblioteka rozszerzenia XIE (X Image Extension). Od wersji XFree86
+4.2.0 nie jest ju¿ do³±czane domy¶lnie
+
+%package XIE-devel
+Summary:	XIE extension headers
+Summary(pl):	Pliki nag³ówkowe rozszerzenia XIE
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-XIE = %{version}
+
+%description XIE-devel
+XIE extension headers.
+
+%description XIE-devel -l pl
+Pliki nag³ówkowe rozszerzenia XIE.
+
+%package XIE-static
+Summary:	XIE extension static library
+Summary(pl):	Statyczna biblioteka rozszerzenia XIE
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-XIE-devel = %{version}
+
+%description XIE-static
+XIE extension static library.
+
+%description XIE-static -l pl
+Statyczna biblioteka rozszerzenia XIE.
+
 %package OpenGL-core
 Summary:	OpenGL support for X11R6
 Summary(pl):	Wsparcie OpenGL dla systemu X11R6
@@ -245,7 +342,6 @@ Group(pt_BR):	X11/Bibliotecas
 Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
 Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-libs = %{version}
-Obsoletes:	Mesa
 
 %description OpenGL-core
 OpenGL support for X11R6 system.
@@ -267,7 +363,9 @@ Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-OpenGL-libs = %{version}
 Requires:	%{name}-devel
 Provides:	OpenGL-devel
-Obsoletes:	Mesa-devel glxMesa-devel
+Obsoletes:	Mesa-devel
+Obsoletes:	glxMesa-devel
+Obsoletes:	XFree86-OpenGL-doc
 
 %description OpenGL-devel
 Headers and man pages for OpenGL for X11R6.
@@ -326,7 +424,8 @@ Group:		X11/XFree86/Servers
 Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts >= 4.0.2
+Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
+Requires:	XFree86-fonts-base
 
 %description Xnest
 Xnest is an X Window System server which runs in an X window. Xnest is
@@ -349,7 +448,8 @@ Group:		X11/XFree86/Servers
 Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts >= 4.0.2
+Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
+Requires:	XFree86-fonts-base
 
 %description Xprt
 Xprt provides an X server with the print extension and special DDX
@@ -369,22 +469,15 @@ Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	pam
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	/usr/X11R6/lib/X11/rgb.txt
-Obsoletes:	%{name}-VGA16 %{name}-SVGA %{name}-Mono
-Obsoletes:	XFree86-S3 XFree86-S3V XFree86-I128
-Obsoletes:	XFree86-Mach8 XFree86-Mach32 XFree86-Mach64
-Obsoletes:	XFree86-8514 XFree86-AGX XFree86-3DLabs
-Obsoletes:	XFree86-P9000 XFree86-W32
-Obsoletes:	XFree86-ATI XFree86-Alliance XFree86-ChipsTechnologies
-Obsoletes:	XFree86-Cirrus XFree86-Cyrix XFree86-FBDev
-Obsoletes:	XFree86-i740 XFree86-i810 XFree86-mga
-Obsoletes:	XFree86-NeoMagic XFree86-NVidia
-Obsoletes:	XFree86-Rage128 XFree86-Rendition
-Obsoletes:	XFree86-S3V XFree86-SiS XFree86-3dfx
-Obsoletes:	XFree86-Trident XFree86-Tseng XFree86-VGA16
-Obsoletes:	XFree86-TGA XFree86-FBDev
-Obsoletes:	XFree86-Sun XFree86-Sun24 XFree86-SunMono
-Obsoletes:	XFree86-XF86Setup, Xconfigurator
+Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
+Requires:	XFree86-fonts-base
+Obsoletes:	XFree86-VGA16 XFree86-SVGA XFree86-Mono
+# obsoleted by many drivers: suncg3,suncg6,suncg14,sunffb,sunleo,suntcx
+Obsoletes:	XFree86-Sun XFree86-Sun24
+# still not supported in 4.2.0:
+#Obsoletes:	XFree86-Mach8 XFree86-8514 XFree86-AGX XFree86-P9000
+# (and many drivers from XF86_SVGA server... and some from others)
+Obsoletes:	XFree86-XF86Setup Xconfigurator
 
 %description Xserver
 Generally used X server which uses display hardware. It requires
@@ -432,7 +525,8 @@ Group:		X11/XFree86/Servers
 Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts >= 4.0.2
+Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
+Requires:	XFree86-fonts-base
 
 %description Xvfb
 Xvfb (X Virtual Frame Buffer) is an X Window System server that is
@@ -523,6 +617,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-Alliance
 
 %description driver-apm
 Alliance Promotion driver.
@@ -553,6 +648,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-ATI XFree86-Mach32 XFree86-Mach64
 
 %description driver-ati
 ATI video driver.
@@ -568,6 +664,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-ChipsTechnologies
 
 %description driver-chips
 Chips and Technologies video driver.
@@ -583,6 +680,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-Cirrus
 
 %description driver-cirrus
 Cirrus Logic video driver.
@@ -598,6 +696,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-Cyrix
 
 %description driver-cyrix
 Cyrix video driver.
@@ -613,6 +712,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-FBDev
 
 %description driver-fbdev
 Non-accelerated video driver for framebuffer device.
@@ -659,6 +759,7 @@ Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
+Obsoletes:	XFree86-3DLabs
 
 %description driver-glint
 GLINT/Permedia video driver.
@@ -674,6 +775,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-I128
 
 %description driver-i128
 Number 9 I128 video driver.
@@ -689,6 +791,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-i740
 
 %description driver-i740
 Intel i740 video driver.
@@ -705,6 +808,7 @@ Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
+Obsoletes:	XFree86-i810
 
 %description driver-i810
 Intel i810/i815 video driver.
@@ -721,6 +825,7 @@ Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
+Obsoletes:	XFree86-mga
 
 %description driver-mga
 Matrox video driver.
@@ -736,6 +841,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-NeoMagic
 
 %description driver-neomagic
 NeoMagic video driver.
@@ -751,6 +857,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-NVidia
 
 %description driver-nv
 nVidia video driver. Supports Riva128, RivaTNT, GeForce.
@@ -767,6 +874,7 @@ Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
+Obsoletes:	XFree86-Rage128
 
 %description driver-r128
 ATI Rage 128 video driver.
@@ -798,6 +906,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-Rendition
 
 %description driver-rendition
 Rendition/Micron video driver.
@@ -813,6 +922,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-S3V
 
 %description driver-s3virge
 S3 ViRGE/Trio3D video driver.
@@ -828,6 +938,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-S3
 
 %description driver-s3
 S3 Trio video driver.
@@ -873,6 +984,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-SiS
 
 %description driver-sis
 SiS video driver.
@@ -888,6 +1000,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-SunMono
 
 %description driver-sunbw2
 sunbw2 - Sun BW2 video driver.
@@ -995,6 +1108,7 @@ Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
 Requires:	Glide3-DRI
+Obsoletes:	XFree86-3dfx
 
 %description driver-tdfx
 3Dfx video driver. Supports Voodoo Banshee, Voodoo3, Voodoo4, Voodoo5.
@@ -1014,6 +1128,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-TGA
 
 %description driver-tga
 TGA video driver.
@@ -1029,6 +1144,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-Trident
 
 %description driver-trident
 Trident video driver.
@@ -1044,6 +1160,7 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-Tseng XFree86-W32
 
 %description driver-tseng
 Tseng Labs video driver.
@@ -1052,8 +1169,8 @@ Tseng Labs video driver.
 Sterownik do kart firmy Tseng Labs.
 
 %package driver-vmware
-Summary:	VMWare SVGA video driver
-Summary(pl):	Sterownik karty SVGA dostêpnej pod VMware
+Summary:	VMWare SVGA emulated video driver
+Summary(pl):	Sterownik do emulacji karty SVGA dostêpnej pod VMware
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1061,12 +1178,12 @@ Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-vmware
-VMware SVGA video driver. Necessary if you run Linux on VMware virtual machine.
+VMware emulated SVGA video driver. Necessary if you run Linux on
+VMware virtual machine.
 
 %description driver-vmware -l pl
-Sterownik karty SVGA dostêpnej pod VMware. Przydatny je¶li uruchamiasz Linuxa
-na wirtualnej maszynie VMware.
-
+Sterownik do emulacji karty SVGA dostêpnej pod VMware. Przydatny,
+je¶li uruchamiasz Linuksa na wirtualnej maszynie VMware.
 
 %package libs
 Summary:	X11R6 shared libraries
@@ -1157,6 +1274,38 @@ Modules with X servers extensions.
 
 %description modules -l pl
 Wspólne dla wszystkich X serwerów modu³y rozszerzeñ.
+
+%package module-PEX
+Summary:	PEX extension module
+Summary(pl):	Modu³ rozszerzenia PEX
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}
+
+%description module-PEX
+PEX extension module for X server. Since XFree86 4.2.0 it's no longer
+included by default.
+
+%description module-PEX -l pl
+Modu³ rozszerzenia PEX dla X serwera. Od wersji XFree86 4.2.0 nie jest
+ju¿ do³±czane domy¶lnie.
+
+%package module-XIE
+Summary:	XIE extension module
+Summary(pl):	Modu³ rozszerzenia XIE
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}
+
+%description module-XIE
+XIE (X Image Extension) extension module for X server. Since XFree86
+4.2.0 it's no longer included by default.
+
+%description module-XIE -l pl
+Modu³ rozszerzenia XIE (X Image Extension) dla X serwera. Od wersji
+XFree86 4.2.0 nie jest ju¿ do³±czane domy¶lnie.
 
 %package setup
 Summary:	Graphical configuration tool for XFree86
@@ -1345,6 +1494,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-libs = %{version}
+Requires:	XFree86-fonts-base
 PreReq:		chkconfig
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
@@ -1374,7 +1524,7 @@ serwerów lokalnych lub zdalnych.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p0
-# Not ready yet
+# not ready yet
 #%patch6 -p0
 %patch7 -p1
 %patch8 -p1
@@ -1397,22 +1547,19 @@ serwerów lokalnych lub zdalnych.
 %patch25 -p1
 %patch26 -p1
 %patch27 -p1
-%patch28 -p1
-%patch29 -p1
+%ifarch sparc sparc64
+# needs updating (14 rejects)
+#%patch28 -p1
+%endif
+# don't see what exatly it is doing, is it needed now?
+# could someone else look at it (rejects)
+#%patch29 -p1
 %patch30 -p1
 %patch31 -p1
 %patch32 -p1
 %patch33 -p1
-%patch34 -p1
-%patch35 -p1
-%patch36 -p1
-%patch37 -p1
-%patch38 -p1
-%ifarch alpha
-%patch39 -p0
-%endif
+
 rm -f xc/config/cf/host.def
-tar zx -f %{SOURCE15} -C xc/programs/Xserver/hw/xfree86/drivers/
 
 #--- %build --------------------------
 
@@ -1430,6 +1577,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysconfig} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/pl \
 	$RPM_BUILD_ROOT%{_datadir}/{misc,sounds} \
+	$RPM_BUILD_ROOT%{_sbindir} \
 	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
 	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
 	$RPM_BUILD_ROOT{%{_applnkdir}/{Utilities,Terminals},%{_pixmapsdir}/mini} \
@@ -1485,7 +1633,7 @@ install %{SOURCE13} $RPM_BUILD_ROOT%{_applnkdir}/Terminals
 
 install %{SOURCE14} $RPM_BUILD_ROOT%{_datadir}/pixmaps
 
-bzip2 -dc %{SOURCE16} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
+bzip2 -dc %{SOURCE15} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 
 > $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 > $RPM_BUILD_ROOT/etc/security/blacklist.xserver
@@ -1530,6 +1678,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %post	DPS -p /sbin/ldconfig
 %postun	DPS -p /sbin/ldconfig
+
+%post	PEX -p /sbin/ldconfig
+%postun	PEX -p /sbin/ldconfig
+
+%post	XIE -p /sbin/ldconfig
+%postun	XIE -p /sbin/ldconfig
 
 %post	OpenGL-libs -p /sbin/ldconfig
 %postun	OpenGL-libs -p /sbin/ldconfig
@@ -1626,8 +1780,6 @@ fi
 %doc %{_libdir}/X11/doc
 %endif
 
-%{_sysconfdir}/X11/XftConfig
-
 %dir %{_libdir}/X11/app-defaults
 %{_libdir}/X11/app-defaults/XCalc
 %{_libdir}/X11/app-defaults/XCalc-color
@@ -1651,33 +1803,31 @@ fi
 %attr(755,root,root) %{_libdir}/X11/xinit
 %attr(755,root,root) %{_libdir}/X11/xsm
 
-%dir /etc/X11/lbxproxy
-%dir /etc/X11/proxymngr
-%dir /etc/X11/rstart
-%dir /etc/X11/rstart/commands
-%dir /etc/X11/rstart/commands/x11r6
-%dir /etc/X11/rstart/contexts
-%dir /etc/X11/xserver
-%dir /etc/X11/xsm
 %dir /etc/X11/xinit
-
+%dir /etc/X11/lbxproxy
 /etc/X11/lbxproxy/*
+%dir /etc/X11/proxymngr
 /etc/X11/proxymngr/*
-%attr(-,root,root) /etc/X11/rstart/config
-%attr(-,root,root) /etc/X11/rstart/rstartd.real
-%attr(-,root,root) /etc/X11/rstart/commands/x
-%attr(-,root,root) /etc/X11/rstart/commands/x11
-%attr(-,root,root) /etc/X11/rstart/commands/*List*
-%attr(-,root,root) /etc/X11/rstart/commands/x11r6/*
-%attr(-,root,root) /etc/X11/rstart/contexts/*
+%dir /etc/X11/rstart
+/etc/X11/rstart/config
+%attr(755,root,root) /etc/X11/rstart/rstartd.real
+%dir /etc/X11/rstart/commands
+/etc/X11/rstart/commands/x
+/etc/X11/rstart/commands/x11
+%attr(755,root,root) /etc/X11/rstart/commands/*List*
+%dir /etc/X11/rstart/commands/x11r6
+%attr(755,root,root) /etc/X11/rstart/commands/x11r6/*
+%dir /etc/X11/rstart/contexts
+/etc/X11/rstart/contexts/*
+%dir /etc/X11/xserver
 /etc/X11/xserver/SecurityPolicy
+%dir /etc/X11/xsm
 /etc/X11/xsm/*
 
 %lang(pl) %{_libdir}/X11/app-defaults/pl
 
 %dir %{_libdir}/X11/x11perfcomp
 %attr(755,root,root) %{_libdir}/X11/x11perfcomp/*
-%{_libdir}/X11/*.txt
 
 %attr(755,root,root) %{_bindir}/Xmark
 %attr(755,root,root) %{_bindir}/appres
@@ -1743,7 +1893,7 @@ fi
 %{_includedir}/X11/bitmaps
 %{_includedir}/X11/pixmaps
 
-%{_applnkdir}/Utilities/*
+%{_applnkdir}/Utilities/xconsole.desktop
 %{_applnkdir}/Terminals/*
 %{_libdir}/X11/app-defaults/Xvidtune
 %{_pixmapsdir}/x*
@@ -1822,6 +1972,10 @@ fi
 %lang(pl) %{_mandir}/pl/man1/xinit.1*
 %lang(pl) %{_mandir}/pl/man1/xwd.1*
 
+%files common
+%defattr(644,root,root,755)
+%{_libdir}/X11/rgb.txt
+
 %files DPS
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/makepsres
@@ -1849,6 +2003,34 @@ fi
 %{_libdir}/libdpstk.a
 %{_libdir}/libpsres.a
 
+%ifnarch alpha sparc64 ia64 s390x
+%files PEX
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libPEX5.so.*.*
+
+%files PEX-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libPEX5.so
+%{_includedir}/X11/PEX5
+
+%files PEX-static
+%defattr(644,root,root,755)
+%{_libdir}/libPEX5.a
+%endif
+
+%files XIE
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXIE.so.*.*
+
+%files XIE-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXIE.so
+%{_includedir}/X11/extensions/XIE*
+
+%files XIE-static
+%defattr(644,root,root,755)
+%{_libdir}/libXIE.a
+
 %files OpenGL-core
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libGL.so.*.*
@@ -1866,7 +2048,7 @@ fi
 %{_libdir}/libGLw.a
 %dir %{_includedir}/GL
 %attr(644,root,root) %{_includedir}/GL/*
-%{_mandir}/man3/glX*
+%{_mandir}/man3/gl[A-Z]*
 %{_mandir}/man3/glu*
 %{_mandir}/man3/GLw*
 
@@ -1884,7 +2066,7 @@ fi
 %{_libdir}/libGL.a
 %{_libdir}/libGLU.a
 %ifnarch alpha
-%attr(755,root,root) %{_libdir}/libOSMesa*.a
+%{_libdir}/libOSMesa*.a
 %endif
 
 %files Xnest
@@ -1923,11 +2105,8 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/gccmakedep
 %attr(755,root,root) %{_bindir}/bdftopcf
-%attr(755,root,root) %{_libdir}/libX*.so
+%attr(755,root,root) %{_libdir}/libX[1Ta-t]*.so
 %attr(755,root,root) %{_libdir}/libI*.so
-%ifnarch alpha
-%attr(755,root,root) %{_libdir}/libP*.so
-%endif
 %attr(755,root,root) %{_libdir}/libS*.so
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/libx*.so
@@ -1950,15 +2129,16 @@ fi
 %{_libdir}/libXinerama.a
 %{_includedir}/X11/*.h
 %{_includedir}/X11/ICE
-%ifnarch alpha
-%{_includedir}/X11/PEX5
-%endif
 %{_includedir}/X11/PM
 %{_includedir}/X11/SM
 %{_includedir}/X11/Xaw
 %{_includedir}/X11/Xft
 %{_includedir}/X11/Xmu
-%{_includedir}/X11/extensions
+%dir %{_includedir}/X11/extensions
+%{_includedir}/X11/extensions/[^X]*.h
+%{_includedir}/X11/extensions/X[^I]*.h
+%{_includedir}/X11/extensions/XI.h
+%{_includedir}/X11/extensions/XI[^E]*.h
 %{_includedir}/X11/fonts
 %{_includedir}/xf86*.h
 %{_libdir}/X11/config
@@ -2240,6 +2420,7 @@ fi
 %dir %{_includedir}
 %dir %{_includedir}/X11
 %dir %{_bindir}
+%dir %{_sbindir}
 /usr/bin/X11
 /usr/lib/X11
 /usr/include/X11
@@ -2249,15 +2430,13 @@ fi
 %dir %{_pixmapsdir}
 %dir %{_pixmapsdir}/mini
 %dir %{_wmpropsdir}
-%attr(755,root,root) %{_libdir}/libX*.so.*.*
+%attr(755,root,root) %{_libdir}/libX[1Ta-t]*.so.*.*
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
-%ifnarch alpha
-%attr(755,root,root) %{_libdir}/libP*.so.*.*
-%endif
 %attr(755,root,root) %{_libdir}/libS*.so.*.*
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/libx*.so.*.*
 %endif
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/X11/XftConfig
 
 %files modules
 %defattr(644,root,root,755)
@@ -2285,11 +2464,8 @@ fi
 %attr(755,root,root) %{_libdir}/modules/extensions/libdbe.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libdri.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libextmod.a
-%ifnarch alpha
-%attr(755,root,root) %{_libdir}/modules/extensions/libpex5.a
-%endif
 %attr(755,root,root) %{_libdir}/modules/extensions/librecord.a
-%attr(755,root,root) %{_libdir}/modules/extensions/libxie.a
+%attr(755,root,root) %{_libdir}/modules/extensions/libxtrap.a
 %attr(755,root,root) %{_libdir}/modules/fonts
 %attr(755,root,root) %{_libdir}/modules/input
 %attr(755,root,root) %{_libdir}/modules/linux
@@ -2310,14 +2486,22 @@ fi
 %{_mandir}/man4/elographics*
 %{_mandir}/man4/mutouch*
 
+%ifnarch alpha sparc64 ia64 s390x
+%files module-PEX
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/extensions/libpex5.a
+%endif
+
+%files module-XIE
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/extensions/libxie.a
+
 %files setup
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/SuperProbe
 %attr(755,root,root) %{_bindir}/pcitweak
 %attr(755,root,root) %{_bindir}/scanpci
 %attr(755,root,root) %{_bindir}/xf86cfg
 %attr(755,root,root) %{_bindir}/xf86config
-%{_mandir}/man1/SuperProbe.1*
 %{_mandir}/man1/scanpci.1*
 %{_mandir}/man1/pcitweak.1*
 %{_mandir}/man1/xf86cfg.1*
@@ -2326,12 +2510,8 @@ fi
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libICE.a
-%ifnarch alpha
-%{_libdir}/libPEX5.a
-%endif
 %{_libdir}/libSM.a
 %{_libdir}/libX11.a
-%{_libdir}/libXIE.a
 %{_libdir}/libXaw.a
 %{_libdir}/libXft.a
 %{_libdir}/libXext.a
@@ -2365,7 +2545,6 @@ fi
 %attr(755,root,root) %{_bindir}/xfd
 %attr(755,root,root) %{_bindir}/xfontsel
 %attr(755,root,root) %{_bindir}/xgc
-%attr(755,root,root) %{_bindir}/xieperf
 %attr(755,root,root) %{_bindir}/xload
 %attr(755,root,root) %{_bindir}/xmag
 %attr(755,root,root) %{_bindir}/xman
@@ -2376,6 +2555,8 @@ fi
 %attr(755,root,root) %{_bindir}/xlogo
 %attr(755,root,root) %{_bindir}/xkill
 %attr(755,root,root) %{_bindir}/rman
+%attr(755,root,root) %{_bindir}/xtrap*
+%attr(755,root,root) %{_bindir}/texteroids
 %{_libdir}/X11/xman.help
 %{_mandir}/man1/beforelight.1*
 %{_mandir}/man1/ico.1*
@@ -2395,7 +2576,6 @@ fi
 %{_mandir}/man1/xfd.1*
 %{_mandir}/man1/xfontsel.1*
 %{_mandir}/man1/xgc.1*
-%{_mandir}/man1/xieperf.1*
 %{_mandir}/man1/xload.1*
 %{_mandir}/man1/xmag.1*
 %{_mandir}/man1/xman.1*
@@ -2406,6 +2586,8 @@ fi
 %{_mandir}/man1/xlogo.1*
 %{_mandir}/man1/oclock.1*
 %{_mandir}/man1/rman.1*
+%{_mandir}/man1/xtrap.1*
+%{_mandir}/man1/texteroids.1*
 
 %lang(it) %{_mandir}/it/man1/xload.1*
 
@@ -2430,6 +2612,8 @@ fi
 %{_libdir}/X11/app-defaults/XFontSel
 %{_libdir}/X11/app-defaults/Xditview
 %{_libdir}/X11/app-defaults/Xditview-chrtr
+
+%{_applnkdir}/Utilities/xclipboard.desktop
 
 %files -n sessreg
 %defattr(644,root,root,755)
@@ -2469,15 +2653,15 @@ fi
 %{_mandir}/man1/xdm.1*
 
 %dir /etc/X11/xdm
-%attr(755,root,root) %config /etc/X11/xdm/GiveConsole
-%attr(755,root,root) %config /etc/X11/xdm/TakeConsole
-%attr(755,root,root) %config /etc/X11/xdm/Xsession
-%attr(755,root,root) %config /etc/X11/xdm/Xsetup_0
-%attr(755,root,root) %config /etc/X11/xdm/Xwilling
-%config /etc/X11/xdm/Xaccess
-%config /etc/X11/xdm/Xresources
-%config /etc/X11/xdm/Xservers
-%config /etc/X11/xdm/xdm-config
+%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/GiveConsole
+%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/TakeConsole
+%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xsession
+%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xsetup_0
+%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xwilling
+%config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xaccess
+%config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xresources
+%config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xservers
+%config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/xdm-config
 /etc/X11/xdm/pixmaps
 /etc/X11/xdm/authdir
 
@@ -2487,8 +2671,7 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/xfs
 %dir %{_sysconfdir}/X11/fs
 %attr(755,root,root) %{_libdir}/X11/fs
-%config(noreplace) %{_sysconfdir}/X11/fs/config
-%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/X11/XftConfig
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/X11/fs/config
 
 %attr(755,root,root) %{_bindir}/xfs
 %attr(755,root,root) %{_bindir}/fslsfonts
