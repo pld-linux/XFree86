@@ -435,6 +435,7 @@ Requires:	%{name}-libs = %{version}
 Group:		Libraries
 Requires(post):	/sbin/ldconfig
 Provides:	fontconfig = 1.0.1
+Provides:	%{name}-fontconfig-realpkg = %{version}
 Obsoletes:	fontconfig
 
 %description fontconfig
@@ -449,9 +450,10 @@ systemie i wybierania ich w zale¿no¶ci od potrzeb aplikacji.
 Summary:	Font configuration and customization library
 Summary(pl):	Biblioteka do konfigurowania fontów
 Group:		Development/Libraries
-Requires:	%{name}-fontconfig = %{version}
+Requires:	%{name}-fontconfig-realpkg = %{version}
 Requires:	freetype-devel
 Provides:	fontconfig-devel = 1.0.1
+Provides:	%{name}-fontconfig-devel-realpkg = %{version}
 Obsoletes:	fontconfig-devel
 
 %description fontconfig-devel
@@ -472,7 +474,7 @@ programów korzystaj±cych z biblioteki fontconfig.
 Summary:	Font configuration and customization library
 Summary(pl):	Biblioteka do konfigurowania fontów
 Group:		Development/Libraries
-Requires:	%{name}-fontconfig-devel = %{version}
+Requires:	%{name}-fontconfig-devel-realpkg = %{version}
 
 %description fontconfig-static
 Fontconfig is designed to locate fonts within the system and select
