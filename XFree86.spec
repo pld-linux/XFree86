@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	3.3.4
-Release:	1
+Release:	2
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -85,7 +85,9 @@ Buildroot:	/tmp/%{name}-%{version}-root/
 Obsoletes: X11R6.1
 %endif
 
-%define	_fontdir	/usr/share/fonts
+%define		_fontdir	/usr/share/fonts
+%define		_prefix		/usr/X11R6
+%define		_mandir		/usr/X11R6/man
 
 %description
 If you want to install the X Window System (TM) on your machine, you'll
@@ -934,7 +936,7 @@ Summary(pl):	XAuth
 
 %description -l pl -n xauth
 
-%package 	fonts
+%package fonts
 Summary:	XFree86 Fonts
 Summary(pl):	Fonty dla systemu XFree86 
 Group:		X11/XFree86
@@ -1025,17 +1027,10 @@ Group:		X11/XFree86
 Group(pl):	X11/XFree86
 
 %description cyrillic-fonts
-The 75dpi fonts used on most Linux systems. Users with high resolution
-displays may prefer the 100dpi fonts available in a separate package.
-
-%description -l de cyrillic-fonts
-
-%description -l fr cyrillic-fonts
-
-%description -l tr cyrillic-fonts
+Cyrillic raster fonts.
 
 %description -l pl cyrillic-fonts
-Cyrlica.
+Fonty rastrowe czcionkami w cyrylicy.
 
 #--- %prep ---------------------------
 
@@ -1092,15 +1087,19 @@ Cyrlica.
 find . -name "*.orig" -print | xargs rm -f
 find . -size 0 -print | xargs rm -f
 
+#--- %build --------------------------
+
 %build
 make -C xc World \
 	"BOOTSTRAPCFLAGS=$RPM_OPT_FLAGS" \
 	"CDEBUGFLAGS=" "CCOPTIONS=$RPM_OPT_FLAGS" \
 	"CXXDEBUGFLAGS=" "CXXOPTIONS=$RPM_OPT_FLAGS"
 
+#--- %install ------------------------
+
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/usr/X11R6/lib/X11/pl/app-defaults \
+install -d $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
 	$RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps} \
 	$RPM_BUILD_ROOT/var/state/xkb \
 	$RPM_BUILD_ROOT/usr/include \
@@ -1112,34 +1111,34 @@ make -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"INSTPGMFLAGS=-m 755" \
 		install install.man
 
-strip $RPM_BUILD_ROOT/usr/X11R6/bin/* || :
-strip --strip-unneeded $RPM_BUILD_ROOT/usr/X11R6/lib/{lib*.so.*.*,modules/*} || :
+strip $RPM_BUILD_ROOT%{_bindir}/* || :
+strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/{lib*.so.*.*,modules/*} || :
 
 # setup the default X server
-rm -f $RPM_BUILD_ROOT/usr/X11R6/bin/X
-ln -s Xwrapper $RPM_BUILD_ROOT/usr/X11R6/bin/X
+rm -f $RPM_BUILD_ROOT%{_bindir}/X
+ln -s Xwrapper $RPM_BUILD_ROOT%{_bindir}/X
 
 # Move config stuff to /etc/X11
 
-cp $RPM_BUILD_ROOT/usr/X11R6/lib/X11/XF86Config.eg \
+cp $RPM_BUILD_ROOT%{_libdir}/X11/XF86Config.eg \
 $RPM_BUILD_ROOT/etc/X11/XF86Config
-ln -sf ../../../../etc/X11/XF86Config $RPM_BUILD_ROOT/usr/X11R6/lib/X11/XF86Config
+ln -sf ../../../../etc/X11/XF86Config $RPM_BUILD_ROOT%{_libdir}/X11/XF86Config
 
 # setting default X
-rm -f $RPM_BUILD_ROOT/usr/X11R6/bin/X
-ln -sf Xwrapper $RPM_BUILD_ROOT/usr/X11R6/bin/X
+rm -f $RPM_BUILD_ROOT%{_bindir}/X
+ln -sf Xwrapper $RPM_BUILD_ROOT%{_bindir}/X
 
 # setting ghost X in /etc/X11 -- xf86config will fix this ...
-ln -s ../../usr/X11R6/bin/Xwrapper $RPM_BUILD_ROOT/etc/X11/X
+ln -s ../..%{_bindir}/Xwrapper $RPM_BUILD_ROOT/etc/X11/X
 
 ln -sf ../../../../etc/X11/XF86Config \
-$RPM_BUILD_ROOT/usr/X11R6/lib/X11/XF86Config
+$RPM_BUILD_ROOT%{_libdir}/X11/XF86Config
 
 for i in xdm twm fs xsm xinit; do
 	rm -rf $RPM_BUILD_ROOT/etc/X11/$i
-	cp -ar $RPM_BUILD_ROOT/usr/X11R6/lib/X11/$i $RPM_BUILD_ROOT/etc/X11
-	rm -rf $RPM_BUILD_ROOT/usr/X11R6/lib/X11/$i
-	ln -sf /etc/X11/$i $RPM_BUILD_ROOT/usr/X11R6/lib/X11/$i
+	cp -ar $RPM_BUILD_ROOT%{_libdir}/X11/$i $RPM_BUILD_ROOT/etc/X11
+	rm -rf $RPM_BUILD_ROOT%{_libdir}/X11/$i
+	ln -sf /etc/X11/$i $RPM_BUILD_ROOT%{_libdir}/X11/$i
 done
 
 # add X11 links in /usr/bin and /usr/include
@@ -1156,79 +1155,117 @@ install %{SOURCE6} $RPM_BUILD_ROOT/etc/pam.d/xserver
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/X11/fs/config
-install %{SOURCE7} $RPM_BUILD_ROOT/usr/X11R6/lib/X11/pl/app-defaults/XTerm
+install %{SOURCE7} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/XTerm
 
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xdm
 
-#ln -sf ../../usr/X11R6/include/X11 $RPM_BUILD_ROOT%{_includedir}/X11 ##change
-ln -sf %{_fontdir} $RPM_BUILD_ROOT/usr/X11R6/lib/X11/fonts
+#ln -sf ../..%{_includedir}/X11 $RPM_BUILD_ROOT%{_includedir}/X11 ##change
+ln -sf %{_fontdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
 
 for n in libX11.so.6.1 libICE.so.6.3 libSM.so.6.0 libXext.so.6.3 libXt.so.6.0 \
 	 libXmu.so.6.0 libXaw.so.6.1 libXIE.so.6.0 libXi.so.6.0 \
 	 libXtst.so.6.1 libXxf86rush.so.1.0; do
-ln -sf $n $RPM_BUILD_ROOT/usr/X11R6/lib/`echo $n | sed "s/\.so.*/\.so/"`
+ln -sf $n $RPM_BUILD_ROOT%{_libdir}/`echo $n | sed "s/\.so.*/\.so/"`
 done
 
 # xkb 'compiled' files need to be in /var/state/xkb, so
 # /usr is NFS / read-only mountable
 mkdir -p $RPM_BUILD_ROOT/var/state/xkb
-cp -a $RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/compiled/* \
+cp -a $RPM_BUILD_ROOT%{_libdir}/X11/xkb/compiled/* \
 	$RPM_BUILD_ROOT/var/state/xkb
-rm -rf $RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/compiled
+rm -rf $RPM_BUILD_ROOT%{_libdir}/X11/xkb/compiled
 ln -sf ../../../../../var/state/xkb \
-	$RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/compiled
+	$RPM_BUILD_ROOT%{_libdir}/X11/xkb/compiled
 
 # do not duplicate xkbcomp program
-rm -f $RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/xkbcomp
-ln -sf ../../../bin/xkbcomp $RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/xkbcomp
+rm -f $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
+ln -sf ../../../bin/xkbcomp $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
 
 ln -sf ../../../share/doc/%{name}-%{version} \
-	$RPM_BUILD_ROOT/usr/X11R6/lib/X11/doc
+	$RPM_BUILD_ROOT%{_libdir}/X11/doc
 
-gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/man/man[135]/* \
+gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[135]/* \
 	$RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
 
 # don't gzip README.* files, they are needed by XF86Setup
 gzip -dnf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
 
+#--- %post{un}, %preun, %verifyscript -
+
 %post libs
-grep "^/usr/X11R6/lib$" /etc/ld.so.conf >/dev/null 2>&1
-[ $? -ne 0 ] && echo "/usr/X11R6/lib" >> /etc/ld.so.conf
+grep "^%{_libdir}$" /etc/ld.so.conf >/dev/null 2>&1
+[ $? -ne 0 ] && echo "%{_libdir}" >> /etc/ld.so.conf
 /sbin/ldconfig
 
 %postun libs
 if [ "$1" = "0" ]; then
-	grep -v "/usr/X11R6/lib" /etc/ld.so.conf > /etc/ld.so.conf.new
+	grep -v "%{_libdir}" /etc/ld.so.conf > /etc/ld.so.conf.new
 	mv -f /etc/ld.so.conf.new /etc/ld.so.conf
 fi
 /sbin/ldconfig
 
 %verifyscript libs
-echo -n "Looking for /usr/X11R6/lib in /etc/ld.so.conf... "
-if ! grep "^/usr/X11R6/lib$" /etc/ld.so.conf > /dev/null; then
+echo -n "Looking for %{_libdir} in /etc/ld.so.conf... "
+if ! grep "^%{_libdir}$" /etc/ld.so.conf > /dev/null; then
 	echo "missing"
-	echo "/usr/X11R6/lib missing from /etc/ld.so.conf" >&2
+	echo "%{_libdir} missing from /etc/ld.so.conf" >&2
 else
 	echo "found"
 fi
 
+%post fonts
+cd %{_fontdir}/misc
+%{_bindir}/mkfontdir
+
+%postun fonts
+cd %{_fontdir}/misc
+umask 022
+%{_bindir}/mkfontdir
+
+%post 75dpi-fonts
+cd %{_fontdir}/75dpi
+umask 022
+%{_bindir}/mkfontdir
+
+%postun 75dpi-fonts
+cd %{_fontdir}/75dpi
+umask 022
+%{_bindir}/mkfontdir
+
+%post 100pi-fonts
+cd %{_fontdir}/100dpi
+%{_bindir}/mkfontdir
+
+%postun 100dpi-fonts
+cd %{_fontdir}/100dpi
+umask 022
+%{_bindir}/mkfontdir
+
+%post cyrillic-fonts
+cd %{_fontdir}/100dpi
+%{_bindir}/mkfontdir
+
+%postun cyrillic-fonts
+cd %{_fontdir}/100dpi
+umask 022
+%{_bindir}/mkfontdir
+
 %post -n xfs
 /sbin/chkconfig --add xfs
 if [ -f /var/run/xfs.pid ]; then
-        /etc/rc.d/init.d/xfs restart >&2
+	/etc/rc.d/init.d/xfs restart >&2
 else
-        echo "Run \"/etc/rc.d/init.d/xfs start\" to start font server." >&2
+	echo "Run \"/etc/rc.d/init.d/xfs start\" to start font server." >&2
 fi
-		
 
 %post -n xdm
 /sbin/chkconfig --add xdm
 if [ -f /var/run/xdm.pid ]; then
-        /etc/rc.d/init.d/xdm restart >&2
+	/etc/rc.d/init.d/xdm restart >&2
 else
-       echo "Run \"/etc/rc.d/init.d/xdm start\" to start xdm." >&2
+	echo "Run \"/etc/rc.d/init.d/xdm start\" to start xdm." >&2
 fi
 		
 %preun -n xfs
@@ -1246,33 +1283,35 @@ fi
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+#--- %files --------------------------
+
 %files
 %defattr(644,root,root,755)
 %docdir %{_docdir}/%{name}-%{version}
 %doc /%{_docdir}/%{name}-%{version}/*
-%doc /usr/X11R6/lib/X11/doc
+%doc %{_libdir}/X11/doc
 
-%doc /usr/X11R6/lib/X11/XF86Config.eg
-%doc /usr/X11R6/lib/X11/Cards
+%doc %{_libdir}/X11/XF86Config.eg
+%doc %{_libdir}/X11/Cards
 
 %ifarch ix86 alpha sparc
-%doc /usr/X11R6/lib/X11/Cards
+%doc %{_libdir}/X11/Cards
 %endif
 
 %dir /usr/X11R6
-%dir /usr/X11R6/lib
-%dir /usr/X11R6/lib/X11
-%dir /usr/X11R6/lib/X11/rstart
-%dir /usr/X11R6/lib/X11/rstart/commands
-%dir /usr/X11R6/lib/X11/rstart/commands/x11r6
-%dir /usr/X11R6/lib/X11/rstart/contexts
-%dir /usr/X11R6/lib/X11/etc
-%dir /usr/X11R6/lib/X11/fonts
-%dir /usr/X11R6/lib/X11/xserver
-%dir /usr/X11R6/bin
+%dir %{_libdir}
+%dir %{_libdir}/X11
+%dir %{_libdir}/X11/rstart
+%dir %{_libdir}/X11/rstart/commands
+%dir %{_libdir}/X11/rstart/commands/x11r6
+%dir %{_libdir}/X11/rstart/contexts
+%dir %{_libdir}/X11/etc
+%dir %{_libdir}/X11/fonts
+%dir %{_libdir}/X11/xserver
+%dir %{_bindir}
 
 %ifnarch sparc
-%dir /usr/X11R6/lib/modules
+%dir %{_libdir}/modules
 %endif
 
 %config(noreplace) %verify(not md5 mtime size) /etc/X11/XF86Config
@@ -1283,197 +1322,197 @@ rm -rf $RPM_BUILD_ROOT
 %config /etc/X11/xsm/system.xsm
 %ghost /etc/X11/X
 
-/usr/X11R6/lib/X11/XErrorDB
-/usr/X11R6/lib/X11/XKeysymDB
-/usr/X11R6/lib/X11/locale
-/usr/X11R6/lib/X11/lbxproxy
-/usr/X11R6/lib/X11/proxymngr
-/usr/X11R6/lib/X11/app-defaults
+%{_libdir}/X11/XErrorDB
+%{_libdir}/X11/XKeysymDB
+%{_libdir}/X11/locale
+%{_libdir}/X11/lbxproxy
+%{_libdir}/X11/proxymngr
+%{_libdir}/X11/app-defaults
 
-%lang(pl) /usr/X11R6/lib/X11/pl
+%lang(pl) %{_libdir}/X11/pl
 
-%attr(755,root,root) /usr/X11R6/lib/X11/xinit
+%attr(755,root,root) %{_libdir}/X11/xinit
 
-%attr(755,root,root) /usr/X11R6/lib/X11/twm
-%attr(755,root,root) /usr/X11R6/lib/X11/fs
-%attr(755,root,root) /usr/X11R6/lib/X11/xsm
+%attr(755,root,root) %{_libdir}/X11/twm
+%attr(755,root,root) %{_libdir}/X11/fs
+%attr(755,root,root) %{_libdir}/X11/xsm
 
-/usr/X11R6/lib/X11/xserver/SecurityPolicy
+%{_libdir}/X11/xserver/SecurityPolicy
 
-%attr(-,root,root) /usr/X11R6/lib/X11/rstart/config
-%attr(-,root,root) /usr/X11R6/lib/X11/rstart/rstartd.real
-%attr(-,root,root) /usr/X11R6/lib/X11/rstart/commands/x
-%attr(-,root,root) /usr/X11R6/lib/X11/rstart/commands/x11
-%attr(-,root,root) /usr/X11R6/lib/X11/rstart/commands/*List*
-%attr(-,root,root) /usr/X11R6/lib/X11/rstart/commands/x11r6/*
-%attr(-,root,root) /usr/X11R6/lib/X11/rstart/contexts/*
+%attr(-,root,root) %{_libdir}/X11/rstart/config
+%attr(-,root,root) %{_libdir}/X11/rstart/rstartd.real
+%attr(-,root,root) %{_libdir}/X11/rstart/commands/x
+%attr(-,root,root) %{_libdir}/X11/rstart/commands/x11
+%attr(-,root,root) %{_libdir}/X11/rstart/commands/*List*
+%attr(-,root,root) %{_libdir}/X11/rstart/commands/x11r6/*
+%attr(-,root,root) %{_libdir}/X11/rstart/contexts/*
 
-%attr(755,root,root) /usr/X11R6/lib/X11/x11perfcomp/*
-/usr/X11R6/lib/X11/*.txt
+%attr(755,root,root) %{_libdir}/X11/x11perfcomp/*
+%{_libdir}/X11/*.txt
 
-%attr(755,root,root) /usr/X11R6/lib/X11/etc/*
+%attr(755,root,root) %{_libdir}/X11/etc/*
 
-%attr(4755,root,root) /usr/X11R6/bin/Xwrapper
+%attr(4755,root,root) %{_bindir}/Xwrapper
 
-%attr(755,root,root) /usr/X11R6/bin/X
-%attr(755,root,root) /usr/X11R6/bin/Xprt
-%attr(755,root,root) /usr/X11R6/bin/lbxproxy
+%attr(755,root,root) %{_bindir}/X
+%attr(755,root,root) %{_bindir}/Xprt
+%attr(755,root,root) %{_bindir}/lbxproxy
 
-%attr(755,root,root) /usr/X11R6/bin/proxymngr
-%attr(755,root,root) /usr/X11R6/bin/rstartd
-%attr(755,root,root) /usr/X11R6/bin/xfindproxy
-%attr(755,root,root) /usr/X11R6/bin/xfwp
-%attr(755,root,root) /usr/X11R6/bin/xrx
-%attr(755,root,root) /usr/X11R6/bin/lndir
-%attr(755,root,root) /usr/X11R6/bin/mkdirhier
-%attr(755,root,root) /usr/X11R6/bin/gccmakedep
-%attr(755,root,root) /usr/X11R6/bin/mergelib
-%attr(755,root,root) /usr/X11R6/bin/makeg
-%attr(755,root,root) /usr/X11R6/bin/appres
-%attr(755,root,root) /usr/X11R6/bin/bdftopcf
-%attr(755,root,root) /usr/X11R6/bin/beforelight
-%attr(755,root,root) /usr/X11R6/bin/bitmap
-%attr(755,root,root) /usr/X11R6/bin/bmtoa
-%attr(755,root,root) /usr/X11R6/bin/atobm
-%attr(755,root,root) /usr/X11R6/bin/editres
-%attr(755,root,root) /usr/X11R6/bin/fsinfo
-%attr(755,root,root) /usr/X11R6/bin/fslsfonts
-%attr(755,root,root) /usr/X11R6/bin/fstobdf
-%attr(755,root,root) /usr/X11R6/bin/iceauth
-%attr(755,root,root) /usr/X11R6/bin/mkfontdir
-%attr(755,root,root) /usr/X11R6/bin/showrgb
-%attr(755,root,root) /usr/X11R6/bin/rstart
-%attr(755,root,root) /usr/X11R6/bin/smproxy
-%attr(755,root,root) /usr/X11R6/bin/twm
-%attr(755,root,root) /usr/X11R6/bin/x11perf
-%attr(755,root,root) /usr/X11R6/bin/x11perfcomp
-%attr(755,root,root) /usr/X11R6/bin/Xmark
-%attr(755,root,root) /usr/X11R6/bin/xclipboard
-%attr(755,root,root) /usr/X11R6/bin/xcutsel
-%attr(755,root,root) /usr/X11R6/bin/xclock
-%attr(755,root,root) /usr/X11R6/bin/xcmsdb
-%attr(755,root,root) /usr/X11R6/bin/xconsole
-%attr(755,root,root) /usr/X11R6/bin/xdpyinfo
-%attr(755,root,root) /usr/X11R6/bin/dga
-%attr(755,root,root) /usr/X11R6/bin/xfd
-%attr(755,root,root) /usr/X11R6/bin/xhost
-%attr(755,root,root) /usr/X11R6/bin/xieperf
-%attr(755,root,root) /usr/X11R6/bin/xinit
+%attr(755,root,root) %{_bindir}/proxymngr
+%attr(755,root,root) %{_bindir}/rstartd
+%attr(755,root,root) %{_bindir}/xfindproxy
+%attr(755,root,root) %{_bindir}/xfwp
+%attr(755,root,root) %{_bindir}/xrx
+%attr(755,root,root) %{_bindir}/lndir
+%attr(755,root,root) %{_bindir}/mkdirhier
+%attr(755,root,root) %{_bindir}/gccmakedep
+%attr(755,root,root) %{_bindir}/mergelib
+%attr(755,root,root) %{_bindir}/makeg
+%attr(755,root,root) %{_bindir}/appres
+%attr(755,root,root) %{_bindir}/bdftopcf
+%attr(755,root,root) %{_bindir}/beforelight
+%attr(755,root,root) %{_bindir}/bitmap
+%attr(755,root,root) %{_bindir}/bmtoa
+%attr(755,root,root) %{_bindir}/atobm
+%attr(755,root,root) %{_bindir}/editres
+%attr(755,root,root) %{_bindir}/fsinfo
+%attr(755,root,root) %{_bindir}/fslsfonts
+%attr(755,root,root) %{_bindir}/fstobdf
+%attr(755,root,root) %{_bindir}/iceauth
+%attr(755,root,root) %{_bindir}/mkfontdir
+%attr(755,root,root) %{_bindir}/showrgb
+%attr(755,root,root) %{_bindir}/rstart
+%attr(755,root,root) %{_bindir}/smproxy
+%attr(755,root,root) %{_bindir}/twm
+%attr(755,root,root) %{_bindir}/x11perf
+%attr(755,root,root) %{_bindir}/x11perfcomp
+%attr(755,root,root) %{_bindir}/Xmark
+%attr(755,root,root) %{_bindir}/xclipboard
+%attr(755,root,root) %{_bindir}/xcutsel
+%attr(755,root,root) %{_bindir}/xclock
+%attr(755,root,root) %{_bindir}/xcmsdb
+%attr(755,root,root) %{_bindir}/xconsole
+%attr(755,root,root) %{_bindir}/xdpyinfo
+%attr(755,root,root) %{_bindir}/dga
+%attr(755,root,root) %{_bindir}/xfd
+%attr(755,root,root) %{_bindir}/xhost
+%attr(755,root,root) %{_bindir}/xieperf
+%attr(755,root,root) %{_bindir}/xinit
 
-%attr(755,root,root) /usr/X11R6/bin/startx
+%attr(755,root,root) %{_bindir}/startx
 
-%attr(755,root,root) /usr/X11R6/bin/setxkbmap
-%attr(755,root,root) /usr/X11R6/bin/xkbcomp
-%attr(755,root,root) /usr/X11R6/bin/xkbevd
-%attr(755,root,root) /usr/X11R6/bin/xkbprint
-%attr(755,root,root) /usr/X11R6/bin/xkbvleds
-%attr(755,root,root) /usr/X11R6/bin/xkbwatch
-%attr(755,root,root) /usr/X11R6/bin/xkbbell
-%attr(755,root,root) /usr/X11R6/bin/xkill
-%attr(755,root,root) /usr/X11R6/bin/xlogo
-%attr(755,root,root) /usr/X11R6/bin/xlsatoms
-%attr(755,root,root) /usr/X11R6/bin/xlsclients
-%attr(755,root,root) /usr/X11R6/bin/xlsfonts
-%attr(755,root,root) /usr/X11R6/bin/xmag
-%attr(755,root,root) /usr/X11R6/bin/xmh
-%attr(755,root,root) /usr/X11R6/bin/xmodmap
-%attr(755,root,root) /usr/X11R6/bin/xprop
-%attr(755,root,root) /usr/X11R6/bin/xrdb
-%attr(755,root,root) /usr/X11R6/bin/xset
-%attr(755,root,root) /usr/X11R6/bin/xrefresh
-%attr(755,root,root) /usr/X11R6/bin/xsetmode
-%attr(755,root,root) /usr/X11R6/bin/xsetpointer
-%attr(755,root,root) /usr/X11R6/bin/xsetroot
-%attr(755,root,root) /usr/X11R6/bin/xsm
-%attr(755,root,root) /usr/X11R6/bin/xstdcmap
-%attr(755,root,root) /usr/X11R6/bin/xterm
-%attr(755,root,root) /usr/X11R6/bin/resize
-%attr(755,root,root) /usr/X11R6/bin/xvidtune
-%attr(755,root,root) /usr/X11R6/bin/xwd
-%attr(755,root,root) /usr/X11R6/bin/xwininfo
-%attr(755,root,root) /usr/X11R6/bin/xwud
-%attr(755,root,root) /usr/X11R6/bin/reconfig
-%attr(755,root,root) /usr/X11R6/bin/xf86config
-%attr(755,root,root) /usr/X11R6/bin/scanpci
-%attr(755,root,root) /usr/X11R6/bin/SuperProbe
-%attr(755,root,root) /usr/X11R6/bin/xon
+%attr(755,root,root) %{_bindir}/setxkbmap
+%attr(755,root,root) %{_bindir}/xkbcomp
+%attr(755,root,root) %{_bindir}/xkbevd
+%attr(755,root,root) %{_bindir}/xkbprint
+%attr(755,root,root) %{_bindir}/xkbvleds
+%attr(755,root,root) %{_bindir}/xkbwatch
+%attr(755,root,root) %{_bindir}/xkbbell
+%attr(755,root,root) %{_bindir}/xkill
+%attr(755,root,root) %{_bindir}/xlogo
+%attr(755,root,root) %{_bindir}/xlsatoms
+%attr(755,root,root) %{_bindir}/xlsclients
+%attr(755,root,root) %{_bindir}/xlsfonts
+%attr(755,root,root) %{_bindir}/xmag
+%attr(755,root,root) %{_bindir}/xmh
+%attr(755,root,root) %{_bindir}/xmodmap
+%attr(755,root,root) %{_bindir}/xprop
+%attr(755,root,root) %{_bindir}/xrdb
+%attr(755,root,root) %{_bindir}/xset
+%attr(755,root,root) %{_bindir}/xrefresh
+%attr(755,root,root) %{_bindir}/xsetmode
+%attr(755,root,root) %{_bindir}/xsetpointer
+%attr(755,root,root) %{_bindir}/xsetroot
+%attr(755,root,root) %{_bindir}/xsm
+%attr(755,root,root) %{_bindir}/xstdcmap
+%attr(755,root,root) %{_bindir}/xterm
+%attr(755,root,root) %{_bindir}/resize
+%attr(755,root,root) %{_bindir}/xvidtune
+%attr(755,root,root) %{_bindir}/xwd
+%attr(755,root,root) %{_bindir}/xwininfo
+%attr(755,root,root) %{_bindir}/xwud
+%attr(755,root,root) %{_bindir}/reconfig
+%attr(755,root,root) %{_bindir}/xf86config
+%attr(755,root,root) %{_bindir}/scanpci
+%attr(755,root,root) %{_bindir}/SuperProbe
+%attr(755,root,root) %{_bindir}/xon
 
-/usr/X11R6/include/X11/bitmaps
+%{_includedir}/X11/bitmaps
 
-/usr/X11R6/man/man1/lbxproxy.1*
-/usr/X11R6/man/man1/proxymngr.1*
-/usr/X11R6/man/man1/xfindproxy.1*
-/usr/X11R6/man/man1/xfwp.1*
-/usr/X11R6/man/man1/xrx.1*
-/usr/X11R6/man/man1/lndir.1*
-/usr/X11R6/man/man1/makestrs.1*
-/usr/X11R6/man/man1/makeg.1*
-/usr/X11R6/man/man1/mkdirhier.1*
-/usr/X11R6/man/man1/appres.1*
-/usr/X11R6/man/man1/bdftopcf.1*
-/usr/X11R6/man/man1/beforelight.1*
-/usr/X11R6/man/man1/bitmap.1*
-/usr/X11R6/man/man1/bmtoa.1*
-/usr/X11R6/man/man1/atobm.1*
-/usr/X11R6/man/man1/editres.1*
-/usr/X11R6/man/man1/fsinfo.1*
-/usr/X11R6/man/man1/fslsfonts.1*
-/usr/X11R6/man/man1/fstobdf.1*
-/usr/X11R6/man/man1/iceauth.1*
-/usr/X11R6/man/man1/mkfontdir.1*
-/usr/X11R6/man/man1/showrgb.1*
-/usr/X11R6/man/man1/rstart.1*
-/usr/X11R6/man/man1/rstartd.1*
-/usr/X11R6/man/man1/smproxy.1*
-/usr/X11R6/man/man1/twm.1*
-/usr/X11R6/man/man1/x11perf.1*
-/usr/X11R6/man/man1/x11perfcomp.1*
-/usr/X11R6/man/man1/xclipboard.1*
-/usr/X11R6/man/man1/xcutsel.1*
-/usr/X11R6/man/man1/xclock.1*
-/usr/X11R6/man/man1/xcmsdb.1*
-/usr/X11R6/man/man1/xconsole.1*
-/usr/X11R6/man/man1/sessreg.1*
-/usr/X11R6/man/man1/xdpyinfo.1*
-/usr/X11R6/man/man1/dga.1*
-/usr/X11R6/man/man1/xfd.1*
-/usr/X11R6/man/man1/xhost.1*
-/usr/X11R6/man/man1/xieperf.1*
-/usr/X11R6/man/man1/xinit.1*
-/usr/X11R6/man/man1/startx.1*
-/usr/X11R6/man/man1/setxkbmap.1*
-/usr/X11R6/man/man1/xkbcomp.1*
-/usr/X11R6/man/man1/xkbevd.1*
-/usr/X11R6/man/man1/xkbprint.1*
-/usr/X11R6/man/man1/xkill.1*
-/usr/X11R6/man/man1/xlogo.1*
-/usr/X11R6/man/man1/xlsatoms.1*
-/usr/X11R6/man/man1/xlsclients.1*
-/usr/X11R6/man/man1/xlsfonts.1*
-/usr/X11R6/man/man1/xmag.1*
-/usr/X11R6/man/man1/xmh.1*
-/usr/X11R6/man/man1/xmodmap.1*
-/usr/X11R6/man/man1/xprop.1*
-/usr/X11R6/man/man1/xrdb.1*
-/usr/X11R6/man/man1/xrefresh.1*
-/usr/X11R6/man/man1/xset.1*
-/usr/X11R6/man/man1/xsetmode.1*
-/usr/X11R6/man/man1/xsetpointer.1*
-/usr/X11R6/man/man1/xsetroot.1*
-/usr/X11R6/man/man1/xsm.1*
-/usr/X11R6/man/man1/xstdcmap.1*
-/usr/X11R6/man/man1/xterm.1*
-/usr/X11R6/man/man1/resize.1*
-/usr/X11R6/man/man1/xvidtune.1*
-/usr/X11R6/man/man1/xwd.1*
-/usr/X11R6/man/man1/xwininfo.1*
-/usr/X11R6/man/man1/xwud.1*
-/usr/X11R6/man/man1/Xserver.1*
-/usr/X11R6/man/man1/XFree86.1*
-/usr/X11R6/man/man1/reconfig.1*
-/usr/X11R6/man/man1/xf86config.1*
-/usr/X11R6/man/man1/SuperProbe.1*
-/usr/X11R6/man/man1/xon.1*
+%{_mandir}/man1/lbxproxy.1*
+%{_mandir}/man1/proxymngr.1*
+%{_mandir}/man1/xfindproxy.1*
+%{_mandir}/man1/xfwp.1*
+%{_mandir}/man1/xrx.1*
+%{_mandir}/man1/lndir.1*
+%{_mandir}/man1/makestrs.1*
+%{_mandir}/man1/makeg.1*
+%{_mandir}/man1/mkdirhier.1*
+%{_mandir}/man1/appres.1*
+%{_mandir}/man1/bdftopcf.1*
+%{_mandir}/man1/beforelight.1*
+%{_mandir}/man1/bitmap.1*
+%{_mandir}/man1/bmtoa.1*
+%{_mandir}/man1/atobm.1*
+%{_mandir}/man1/editres.1*
+%{_mandir}/man1/fsinfo.1*
+%{_mandir}/man1/fslsfonts.1*
+%{_mandir}/man1/fstobdf.1*
+%{_mandir}/man1/iceauth.1*
+%{_mandir}/man1/mkfontdir.1*
+%{_mandir}/man1/showrgb.1*
+%{_mandir}/man1/rstart.1*
+%{_mandir}/man1/rstartd.1*
+%{_mandir}/man1/smproxy.1*
+%{_mandir}/man1/twm.1*
+%{_mandir}/man1/x11perf.1*
+%{_mandir}/man1/x11perfcomp.1*
+%{_mandir}/man1/xclipboard.1*
+%{_mandir}/man1/xcutsel.1*
+%{_mandir}/man1/xclock.1*
+%{_mandir}/man1/xcmsdb.1*
+%{_mandir}/man1/xconsole.1*
+%{_mandir}/man1/sessreg.1*
+%{_mandir}/man1/xdpyinfo.1*
+%{_mandir}/man1/dga.1*
+%{_mandir}/man1/xfd.1*
+%{_mandir}/man1/xhost.1*
+%{_mandir}/man1/xieperf.1*
+%{_mandir}/man1/xinit.1*
+%{_mandir}/man1/startx.1*
+%{_mandir}/man1/setxkbmap.1*
+%{_mandir}/man1/xkbcomp.1*
+%{_mandir}/man1/xkbevd.1*
+%{_mandir}/man1/xkbprint.1*
+%{_mandir}/man1/xkill.1*
+%{_mandir}/man1/xlogo.1*
+%{_mandir}/man1/xlsatoms.1*
+%{_mandir}/man1/xlsclients.1*
+%{_mandir}/man1/xlsfonts.1*
+%{_mandir}/man1/xmag.1*
+%{_mandir}/man1/xmh.1*
+%{_mandir}/man1/xmodmap.1*
+%{_mandir}/man1/xprop.1*
+%{_mandir}/man1/xrdb.1*
+%{_mandir}/man1/xrefresh.1*
+%{_mandir}/man1/xset.1*
+%{_mandir}/man1/xsetmode.1*
+%{_mandir}/man1/xsetpointer.1*
+%{_mandir}/man1/xsetroot.1*
+%{_mandir}/man1/xsm.1*
+%{_mandir}/man1/xstdcmap.1*
+%{_mandir}/man1/xterm.1*
+%{_mandir}/man1/resize.1*
+%{_mandir}/man1/xvidtune.1*
+%{_mandir}/man1/xwd.1*
+%{_mandir}/man1/xwininfo.1*
+%{_mandir}/man1/xwud.1*
+%{_mandir}/man1/Xserver.1*
+%{_mandir}/man1/XFree86.1*
+%{_mandir}/man1/reconfig.1*
+%{_mandir}/man1/xf86config.1*
+%{_mandir}/man1/SuperProbe.1*
+%{_mandir}/man1/xon.1*
 
 /usr/bin/X11
 
@@ -1481,9 +1520,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files modules
 %defattr(-,root,root,755)
-/usr/X11R6/lib/X11/xkb
+%{_libdir}/X11/xkb
 /var/state/xkb
-%attr(755,root,root) /usr/X11R6/lib/modules/*
+%dir %{_libdir}/modules
+%attr(755,root,root) %{_libdir}/modules/*
 
 %endif
 
@@ -1493,12 +1533,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/security/blacklist.xdm
 %attr(754,root,root) /etc/rc.d/init.d/xdm
 
-%config /usr/X11R6/lib/X11/app-defaults/Chooser
+%config %{_libdir}/X11/app-defaults/Chooser
 
-%attr(755,root,root) /usr/X11R6/lib/X11/xdm
-%attr(755,root,root) /usr/X11R6/bin/xdm
-%attr(755,root,root) /usr/X11R6/bin/sessreg
-/usr/X11R6/man/man1/xdm.1*
+%attr(755,root,root) %{_libdir}/X11/xdm
+%attr(755,root,root) %{_bindir}/xdm
+%attr(755,root,root) %{_bindir}/sessreg
+%{_mandir}/man1/xdm.1*
 
 %dir    /etc/X11/xdm
 %config /etc/X11/xdm/xdm-config
@@ -1517,227 +1557,227 @@ rm -rf $RPM_BUILD_ROOT
 %dir /etc/X11/fs
 %config(noreplace) /etc/X11/fs/config
 
-%attr(755,root,root) /usr/X11R6/bin/xfs
-%attr(755,root,root) /usr/X11R6/bin/fsinfo
-%attr(755,root,root) /usr/X11R6/bin/fslsfonts
-%attr(755,root,root) /usr/X11R6/bin/fstobdf
+%attr(755,root,root) %{_bindir}/xfs
+%attr(755,root,root) %{_bindir}/fsinfo
+%attr(755,root,root) %{_bindir}/fslsfonts
+%attr(755,root,root) %{_bindir}/fstobdf
 
-/usr/X11R6/man/man1/xfs.1*
-/usr/X11R6/man/man1/fsinfo.1*
-/usr/X11R6/man/man1/fslsfonts.1*
-/usr/X11R6/man/man1/fstobdf.1*
+%{_mandir}/man1/xfs.1*
+%{_mandir}/man1/fsinfo.1*
+%{_mandir}/man1/fslsfonts.1*
+%{_mandir}/man1/fstobdf.1*
 
 %files -n xauth
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/xauth
-/usr/X11R6/man/man1/xauth.1*
+%attr(755,root,root) %{_bindir}/xauth
+%{_mandir}/man1/xauth.1*
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/lib/lib*.so.*.*
-
+%attr(755,root,root) %{_libdir}/lib*.so.*.*
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/lib/lib*.so
-/usr/X11R6/lib/libFS.a
-/usr/X11R6/lib/libXau.a
-/usr/X11R6/lib/libXdmcp.a
-/usr/X11R6/lib/libXdpms.a
-/usr/X11R6/lib/libXss.a
-/usr/X11R6/lib/libXxf86dga.a
-/usr/X11R6/lib/libXxf86misc.a
-/usr/X11R6/lib/libXxf86vm.a
-/usr/X11R6/lib/liboldX.a
-/usr/X11R6/lib/libxkbfile.a
-/usr/X11R6/lib/libxkbui.a
+%attr(755,root,root) %{_libdir}/lib*.so
+%{_libdir}/libFS.a
+%{_libdir}/libXau.a
+%{_libdir}/libXdmcp.a
+%{_libdir}/libXdpms.a
+%{_libdir}/libXss.a
+%{_libdir}/libXxf86dga.a
+%{_libdir}/libXxf86misc.a
+%{_libdir}/libXxf86vm.a
+%{_libdir}/liboldX.a
+%{_libdir}/libxkbfile.a
+%{_libdir}/libxkbui.a
 
-/usr/X11R6/include/X11/*.h
-/usr/X11R6/include/X11/ICE
-/usr/X11R6/include/X11/PEX5
-/usr/X11R6/include/X11/PM
-/usr/X11R6/include/X11/SM
-/usr/X11R6/include/X11/Xaw
-/usr/X11R6/include/X11/Xmu
-/usr/X11R6/include/X11/extensions
-/usr/X11R6/include/X11/fonts
-/usr/X11R6/lib/X11/config
+%{_includedir}/X11/*.h
+%{_includedir}/X11/ICE
+%{_includedir}/X11/PEX5
+%{_includedir}/X11/PM
+%{_includedir}/X11/SM
+%{_includedir}/X11/Xaw
+%{_includedir}/X11/Xmu
+%{_includedir}/X11/extensions
+%{_includedir}/X11/fonts
+%{_libdir}/X11/config
 
-%attr(755,root,root) /usr/X11R6/bin/imake
-%attr(755,root,root) /usr/X11R6/bin/makedepend
-%attr(755,root,root) /usr/X11R6/bin/xmkmf
+%attr(755,root,root) %{_bindir}/imake
+%attr(755,root,root) %{_bindir}/makedepend
+%attr(755,root,root) %{_bindir}/xmkmf
 
-/usr/X11R6/man/man1/imake.1*
-/usr/X11R6/man/man1/makedepend.1*
-/usr/X11R6/man/man1/xmkmf.1*
-/usr/X11R6/man/man3/*
+%{_mandir}/man1/imake.1*
+%{_mandir}/man1/makedepend.1*
+%{_mandir}/man1/xmkmf.1*
+%{_mandir}/man3/*
 
 /usr/include/X11
 
 %files static
 %defattr(644,root,root,755)
-/usr/X11R6/lib/libICE.a
-/usr/X11R6/lib/libPEX5.a
-/usr/X11R6/lib/libSM.a
-/usr/X11R6/lib/libX11.a
-/usr/X11R6/lib/libXIE.a
-/usr/X11R6/lib/libXaw.a
-/usr/X11R6/lib/libXext.a
-/usr/X11R6/lib/libXi.a
-/usr/X11R6/lib/libXmu.a
-/usr/X11R6/lib/libXp.a
-/usr/X11R6/lib/libXt.a
-/usr/X11R6/lib/libXtst.a
-/usr/X11R6/lib/libXxf86rush.a
+%{_libdir}/libICE.a
+%{_libdir}/libPEX5.a
+%{_libdir}/libSM.a
+%{_libdir}/libX11.a
+%{_libdir}/libXIE.a
+%{_libdir}/libXaw.a
+%{_libdir}/libXext.a
+%{_libdir}/libXi.a
+%{_libdir}/libXmu.a
+%{_libdir}/libXp.a
+%{_libdir}/libXt.a
+%{_libdir}/libXtst.a
+%{_libdir}/libXxf86rush.a
 
 %files Xvfb
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/Xvfb
-/usr/X11R6/man/man1/Xvfb.1*
+%attr(755,root,root) %{_bindir}/Xvfb
+%{_mandir}/man1/Xvfb.1*
 
 %files Xnest
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/Xnest
-/usr/X11R6/man/man1/Xnest.1*
+%attr(755,root,root) %{_bindir}/Xnest
+%{_mandir}/man1/Xnest.1*
 
 %ifarch i386 i486 i586 i686 alpha
 
 %files SVGA
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/XF86_SVGA
-/usr/X11R6/man/man1/XF86_SVGA.1*
-/usr/X11R6/man/man5/XF86Config.5*
+%attr(755,root,root) %{_bindir}/XF86_SVGA
+%{_mandir}/man1/XF86_SVGA.1*
+%{_mandir}/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686 sparc
 
 %files VGA16
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/XF86_VGA16
-/usr/X11R6/man/man1/XF86_VGA16.1*
-/usr/X11R6/man/man5/XF86Config.5*
+%attr(755,root,root) %{_bindir}/XF86_VGA16
+%{_mandir}/man1/XF86_VGA16.1*
+%{_mandir}/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686
 
 %files W32
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/XF86_W32
-/usr/X11R6/man/man1/XF86_W32.1*
-/usr/X11R6/man/man1/XF86_Accel.1*
-/usr/X11R6/man/man5/XF86Config.5*
+%attr(755,root,root) %{_bindir}/XF86_W32
+%{_mandir}/man1/XF86_W32.1*
+%{_mandir}/man1/XF86_Accel.1*
+%{_mandir}/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686 alpha
 
 %files Mono
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/XF86_Mono
-/usr/X11R6/man/man1/XF86_Mono.1*
-/usr/X11R6/man/man5/XF86Config.5*
+%attr(755,root,root) %{_bindir}/XF86_Mono
+%{_mandir}/man1/XF86_Mono.1*
+%{_mandir}/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686 alpha
 
 %files S3
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/XF86_S3
-/usr/X11R6/man/man1/XF86_S3.1*
-/usr/X11R6/man/man1/XF86_Accel.1*
-/usr/X11R6/man/man5/XF86Config.5*
+%attr(755,root,root) %{_bindir}/XF86_S3
+%{_mandir}/man1/XF86_S3.1*
+%{_mandir}/man1/XF86_Accel.1*
+%{_mandir}/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686 alpha
 
 %files S3V
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/XF86_S3V
-/usr/X11R6/man/man1/XF86_S3.1*
-/usr/X11R6/man/man1/XF86_Accel.1*
-/usr/X11R6/man/man5/XF86Config.5*
+%attr(755,root,root) %{_bindir}/XF86_S3V
+%{_mandir}/man1/XF86_S3.1*
+%{_mandir}/man1/XF86_Accel.1*
+%{_mandir}/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686
 
 %files 8514
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/XF86_8514
-/usr/X11R6/man/man1/XF86_8514.1*
-/usr/X11R6/man/man1/XF86_Accel.1*
-/usr/X11R6/man/man5/XF86Config.5*
+%attr(755,root,root) %{_bindir}/XF86_8514
+%{_mandir}/man1/XF86_8514.1*
+%{_mandir}/man1/XF86_Accel.1*
+%{_mandir}/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686
 
 %files Mach8
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/XF86_Mach8
-/usr/X11R6/man/man1/XF86_Mach8.1*
-/usr/X11R6/man/man1/XF86_Accel.1*
-/usr/X11R6/man/man5/XF86Config.5*
+%attr(755,root,root) %{_bindir}/XF86_Mach8
+%{_mandir}/man1/XF86_Mach8.1*
+%{_mandir}/man1/XF86_Accel.1*
+%{_mandir}/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686
 
 %files Mach32
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/XF86_Mach32
-/usr/X11R6/man/man1/XF86_Mach32.1*
-/usr/X11R6/man/man1/XF86_Accel.1*
-/usr/X11R6/man/man5/XF86Config.5*
+%attr(755,root,root) %{_bindir}/XF86_Mach32
+%{_mandir}/man1/XF86_Mach32.1*
+%{_mandir}/man1/XF86_Accel.1*
+%{_mandir}/man5/XF86Config.5*
 %endif
 
 %files Mach64
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/XF86_Mach64
-/usr/X11R6/man/man1/XF86_Mach64.1*
-/usr/X11R6/man/man1/XF86_Accel.1*
-/usr/X11R6/man/man5/XF86Config.5*
+%attr(755,root,root) %{_bindir}/XF86_Mach64
+%{_mandir}/man1/XF86_Mach64.1*
+%{_mandir}/man1/XF86_Accel.1*
+%{_mandir}/man5/XF86Config.5*
 
 %ifarch i386 i486 i586 i686 alpha
 
 %files P9000
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/XF86_P9000
-/usr/X11R6/man/man1/XF86_P9000.1*
-/usr/X11R6/man/man1/XF86_Accel.1*
-/usr/X11R6/man/man5/XF86Config.5*
+%attr(755,root,root) %{_bindir}/XF86_P9000
+%{_mandir}/man1/XF86_P9000.1*
+%{_mandir}/man1/XF86_Accel.1*
+%{_mandir}/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686
 
 %files AGX
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/XF86_AGX
-/usr/X11R6/man/man1/XF86_AGX.1*
-/usr/X11R6/man/man1/XF86_Accel.1*
-/usr/X11R6/man/man5/XF86Config.5*
+%attr(755,root,root) %{_bindir}/XF86_AGX
+%{_mandir}/man1/XF86_AGX.1*
+%{_mandir}/man1/XF86_Accel.1*
+%{_mandir}/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686
 
 %files I128
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/XF86_I128
-/usr/X11R6/man/man1/XF86_I128.1*
-/usr/X11R6/man/man1/XF86_Accel.1*
-/usr/X11R6/man/man5/XF86Config.5*
+%attr(755,root,root) %{_bindir}/XF86_I128
+%{_mandir}/man1/XF86_I128.1*
+%{_mandir}/man1/XF86_Accel.1*
+%{_mandir}/man5/XF86Config.5*
 %endif
 
 %ifarch alpha
 
 %files TGA
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/XF86_TGA
-/usr/X11R6/man/man5/XF86Config.5*
+%attr(755,root,root) %{_bindir}/XF86_TGA
+%{_mandir}/man5/XF86Config.5*
 %endif
 
 %ifarch sparc
 
 %files Sun
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/Xsun
-%attr(-,root,root) /usr/X11R6/lib/X11/xkb
+%attr(755,root,root) %{_bindir}/Xsun
+%dir %{_libdir}/X11/xkb
+%attr(755,root,root) %{_libdir}/X11/xkb/*
 /var/state/xkb
 %endif
 
@@ -1745,8 +1785,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files SunMono
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/XsunMono
-%attr(-,root,root) /usr/X11R6/lib/X11/xkb
+%attr(755,root,root) %{_bindir}/XsunMono
+%dir %{_libdir}/X11/xkb
+%attr(755,root,root) %{_libdir}/X11/xkb/*
 /var/state/xkb
 %endif
 
@@ -1754,49 +1795,55 @@ rm -rf $RPM_BUILD_ROOT
 
 %files Sun24
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/Xsun24
-%attr(-,root,root) /usr/X11R6/lib/X11/xkb
+%attr(755,root,root) %{_bindir}/Xsun24
+%dir %{_libdir}/X11/xkb
+%attr(755,root,root) %{_libdir}/X11/xkb/*
 /var/state/xkb
 %endif
 
 %ifarch i386 i486 i586 i686
 
 %files 3DLabs
-%attr(755,root,root) /usr/X11R6/bin/XF86_3DLabs
+%attr(755,root,root) %{_bindir}/XF86_3DLabs
 %endif
 
 %files FBDev
 %defattr(644,root,root,755)
 %ifarch m68k
-%attr(755,root,root) /usr/X11R6/bin/XF68_FBDev
-/usr/X11R6/man/man1/XF68_FBDev.1*
+%attr(755,root,root) %{_bindir}/XF68_FBDev
+%{_mandir}/man1/XF68_FBDev.1*
 %else
-%attr(755,root,root) /usr/X11R6/bin/XF86_FBDev
+%attr(755,root,root) %{_bindir}/XF86_FBDev
 %endif
 
 %files XF86Setup
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/XF86Setup
-%attr(755,root,root) /usr/X11R6/bin/xmseconfig
-/usr/X11R6/lib/X11/XF86Setup
-/usr/X11R6/man/man1/XF86Setup.1*
-/usr/X11R6/man/man1/xmseconfig.1*
+%attr(755,root,root) %{_bindir}/XF86Setup
+%attr(755,root,root) %{_bindir}/xmseconfig
+%{_libdir}/X11/XF86Setup
+%{_mandir}/man1/XF86Setup.1*
+%{_mandir}/man1/xmseconfig.1*
 
 %files fonts
 %defattr(644,root,root,755)
 %{_fontdir}/PEX
 %{_fontdir}/Speedo
 %{_fontdir}/Type1
-%{_fontdir}/misc
-/usr/X11R6/include/X11/fonts
+%dir %{_fontdir}/misc
+%{_fontdir}/misc/*gz
+%verify(not mtime size md5) %{_fontdir}/misc/fonts.*
 
 %files 75dpi-fonts
 %defattr(644,root,root,755)
-%{_fontdir}/75dpi
+%dir %{_fontdir}/75dpi
+%{_fontdir}/75dpi/*gz
+%verify(not mtime size md5) %{_fontdir}/75dpi/fonts.*
 
 %files 100dpi-fonts
 %defattr(644,root,root,755)
-%{_fontdir}/100dpi
+%dir %{_fontdir}/100dpi
+%dir %{_fontdir}/100dpi/*gz
+%verify(not mtime size md5) %{_fontdir}/100dpi/fonts.*
 
 %files cyrillic-fonts
 %defattr(644,root,root,755)
