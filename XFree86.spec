@@ -60,7 +60,6 @@ Source37:	xconsole.png
 Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
 # Source38-md5:	a184106bb83cb27c6963944d9243ac3f
 #Source39:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
-# Source39-md5: 8d43c01d364576c195a5294279f92566
 # http://w1.894.telia.com/~u89404340/touchpad/index.html
 Source40:	http://w1.894.telia.com/~u89404340/touchpad/synaptics-%{_synaptics_ver}.tar.bz2
 # Source40-md5:	5541058365fc13ba28d2a74ed0b6fdd7
