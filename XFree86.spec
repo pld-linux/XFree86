@@ -4,12 +4,12 @@ Summary(fr):	Serveurs du système XFree86 et programmes de base
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
-Version:	4.0
-Release:	10
+Version:	4.0.1
+Release:	1
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0/source/X400src-1.tgz
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0/source/X401src-1.tgz
 Source1:	ftp://ftp.mesa3d.org/mesa/MesaLib-3.2.tar.bz2
 Source3:	xdm.pamd
 Source4:	xdm.init
@@ -27,30 +27,25 @@ Source15:	xlogo64.png
 Patch0:		XFree86-4.0-PLD.patch
 Patch1:		XFree86-HasZlib.patch
 Patch2:		XFree86-DisableDebug.patch
-Patch3:		XFree86-3.9.18-Xwrapper.patch
-Patch4:		XFree86-3.9.17-PAM.patch
-Patch5:		XFree86-4.0-makedepend.patch
-Patch6:		XFree86-xfsredhat.patch
-Patch7:		XFree86-xfs-fix.patch
-Patch8:		XFree86-xfs-logger.patch
-Patch9:		XFree86-xterm-utempter.patch
-Patch10:	XFree86-app_defaults_dir.patch
+Patch3:		XFree86-Xwrapper.patch
+Patch4:		XFree86-xfsredhat.patch
+Patch5:		XFree86-xfs-fix.patch
+Patch6:		XFree86-xfs-logger.patch
+Patch7:		XFree86-xterm-utempter.patch
+Patch8:		XFree86-app_defaults_dir.patch
 # From DRI CVS
-Patch11:	XFree86-DRI-20000624.patch.gz
+#Patch9:		XFree86-DRI-20000624.patch.gz
 # from rawhide
-Patch12:	XFree86-startx_xauth.patch
-Patch13:	XFree86-alpha.patch
-Patch14:	XFree86-v4l.patch
-Patch15:	XFree86-fixemacs.patch
-Patch16:	XFree86-sparc1.patch.gz
-Patch17:	XFree86-sparc2.patch.gz
-Patch18:	XFree86-sparc3.patch.gz
-Patch19:	XFree86-sparc4.patch.gz
-Patch20:	XFree86-security.patch
-Patch21:	XFree86-shared.patch
-Patch22:	XFree86-broken-includes.patch
-Patch23:	XFree86-Xaw-unaligned.patch
-Patch24:	XFree86-libICE-skip.patch
+Patch10:	XFree86-startx_xauth.patch
+Patch11:	XFree86-v4l.patch
+Patch12:	XFree86-fixemacs.patch
+Patch13:	XFree86-sparc1.patch.gz
+Patch14:	XFree86-sparc2.patch.gz
+Patch15:	XFree86-sparc3.patch.gz
+Patch16:	XFree86-sparc4.patch.gz
+Patch17:	XFree86-shared.patch
+Patch18:	XFree86-broken-includes.patch
+Patch19:	XFree86-Xaw-unaligned.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -62,7 +57,6 @@ BuildRequires:	Glide2x_SDK
 BuildRequires:	Glide_V3-DRI-devel >= 3.10-7
 %endif
 Requires:	xauth
-Obsoletes:	X11R6-contrib
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
 Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -243,27 +237,43 @@ X11R6 static libraries.
 %description -l pl static
 Biblioteki sytatyczne do X11R6.
 
-%package OpenGL
+%package OpenGL-core
 Summary:	OpenGL support for X11R6
 Summary(pl):	Wsparciem OpenGL dla systemu X11R6
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-libs = %{version}
-Provides:	OpenGL
 Obsoletes:	Mesa
 
-%description OpenGL
+%description OpenGL-core
 OpenGL support for X11R6 system.
 
-%description -l pl OpenGL
+%description -l pl OpenGL-core
 Wsparcie OpenGL dla systemu X11R6
+
+%package OpenGL-libs
+Summary:	OpenGL libraries for X11R6
+Summary(pl):	Biblioteki OpenGL dla systemu X11R6
+Group:		X11/Libraries
+Group(pl):	X11/Biblioteki
+Requires:	%{name}-libs = %{version}
+Requires:	%{name}-OpenGL-core
+Provides:	OpenGL
+Obsoletes:	%{name}-OpenGL
+Obsoletes:	Mesa
+
+%description OpenGL-libs
+OpenGL libraries for X11R6 system.
+
+%description -l pl OpenGL-libs
+Biblioteki OpenGL dla systemu X11R6
 
 %package OpenGL-devel
 Summary:	OpenGL for X11R6 development
 Summary(pl):	Pliki nag³ówkowe dla OpenGL dla systemu X11R6
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
-Requires:	%{name}-OpenGL = %{version}
+Requires:	%{name}-OpenGL-libs = %{version}
 Provides:	OpenGL-devel
 Obsoletes:	Mesa-devel glxMesa-devel
 
@@ -367,7 +377,7 @@ Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	pam
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
+Requires:	%{name}-fonts >= 4.0
 Obsoletes:	%{name}-VGA16 %{name}-SVGA %{name}-Mono
 Obsoletes:	XFree86-S3 XFree86-S3V XFree86-I128
 Obsoletes:	XFree86-Mach8 XFree86-Mach32 XFree86-Mach64
@@ -838,29 +848,25 @@ in older releases.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
+%patch4 -p0
 %patch5 -p0
-%patch6 -p0
-%patch7 -p0
-#%patch8 -p0
-%patch9 -p1
-%patch10 -p1
-%patch11 -p0
-#%patch12 -p1
-%patch13 -p1
+#%patch6 -p0
+%patch7 -p1
+%patch8 -p1
+# XFree 4.0.1 is in sync, yet...
+#%patch9 -p0
+#%patch10 -p1
+%patch11 -p1
+%patch12 -p1
+%ifarch sparc sparc64
+%patch13 -p0
 %patch14 -p1
 %patch15 -p1
-%ifarch sparc sparc64
 %patch16 -p0
+%endif
 %patch17 -p1
 %patch18 -p1
-%patch19 -p0
-%endif
-%patch20 -p1
-%patch21 -p1
-%patch22 -p1
-%patch23 -p1
-%patch24 -p0
+%patch19 -p1
 
 rm -f xc/config/cf/host.def
 
@@ -994,6 +1000,8 @@ ln -sf ../../../share/doc/%{name}-%{version} \
 rm -f $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
 :> $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
 
+rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/html
+
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[13457]/* \
 	$RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
 
@@ -1087,6 +1095,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/X11/app-defaults/XSm
 %{_libdir}/X11/app-defaults/XTerm
 %{_libdir}/X11/app-defaults/XTerm-color
+%{_libdir}/X11/app-defaults/XF86Cfg
 
 %attr(755,root,root) %{_libdir}/X11/lbxproxy
 %attr(755,root,root) %{_libdir}/X11/proxymngr
@@ -1159,6 +1168,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xconsole
 %attr(755,root,root) %{_bindir}/xcutsel
 %attr(755,root,root) %{_bindir}/xdpyinfo
+%attr(755,root,root) %{_bindir}/xf86cfg
 %attr(755,root,root) %{_bindir}/xf86config
 %attr(755,root,root) %{_bindir}/xfindproxy
 %attr(755,root,root) %{_bindir}/xfwp
@@ -1190,7 +1200,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xwd
 %attr(755,root,root) %{_bindir}/xwud
 
-%{_includedir}/X11/bitmaps
+%dir %{_includedir}/bitmaps
+%dir %{_includedir}/X11/bitmaps
+%dir %{_includedir}/X11/pixmaps
+
+%{_includedir}/X11/bitmaps/*
+%{_includedir}/X11/pixmaps/*
 
 %{_appnkldir}/Utilities/*.desktop
 %{_appnkldir}/*.desktop
@@ -1246,6 +1261,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xvidtune.1*
 %{_mandir}/man1/xwd.1*
 %{_mandir}/man1/xwud.1*
+%{_mandir}/man1/xf86cfg.1*
 %{_mandir}/man1/xf86config.1*
 %{_mandir}/man1/SuperProbe.1*
 %{_mandir}/man1/xon.1*
@@ -1288,6 +1304,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/vga*
 %{_mandir}/man4/void*
 %{_mandir}/man4/wacom*
+%{_mandir}/man4/elographics*
+%{_mandir}/man4/mutouch*
 
 %endif
 
@@ -1366,15 +1384,21 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libS*.so.*.*
 %attr(755,root,root) %{_libdir}/libx*.so.*.*
 
-%files OpenGL
+%files OpenGL-core
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libGL*.so.*.*
+%attr(755,root,root) %{_libdir}/libGL.so.*.*
 %attr(755,root,root) %{_libdir}/modules/extensions/libglx.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libGLcore.a
+
+%files OpenGL-libs
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libGLU.so.*.*
+%attr(755,root,root) %{_libdir}/libOSMesa.so.*.*
 
 %files OpenGL-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libGL*.so
+%attr(755,root,root) %{_libdir}/libOSMesa*.so
 %attr(644,root,root) %{_includedir}/GL/*
 %{_mandir}/man3/glX*
 
@@ -1406,6 +1430,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libXv.a
 %{_libdir}/libfntstubs.a
 %{_libdir}/libxf86config.a
+%{_libdir}/libXinerama.a
 
 %{_includedir}/X11/*.h
 %{_includedir}/X11/ICE
@@ -1682,6 +1707,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/oclock
 %attr(755,root,root) %{_bindir}/xlogo
 %attr(755,root,root) %{_bindir}/xkill
+%attr(755,root,root) %{_bindir}/rman
 %{_libdir}/X11/xman.help
 %{_mandir}/man1/beforelight.1*
 %{_mandir}/man1/ico.1*
@@ -1707,6 +1733,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xman.1*
 %{_mandir}/man1/xmessage.1*
 %{_mandir}/man1/xwininfo.1*
+%{_mandir}/man1/xkill.1*
+%{_mandir}/man1/xlogo.1*
+%{_mandir}/man1/oclock.1*
+%{_mandir}/man1/rman.1*
 %{_libdir}/X11/app-defaults/Beforelight
 %{_libdir}/X11/app-defaults/Bitmap
 %{_libdir}/X11/app-defaults/Bitmap-color
@@ -1723,6 +1753,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/X11/app-defaults/Xmag
 %{_libdir}/X11/app-defaults/Xman
 %{_libdir}/X11/app-defaults/Xmessage
+%{_libdir}/X11/app-defaults/XFontSel
+%{_libdir}/X11/app-defaults/Xditview
+%{_libdir}/X11/app-defaults/Xditview-chrtr
+%{_includedir}/bitmaps/*
 
 #%files XF86Setup
 #%defattr(644,root,root,755)
