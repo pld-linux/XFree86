@@ -68,7 +68,7 @@ Patch34:	XFree86-dainbramage.patch
 Patch35:	XFree86-ncurses.patch
 # Compile X serwers againsty system installed libz.so
 Patch36:	XFree86-HasZlib.patch
-# Man dir in /usr/X11R6/share/man or /usr/share/man
+# Man dir in /usr/X11R6/share/man or %{_mandir}
 Patch37:	XFree86-fhs.patch
 
 BuildPrereq:	ncurses-devel
