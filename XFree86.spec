@@ -1985,18 +1985,6 @@ rm -rf $RPM_BUILD_ROOT
 %post   DPS -p /sbin/ldconfig
 %postun DPS -p /sbin/ldconfig
 
-%post   xft1 -p /sbin/ldconfig
-%postun xft1 -p /sbin/ldconfig
-
-%post   xft -p /sbin/ldconfig
-%postun xft -p /sbin/ldconfig
-
-%post   fontconfig
-/sbin/ldconfig
-HOME=/root %{_bindir}/fc-cache -f 2>/dev/null
-
-%postun fontconfig -p /sbin/ldconfig
-
 %post   OpenGL-core -p /sbin/ldconfig
 %postun OpenGL-core -p /sbin/ldconfig
 
@@ -2348,10 +2336,6 @@ fi
 %{_libdir}/libdps.a
 %{_libdir}/libdpstk.a
 %{_libdir}/libpsres.a
-
-%files xft1
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libXft.so.1.1
 
 %files OpenGL-core
 %defattr(644,root,root,755)
