@@ -108,7 +108,7 @@ Patch46:	%{name}-spencode-nowarning.patch
 # Small (maybe buggy) patch to resolve problems with totem 0.97.0
 Patch47:	%{name}-lock.patch
 Patch48:	%{name}-savage-20030505.patch
-URL:		http://www.xfree86.org
+URL:		http://www.xfree86.org/
 BuildRequires:	bison
 BuildRequires:	expat-devel
 BuildRequires:	flex
@@ -472,7 +472,7 @@ Summary(pl):	Pliki nag³ówkowe OpenGL dla systemu X11R6
 Group:		X11/Development/Libraries
 Requires:	%{name}-OpenGL-libs = %{version}
 Requires:	%{name}-devel
-Requires:       OpenGL-devel-base
+Requires:	OpenGL-devel-base
 Provides:	OpenGL-devel
 Obsoletes:	Mesa-devel
 Obsoletes:	glxMesa-devel
@@ -485,12 +485,12 @@ Headers and man pages for OpenGL for X11R6.
 Pliki nag³ówkowe i manuale do OpenGL dla systemu X11R6.
 
 %package OpenGL-devel-base
-Summary:        OpenGL for X11R6 development (only gl?.h)
-Summary(pl):    Pliki nag³ówkowe OpenGL dla systemu X11R6 (tylko gl?.h)
-Group:          X11/Development/Libraries
-Requires:       %{name}-OpenGL-libs = %{version}
-Requires:       %{name}-devel
-Provides:       OpenGL-devel-base
+Summary:	OpenGL for X11R6 development (only gl?.h)
+Summary(pl):	Pliki nag³ówkowe OpenGL dla systemu X11R6 (tylko gl?.h)
+Group:		X11/Development/Libraries
+Requires:	%{name}-OpenGL-libs = %{version}
+Requires:	%{name}-devel
+Provides:	OpenGL-devel-base
 Requires:	OpenGL-devel
 
 %description OpenGL-devel-base
@@ -868,8 +868,7 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-ATI XFree86-Mach32 XFree86-Mach64
 
 %description driver-ati.2
-ATI video driver (ATI.2) from gatos
-(http://gatos.sourceforge.net/).
+ATI video driver (ATI.2) from gatos (http://gatos.sourceforge.net/).
 
 %description driver-ati.2 -l pl
 Sterownik do kart ATI (ATI.2) projektu gatos
@@ -2521,7 +2520,7 @@ fi
 %{_libdir}/libXxf86misc.a
 %{_libdir}/libXxf86rush.a
 %{_libdir}/libXxf86vm.a
-%{_includedir}/X11/*.h 
+%{_includedir}/X11/*.h
 %{_includedir}/X11/ICE
 %{_includedir}/X11/PM
 %{_includedir}/X11/SM
