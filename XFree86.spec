@@ -642,12 +642,12 @@ Summary(uk):	Б╕бл╕отеки програм╕ста, хедери та документац╕я по програмуванню X11
 Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	imake = %{epoch}:%{version}-%{release}
-Requires:	fontconfig-devel
-Provides:	render
-Provides:	xcursor-devel
-Provides:	xft-devel = 2.1.6
+Requires:	fontconfig-devel >= 1:1.0.0
+Provides:	render = 0.8
+Provides:	xcursor-devel = 1.0
+Provides:	xft-devel = 2.1.0
 Provides:	xpm-devel
-Provides:	xrender-devel = 0.8.4
+Provides:	xrender-devel = 0.8.0
 %ifarch sparc sparc64
 Obsoletes:	X11R6.1-devel
 %endif
@@ -1313,10 +1313,10 @@ Requires(post,postun):	/sbin/ldconfig
 Requires(post,postun):	grep
 Requires(postun):	fileutils
 Requires:	%{name}-common = %{epoch}:%{version}-%{release}
-Provides:	xcursor
-Provides:	xft
+Provides:	xcursor = 1.0
+Provides:	xft = 2.1.0
 Provides:	xpm
-Provides:	xrender
+Provides:	xrender = 0.8.0
 %ifarch sparc sparc64
 Obsoletes:	X11R6.1-libs
 %endif
@@ -1457,10 +1457,10 @@ Summary(ru):	Статические библиотеки X11R6
 Summary(uk):	Статичн╕ б╕бл╕отеки X11R6
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
-Provides:	xcursor-static
-Provides:	xft-static
+Provides:	xcursor-static = 1.0
+Provides:	xft-static = 2.1.0
 Provides:	xpm-static
-Provides:	xrender-static
+Provides:	xrender-static = 0.8.0
 %ifarch sparc sparc64
 Obsoletes:	X11R6.1-devel
 %endif
