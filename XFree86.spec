@@ -949,7 +949,7 @@ rm -f xc/config/cf/host.def
 #--- %build --------------------------
 
 %build
-%{__make} -S -C xc World \
+%{__make} -S -C xc World DEFAULT_OS_CPU_FROB=%{_target_cpu} \
 	"BOOTSTRAPCFLAGS=%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}" \
 	"CCOPTIONS=%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}" \
 	"CXXOPTIONS=%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}" \
@@ -1056,8 +1056,8 @@ touch $RPM_BUILD_ROOT/etc/security/blacklist.xdm
 ln -sf %{_fontdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
 
 # do not duplicate xkbcomp program
-#rm -f $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
-#ln -sf %{_bindir}/xkbcomp $RPM_BUILD_ROOT/etc/X11/xkb/xkbcomp
+rm -f $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
+ln -sf %{_bindir}/xkbcomp $RPM_BUILD_ROOT/etc/X11/xkb/xkbcomp
 
 ln -sf ../../../share/doc/%{name}-%{version} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/doc
@@ -1153,6 +1153,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_bindir}
 
 %{_libdir}/X11/XErrorDB
+%{_libdir}/X11/XftConfig
 %{_libdir}/X11/XKeysymDB
 %{_libdir}/X11/locale
 
@@ -1482,20 +1483,20 @@ rm -rf $RPM_BUILD_ROOT
 
 %files OpenGL-core
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/glxinfo
 %attr(755,root,root) %{_libdir}/libGL.so.*.*
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/extensions/libglx.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libGLcore.a
 %endif
-%{_mandir}/man1/glxinfo.1*
 
 %files OpenGL-libs
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/glxinfo
 %attr(755,root,root) %{_libdir}/libGLU.so.*.*
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/libOSMesa.so.*.*
 %endif
+%{_mandir}/man1/glxinfo.1*
 
 %files OpenGL-devel
 %defattr(644,root,root,755)
