@@ -4,6 +4,7 @@
 # - cleanups
 # - man4/mouse from modules conflicts with man4/mouse from man-pages
 # - add missing files
+# - separate XFS to be standalone - is it possible without duplicated files?
 
 # _without_tdfx		disables tdfx build
 
@@ -23,7 +24,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.2.99.3
-Release:	0.20030109.2
+Release:	0.20030109.3
 License:	MIT
 Group:		X11/XFree86
 #Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
@@ -150,6 +151,8 @@ Obsoletes:	xterm
 Obsoletes:	X11R6.1
 %endif
 
+%define		_prefix		/usr/X11R6
+%define		_mandir		%{_prefix}/man
 %define		_pixmapsdir	/usr/share/pixmaps
 %define		_icondir	/usr/share/icons
 %define		_wmpropsdir	%{_datadir}/wm-properties
@@ -509,7 +512,7 @@ Summary(ru):	"Вложенный" сервер XFree86
 Summary(uk):	"Вкладений" сервер XFree86
 Group:		X11/XFree86/Servers
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-common /usr/lib/X11/rgb.txt
+Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
 
 %description Xnest
@@ -550,7 +553,7 @@ Summary:	X print server
 Summary(pl):	X serwer z rozszerzeniem Xprint
 Group:		X11/XFree86/Servers
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-common /usr/lib/X11/rgb.txt
+Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
 PreReq:		xprint-initrc
 
@@ -570,7 +573,7 @@ Summary(tr):	XFree86 sunucusu
 Group:		X11/XFree86/Servers
 Requires:	pam
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-common /usr/lib/X11/rgb.txt
+Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
 Obsoletes:	XFree86-VGA16 XFree86-SVGA XFree86-Mono
 # obsoleted by many drivers: suncg3,suncg6,suncg14,sunffb,sunleo,suntcx
@@ -626,7 +629,7 @@ Summary(ru):	Сервер XFree86 для виртуального фреймбуфера
 Summary(uk):	Сервер XFree86 для в╕ртуального фреймбуфера
 Group:		X11/XFree86/Servers
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-common /usr/lib/X11/rgb.txt
+Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
 
 %description Xvfb
@@ -1686,7 +1689,7 @@ Requires:	%{name} = %{version}
 Requires:	pam >= 0.71
 Requires:	%{name}-libs = %{version}
 Requires:	sessreg = %{version}
-Requires:	/usr/bin/sessreg
+Requires:	/usr/X11R6/bin/sessreg
 Provides:	XDM
 PreReq:		chkconfig
 Obsoletes:	XFree86-xdm
@@ -2023,7 +2026,7 @@ fi
 %triggerpostun modules -- XFree86-modules < 4.0.2
 if [ -d /usr/X11R6/lib/X11/xkb ]; then
 	rm -rf /usr/X11R6/lib/X11/xkb
-	ln -sf /etc/X11/xkb /usr/lib/X11/xkb
+	ln -sf /etc/X11/xkb /usr/X11R6/lib/X11/xkb
 fi
 
 %post -n xdm
@@ -2787,7 +2790,6 @@ fi
 %dir %{_includedir}
 %dir %{_includedir}/X11
 %dir %{_sbindir}
-#/usr/include/X11
 %dir %{_datadir}/locale
 %dir %{_datadir}/misc
 %dir %{_datadir}/sounds
