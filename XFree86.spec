@@ -70,6 +70,7 @@ Patch34:	%{name}-dri_directory_mode_fix.patch
 Patch35:	%{name}-alpha_GLX_align_fix.patch
 Patch36:	%{name}-manpage_link_fixes.patch
 Patch37:	%{name}-XftConfig_in_correct_place.patch
+Patch38:	%{name}-i740.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1327,6 +1328,7 @@ X11R6-contrib in older releases.
 %patch35 -p1
 %patch36 -p1
 %patch37 -p1
+%patch38 -p1
 rm -f xc/config/cf/host.def
 tar zx -f %{SOURCE15} -C xc/programs/Xserver/hw/xfree86/drivers/
 
