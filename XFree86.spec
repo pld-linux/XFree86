@@ -5,7 +5,7 @@ Summary(pl):    XFree86 Window System wraz z podstawowymi programami
 Summary(tr):    XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:           XFree86
 Version:        3.3.3.1
-Release:        22
+Release:        23
 Copyright:      MIT
 Group:          X11/XFree86
 Group(pl):      X11/XFree86
@@ -1495,6 +1495,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man1/xmseconfig.1x.*
 
 %changelog
+* Tue Apr 20 1999 Artur Frysiak <wiget@pld.org.pl>
+  [3.3.3.1-23]
+- compiled on rpm 3
+
 * Thu Mar 11 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [3.3.3.1-21]
 - removed man group from man pages,
