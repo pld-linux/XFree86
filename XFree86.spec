@@ -1070,7 +1070,7 @@ unset POSIXLY_CORRECT
 %patch48 -p1
 %patch49 -p1
 %patch50 -p1
-%patch51 -p1
+#%patch51 -p1
 
 ## Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
