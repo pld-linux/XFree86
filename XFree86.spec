@@ -1396,20 +1396,20 @@ GROUP=xfs; GID=56; NAME=xfs; %groupadd
 USER=xfs; UID=56; HOMEDIR=/etc/X11/fs; COMMENT="X Font Server"; %useradd
 
 %post -n xfs
-NAME=xfs; DESC="font server"; %chkconfig_post
+NAME=xfs; DESC="font server"; %chkconfig_add
 
 %preun -n xfs
-NAME=xfs; %chkconfig_preun
+NAME=xfs; %chkconfig_del
 
 %postun -n xfs
 USER=xfs; %userdel
 GROUP=xfs; %groupdel
 
 %post -n xdm
-NAME=xdm; %chkconfig_post
+NAME=xdm; %chkconfig_add
 		
 %preun -n xdm
-NAME=xdm; %chkconfig_preun
+NAME=xdm; %chkconfig_del
 
 %post   DPS -p /sbin/ldconfig
 %postun DPS -p /sbin/ldconfig
