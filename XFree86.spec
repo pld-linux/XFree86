@@ -37,16 +37,14 @@ Patch7:		%{name}-xterm-utempter.patch
 Patch8:		%{name}-app_defaults_dir.patch
 Patch9:		%{name}-startx_xauth.patch
 Patch10:	%{name}-v4l.patch
-Patch11:	%{name}-sparc3.patch.gz
-Patch12:	%{name}-sparc4.patch.gz
-Patch13:	%{name}-broken-includes.patch
-Patch14:	%{name}-alpha-pcibus-lemming.patch
-Patch15:	%{name}-fhs.patch
-Patch16:	%{name}-xdmsecurity.patch
-Patch17:	%{name}-xman.patch
-Patch18:	%{name}-HasXdmAuth.patch
-Patch19:	%{name}-xdm-fixes.patch
-Patch20:	%{name}-imake-kernel-version.patch
+Patch11:	%{name}-broken-includes.patch
+Patch12:	%{name}-alpha-pcibus-lemming.patch
+Patch13:	%{name}-fhs.patch
+Patch14:	%{name}-xdmsecurity.patch
+Patch15:	%{name}-xman.patch
+Patch16:	%{name}-HasXdmAuth.patch
+Patch17:	%{name}-xdm-fixes.patch
+Patch18:	%{name}-imake-kernel-version.patch
 
 BuildRequires:	flex
 BuildRequires:	bison
@@ -933,18 +931,14 @@ X11R6-contrib in older releases.
 %patch8 -p1
 %patch9 -p0
 %patch10 -p1
-%ifarch sparc sparc64
 %patch11 -p1
 %patch12 -p0
-%endif 
 %patch13 -p1
-%patch14 -p0
+%patch14 -p1
 %patch15 -p1
 %patch16 -p1
 %patch17 -p1
 %patch18 -p1
-%patch19 -p1
-%patch20 -p1
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
