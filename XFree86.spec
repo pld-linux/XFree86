@@ -963,7 +963,7 @@ Summary:	XFree86 Fonts
 Summary(pl):	Fonty dla systemu XFree86 
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Pereq:		%{_bindir}/mkfontdir
+Prereq:		%{_bindir}/mkfontdir
 
 %description fonts
 This package contains the basic fonts. This package is required when you
@@ -981,7 +981,7 @@ Summary(pl):	Fonty o rozdzielczo¶ci 75dpi-niebêdne dla serwera.
 Summary(tr):	X11R6 75dpi yazýtipleri - yalnýzca sunucu tarafýnda gerekir
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Pereq:		%{_bindir}/mkfontdir
+Prereq:		%{_bindir}/mkfontdir
 
 %ifarch sparc
 Obsoletes: X11R6.1-75dpi-fonts
@@ -1017,7 +1017,7 @@ Summary(pl):	Fonty o rozdzielczosci 100dpi-niezbêdne dla serwera.
 Summary(tr):	X11R6 100dpi yazýtipleri - yalnýzca sunucu tarafýnda gereklidir
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Pereq:		%{_bindir}/mkfontdir
+Prereq:		%{_bindir}/mkfontdir
 
 %ifarch sparc
 Obsoletes: X11R6.1-100dpi-fonts
@@ -1050,7 +1050,7 @@ Summary:	Cyrillic fonts - only need on server side
 Summary(pl):	Cyrlica
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Pereq:		%{_bindir}/mkfontdir
+Prereq:		%{_bindir}/mkfontdir
 
 %description cyrillic-fonts
 Cyrillic raster fonts.
