@@ -150,15 +150,16 @@ belgeleri sunar. Ekran kartýnýzý sürmek için gerekli olan X sunucusu bu
 pakete dahil deðildir.
 
 %package modules
-Summary:     XFree86 modules
-Summary(pl): Wspólne modu³y dla wszystkich serwerów graficznych.
-Group:       X11/XFree86
-Group(pl):   X11/XFree86
+Summary:	Modules with X servers extensions
+Summary(pl):	Wspólne modu³y rozszerzeñ dla wszystkich X serwerów
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
 
-%description -l de modules
-%description -l fr modules
-%description -l tr modules
+%description
+Modules with X servers extensions.
+
 %description -l pl modules
+Wspólne modu³y rozszerzeñ dla wszystkich X serwerów.
 
 %package libs
 Summary:	X11R6 shared libraries
@@ -297,7 +298,7 @@ Summary(pl):	XFree86 serwer dla kart S3
 Summary(tr):	XFree86 S3 sunucularý
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description S3
 XFree86-S3 is the X server for video cards based on S3 chips, including most
@@ -344,7 +345,7 @@ Summary(pl):	XFree86 serwer dla kart Number Nine Imagine 128
 Summary(tr):	XFree86 #9 Imagine 128 sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description I128
 X server for the #9 Imagine 128 board.
@@ -369,7 +370,7 @@ Summary(pl):	XFree86 serwer dla kart S3 Virge
 Summary(tr):	XFree86 S3 Virge sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description S3V
 XFree86-S3V is the X server for video cards based on the S3 ViRGE chipset.
@@ -401,7 +402,7 @@ Summary(pl):	XFree86 serwer dla kart Mach64
 Summary(tr):	XFree86 Mach64 sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description Mach64
 XFree86-Mach64 is the server package for cards based on ATI's Mach64 chip,
@@ -502,7 +503,7 @@ Summary:	XFree86 Xvfb server
 Summary(pl):	Serwer XFree86 Xvfb
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description Xvfb
 Xvfb (X Virtual Frame Buffer) is an X Windows System server that is capable
@@ -527,7 +528,7 @@ Summary:	XFree86 3DLabs server
 Summary(pl):	Serwer XFree86 3DLabs
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description 3DLabs
 X server for cards built around 3D Labs GLINT and Permedia chipsets,
@@ -543,7 +544,7 @@ Summary:	XFree86 Xnest server
 Summary(pl):	Serwer XFree86 Xnest
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description Xnest
 Xnest is an X Window System server which runs in an X window. Xnest is a
@@ -561,7 +562,7 @@ Summary:	X print server
 Summary(pl):	X print server
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description Xptr
 Xprt provides an X server with the print extension and special DDX
@@ -577,7 +578,7 @@ Summary(pl):	XFree86 serwer dla kart 8514
 Summary(tr):	XFree86 8514 sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description 8514
 X server for older IBM 8514 cards and compatibles from companies such as
@@ -613,7 +614,7 @@ Summary(pl):	XFree86 serwer dla kart AGX
 Summary(tr):	XFree86 AGX sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description AGX
 This is the X server for AGX-based cards, such as the Boca Vortex, Orchid
@@ -646,7 +647,7 @@ Summary:	XFree68/86 FBDev server
 Summary(pl):	XFree86/86 FBDev server
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description FBDev
 X server for the generic frame buffer device used on the Amiga, Atari
@@ -665,7 +666,7 @@ Summary(pl):	XFree86 serwer dla kart Mach32
 Summary(tr):	XFree86 Mach32 sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description Mach32
 XFree86-Mach32 is the X server package for video cards built around ATI's
@@ -702,7 +703,7 @@ Summary(pl):	XFree86 serwer dla kart Mach8
 Summary(tr):	XFree86 Mach8 sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description Mach8
 XFree86-Mach 8 is the X server for video cards built around ATI's Mach8
@@ -740,7 +741,7 @@ Summary(pl):	XFree86 serwer dla kart Monochromatycznych
 Summary(tr):	XFree86 Mono sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description Mono
 XFree86-Mono is a generic monochrome (2 color) server for VGA cards.
@@ -779,7 +780,7 @@ Summary(de):	XFree86 P9000 Server
 Summary(fr):	Serveur XFree86 pour P9000
 Summary(tr):	XFree86 P9000 sunucusu
 Group:		X11/XFree86/Servers
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description P9000
 XFree86-P9000 is the X server for video cards built around the Weitek P9000
@@ -816,7 +817,7 @@ Summary(pl):	XFree86 serwer dla kart SVGA
 Summary(tr):	XFree86 SVGA sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description SVGA
 X server for most simple framebuffer SVGA devices, including cards built
@@ -866,7 +867,7 @@ Summary(pl):	XFree86 serwer dla kart CGA16
 Summary(tr):	XFree86 VGA16 sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description VGA16
 XFree86-VGA16 is a generic 16 color server for VGA boards. XFree86-VGA16
@@ -907,7 +908,7 @@ Summary(pl):	XFree86 serwer dla kart W32
 Summary(tr):	XFree86 W32 sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description W32
 XFree86-W32 is the X server for cards built around ET4000/W32 chips,
@@ -947,7 +948,7 @@ Summary:	XFree86 TGA server
 Summary(pl):	XFree86 serwer dla kart TGA
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{revision}
+Requires:	%{name}-modules = %{version}-%{release}
 
 %description TGA
 The XFree86-TGA package contains an 8-bit X server for Digital TGA boards
