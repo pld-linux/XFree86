@@ -13,12 +13,6 @@ Version:	4.2.0
 Release:	1
 License:	MIT
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(es):	X11/XFree86
-Group(fr):	X11/XFree86
-Group(pl):	X11/XFree86
-Group(pt_BR):	X11/XFree86
-Group(tr):	X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/%{version}/source/X%{_sver}src-1.tgz
 Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source2:	xdm.pamd
@@ -186,8 +180,6 @@ seu hardware de vídeo -- estes são disponibilizados em outro pacote.
 Summary:	XFree86 files required both on server and client side
 Summary(pl):	Pliki XFree86 wymagane zarówno po stronie serwera jak i klienta
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 
 %description common
 XFree86 files required both on server and client side.
@@ -199,8 +191,6 @@ Pliki XFree86 wymagane zarówno po stronie serwera jak i klienta.
 Summary:	Display PostScript
 Summary(pl):	Display PostScript
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Provides:	DPS
 Obsoletes:	dgs
 
@@ -216,8 +206,6 @@ wy¶wietlania informacji na ekranie.
 Summary:	Display PostScript
 Summary(pl):	Display PostScript
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-DPS = %{version}
 Obsoletes:	dgs-devel
 
@@ -231,8 +219,6 @@ Pliki nag³ówkowe biblioteki X-Window Display PostScript.
 Summary:	Display PostScript
 Summary(pl):	Display PostScript
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-DPS-devel = %{version}
 Obsoletes:	dgs-static
 
@@ -246,8 +232,6 @@ Statyczne biblioteki X-Window Display PostScript.
 Summary:	PEX extension library
 Summary(pl):	Biblioteka rozszerzenia PEX
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-libs = %{version}
 
 %description PEX
@@ -262,8 +246,6 @@ do³±czane domy¶lnie.
 Summary:	PEX extension headers
 Summary(pl):	Pliki nag³ówkowe rozszerzenia PEX
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-PEX = %{version}
 
 %description PEX-devel
@@ -276,8 +258,6 @@ Pliki nag³ówkowe rozszerzenia PEX.
 Summary:	PEX extension static library
 Summary(pl):	Statyczna biblioteka rozszerzenia PEX
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-PEX-devel = %{version}
 
 %description PEX-static
@@ -290,8 +270,6 @@ Statyczna biblioteka rozszerzenia PEX.
 Summary:	XIE extension library
 Summary(pl):	Biblioteka rozszerzenia XIE
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-libs = %{version}
 
 %description XIE
@@ -306,8 +284,6 @@ Biblioteka rozszerzenia XIE (X Image Extension). Od wersji XFree86
 Summary:	XIE extension headers
 Summary(pl):	Pliki nag³ówkowe rozszerzenia XIE
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-XIE = %{version}
 
 %description XIE-devel
@@ -320,8 +296,6 @@ Pliki nag³ówkowe rozszerzenia XIE.
 Summary:	XIE extension static library
 Summary(pl):	Statyczna biblioteka rozszerzenia XIE
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-XIE-devel = %{version}
 
 %description XIE-static
@@ -334,13 +308,6 @@ Statyczna biblioteka rozszerzenia XIE.
 Summary:	OpenGL support for X11R6
 Summary(pl):	Wsparcie OpenGL dla systemu X11R6
 Group:		X11/Libraries
-Group(de):	X11/Libraries
-Group(es):	X11/Bibliotecas
-Group(fr):	X11/Librairies
-Group(pl):	X11/Biblioteki
-Group(pt_BR):	X11/Bibliotecas
-Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
-Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-libs = %{version}
 
 %description OpenGL-core
@@ -353,13 +320,6 @@ Wsparcie OpenGL dla systemu X11R6.
 Summary:	OpenGL for X11R6 development
 Summary(pl):	Pliki nag³ówkowe OpenGL dla systemu X11R6
 Group:		X11/Libraries
-Group(de):	X11/Libraries
-Group(es):	X11/Bibliotecas
-Group(fr):	X11/Librairies
-Group(pl):	X11/Biblioteki
-Group(pt_BR):	X11/Bibliotecas
-Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
-Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-OpenGL-libs = %{version}
 Requires:	%{name}-devel
 Provides:	OpenGL-devel
@@ -377,13 +337,6 @@ Pliki nag³ówkowe i manuale do OpenGL dla systemu X11R6.
 Summary:	OpenGL libraries for X11R6
 Summary(pl):	Biblioteki OpenGL dla systemu X11R6
 Group:		X11/Libraries
-Group(de):	X11/Libraries
-Group(es):	X11/Bibliotecas
-Group(fr):	X11/Librairies
-Group(pl):	X11/Biblioteki
-Group(pt_BR):	X11/Bibliotecas
-Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
-Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-libs = %{version}
 Requires:	%{name}-OpenGL-core
 Provides:	OpenGL
@@ -400,13 +353,6 @@ Biblioteki OpenGL dla systemu X11R6.
 Summary:	X11R6 static libraries with OpenGL
 Summary(pl):	Biblioteki statyczne do X11R6 ze wsparciem dla OpenGL
 Group:		X11/Libraries
-Group(de):	X11/Libraries
-Group(es):	X11/Bibliotecas
-Group(fr):	X11/Librairies
-Group(pl):	X11/Biblioteki
-Group(pt_BR):	X11/Bibliotecas
-Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
-Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-OpenGL-devel = %{version}
 Provides:	OpenGL-static
 Obsoletes:	Mesa-static
@@ -421,8 +367,6 @@ Biblioteki statyczne zawieraj±ce wsparcie dla OpenGL do X11R6.
 Summary:	XFree86 Xnest server
 Summary(pl):	Serwer XFree86 Xnest
 Group:		X11/XFree86/Servers
-Group(de):	X11/XFree86/Server
-Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
@@ -445,8 +389,6 @@ X serwer dla w³asnych klientów.
 Summary:	X print server
 Summary(pl):	X serwer z rozszerzeniem Xprint
 Group:		X11/XFree86/Servers
-Group(de):	X11/XFree86/Server
-Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
@@ -465,8 +407,6 @@ Summary(fr):	Serveur XFree86
 Summary(pl):	Serwer XFree86
 Summary(tr):	XFree86 sunucusu
 Group:		X11/XFree86/Servers
-Group(de):	X11/XFree86/Server
-Group(pl):	X11/XFree86/Serwery
 Requires:	pam
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
@@ -522,8 +462,6 @@ sunucuyu deneyin.
 Summary:	XFree86 Xvfb server
 Summary(pl):	Serwer XFree86 Xvfb
 Group:		X11/XFree86/Servers
-Group(de):	X11/XFree86/Server
-Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
@@ -561,13 +499,6 @@ Summary(fr):	Pages man de programmation
 Summary(pl):	Pliki nag³ówkowe X11R6
 Summary(tr):	X11R6 ile geliþtirme için gerekli dosyalar
 Group:		X11/Libraries
-Group(de):	X11/Libraries
-Group(es):	X11/Bibliotecas
-Group(fr):	X11/Librairies
-Group(pl):	X11/Biblioteki
-Group(pt_BR):	X11/Bibliotecas
-Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
-Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-libs = %{version}
 Obsoletes:	xpm-devel
 Provides:	xpm-devel
@@ -613,8 +544,6 @@ yanýsýra Xt ve Xaw arayüz kitaplýklarýný da içerir.
 Summary:	Alliance Promotion video driver
 Summary(pl):	Sterownik do kart Alliance Promotion
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-Alliance
@@ -629,8 +558,6 @@ Sterownik do kart Alliance Promotion.
 Summary:	Ark Logic video driver
 Summary(pl):	Sterownik do kart Ark Logic
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 
@@ -644,8 +571,6 @@ Sterownik do kart Ark Logic.
 Summary:	ATI video driver
 Summary(pl):	Sterownik do kart ATI
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-ATI XFree86-Mach32 XFree86-Mach64
@@ -660,8 +585,6 @@ Sterownik do kart ATI.
 Summary:	Chips and Technologies video driver
 Summary(pl):	Sterownik do kart na uk³adach Chips and Technologies
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-ChipsTechnologies
@@ -676,8 +599,6 @@ Sterownik do kart na uk³adach Chips and Technologies.
 Summary:	Cirrus Logic video driver
 Summary(pl):	Sterownik do kart Cirrus Logic
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-Cirrus
@@ -692,8 +613,6 @@ Sterownik do kart Cirrus Logic.
 Summary:	Cyrix video driver
 Summary(pl):	Sterownik do grafiki na uk³adzie Cyrix MediaGX
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-Cyrix
@@ -708,8 +627,6 @@ Sterownik do grafiki na uk³adzie Cyrix MediaGX.
 Summary:	Video driver for framebuffer device
 Summary(pl):	Sterownik korzystaj±cy z framebuffera
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-FBDev
@@ -724,8 +641,6 @@ Nieakcelerowany sterownik korzystaj±cy z framebuffera.
 Summary:	Video driver for DRI sparc framebuffer device
 Summary(pl):	Sterownik do framebuffera DRI na sparc
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 
@@ -739,8 +654,6 @@ Sterownik do framebuffera DRI na sparc.
 Summary:	3Dfx Voodoo1 and Voodoo2 video driver
 Summary(pl):	Sterownik do kart 3Dfx Voodoo1 i Voodoo2
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 
@@ -754,8 +667,6 @@ Sterownik do kart Voodoo1 i Voodoo2 firmy 3Dfx.
 Summary:	GLINT/Permedia video driver
 Summary(pl):	Sterownik do kart GLINT i Permedia
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
@@ -771,8 +682,6 @@ Sterownik do kart GLINT i Permedia.
 Summary:	Number 9 I128 video driver
 Summary(pl):	Sterownik do kart Number 9 I128
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-I128
@@ -787,8 +696,6 @@ Sterownik do kart Number 9 I128.
 Summary:	Intel i740 video driver
 Summary(pl):	Sterownik do kart na uk³adzie Intel i740
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-i740
@@ -803,8 +710,6 @@ Sterownik do kart na uk³adzie Intel i740.
 Summary:	Intel i810/i815 video driver
 Summary(pl):	Sterownik do grafiki na uk³adach Intel i810 i i815
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
@@ -820,8 +725,6 @@ Sterownik do grafiki na uk³adach Intel i810 i i815.
 Summary:	Matrox video driver
 Summary(pl):	Sterownik do kart Matrox
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
@@ -837,8 +740,6 @@ Sterownik do kart Matrox.
 Summary:	NeoMagic video driver
 Summary(pl):	Sterownik do kart NeoMagic
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-NeoMagic
@@ -853,8 +754,6 @@ Sterownik do kart NeoMagic.
 Summary:	nVidia video driver
 Summary(pl):	Sterownik do kart na uk³adach firmy nVidia
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-NVidia
@@ -869,8 +768,6 @@ Sterownik do kart na uk³adach firmy nVidia: Riva128, RivaTNT, GeForce.
 Summary:	ATI Rage 128 video driver
 Summary(pl):	Sterownik do kart ATI Rage 128
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
@@ -886,8 +783,6 @@ Sterownik do kart ATI Rage 128.
 Summary:	ATI Radeon video driver
 Summary(pl):	Sterownik do kart ATI Radeon
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
@@ -902,8 +797,6 @@ Sterownik do kart ATI Radeon.
 Summary:	Rendition video driver
 Summary(pl):	Sterownik do kart Rendition
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-Rendition
@@ -918,8 +811,6 @@ Sterownik do kart Verite firmowanych przez Rendition/Micron.
 Summary:	S3 ViRGE/Trio3D video driver
 Summary(pl):	Sterownik do kart na uk³adach S3 ViRGE i Trio3D
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-S3V
@@ -934,8 +825,6 @@ Sterownik do kart na uk³adach S3 ViRGE i Trio3D.
 Summary:	S3 Trio video driver
 Summary(pl):	Sterownik do kart na uk³adach S3 Trio
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-S3
@@ -950,8 +839,6 @@ Sterownik do kart na uk³adach S3 Trio.
 Summary:	S3 Savage video driver
 Summary(pl):	Sterownik do kart na uk³adach S3 Savage
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 
@@ -965,8 +852,6 @@ Sterownik do kart na uk³adach S3 Savage.
 Summary:	Silicon Motion video driver
 Summary(pl):	Sterownik do kart na uk³adach Silicon Motion
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 
@@ -980,8 +865,6 @@ Sterownik do kart na uk³adach Lynx firmy Silicon Motion.
 Summary:	SiS video driver
 Summary(pl):	Sterownik do kart na uk³adach SiS
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-SiS
@@ -996,8 +879,6 @@ Sterownik do kart na uk³adach SiS.
 Summary:	sunbw2 - Sun BW2 video driver
 Summary(pl):	Sterownik do monochromatycznego framebuffera BW2 na Sunie
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-SunMono
@@ -1012,8 +893,6 @@ Sterownik do monochromatycznego framebuffera BW2 na Sunie.
 Summary:	suncg14 - Sun CG14 video driver
 Summary(pl):	Sterownik do kolorowego framebuffera CG14 na Sunie
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 
@@ -1027,8 +906,6 @@ Sterownik do kolorowego framebuffera CG14 na Sunie.
 Summary:	suncg3 - Sun CG3 video cards driver
 Summary(pl):	Sterownik do kolorowego framebuffera CG3 na Sunie
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 
@@ -1042,8 +919,6 @@ Sterownik do kolorowego framebuffera CG3 na Sunie.
 Summary:	suncg6 - Sun GX and Turbo GX video driver
 Summary(pl):	Sterownik do grafiki GX i Turbo GX na Sunie
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 
@@ -1057,8 +932,6 @@ Sterownik do grafiki GX i Turbo GX na Sunie.
 Summary:	sunffb - Sun Creator, Creator 3D and Elite 3D video cards driver
 Summary(pl):	Sterownik do kart Sun Creator, Creator 3D, Elite 3D
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 
@@ -1072,8 +945,6 @@ Sterownik do kart Sun Creator, Creator 3D, Elite 3D.
 Summary:	sunleo - Sun Leo (ZX) video cards driver
 Summary(pl):	Sterownik do kart Sun Leo (ZX)
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 
@@ -1087,8 +958,6 @@ Sterownik do kart Sun Leo (ZX).
 Summary:	suntcx - Sun TCX video cards driver
 Summary(pl):	Sterownik do kart Sun TCX
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 
@@ -1102,8 +971,6 @@ Sterownik do kart Sun TCX.
 Summary:	3Dfx video driver
 Summary(pl):	Sterownik do kart 3Dfx
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
@@ -1124,8 +991,6 @@ a Glide_V5-DRI do kart Voodoo4 lub Voodoo5.
 Summary:	TGA video driver
 Summary(pl):	Sterownik do kart TGA
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-TGA
@@ -1140,8 +1005,6 @@ Sterownik do kart TGA.
 Summary:	Trident video driver
 Summary(pl):	Sterownik do kart Trident
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-Trident
@@ -1156,8 +1019,6 @@ Sterownik do kart Trident.
 Summary:	Tseng Labs video driver
 Summary(pl):	Sterownik do kart Tseng Labs
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-Tseng XFree86-W32
@@ -1172,8 +1033,6 @@ Sterownik do kart firmy Tseng Labs.
 Summary:	VMWare SVGA emulated video driver
 Summary(pl):	Sterownik do emulacji karty SVGA dostêpnej pod VMware
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 
@@ -1193,11 +1052,6 @@ Summary(pl):	Biblioteki dzielone dla X11R6
 Summary(fr):	Bibliothèques partagées X11R6
 Summary(pt_BR):	Bibliotecas compartilhadas X11R6
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(es):	X11/XFree86
-Group(fr):	X11/XFree86
-Group(pl):	X11/XFree86
-Group(pt_BR):	X11/XFree86
 PreReq:		grep
 Obsoletes:	xpm
 Provides:	xpm
@@ -1263,11 +1117,6 @@ aplicações X em uma máquina sem um servidor X (através da rede).
 Summary:	Modules with X servers extensions
 Summary(pl):	Wspólne dla wszystkich X serwerów modu³y rozszerzeñ
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(es):	X11/XFree86
-Group(fr):	X11/XFree86
-Group(pl):	X11/XFree86
-Group(pt_BR):	X11/XFree86
 
 %description modules
 Modules with X servers extensions.
@@ -1279,8 +1128,6 @@ Wspólne dla wszystkich X serwerów modu³y rozszerzeñ.
 Summary:	PEX extension module
 Summary(pl):	Modu³ rozszerzenia PEX
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}
 
 %description module-PEX
@@ -1295,8 +1142,6 @@ ju¿ do³±czane domy¶lnie.
 Summary:	XIE extension module
 Summary(pl):	Modu³ rozszerzenia XIE
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-modules = %{version}
 
 %description module-XIE
@@ -1311,8 +1156,6 @@ XFree86 4.2.0 nie jest ju¿ do³±czane domy¶lnie.
 Summary:	Graphical configuration tool for XFree86
 Summary(pl):	Graficzny konfigurator dla XFree86
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-Xserver = %{version}
 Obsoletes:	XFree86-xf86cfg
 
@@ -1332,13 +1175,6 @@ standardowej 16-kolorowej VGA.
 Summary:	X11R6 static libraries
 Summary(pl):	Biblioteki statyczne X11R6
 Group:		X11/Libraries
-Group(de):	X11/Libraries
-Group(es):	X11/Bibliotecas
-Group(fr):	X11/Librairies
-Group(pl):	X11/Biblioteki
-Group(pt_BR):	X11/Bibliotecas
-Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
-Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name}-devel = %{version}
 %ifarch sparc sparc64
 Obsoletes:	X11R6.1-devel
@@ -1356,8 +1192,6 @@ Biblioteki statyczne X11R6.
 Summary:	Various tools for XFree86
 Summary(pl):	Ró¿ne narzêdzia dla XFree86
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name} >= %{version}
 Requires:	XFree86-libs = %{version}
 Obsoletes:	X11R6-contrib
@@ -1396,8 +1230,6 @@ wersjach X.
 Summary:	sessreg - manage utmp/wtmp entries for non-init clients
 Summary(pl):	Program do zarz±dzania wpisami w utmp/wtmp
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 
 %description -n sessreg
 sessreg is a simple program for managing utmp/wtmp entries for xdm
@@ -1419,10 +1251,6 @@ indeksowanych po³o¿eniem w /etc/ttys.
 Summary:	Tab Window Manager for the X Window System
 Summary(pl):	Twm - podstawowy zarz±dca okien dla X Window System
 Group:		X11/Window Managers
-Group(de):	X11/Fenstermanager
-Group(es):	X11/Administraadores De Ventanas
-Group(fr):	X11/Gestionnaires De Fenêtres
-Group(pl):	X11/Zarz±dcy Okien
 Requires:	XFree86-libs = %{version}
 
 %description -n twm
@@ -1441,8 +1269,6 @@ definiowalne przypisania klawiszy i przycisków myszy.
 Summary:	xauth - X authority file utility
 Summary(pl):	xauth - narzêdzie do plików X authority
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-libs = %{version}
 
 %description -n xauth
@@ -1463,8 +1289,6 @@ logowania lub udostêpnienia innym u¿ytkownikom).
 Summary:	xdm - X Display Manager with support for XDMCP, host chooser
 Summary(pl):	XDM - display mened¿er z obs³ug± XDMCP i wybieraniem hostów
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name} = %{version}
 Requires:	pam >= 0.71
 Requires:	%{name}-libs = %{version}
@@ -1491,8 +1315,6 @@ terminali oraz standardem X Consortium XDMCP.
 Summary:	Font server for XFree86
 Summary(pl):	Serwer fontów dla XFree86
 Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
 Requires:	%{name}-libs = %{version}
 Requires:	XFree86-fonts-base
 PreReq:		chkconfig
