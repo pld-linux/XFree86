@@ -230,7 +230,7 @@ diff -Nur XFree86-4.0.2.org/xc/config/cf/linux.cf XFree86-4.0.2/xc/config/cf/lin
 diff -Nur XFree86-4.0.2.org/xc/config/cf/site.def XFree86-4.0.2/xc/config/cf/site.def
 --- XFree86-4.0.2.org/xc/config/cf/site.def	Tue Jun 27 02:55:45 2000
 +++ XFree86-4.0.2/xc/config/cf/site.def	Wed Dec 20 13:41:02 2000
-@@ -131,10 +131,13 @@
+@@ -131,10 +131,14 @@
  #define HasSentinel	YES
  */
  
@@ -244,6 +244,7 @@ diff -Nur XFree86-4.0.2.org/xc/config/cf/site.def XFree86-4.0.2/xc/config/cf/sit
 +
 +
 +#define HasPam    YES
++#define HasPamMisc    YES
  
  
  /* You do NOT need SetUID if you only run the server under xdm */
@@ -596,3 +597,14 @@ diff -Nur XFree86-4.0.2.org/xc/programs/xterm/xterm.h XFree86-4.0.2/xc/programs/
  #endif
  
  #ifndef X_NOT_POSIX
+--- XFree86-4.0.2/xc/programs/Xserver/hw/xfree86/xf86cfg/Imakefile~	Thu Dec 14 20:47:46 2000
++++ XFree86-4.0.2/xc/programs/Xserver/hw/xfree86/xf86cfg/Imakefile	Fri Dec 22 17:58:27 2000
+@@ -92,7 +92,7 @@
+ 
+ #if HasNCurses
+ CURSESLIB = NCursesLibName
+-CURSESDEFINES  = -DHAS_NCURSES
++CURSESDEFINES  = -DHAS_NCURSES -I/usr/include/ncurses
+ #endif
+ 
+ DEFINES        = -DXF86CONFIG=\"XConfigFile\" $(MODULEDEFINES) \
