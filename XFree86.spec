@@ -8,7 +8,7 @@
 #
 
 %define		_sver	%(echo %{version} | tr -d .)
-%define		_synaptics_ver	0.11.3p3
+%define		_synaptics_ver	0.11.3p5
 
 Summary:	XFree86 Window System servers and basic programs
 Summary(de):	Xfree86 Window-System-Server und grundlegende Programme
@@ -23,12 +23,12 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
-Version:	4.3.99.7
+Version:	4.3.99.8
 Release:	0.1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
-# Source0-md5:	ff79defe20e606f6db127dd6cb360478
+# Source0-md5:	0def970388c4babc46a39da5e2f85ab4
 #Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-2.tgz
 #Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-3.tgz
 Source3:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
@@ -62,7 +62,7 @@ Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-X
 #Source39:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
 # http://w1.894.telia.com/~u89404340/touchpad/index.html
 Source40:	http://w1.894.telia.com/~u89404340/touchpad/synaptics-%{_synaptics_ver}.tar.bz2
-# Source40-md5:	5541058365fc13ba28d2a74ed0b6fdd7
+# Source40-md5:	72ac818ee0dc4f01d2c0d1e3531d4b9c
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -88,7 +88,6 @@ Patch21:	%{name}-r128-busmstr2.patch
 Patch22:	%{name}-neomagic_swcursor.patch
 Patch23:	%{name}-mga-busmstr.patch
 Patch24:	%{name}-agpgart-load.patch
-Patch25:	%{name}-mkfontdir-chmod_644.patch
 Patch26:	%{name}-HasFreetype2.patch
 Patch27:	%{name}-config-s3.patch
 Patch28:	%{name}-sparc_pci_domains.patch
@@ -1956,7 +1955,6 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch22 -p1
 %patch23 -p1
 %patch24 -p1
-%patch25 -p1
 %patch26 -p1
 %patch27 -p1
 %ifarch sparc sparc64
