@@ -29,65 +29,42 @@ Patch0:		XFree86-rh.patch
 Patch1:		XFree86-rhxdm.patch
 Patch2:		XFree86-fsstnd.patch
 Patch3:		XFree86-alpha-sockets.patch
-# sparc patches from ultrapenguin
-Patch4:		XFree86-sparc.patch
-Patch5:		XFree86-ffb.patch.gz
-# more sun patches from ultrapenguin
-Patch6:		XFree86-suncards.patch
-Patch7:		XFree86-sparc2.patch
-Patch8:		XFree86-creator2.patch.gz
-Patch9:		XFree86-newcreator.patch
-Patch10:	XFree86-sparc3.patch.gz
 # the following was causing problems with RagePRO based ATI
 # chipsets, but this has been fixed
-Patch11:	XFree86-mach64.patch.gz
-Patch12:	XFree86-creator4.patch.gz
 # use glibc 2.1 routines for utmp, doesn't require xterm to be setuid
-Patch13:	XFree86-nosuidxterm.patch
-Patch14:	XFree86-joy.patch
-Patch16:	XFree86-ru_SU.patch
-Patch17:	XFree86-startx_xauth.patch
-Patch18:	XFree86-xfsredhat.patch
+Patch4:		XFree86-nosuidxterm.patch
+Patch5:		XFree86-joy.patch
+Patch6:		XFree86-ru_SU.patch
+Patch7:		XFree86-startx_xauth.patch
+Patch8:		XFree86-xfsredhat.patch
 # link xterm with libncurses instead libtermcap
-Patch19:	XFree86-ncurses.patch
+Patch9:		XFree86-ncurses.patch
 # Compile X serwers againsty system installed libz.so
-Patch20:	XFree86-HasZlib.patch
+Patch10:	XFree86-HasZlib.patch
 # Man dir in /usr/X11R6/man or %{_mandir}
-Patch21:	XFree86-fhs.patch
-Patch22:	XFree86-voodoo-Rush.patch
-Patch23:	XFree86-ffbcrash.patch
-Patch24:	XFree86-ru_sparc.patch
-Patch25:	XFree86-xinitrace.patch
-Patch26:	XFree86-xterm-color.patch
-Patch27:	XFree86-xdm+pam_env.patch
-Patch28:	XFree86-XF86Config-path.patch
-Patch29:	XFree86-XF86Setup-fonts.patch
-Patch30:	XFree86-pam.patch
-Patch31:	XFree86-fixiso8859-2.patch
+Patch11:	XFree86-fhs.patch
+Patch12:	XFree86-voodoo-Rush.patch
+Patch13:	XFree86-xinitrace.patch
+Patch14:	XFree86-xterm-color.patch
+Patch15:	XFree86-xdm+pam_env.patch
+Patch16:	XFree86-XF86Config-path.patch
+Patch17:	XFree86-XF86Setup-fonts.patch
+Patch18:	XFree86-pam.patch
+Patch19:	XFree86-fixiso8859-2.patch
 # fix Diamond SpeedStar A50 Xconfigurator setup
-Patch32:	XFree86-ssa50.patch
+Patch20:	XFree86-ssa50.patch
 # turn off accel for sis6326 cards
-Patch33:	XFree86-sis.patch
-Patch34:	XFree86-xfsftfontdir.patch
-Patch35:	XFree86-cyrix.patch
-Patch36:	XFree86-creator3.patch
-Patch37:	XFree86-sparcmhead.patch
-# patch for elite3d cards on SPARC
-patch38:	XFree86-elite3d.patch
-# fix xkb on sparc
-Patch39:	XFree86-sunxkb.patch
-# fbdev on sparc
-Patch40:	XFree86-sparcfbdev.patch
-Patch41:	XFree86-pfillbug.patch
-Patch42:	XFree86-linebug.patch
-Patch43:	XFree86-mach64_3.patch
-Patch44:	XFree86-multiffb.patch
-Patch45:	XFree86-ffbfixes.patch
-Patch46:	XFree86-sparcpckbd.patch
-Patch47:	XFree86-raptor.patch
-Patch48:	XFree86-ffb3.patch
-Patch49:	ftp://ftp.dcs.ed.ac.uk/pub/jec/programs/xfsft/xfsft-1.1.6-1.1.7.patch
-Patch50:	XFree86-3dfxalpha.patch
+Patch21:	XFree86-sis.patch
+Patch22:	XFree86-xfsftfontdir.patch
+Patch23:	XFree86-cyrix.patch
+Patch24:	ftp://ftp.dcs.ed.ac.uk/pub/jec/programs/xfsft/xfsft-1.1.6-1.1.7.patch
+Patch25:	XFree86-3dfxalpha.patch
+Patch26:	XFree86-xlib_netscape_fix.patch
+Patch27:	XFree86-sparc.patch.bz2
+Patch28:	XFree86-enable810.patch
+Patch29:	XFree86-5480mem.patch
+Patch30:	XFree86-ragemobility.patch
+Patch31:	XFree86-xterm_VT100_translations.patch
 
 BuildRequires:	ncurses-devel >= 5.0
 BuildRequires:	zlib-devel
@@ -1230,44 +1207,26 @@ install xfsft-1.1.6/fonts.scale.Type1 xc/fonts/scaled/Type1/fonts.scale
 %patch9  -p1
 %patch10 -p1
 %patch11 -p1
-%patch12 -p1
+%patch12 -p0
 %patch13 -p1
 %patch14 -p1
+%patch15 -p1
 %patch16 -p1
 %patch17 -p1
 %patch18 -p1
-%patch19 -p1
+%patch19 -p1 -R
 %patch20 -p1
 %patch21 -p1
-%patch22 -p0
+%patch22 -p1
 %patch23 -p1
-%patch24 -p1
+%patch24 -p0
 %patch25 -p1
 %patch26 -p1
 %patch27 -p1
 %patch28 -p1
 %patch29 -p1
 %patch30 -p1
-%patch31 -p1 -R
-%patch32 -p1
-%patch33 -p1
-%patch34 -p1
-%patch35 -p1
-%patch36 -p1
-%patch37 -p1
-%patch38 -p1
-%patch39 -p1
-%patch40 -p1
-%patch41 -p1
-%patch42 -p1
-%patch43 -p1
-%patch44 -p1
-%patch45 -p1
-%patch46 -p1
-%patch47 -p1
-%patch48 -p1
-%patch49 -p0
-%patch50 -p1
+%patch31 -p1
 
 ## Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
