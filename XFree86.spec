@@ -10,7 +10,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Name:		XFree86
 Version:	4.2.0
-Release:	2.6
+Release:	2.7
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/%{version}/source/X%{_sver}src-1.tgz
@@ -65,6 +65,7 @@ Patch31:	%{name}-alpha_GLX_align_fix.patch
 Patch32:	%{name}-XftConfig_in_correct_place.patch
 Patch33:	%{name}-PEX+XIE.patch
 Patch34:	%{name}-ati.old-rename.patch
+Patch35:	%{name}-xman-paths.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1386,6 +1387,7 @@ serwerów lokalnych lub zdalnych.
 %patch31 -p1
 %patch32 -p1
 %patch33 -p1
+%patch34 -p1
 
 rm -f xc/config/cf/host.def
 
@@ -1420,7 +1422,7 @@ cd ati.old
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysconfig} \
-	$RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/pl \
+	$RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/{cs,da,de,es,fr,hu,it,ja,ko,nl,pl,pt,ru,sk,zh_CN.gb2312,zh_TW.big5} \
 	$RPM_BUILD_ROOT%{_datadir}/{misc,sounds} \
 	$RPM_BUILD_ROOT%{_sbindir} \
 	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
@@ -1636,7 +1638,6 @@ fi
 %doc %{_libdir}/X11/doc
 %endif
 
-%dir %{_libdir}/X11/app-defaults
 %{_libdir}/X11/app-defaults/XCalc
 %{_libdir}/X11/app-defaults/XCalc-color
 %{_libdir}/X11/app-defaults/XClipboard
@@ -1646,6 +1647,7 @@ fi
 %{_libdir}/X11/app-defaults/XLogo-color
 %{_libdir}/X11/app-defaults/XSm
 %{_libdir}/X11/app-defaults/XTerm
+%lang(pl) %{_libdir}/X11/app-defaults/pl/XTerm
 %{_libdir}/X11/app-defaults/XTerm-color
 %ifnarch sparc sparc64
 %{_libdir}/X11/app-defaults/XF86Cfg
@@ -1676,8 +1678,6 @@ fi
 /etc/X11/rstart/contexts/*
 %dir /etc/X11/xsm
 /etc/X11/xsm/*
-
-%lang(pl) %{_libdir}/X11/app-defaults/pl
 
 %dir %{_libdir}/X11/x11perfcomp
 %attr(755,root,root) %{_libdir}/X11/x11perfcomp/*
@@ -2266,6 +2266,21 @@ fi
 %defattr(644,root,root,755)
 %{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XKeysymDB
+%dir %{_libdir}/X11/app-defaults
+%lang(cs) %dir %{_libdir}/X11/app-defaults/cs
+%lang(da) %dir %{_libdir}/X11/app-defaults/da
+%lang(de) %dir %{_libdir}/X11/app-defaults/de
+%lang(es) %dir %{_libdir}/X11/app-defaults/es
+%lang(fr) %dir %{_libdir}/X11/app-defaults/fr
+%lang(hu) %dir %{_libdir}/X11/app-defaults/hu
+%lang(ko) %dir %{_libdir}/X11/app-defaults/ko
+%lang(nl) %dir %{_libdir}/X11/app-defaults/nl
+%lang(pl) %dir %{_libdir}/X11/app-defaults/pl
+%lang(pt) %dir %{_libdir}/X11/app-defaults/pt
+%lang(ru) %dir %{_libdir}/X11/app-defaults/ru
+%lang(sk) %dir %{_libdir}/X11/app-defaults/sk
+%lang(zh_CN) %dir %{_libdir}/X11/app-defaults/zh_CN.gb2312
+%lang(zh_TW) %dir %{_libdir}/X11/app-defaults/zh_TW.big5
 %{_libdir}/X11/locale
 %dir %{_includedir}
 %dir %{_includedir}/X11
