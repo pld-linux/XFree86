@@ -2082,12 +2082,6 @@ if [ "$1" = "0" ]; then
 	/usr/sbin/groupdel xfs 2>/dev/null
 fi
 
-%post   xrender -p /sbin/ldconfig
-%postun xrender -p /sbin/ldconfig
-
-%post   xcursor -p /sbin/ldconfig
-%postun xcursor -p /sbin/ldconfig
-
 #--- %files --------------------------
 
 %files
