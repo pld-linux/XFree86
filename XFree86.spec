@@ -12,7 +12,7 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Name:		XFree86
 Version:	4.2.0
-Release:	4
+Release:	5
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/%{version}/source/X%{_sver}src-1.tgz
@@ -71,12 +71,14 @@ Patch35:	%{name}-ppc_drivers.patch
 Patch36:	%{name}-4.2.0-branch-20020524.patch
 Patch37:	%{name}-clearrts.patch
 Patch38:	%{name}-mga020414.patch
-
+Patch39:	%{name}-trident-9397.patch
 Patch40:	%{name}-i815m.patch
 Patch41:	%{name}-nv020414.patch
 Patch42:	%{name}-fix-07-s3trio64v2gx+netfinity.patch
 Patch43:	%{name}-prosavage.patch
 Patch44:	%{name}-xtt-null-pointer.patch
+Patch45:	%{name}-vesa-xf86SetDpi-fix.patch
+Patch46:	%{name}-neomagic-Xv-support.patch
 
 BuildRequires:	bison
 BuildRequires:	flex
@@ -1727,6 +1729,8 @@ cd ..
 %patch42 -p1
 %patch43 -p1
 %patch44 -p1
+%patch45 -p1
+%patch46 -p1
 
 rm -f xc/config/cf/host.def
 
