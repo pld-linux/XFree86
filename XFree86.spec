@@ -47,6 +47,7 @@ Patch17:	XFree86-shared.patch
 Patch18:	XFree86-broken-includes.patch
 Patch19:	XFree86-Xaw-unaligned.patch
 
+BuildRequires:	flex
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
 BuildRequires:	utempter-devel
