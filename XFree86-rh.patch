@@ -76,16 +76,6 @@
  
  /*
   * Which servers do you wish to build, you can save a lot of disk space
-@@ -339,8 +340,8 @@
-  * fonts once, if this is a first time install you will want to build the
-  * fonts)
-  *
--#define BuildFonts		NO
-  */
-+#define BuildFonts		YES
- 
- /*
-  * To not build/install the 75dpi fonts, uncomment the following
 @@ -369,8 +370,8 @@
  /*
   * To not build/install the Cyrillic fonts, uncomment the following
