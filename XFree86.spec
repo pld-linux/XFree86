@@ -1,10 +1,10 @@
 Summary:	XFree86 Window System servers and basic programs
 Summary(de):	Xfree86 Window-System-Server und grundlegende Programme
+Summary(es):	Programas básicos y servidores para el sistema de ventanas XFree86
 Summary(fr):	Serveurs du système XFree86 et programmes de base
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
-Summary(es):	Programas básicos y servidores para el sistema de ventanas XFree86
 Name:		XFree86
 Version:	4.1.0
 Release:	10
@@ -75,13 +75,13 @@ Patch38:	%{name}-i740.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
+BuildRequires:	gcc-c++
 BuildRequires:	ncurses-devel
 BuildRequires:	pam-devel
 BuildRequires:	perl
 BuildRequires:	tcl-devel
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
-BuildRequires:	gcc-c++
 %ifarch %{ix86} alpha
 BuildRequires:	Glide3-DRI-devel
 %endif
@@ -140,6 +140,18 @@ Das X-Protokoll gestattet die Ausführung der Applikationen direkt auf
 lokalen Rechnern oder über ein Netz und bietet große Flexibilität bei
 Client-Server-Implementierungen.
 
+%description -l es
+X Window es una interface gráfica completa con múltiples ventanas,
+múltiples clientes y diferentes estilos de ventanas. Se usa en la
+mayoría de las plataformas Unix, y los clientes también pueden
+ejecutar en otros sistemas de ventanas populares. El protocolo X
+permite que las aplicaciones puedan ejecutarse tanto en la máquina
+local como a través de la red, y proveer flexibilidad en
+implementaciones cliente/servidor. Este paquete contiene las fuentes
+básicas, programas y documentación para una estación de trabajo X. No
+ofrece un servidor X que acceda tu hardware de vídeo -- estos son
+puestos a disposición en otro paquete.
+
 %description -l pl
 X Window System jest graficznym interfejsem u¿ytkownika, cechuje siê
 mo¿liwo¶ci± pracy w wielu oknach, z wieloma klientami i do tego w
@@ -175,21 +187,9 @@ Este pacote contém as fontes básicas, programas e documentação para
 uma estação de trabalho X. Ele não fornece um servidor X que acessa
 seu hardware de vídeo -- estes são disponibilizados em outro pacote.
 
-%description -l es
-X Window es una interface gráfica completa con múltiples ventanas,
-múltiples clientes y diferentes estilos de ventanas. Se usa en la
-mayoría de las plataformas Unix, y los clientes también pueden
-ejecutar en otros sistemas de ventanas populares. El protocolo X
-permite que las aplicaciones puedan ejecutarse tanto en la máquina
-local como a través de la red, y proveer flexibilidad en
-implementaciones cliente/servidor. Este paquete contiene las fuentes
-básicas, programas y documentación para una estación de trabajo X. No
-ofrece un servidor X que acceda tu hardware de vídeo -- estos son
-puestos a disposición en otro paquete.
-
 %package modules
 Summary:	Modules with X servers extensions
-Summary(pl):	Wspólne modu³y rozszerzeñ dla wszystkich X serwerów
+Summary(pl):	Wspólne dla wszystkich X serwerów modu³y rozszerzeñ
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(es):	X11/XFree86
@@ -200,24 +200,24 @@ Group(pt_BR):	X11/XFree86
 %description modules
 Modules with X servers extensions.
 
-%description -l pl modules
-Wspólne modu³y rozszerzeñ dla wszystkich X serwerów.
+%description modules -l pl
+Wspólne dla wszystkich X serwerów modu³y rozszerzeñ.
 
 %package libs
 Summary:	X11R6 shared libraries
 Summary(de):	X11R6 shared Libraries
+Summary(es):	Bibliotecas compartidas X11R6
 Summary(pl):	Biblioteki dzielone dla X11R6
 Summary(fr):	Bibliothèques partagées X11R6
 Summary(pt_BR):	Bibliotecas compartilhadas X11R6
-Summary(es):	Bibliotecas compartidas X11R6
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(es):	X11/XFree86
 Group(fr):	X11/XFree86
 Group(pl):	X11/XFree86
 Group(pt_BR):	X11/XFree86
-Prereq:		grep
 Prereq:		/sbin/ldconfig
+Prereq:		grep
 Obsoletes:	xpm
 Provides:	xpm
 
@@ -239,43 +239,43 @@ resolution), the Xconfigurator package and the X11R6-contrib package.
 And, finally, if you are going to be developing applications that run
 as X clients, you will also need to install XFree86-devel.
 
-%description -l de libs
+%description libs -l de
 Dieses Paket enthält die zur gemeinsamen Nutzung vorgesehenen
 Libraries, die die meisten X-Programme für den einwandfreien Betrieb
 benötigen. Sie wurden in einem separaten Paket untergebracht, um den
 Festplattenspeicherplatz auf Computern zu reduzieren, die ohne einen
 X- Server (über ein Netz) arbeiten.
 
-%description -l fr libs
-Ce paquetage contient les bibliothèques partagées nécessaires à de
-nombreux programmes X. Elles se trouvent dans un paquetage séparé afin
-de réduire l'espace disque nécessaire à l'exécution des applications X
-sur une machine sans serveur X (en réseau).
-
-%description -l pl libs
-Pakiet zawieraj±cy podstawowe biblioteki potrzebne dla wiêkszo¶ci
-programów korzystaj±cych z systemu X Window. Wydzielony w celu
-oszczêdno¶ci miejsca potrzebnego do uruchamiania aplikacji X Window na
-komputerach bez X serwera (np. przez sieæ).
-
-%description -l tr libs
-Bu paket X programlarýnýn düzgün çalýþabilmeleri için gereken
-kitaplýklarý içerir. Bunlar, X programlarýný (sunucu olsun olmasýn)
-çalýþtýrmak için gerekli disk alanýný azaltmak için ayrý bir paket
-olarak sunulmuþtur.
-
-%description -l pt_BR libs
-Este pacote contém bibliotecas compartilhadas que a maioria dos
-programas X precisam para rodar corretamente. Eles estão em um pacote
-separado para reduzir o espaço em disco necessário para rodar
-aplicações X em uma máquina sem um servidor X (através da rede).
-
-%description -l es libs
+%description libs -l es
 Este paquete contiene bibliotecas compartidas que la mayoría de los
 programas X necesitan para ejecutarse correctamente. Están en un
 paquete a parte, para reducir el espacio en disco necesario para
 ejecutar aplicaciones X en una máquina sin un servidor X (a través de
 la red).
+
+%description libs -l fr
+Ce paquetage contient les bibliothèques partagées nécessaires à de
+nombreux programmes X. Elles se trouvent dans un paquetage séparé afin
+de réduire l'espace disque nécessaire à l'exécution des applications X
+sur une machine sans serveur X (en réseau).
+
+%description libs -l pl
+Pakiet zawieraj±cy podstawowe biblioteki potrzebne dla wiêkszo¶ci
+programów korzystaj±cych z systemu X Window. Wydzielony w celu
+oszczêdno¶ci miejsca potrzebnego do uruchamiania aplikacji X Window na
+komputerach bez X serwera (np. przez sieæ).
+
+%description libs -l tr
+Bu paket X programlarýnýn düzgün çalýþabilmeleri için gereken
+kitaplýklarý içerir. Bunlar, X programlarýný (sunucu olsun olmasýn)
+çalýþtýrmak için gerekli disk alanýný azaltmak için ayrý bir paket
+olarak sunulmuþtur.
+
+%description libs -l pt_BR
+Este pacote contém bibliotecas compartilhadas que a maioria dos
+programas X precisam para rodar corretamente. Eles estão em um pacote
+separado para reduzir o espaço em disco necessário para rodar
+aplicações X em uma máquina sem um servidor X (através da rede).
 
 %package devel
 Summary:	X11R6 headers and programming man pages
@@ -305,14 +305,14 @@ the Xt and Xaw widget sets. For information on programming with these
 libraries, PLD recommends the series of books on X Programming
 produced by O'Reilly and Associates.
 
-%description -l de devel
+%description devel -l de
 Libraries, Header-Dateien und Dokumentation zum Entwickeln von
 Programmen, die als X-Clients laufen. Enthält die Xlib-Library und die
 Widget-Sätze Xt und Xaw. Information zum Programmieren mit diesen
 Libraries finden Sie in der Buchreihe zur X-Programmierung von
 O'Reilly and Associates.
 
-%description -l fr devel
+%description devel -l fr
 Bibliothéques, fichiers d'en-tête, et documentation pour développer
 des programmes s'exécutant en clients X. Cela comprend la Bibliothéque
 Xlib de base aussi bien que les ensembles de widgets Xt et Xaw. Pour
@@ -320,14 +320,14 @@ des informations sur la programmation avec ces Bibliothéques, Red Hat
 recommande la série d'ouvrages sur la programmation X editée par
 O'Reilly and Associates.
 
-%description -l pl devel
+%description devel -l pl
 Pliki nag³ówkowe, dokumentcja dla programistów rozwijaj±cych aplikacje
 klienckie pod X Window. Zawiera podstawow± bibliotekê Xlib a tak¿e Xt
 i Xaw. Wiêcej informacji nt. pisania programów przy u¿yciu tych
 bibliotek mo¿esz znale¼æ w ksi±¿kach wydawnictwa O'Reilly and
 Associates (X Programming) polecanych przez Red Hata.
 
-%description -l tr devel
+%description devel -l tr
 X istemcisi olarak çalýþacak programlar geliþtirmek için gereken
 statik kitaplýklar, baþlýk dosyalarý ve belgeler. Xlib kitaplýðýnýn
 yanýsýra Xt ve Xaw arayüz kitaplýklarýný da içerir.
@@ -353,7 +353,7 @@ Obsoletes:	xpm-static
 %description static
 X11R6 static libraries.
 
-%description -l pl static
+%description static -l pl
 Biblioteki statyczne do X11R6.
 
 %package OpenGL-core
@@ -373,7 +373,7 @@ Obsoletes:	Mesa
 %description OpenGL-core
 OpenGL support for X11R6 system.
 
-%description -l pl OpenGL-core
+%description OpenGL-core -l pl
 Wsparcie OpenGL dla systemu X11R6.
 
 %package OpenGL-libs
@@ -396,7 +396,7 @@ Obsoletes:	Mesa
 %description OpenGL-libs
 OpenGL libraries for X11R6 system.
 
-%description -l pl OpenGL-libs
+%description OpenGL-libs -l pl
 Biblioteki OpenGL dla systemu X11R6.
 
 %package OpenGL-devel
@@ -418,7 +418,7 @@ Obsoletes:	Mesa-devel glxMesa-devel
 %description OpenGL-devel
 Headers and man pages for OpenGL for X11R6.
 
-%description -l pl OpenGL-devel
+%description OpenGL-devel -l pl
 Pliki nag³ówkowe i manuale do OpenGL dla systemu X11R6.
 
 %package OpenGL-static
@@ -439,7 +439,7 @@ Obsoletes:	Mesa-static
 %description OpenGL-static
 X11R6 static libraries with OpenGL.
 
-%description -l pl OpenGL-static
+%description OpenGL-static -l pl
 Biblioteki statyczne zawieraj±ce wsparcie dla OpenGL do X11R6.
 
 %package setup
@@ -457,8 +457,11 @@ servers. It allows you to configure video settings, keyboard layouts,
 mouse type, and other miscellaneous options. It is slow however, and
 requires the generic VGA 16 color server be available.
 
-%description -l pl setup
-Pakiet setup zawiera narzêdzia do konfiguracji Xfree86.
+%description setup -l pl
+Pakiet setup zawiera narzêdzia do konfiguracji XFree86. Pozwala na
+skonfigurowanie ustawieñ wideo, klawiatury, typu myszki i innych
+ró¿nych rzeczy. Jednak¿e jest wolny i wymaga dostêpno¶ci serwera do
+standardowej 16-kolorowej VGA.
 
 %package Xvfb
 Summary:	XFree86 Xvfb server
@@ -486,7 +489,7 @@ don't need an X server but insist on having one.
 If you need to test your X server or your X clients, you may want to
 install Xvfb for that purpose.
 
-%description -l pl Xvfb
+%description Xvfb -l pl
 Xvfb (X Virtual Frame Buffer) jest X serwerem, który mo¿na uruchamiaæ
 na maszynach bez urz±dzeñ wy¶wietlaj±cych ani fizycznych urz±dzeñ
 wej¶ciowych. Xvfb emuluje prosty framebuffer w pamiêci. Zwykle jest
@@ -513,7 +516,7 @@ manages the windows and graphics requests for its own clients.
 You will need to install Xnest if you require an X server which will
 run as a client of your real X server (perhaps for testing purposes).
 
-%description -l pl Xnest
+%description Xnest -l pl
 Xnest jest X serwerem uruchamianym w okienku innego X serwera. Xnest
 zachowuje siê jak X klient w stosunku do prawdziwego X serwera, a jak
 X serwer dla w³asnych klientów.
@@ -531,7 +534,7 @@ Requires:	%{name}-fonts >= 4.0.2
 Xprt provides an X server with the print extension and special DDX
 implementation.
 
-%description -l pl Xprt
+%description Xprt -l pl
 Xprt jest X serwerem z rozszerzeniem Xprint.
 
 %package Xserver
@@ -568,7 +571,7 @@ proper driver for your display hardware - package itself contains only
 drivers for VGA and VESA-compliant cards (without acceleration). Other
 drivers can be found in XFree86-driver-* packages.
 
-%description -l de Xserver
+%description Xserver -l de
 X-Server für die elementarsten Framebuffer-SVGA-Geräte, einschließlich
 Karten, die aus ET4000-Chips, Cirrus Logic-Chips, Chips and
 Technologies Laptop-Chips sowie Trident 8900 und 9000 Chips gebaut
@@ -577,7 +580,7 @@ und Horizons, Genoa 8500VL, den meisten Actix-Karten sowie Spider VLB
 Plus und außerdem mit vielen anderen Chips und Karten. Es lohnt sich,
 diesen Server auszuprobieren, wenn Sie Probleme haben.
 
-%description -l fr Xserver
+%description Xserver -l fr
 Serveur X pour les circuits SVGA les plus simples, dont les cartes
 construites avec les circuits ET4000, Cirrus Logic, Chips and
 Technologies laptop, Trident 8900 et 9000. Fonctionne pour les cartes
@@ -586,13 +589,13 @@ Diamond Speedstar, Orchid Kelvins, STB Nitros et Horizons, Genoa
 pour de nombreux autres circuits et cartes. Essayez ce serveur si vous
 avez des problèmes.
 
-%description -l pl Xserver
+%description Xserver -l pl
 Jest to podstawowy X serwer wy¶wietlaj±cy obraz na karcie graficznej.
 Do dzia³ania wymaga odpowiedniego drivera - sam pakiet zawiera tylko
 drivery dla kart VGA oraz SVGA zgodnych z VESA (bez akceleracji). Inne
 drivery mo¿na znale¼æ w pakietach XFree86-driver-*.
 
-%description -l tr Xserver
+%description Xserver -l tr
 ET4000, Cirrus Logic, Chips and Technologies dizüstü, Trident 8900 ve
 9000 gibi basit 'framebuffer' SVGA kullananan kartlar için X sunucusu.
 Ayný zamanda Diamond Speedstar, Orchid Kelvins, STB Nitros / Horizons,
@@ -602,7 +605,7 @@ sunucuyu deneyin.
 
 %package driver-apm
 Summary:	Alliance Promotion video driver
-Summary(pl):	Driver do kart Alliance Promotion
+Summary(pl):	Sterownik do kart Alliance Promotion
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -612,12 +615,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-apm
 Alliance Promotion driver.
 
-%description -l pl driver-apm
-Driver do kart Alliance Promotion.
+%description driver-apm -l pl
+Sterownik do kart Alliance Promotion.
 
 %package driver-ark
 Summary:	Ark Logic video driver
-Summary(pl):	Driver do kart Ark Logic
+Summary(pl):	Sterownik do kart Ark Logic
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -627,12 +630,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-ark
 Ark Logic driver.
 
-%description -l pl driver-ark
-Driver do kart Ark Logic.
+%description driver-ark -l pl
+Sterownik do kart Ark Logic.
 
 %package driver-ati
 Summary:	ATI video driver
-Summary(pl):	Driver do kart ATI
+Summary(pl):	Sterownik do kart ATI
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -642,12 +645,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-ati
 ATI video driver.
 
-%description -l pl driver-ati
-Driver do kart ATI.
+%description driver-ati -l pl
+Sterownik do kart ATI.
 
 %package driver-chips
 Summary:	Chips and Technologies video driver
-Summary(pl):	Driver do kart na uk³adach Chips and Technologies
+Summary(pl):	Sterownik do kart na uk³adach Chips and Technologies
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -657,12 +660,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-chips
 Chips and Technologies video driver.
 
-%description -l pl driver-chips
-Driver do kart na uk³adach Chips and Technologies.
+%description driver-chips -l pl
+Sterownik do kart na uk³adach Chips and Technologies.
 
 %package driver-cirrus
 Summary:	Cirrus Logic video driver
-Summary(pl):	Driver do kart Cirrus Logic
+Summary(pl):	Sterownik do kart Cirrus Logic
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -672,12 +675,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-cirrus
 Cirrus Logic video driver.
 
-%description -l pl driver-cirrus
-Driver do kart Cirrus Logic.
+%description driver-cirrus -l pl
+Sterownik do kart Cirrus Logic.
 
 %package driver-cyrix
 Summary:	Cyrix video driver
-Summary(pl):	Driver do grafiki na uk³adzie Cyrix MediaGX
+Summary(pl):	Sterownik do grafiki na uk³adzie Cyrix MediaGX
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -687,12 +690,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-cyrix
 Cyrix video driver.
 
-%description -l pl driver-cyrix
-Driver do grafiki na uk³adzie Cyrix MediaGX.
+%description driver-cyrix -l pl
+Sterownik do grafiki na uk³adzie Cyrix MediaGX.
 
 %package driver-fbdev
 Summary:	Video driver for framebuffer device
-Summary(pl):	Driver korzystaj±cy z framebuffera
+Summary(pl):	Sterownik korzystaj±cy z framebuffera
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -702,12 +705,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-fbdev
 Non-accelerated video driver for framebuffer device.
 
-%description -l pl driver-fbdev
-Nie akcelerowany driver korzystaj±cy z framebuffera.
+%description driver-fbdev -l pl
+Nieakcelerowany sterownik korzystaj±cy z framebuffera.
 
 %package driver-ffb
 Summary:	Video driver for DRI sparc framebuffer device
-Summary(pl):	Driver do framebuffera DRI na sparc
+Summary(pl):	Sterownik do framebuffera DRI na sparc
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -717,12 +720,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-ffb
 Video driver for DRI sparc framebuffer device.
 
-%description -l pl driver-ffb
-Driver do framebuffera DRI na sparc.
+%description driver-ffb -l pl
+Sterownik do framebuffera DRI na sparc.
 
 %package driver-glide
 Summary:	3Dfx Voodoo1 and Voodoo2 video driver
-Summary(pl):	Driver do kart 3Dfx Voodoo1 i Voodoo2
+Summary(pl):	Sterownik do kart 3Dfx Voodoo1 i Voodoo2
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -732,12 +735,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-glide
 Voodoo1 and Voodoo2 video driver.
 
-%description -l pl driver-glide
-Driver do kart Voodoo1 i Voodoo2 firmy 3Dfx.
+%description driver-glide -l pl
+Sterownik do kart Voodoo1 i Voodoo2 firmy 3Dfx.
 
 %package driver-glint
 Summary:	GLINT/Permedia video driver
-Summary(pl):	Driver do kart GLINT i Permedia
+Summary(pl):	Sterownik do kart GLINT i Permedia
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -748,12 +751,12 @@ Requires:	OpenGL
 %description driver-glint
 GLINT/Permedia video driver.
 
-%description -l pl driver-glint
-Driver do kart GLINT i Permedia.
+%description driver-glint -l pl
+Sterownik do kart GLINT i Permedia.
 
 %package driver-i128
 Summary:	Number 9 I128 video driver
-Summary(pl):	Driver do kart Number 9 I128
+Summary(pl):	Sterownik do kart Number 9 I128
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -763,12 +766,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-i128
 Number 9 I128 video driver.
 
-%description -l pl driver-i128
-Driver do kart Number 9 I128.
+%description driver-i128 -l pl
+Sterownik do kart Number 9 I128.
 
 %package driver-i740
 Summary:	Intel i740 video driver
-Summary(pl):	Driver do kart na uk³adzie Intel i740
+Summary(pl):	Sterownik do kart na uk³adzie Intel i740
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -778,12 +781,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-i740
 Intel i740 video driver.
 
-%description -l pl driver-i740
-Driver do kart na uk³adzie Intel i740.
+%description driver-i740 -l pl
+Sterownik do kart na uk³adzie Intel i740.
 
 %package driver-i810
 Summary:	Intel i810/i815 video driver
-Summary(pl):	Driver do grafiki na uk³adach Intel i810 i i815
+Summary(pl):	Sterownik do grafiki na uk³adach Intel i810 i i815
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -794,12 +797,12 @@ Requires:	OpenGL
 %description driver-i810
 Intel i810/i815 video driver.
 
-%description -l pl driver-i810
-Driver do grafiki na uk³adach Intel i810 i i815.
+%description driver-i810 -l pl
+Sterownik do grafiki na uk³adach Intel i810 i i815.
 
 %package driver-mga
 Summary:	Matrox video driver
-Summary(pl):	Driver do kart Matrox
+Summary(pl):	Sterownik do kart Matrox
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -810,12 +813,12 @@ Requires:	OpenGL
 %description driver-mga
 Matrox video driver.
 
-%description -l pl driver-mga
-Driver do kart Matrox.
+%description driver-mga -l pl
+Sterownik do kart Matrox.
 
 %package driver-neomagic
 Summary:	NeoMagic video driver
-Summary(pl):	Driver do kart NeoMagic
+Summary(pl):	Sterownik do kart NeoMagic
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -825,12 +828,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-neomagic
 NeoMagic video driver.
 
-%description -l pl driver-neomagic
-Driver do kart NeoMagic.
+%description driver-neomagic -l pl
+Sterownik do kart NeoMagic.
 
 %package driver-nv
-Summary:	NVIDIA video driver
-Summary(pl):	Driver do kart na uk³adach firmy NVIDIA
+Summary:	nVidia video driver
+Summary(pl):	Sterownik do kart na uk³adach firmy nVidia
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -838,14 +841,14 @@ Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-nv
-NVIDIA video driver. Supports Riva128, RivaTNT, GeForce.
+nVidia video driver. Supports Riva128, RivaTNT, GeForce.
 
-%description -l pl driver-nv
-Driver do kart na uk³adach firmy NVIDIA: Riva128, RivaTNT, GeForce.
+%description driver-nv -l pl
+Sterownik do kart na uk³adach firmy nVidia: Riva128, RivaTNT, GeForce.
 
 %package driver-r128
 Summary:	ATI Rage 128 video driver
-Summary(pl):	Driver do kart ATI Rage 128
+Summary(pl):	Sterownik do kart ATI Rage 128
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -856,12 +859,12 @@ Requires:	OpenGL
 %description driver-r128
 ATI Rage 128 video driver.
 
-%description -l pl driver-r128
-Driver do kart ATI Rage 128.
+%description driver-r128 -l pl
+Sterownik do kart ATI Rage 128.
 
 %package driver-radeon
 Summary:	ATI Radeon video driver
-Summary(pl):	Driver do kart ATI Radeon
+Summary(pl):	Sterownik do kart ATI Radeon
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -872,12 +875,12 @@ Requires:	OpenGL
 %description driver-radeon
 ATI Radeon video driver.
 
-%description -l pl driver-radeon
-Driver do kart ATI Radeon.
+%description driver-radeon -l pl
+Sterownik do kart ATI Radeon.
 
 %package driver-rendition
 Summary:	Rendition video driver
-Summary(pl):	Driver do kart Rendition
+Summary(pl):	Sterownik do kart Rendition
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -887,12 +890,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-rendition
 Rendition/Micron video driver.
 
-%description -l pl driver-rendition
-Driver do kart Verite firmowanych przez Rendition/Micron.
+%description driver-rendition -l pl
+Sterownik do kart Verite firmowanych przez Rendition/Micron.
 
 %package driver-s3virge
 Summary:	S3 ViRGE/Trio3D video driver
-Summary(pl):	Driver do kart na uk³adach S3 ViRGE i Trio3D
+Summary(pl):	Sterownik do kart na uk³adach S3 ViRGE i Trio3D
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -902,12 +905,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-s3virge
 S3 ViRGE/Trio3D video driver.
 
-%description -l pl driver-s3virge
-Driver do kart na uk³adach S3 ViRGE i Trio3D.
+%description driver-s3virge -l pl
+Sterownik do kart na uk³adach S3 ViRGE i Trio3D.
 
 %package driver-s3
 Summary:	S3 Trio video driver
-Summary(pl):	Driver do kart na uk³adach S3 Trio
+Summary(pl):	Sterownik do kart na uk³adach S3 Trio
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -917,12 +920,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-s3
 S3 Trio video driver.
 
-%description -l pl driver-s3
-Driver do kart na uk³adach S3 Trio.
+%description driver-s3 -l pl
+Sterownik do kart na uk³adach S3 Trio.
 
 %package driver-savage
 Summary:	S3 Savage video driver
-Summary(pl):	Driver do kart na uk³adach S3 Savage
+Summary(pl):	Sterownik do kart na uk³adach S3 Savage
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -932,12 +935,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-savage
 S3 Savage video driver.
 
-%description -l pl driver-savage
-Driver do kart na uk³adach S3 Savage.
+%description driver-savage -l pl
+Sterownik do kart na uk³adach S3 Savage.
 
 %package driver-siliconmotion
 Summary:	Silicon Motion video driver
-Summary(pl):	Driver do kart na uk³adach Silicon Motion
+Summary(pl):	Sterownik do kart na uk³adach Silicon Motion
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -947,12 +950,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-siliconmotion
 Silicon Motion video driver.
 
-%description -l pl driver-siliconmotion
-Driver do kart na uk³adach Lynx firmy Silicon Motion.
+%description driver-siliconmotion -l pl
+Sterownik do kart na uk³adach Lynx firmy Silicon Motion.
 
 %package driver-sis
 Summary:	SiS video driver
-Summary(pl):	Driver do kart na uk³adach SiS
+Summary(pl):	Sterownik do kart na uk³adach SiS
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -962,12 +965,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-sis
 SiS video driver.
 
-%description -l pl driver-sis
-Driver do kart na uk³adach SiS.
+%description driver-sis -l pl
+Sterownik do kart na uk³adach SiS.
 
 %package driver-sunbw2
 Summary:	sunbw2 - Sun BW2 video driver
-Summary(pl):	Driver do monochromatycznego framebuffera BW2 na Sunie
+Summary(pl):	Sterownik do monochromatycznego framebuffera BW2 na Sunie
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -977,12 +980,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-sunbw2
 sunbw2 - Sun BW2 video driver.
 
-%description -l pl driver-sunbw2
-Driver do monochromatycznego framebuffera BW2 na Sunie.
+%description driver-sunbw2 -l pl
+Sterownik do monochromatycznego framebuffera BW2 na Sunie.
 
 %package driver-suncg14
 Summary:	suncg14 - Sun CG14 video driver
-Summary(pl):	Driver do kolorowego framebuffera CG14 na Sunie
+Summary(pl):	Sterownik do kolorowego framebuffera CG14 na Sunie
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -992,12 +995,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-suncg14
 suncg14 - Sun CG14 video driver.
 
-%description -l pl driver-suncg14
-Driver do kolorowego framebuffera CG14 na Sunie.
+%description driver-suncg14 -l pl
+Sterownik do kolorowego framebuffera CG14 na Sunie.
 
 %package driver-suncg3
 Summary:	suncg3 - Sun CG3 video cards driver
-Summary(pl):	Driver do kolorowego framebuffera CG3 na Sunie
+Summary(pl):	Sterownik do kolorowego framebuffera CG3 na Sunie
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1007,12 +1010,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-suncg3
 suncg3 - Sun CG3 video cards driver.
 
-%description -l pl driver-suncg3
-Driver do kolorowego framebuffera CG3 na Sunie.
+%description driver-suncg3 -l pl
+Sterownik do kolorowego framebuffera CG3 na Sunie.
 
 %package driver-suncg6
 Summary:	suncg6 - Sun GX and Turbo GX video driver
-Summary(pl):	Driver do grafiki GX i Turbo GX na Sunie
+Summary(pl):	Sterownik do grafiki GX i Turbo GX na Sunie
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1022,12 +1025,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-suncg6
 suncg6 - Sun GX and Turbo GX video driver.
 
-%description -l pl driver-suncg6
-Driver do grafiki GX i Turbo GX na Sunie.
+%description driver-suncg6 -l pl
+Sterownik do grafiki GX i Turbo GX na Sunie.
 
 %package driver-sunffb
 Summary:	sunffb - Sun Creator, Creator 3D and Elite 3D video cards driver
-Summary(pl):	Driver do kart Sun Creator, Creator 3D, Elite 3D
+Summary(pl):	Sterownik do kart Sun Creator, Creator 3D, Elite 3D
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1037,12 +1040,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-sunffb
 sunffb - Sun Creator, Creator 3D and Elite 3D video cards driver.
 
-%description -l pl driver-sunffb
-Driver do kart Sun Creator, Creator 3D, Elite 3D.
+%description driver-sunffb -l pl
+Sterownik do kart Sun Creator, Creator 3D, Elite 3D.
 
 %package driver-sunleo
 Summary:	sunleo - Sun Leo (ZX) video cards driver
-Summary(pl):	Driver do kart Sun Leo (ZX)
+Summary(pl):	Sterownik do kart Sun Leo (ZX)
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1052,12 +1055,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-sunleo
 sunleo - Sun Leo (ZX) video cards driver.
 
-%description -l pl driver-sunleo
-Driver do kart Sun Leo (ZX).
+%description driver-sunleo -l pl
+Sterownik do kart Sun Leo (ZX).
 
 %package driver-suntcx
 Summary:	suntcx - Sun TCX video cards driver
-Summary(pl):	Driver do kart Sun TCX
+Summary(pl):	Sterownik do kart Sun TCX
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1067,12 +1070,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-suntcx
 suntcx - Sun TCX video cards driver.
 
-%description -l pl driver-suntcx
-Driver do kart Sun TCX.
+%description driver-suntcx -l pl
+Sterownik do kart Sun TCX.
 
 %package driver-tdfx
 Summary:	3Dfx video driver
-Summary(pl):	Driver do kart 3Dfx
+Summary(pl):	Sterownik do kart 3Dfx
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1083,12 +1086,12 @@ Requires:	OpenGL
 %description driver-tdfx
 3Dfx video driver. Supports Voodoo Banshee, Voodoo3, Voodoo4, Voodoo5.
 
-%description -l pl driver-tdfx
-Driver do kart 3Dfx: Voodoo Banshee, Voodoo3, Voodoo4, Voodoo5.
+%description driver-tdfx -l pl
+Sterownik do kart 3Dfx: Voodoo Banshee, Voodoo3, Voodoo4, Voodoo5.
 
 %package driver-tga
 Summary:	TGA video driver
-Summary(pl):	Driver do kart TGA
+Summary(pl):	Sterownik do kart TGA
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1098,12 +1101,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-tga
 TGA video driver.
 
-%description -l pl driver-tga
-Driver do kart TGA.
+%description driver-tga -l pl
+Sterownik do kart TGA.
 
 %package driver-trident
 Summary:	Trident video driver
-Summary(pl):	Driver do kart Trident
+Summary(pl):	Sterownik do kart Trident
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1113,12 +1116,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-trident
 Trident video driver.
 
-%description -l pl driver-trident
-Driver do kart Trident.
+%description driver-trident -l pl
+Sterownik do kart Trident.
 
 %package driver-tseng
 Summary:	Tseng Labs video driver
-Summary(pl):	Driver do kart Tseng Labs
+Summary(pl):	Sterownik do kart Tseng Labs
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1128,12 +1131,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-tseng
 Tseng Labs video driver.
 
-%description -l pl driver-tseng
-Driver do kart firmy Tseng Labs.
+%description driver-tseng -l pl
+Sterownik do kart firmy Tseng Labs.
 
 %package driver-vmware
 Summary:	VMWare SVGA video driver
-Summary(pl):	Driver do emulowanych kart SVGA pod VMware.
+Summary(pl):	Sterownik do emulowanych kart SVGA pod VMware
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1143,8 +1146,8 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-vmware
 VMware SVGA video driver.
 
-%description -l pl driver-vmware
-Driver do emulowanych kart SVGA pod VMware.
+%description driver-vmware -l pl
+Sterownik do emulowanych kart SVGA pod VMware.
 
 %package DPS
 Summary:	Display PostScript
@@ -1159,7 +1162,7 @@ Obsoletes:	dgs
 X-Window Display PostScript is device-independent imaging model for
 displaying information on a screen.
 
-%description -l pl DPS
+%description DPS -l pl
 X-Window Display PostScript to niezale¿ny od urz±dzenia model
 wy¶wietlania informacji na ekranie.
 
@@ -1175,7 +1178,7 @@ Obsoletes:	dgs-devel
 %description DPS-devel
 Header files for develop X-Window Display Postscript.
 
-%description -l pl DPS-devel
+%description DPS-devel -l pl
 Pliki nag³ówkowe do biblioteki X-Window Display PostScript.
 
 %package DPS-static
@@ -1190,7 +1193,7 @@ Obsoletes:	dgs-static
 %description DPS-static
 X-Window Display PostScript static libraries.
 
-%description -l pl DPS-static
+%description DPS-static -l pl
 Statyczne biblioteki do X-Window Display PostScript.
 
 %package -n sessreg
@@ -1209,9 +1212,13 @@ System V has a better interface to /var/run/utmp than BSD; it
 dynamically allocates entries in the file, instead of writing them at
 fixed positions indexed by position in /etc/ttys.
 
-%description -l pl -n sessreg
+%description -n sessreg -l pl
 sessreg jest prostym programem do zarz±dzania wpisami w utmp/wtmp dla
 sesji xdm.
+
+System V ma lepszy ni¿ BSD interfejs do /var/run/utmp; dynamicznie
+alokuje wpisy w pliku, zamiast zapisywania ich na ustalonych pozycjach
+indeksowanych po³o¿eniem w /etc/ttys.
 
 %package -n xdm
 Summary:	xdm - X Display Manager with support for XDMCP, host chooser
@@ -1285,7 +1292,7 @@ servers remotely with this package, and the remote system will be able
 to use all fonts installed on the font server, even if they are not
 installed on the remote computer.
 
-%description -l pl -n xfs
+%description -n xfs -l pl
 Pakiet zawiera serwer fontów dla XFree86. Mo¿e udostêpniaæ fonty dla X
 serwerów lokalnych lub zdalnych.
 
@@ -1307,7 +1314,7 @@ granting access to other users).
 %description -n xauth -l pl
 Program xauth s³u¿y do edycji i wy¶wietlania informacji
 autoryzacyjnych u¿ywanych przy ³±czeniu z X serwerem. Ten program
-przewa¿nie jest u¿ywany do wyci±gania rekordów autoryzcji z jednej
+przewa¿nie jest u¿ywany do wyci±gania rekordów autoryzacji z jednej
 maszyny i do³±czania ich na innej (w celu umo¿liwienia zdalnego
 logowania lub udostêpnienia innym u¿ytkownikom).
 
@@ -1337,9 +1344,19 @@ This package contains all applications that used to be in
 X11R6-contrib in older releases.
 
 %description tools -l pl
-Ró¿ne narzêdzia dla X, tym listres, xbiff, xedit, xeyes, xcalc, xload,
-xman, i inne. Ten pakiet zawiera aplikacje, które by³y w X11R6-contrib
-w starszych wersjach X.
+Ró¿ne narzêdzia dla X, w tym listres, xbiff, xedit, xeyes, xcalc,
+xload, xman i inne.
+
+Je¶li u¿ywasz Xów powiniene¶ zainstalowaæ XFree86-tools. Bêdziesz
+równie¿ musia³ zainstalowaæ pakiet XFree86, pakiet odpowiadaj±cy
+Twojej karcie graficznej, jeden z pakietów z fontami, pakiet
+Xconfigurator oraz XFree86-libs.
+
+Wreszcie, je¶li zamierzasz tworzyæ aplikacje, które dzia³aj± jako
+klienci X, bêdziesz musia³ zainstalowaæ równie¿ XFree86-devel.
+
+Ten pakiet zawiera aplikacje, które by³y w X11R6-contrib w starszych
+wersjach X.
 
 #--- %prep ---------------------------
 
@@ -1401,14 +1418,13 @@ tar zx -f %{SOURCE15} -C xc/programs/Xserver/hw/xfree86/drivers/
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console.apps} \
+install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysconfig} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/pl \
-	$RPM_BUILD_ROOT/var/lib/xkb \
-	$RPM_BUILD_ROOT/usr/include \
-	$RPM_BUILD_ROOT/usr/bin \
-	$RPM_BUILD_ROOT/usr/lib \
-	$RPM_BUILD_ROOT%{_wmpropsdir} \
-	$RPM_BUILD_ROOT{%{_applnkdir}/{Utilities,Terminals},%{_pixmapsdir}/mini}
+	$RPM_BUILD_ROOT%{_datadir}/sounds \
+	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
+	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
+	$RPM_BUILD_ROOT{%{_applnkdir}/{Utilities,Terminals},%{_pixmapsdir}/mini} \
+	$RPM_BUILD_ROOT%{_wmpropsdir}
 
 %{__make} -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -1465,6 +1481,7 @@ bzip2 -dc %{SOURCE16} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xdm
+touch $RPM_BUILD_ROOT/var/log/XFree86.0.log
 
 ln -sf %{_fontsdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
 
@@ -1485,8 +1502,8 @@ rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/html
 # directories for applications locales
 echo '%defattr(644,root,root,755)' > XFree86-libs.lang
 for lang in af az bg bg_BG.cp1251 br ca cs da de el en_GB eo es et eu fi \
-    fr ga gl he hr hu is it ja ko lt mi mk nl nn no pl pt pt_BR ro ru sk \
-    sl sr sv ta th tr uk wa zh_CN zh_CN.GB2312 zh_TW.Big5 ; do
+	fr ga gl he hr hu is it ja ko lt mi mk nl nn no pl pt pt_BR ro ru sk \
+	sl sr sv ta th tr uk wa zh_CN zh_CN.GB2312 zh_TW.Big5 ; do
 	install -d $RPM_BUILD_ROOT%{_datadir}/locale/${lang}/LC_MESSAGES
 	echo "%lang(${lang}) %{_datadir}/locale/${lang}" >> XFree86-libs.lang
 done
@@ -1578,7 +1595,7 @@ if [ -f /var/lock/subsys/xdm ]; then
 else
 	echo "Run \"/etc/rc.d/init.d/xdm start\" to start xdm." >&2
 fi
-		
+
 %preun -n xdm
 if [ "$1" = "0" ]; then
 	if [ -f /var/lock/subsys/xdm ]; then
@@ -1587,7 +1604,7 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del xdm
 fi
 
-%post   DPS -p /sbin/ldconfig
+%post	DPS -p /sbin/ldconfig
 %postun DPS -p /sbin/ldconfig
 
 %post	OpenGL-libs -p /sbin/ldconfig
@@ -1720,6 +1737,8 @@ fi
 %dir %{_includedir}/X11
 %{_includedir}/X11/bitmaps
 %{_includedir}/X11/pixmaps
+
+%ghost /var/log/XFree86.0.log
 
 %{_applnkdir}/Utilities/*
 %{_applnkdir}/Terminals/*
@@ -1858,10 +1877,10 @@ fi
 
 %files -n xdm
 %defattr(644,root,root,755)
-%attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xdm
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/security/blacklist.xdm
+%attr(640,root,root) %config %verify(not md5 size mtime) /etc/pam.d/xdm
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.xdm
 %attr(754,root,root) /etc/rc.d/init.d/xdm
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/xdm
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/xdm
 /var/lib/xdm
 
 %{_libdir}/X11/app-defaults/Chooser
@@ -1899,11 +1918,11 @@ fi
 %files -n xfs
 %defattr(644,root,root,755)
 %attr(754,root,root) /etc/rc.d/init.d/xfs
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/xfs
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/xfs
 %dir %{_sysconfdir}/X11/fs
 %attr(755,root,root) %{_libdir}/X11/fs
 %config(noreplace) %{_sysconfdir}/X11/fs/config
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/X11/XftConfig
+%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/X11/XftConfig
 
 %attr(755,root,root) %{_bindir}/xfs
 %attr(755,root,root) %{_bindir}/fslsfonts
@@ -1931,13 +1950,14 @@ fi
 %{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XKeysymDB
 %{_libdir}/X11/locale
-/usr/lib/X11
 %dir %{_bindir}
 /usr/bin/X11
+/usr/lib/X11
 %dir %{_datadir}/locale
-%dir %{_wmpropsdir}
+%dir %{_datadir}/sounds
 %dir %{_pixmapsdir}
 %dir %{_pixmapsdir}/mini
+%dir %{_wmpropsdir}
 %attr(755,root,root) %{_libdir}/libX*.so.*.*
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
 %ifnarch alpha
@@ -2090,9 +2110,9 @@ fi
 %{_libdir}/X11/Cards
 %{_libdir}/X11/Options
 
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/X11/XF86Config
-%attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xserver
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xserver
+%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/X11/XF86Config
+%attr(640,root,root) %config %verify(not md5 size mtime) /etc/pam.d/xserver
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.xserver
 %config(missingok) /etc/security/console.apps/xserver
 
 %ifnarch sparc sparc64 alpha
@@ -2212,7 +2232,7 @@ fi
 %{_mandir}/man4/neomagic*
 
 %endif
-%ifnarch sparc sparc64 
+%ifnarch sparc sparc64
 
 %files driver-nv
 %defattr(644,root,root,755)
@@ -2220,7 +2240,7 @@ fi
 %{_mandir}/man4/nv*
 
 %endif
-%ifnarch sparc sparc64 
+%ifnarch sparc sparc64
 
 %files driver-r128
 %defattr(644,root,root,755)
