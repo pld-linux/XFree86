@@ -34,7 +34,7 @@ Source11:	xclipboard.desktop
 Source12:	xconsole.desktop
 Source13:	xterm.desktop
 Source14:	xlogo64.png
-Source15:	%{name}-non-english-Xman-pages.tar.bz2
+Source15:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -69,6 +69,7 @@ Patch30:	%{name}-dri_directory_mode_fix.patch
 Patch31:	%{name}-alpha_GLX_align_fix.patch
 Patch32:	%{name}-XftConfig_in_correct_place.patch
 Patch33:        %{name}-compaq-alpha-megapatch.patch
+Patch34:	%{name}-PEX+XIE.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -104,10 +105,8 @@ Obsoletes:	X11R6.1
 %define		_wmpropsdir	%{_datadir}/wm-properties
 
 # avoid Mesa dependency in XFree86-OpenGL-libs
-%define		_noautoreqdep	libGL.so.1 libGLU.so.1
-
 # Glide3 (libglide3.so.3) can be provided by Glide_V3-DRI or Glide_V5-DRI
-%define		_noautoreqdep	libglide3.so.3
+%define		_noautoreqdep	libGL.so.1 libGLU.so.1 libOSMesa.so.3.3   libglide3.so.3
 
 %description
 If you want to install the X Window System (TM) on your machine,
@@ -231,6 +230,94 @@ X-Window Display PostScript static libraries.
 
 %description DPS-static -l pl
 Statyczne biblioteki X-Window Display PostScript.
+
+%package PEX
+Summary:	PEX extension library
+Summary(pl):	Biblioteka rozszerzenia PEX
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-libs = %{version}
+
+%description PEX
+PEX extension library. Since XFree86 4.2.0 it's no longer included by
+default.
+
+%description PEX -l pl
+Biblioteka rozszerzenia PEX. Od wersji XFree86 4.2.0 nie jest ju¿
+do³±czane domy¶lnie.
+
+%package PEX-devel
+Summary:	PEX extension headers
+Summary(pl):	Pliki nag³ówkowe rozszerzenia PEX
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-PEX = %{version}
+
+%description PEX-devel
+PEX extension headers.
+
+%description PEX-devel -l pl
+Pliki nag³ówkowe rozszerzenia PEX.
+
+%package PEX-static
+Summary:	PEX extension static library
+Summary(pl):	Statyczna biblioteka rozszerzenia PEX
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-PEX-devel = %{version}
+
+%description PEX-static
+PEX extension static library.
+
+%description PEX-static -l pl
+Statyczna biblioteka rozszerzenia PEX.
+
+%package XIE
+Summary:	XIE extension library
+Summary(pl):	Biblioteka rozszerzenia XIE
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-libs = %{version}
+
+%description XIE
+XIE (X Image Extension) extension library. Since XFree86 4.2.0 it's no
+longer included by default.
+
+%description XIE -l pl
+Biblioteka rozszerzenia XIE (X Image Extension). Od wersji XFree86
+4.2.0 nie jest ju¿ do³±czane domy¶lnie
+
+%package XIE-devel
+Summary:	XIE extension headers
+Summary(pl):	Pliki nag³ówkowe rozszerzenia XIE
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-XIE = %{version}
+
+%description XIE-devel
+XIE extension headers.
+
+%description XIE-devel -l pl
+Pliki nag³ówkowe rozszerzenia XIE.
+
+%package XIE-static
+Summary:	XIE extension static library
+Summary(pl):	Statyczna biblioteka rozszerzenia XIE
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-XIE-devel = %{version}
+
+%description XIE-static
+XIE extension static library.
+
+%description XIE-static -l pl
+Statyczna biblioteka rozszerzenia XIE.
 
 %package OpenGL-core
 Summary:	OpenGL support for X11R6
@@ -1172,6 +1259,38 @@ Modules with X servers extensions.
 %description modules -l pl
 Wspólne dla wszystkich X serwerów modu³y rozszerzeñ.
 
+%package module-PEX
+Summary:	PEX extension module
+Summary(pl):	Modu³ rozszerzenia PEX
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}
+
+%description module-PEX
+PEX extension module for X server. Since XFree86 4.2.0 it's no longer
+included by default.
+
+%description module-PEX -l pl
+Modu³ rozszerzenia PEX dla X serwera. Od wersji XFree86 4.2.0 nie jest
+ju¿ do³±czane domy¶lnie.
+
+%package module-XIE
+Summary:	XIE extension module
+Summary(pl):	Modu³ rozszerzenia XIE
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}
+
+%description module-XIE
+XIE (X Image Extension) extension module for X server. Since XFree86
+4.2.0 it's no longer included by default.
+
+%description module-XIE -l pl
+Modu³ rozszerzenia XIE (X Image Extension) dla X serwera. Od wersji
+XFree86 4.2.0 nie jest ju¿ do³±czane domy¶lnie.
+
 %package setup
 Summary:	Graphical configuration tool for XFree86
 Summary(pl):	Graficzny konfigurator dla XFree86
@@ -1263,7 +1382,6 @@ Summary(pl):	Program do zarz±dzania wpisami w utmp/wtmp
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
-Requires:	%{name}-libs = %{version}
 
 %description -n sessreg
 sessreg is a simple program for managing utmp/wtmp entries for xdm
@@ -1425,6 +1543,7 @@ serwerów lokalnych lub zdalnych.
 %ifarch alpha
 %patch33 -p0
 %endif
+%patch34 -p1
 
 rm -f xc/config/cf/host.def
 
@@ -1551,6 +1670,12 @@ chmod 640 /var/log/XFree86.0.log
 
 %post	DPS -p /sbin/ldconfig
 %postun	DPS -p /sbin/ldconfig
+
+%post	PEX -p /sbin/ldconfig
+%postun	PEX -p /sbin/ldconfig
+
+%post	XIE -p /sbin/ldconfig
+%postun	XIE -p /sbin/ldconfig
 
 %post	OpenGL-libs -p /sbin/ldconfig
 %postun	OpenGL-libs -p /sbin/ldconfig
@@ -1872,6 +1997,34 @@ fi
 %{_libdir}/libdpstk.a
 %{_libdir}/libpsres.a
 
+%ifnarch alpha sparc64 ia64
+%files PEX
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libPEX5.so.*.*
+%endif
+
+%files PEX-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libPEX5.so
+%{_includedir}/X11/PEX5
+
+%files PEX-static
+%defattr(644,root,root,755)
+%{_libdir}/libPEX5.a
+
+%files XIE
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXIE.so.*.*
+
+%files XIE-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXIE.so
+%{_includedir}/X11/extensions/XIE*
+
+%files XIE-static
+%defattr(644,root,root,755)
+%{_libdir}/libXIE.a
+
 %files OpenGL-core
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libGL.so.*.*
@@ -1946,7 +2099,7 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/gccmakedep
 %attr(755,root,root) %{_bindir}/bdftopcf
-%attr(755,root,root) %{_libdir}/libX*.so
+%attr(755,root,root) %{_libdir}/libX[1Ta-t]*.so
 %attr(755,root,root) %{_libdir}/libI*.so
 %attr(755,root,root) %{_libdir}/libS*.so
 %ifnarch alpha
@@ -1975,7 +2128,11 @@ fi
 %{_includedir}/X11/Xaw
 %{_includedir}/X11/Xft
 %{_includedir}/X11/Xmu
-%{_includedir}/X11/extensions
+%dir %{_includedir}/X11/extensions
+%{_includedir}/X11/extensions/[^X]*.h
+%{_includedir}/X11/extensions/X[^I]*.h
+%{_includedir}/X11/extensions/XI.h
+%{_includedir}/X11/extensions/XI[^E]*.h
 %{_includedir}/X11/fonts
 %{_includedir}/xf86*.h
 %{_libdir}/X11/config
@@ -2266,7 +2423,7 @@ fi
 %dir %{_pixmapsdir}
 %dir %{_pixmapsdir}/mini
 %dir %{_wmpropsdir}
-%attr(755,root,root) %{_libdir}/libX*.so.*.*
+%attr(755,root,root) %{_libdir}/libX[1Ta-t]*.so.*.*
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
 %attr(755,root,root) %{_libdir}/libS*.so.*.*
 %ifnarch alpha
@@ -2320,6 +2477,16 @@ fi
 %{_mandir}/man4/wacom*
 %{_mandir}/man4/elographics*
 %{_mandir}/man4/mutouch*
+
+%ifnarch alpha sparc64 ia64
+%files module-PEX
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/extensions/libpex5.a
+%endif
+
+%files module-XIE
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/extensions/libxie.a
 
 %files setup
 %defattr(644,root,root,755)
