@@ -1482,13 +1482,17 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/modules/drivers/linux
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/drivers/vga_drv.o
+%ifnarch alpha
 %attr(755,root,root) %{_libdir}/modules/drivers/vesa_drv.o
+%endif
 %endif
 %dir %{_libdir}/modules/extensions
 %attr(755,root,root) %{_libdir}/modules/extensions/libdbe.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libdri.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libextmod.a
+%ifnarch alpha
 %attr(755,root,root) %{_libdir}/modules/extensions/libpex5.a
+%endif
 %attr(755,root,root) %{_libdir}/modules/extensions/librecord.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libxie.a
 %attr(755,root,root) %{_libdir}/modules/fonts
@@ -1502,7 +1506,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/v4l*
 %ifnarch sparc sparc64
 %{_mandir}/man4/vga*
+%ifnarch alpha
 %{_mandir}/man4/vesa*
+%endif
 %endif
 %{_mandir}/man4/void*
 %{_mandir}/man4/wacom*
@@ -1737,7 +1743,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/apm*
 
 %endif
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 alpha
 
 %files driver-ark
 %defattr(644,root,root,755)
@@ -1766,7 +1772,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/cirrus*
 
 %endif
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 alpha
 
 %files driver-cyrix
 %defattr(644,root,root,755)
@@ -1779,7 +1785,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/fbdev_drv.o
 %{_mandir}/man4/fbdev*
-%ifnarch sparc sparc64
+
+%ifnarch sparc sparc64 alpha
 
 %files driver-glide
 %defattr(644,root,root,755)
@@ -1796,7 +1803,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 %{_mandir}/man4/glint*
 
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 alpha
 
 %files driver-i128
 %defattr(644,root,root,755)
@@ -1812,7 +1819,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/i740*
 
 %endif
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 alpha
 
 %files driver-i810
 %defattr(644,root,root,755)
@@ -1878,7 +1885,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/s3virge*
 
 %endif
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 alpha
 
 %files driver-savage
 %defattr(644,root,root,755)
@@ -1886,7 +1893,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/savage*
 
 %endif
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 alpha
 
 %files driver-siliconmotion
 %defattr(644,root,root,755)
@@ -1894,7 +1901,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/siliconmotion*
 
 %endif
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 alpha
 
 %files driver-sis
 %defattr(644,root,root,755)
