@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	4.0
-Release:	6
+Release:	7
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -34,12 +34,23 @@ Patch7:		XFree86-xfsredhat.patch
 Patch8:		XFree86-xfs-fix.patch
 Patch9:		XFree86-xfs-logger.patch
 Patch10:	XFree86-xterm-utempter.patch
+Patch11:	XFree86-app_defaults_dir.patch
 # From DRI CVS
-Patch11:	XFree86-DRI-20000522.patch.gz
+Patch12:	XFree86-DRI-20000522.patch.gz
 # from rawhide
-Patch12:	XFree86-startx_xauth.patch
-Patch13:	XFree86-sparc.patch
-Patch14:	XFree86-v4l.patch
+Patch13:	XFree86-startx_xauth.patch
+Patch14:	XFree86-alpha.patch
+Patch15:	XFree86-v4l.patch
+Patch16:	XFree86-fixemacs.patch
+Patch17:	XFree86-sparc1.patch.gz
+Patch18:	XFree86-sparc2.patch.gz
+Patch19:	XFree86-sparc3.patch.gz
+Patch20:	XFree86-sparc4.patch.gz
+Patch21:	XFree86-security.patch
+Patch22:	XFree86-shared.patch
+Patch23:	XFree86-broken-includes.patch
+Patch24:	XFree86-Xaw-unaligned.patch
+Patch25:	XFree86-libICE-skip.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -252,7 +263,7 @@ Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-OpenGL = %{version}
 Provides:	OpenGL-devel
-Obsoletes:	Mesa-devel
+Obsoletes:	Mesa-devel glxMesa-devel
 
 %description OpenGL-devel
 Headert and man pages for OpenGL for X11R6.
@@ -356,10 +367,20 @@ Requires:	pam
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-fonts = %{version}
 Obsoletes:	%{name}-VGA16 %{name}-SVGA %{name}-Mono
-Obsoletes:	%{name}-S3 %{name}-S3V %{name}-I128
-Obsoletes:	%{name}-Mach8 %{name}-Mach32 %{name}-Mach64
-Obsoletes:	%{name}-8514 %{name}-AGX %{name}-3DLabs
-Obsoletes:	%{name}-P9000 %{name}-W32
+Obsoletes:	XFree86-S3 XFree86-S3V XFree86-I128
+Obsoletes:	XFree86-Mach8 XFree86-Mach32 XFree86-Mach64
+Obsoletes:	XFree86-8514 XFree86-AGX XFree86-3DLabs
+Obsoletes:	XFree86-P9000 XFree86-W32
+Obsoletes:	XFree86-ATI XFree86-Alliance XFree86-ChipsTechnologies
+Obsoletes:	XFree86-Cirrus XFree86-Cyrix XFree86-FBDev
+Obsoletes:	XFree86-i740 XFree86-i810 XFree86-mga
+Obsoletes:	XFree86-NeoMagic XFree86-NVidia
+Obsoletes:	XFree86-Rage128 XFree86-Rendition
+Obsoletes:	XFree86-S3V XFree86-SiS XFree86-3dfx
+Obsoletes: 	XFree86-Trident XFree86-Tseng XFree86-VGA16
+Obsoletes:	XFree86-TGA XFree86-FBDev
+Obsoletes:	XFree86-Sun XFree86-Sun24 XFree86-SunMono
+Obsoletes:	XFree86-XF86Setup, Xconfigurator
 
 %description Xserver
 X server for most simple framebuffer SVGA devices, including cards built
@@ -785,6 +806,28 @@ used in connecting to the X server. This program is usually used to extract
 authorization records from one machine and merge them in on another (as is
 the case when using remote logins or granting access to other users).
 
+%package tools
+Summary:	Various tools for XFree86
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name} = %{version}
+Obsoletes:	X11R6-contrib
+
+%description tools
+Various tools for X, including listres, xbiff, xedit, xeyes, xcalc, xload
+and xman, among others.
+
+If you're using X, you should install XFree86-tools.  You will also
+need to install the XFree86 package, the XFree86 package which
+corresponds to your video card, one of the XFree86 fonts packages, the
+Xconfigurator package and the XFree86-libs package.
+
+Finally, if you are going to develop applications that run as X clients,
+you will also need to install XFree86-devel.
+
+This package contains all applications that used to be in X11R6-contrib
+in older releases.
+
 #--- %prep ---------------------------
 
 %prep
@@ -800,10 +843,23 @@ the case when using remote logins or granting access to other users).
 %patch8 -p0
 #%patch9 -p0
 %patch10 -p1
-%patch11 -p0
-#%patch12 -p1
-#%patch13 -p0
-#%patch14 -p1
+%patch11 -p1
+%patch12 -p0
+#%patch13 -p1
+%patch14 -p1
+%patch15 -p1
+%patch16 -p1
+%ifarch sparc sparc64
+%patch17 -p0
+%patch18 -p1
+%patch19 -p1
+%patch20 -p0
+%endif
+%patch21 -p1
+%patch22 -p1
+%patch23 -p1
+%patch24 -p1
+%patch25 -p0
 
 rm -f xc/config/cf/host.def
 
@@ -824,8 +880,8 @@ make -S -C xc World \
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
-	$RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console.apps} \
+install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console.apps} \
+	$RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
 	$RPM_BUILD_ROOT/var/lib/xkb \
 	$RPM_BUILD_ROOT/usr/include \
 	$RPM_BUILD_ROOT/usr/bin \
@@ -840,12 +896,9 @@ make -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		install install.man
 
 strip $RPM_BUILD_ROOT%{_bindir}/* || :
-strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/{lib*.so.*.*,modules/*.so} || :
-
-# DO NOT STRIP ANYTHING ELSE IN %{_libdir}/modules/ !!!
+strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/lib*.so.*.*
 
 # Move config stuff to /etc/X11
-
 cp $RPM_BUILD_ROOT%{_libdir}/X11/XF86Config.eg \
 	$RPM_BUILD_ROOT/etc/X11/XF86Config
 ln -sf ../../../../etc/X11/XF86Config $RPM_BUILD_ROOT%{_libdir}/X11/XF86Config
@@ -979,7 +1032,19 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XKeysymDB
 %{_libdir}/X11/locale
-%attr(755,root,root) %{_libdir}/X11/app-defaults
+
+%dir %{_libdir}/X11/app-defaults
+%{_libdir}/X11/app-defaults/XCalc
+%{_libdir}/X11/app-defaults/XCalc-color
+%{_libdir}/X11/app-defaults/XClipboard
+%{_libdir}/X11/app-defaults/XClock
+%{_libdir}/X11/app-defaults/XLoad
+%{_libdir}/X11/app-defaults/XLogo
+%{_libdir}/X11/app-defaults/XLogo-color
+%{_libdir}/X11/app-defaults/XSm
+%{_libdir}/X11/app-defaults/XTerm
+%{_libdir}/X11/app-defaults/XTerm-color
+
 %attr(755,root,root) %{_libdir}/X11/lbxproxy
 %attr(755,root,root) %{_libdir}/X11/proxymngr
 %attr(755,root,root) %{_libdir}/X11/rstart
@@ -988,7 +1053,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/X11/xinit
 %attr(755,root,root) %{_libdir}/X11/xsm
 
-%dir /etc/X11/app-defaults
 %dir /etc/X11/lbxproxy
 %dir /etc/X11/proxymngr
 %dir /etc/X11/rstart
@@ -999,7 +1063,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir /etc/X11/xsm
 %dir /etc/X11/xinit
 
-/etc/X11/app-defaults/*
 /etc/X11/lbxproxy/*
 /etc/X11/proxymngr/*
 %attr(-,root,root) /etc/X11/rstart/config
@@ -1020,99 +1083,69 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/X11/etc/*.sh
 %{_libdir}/X11/etc/*.term*
 %{_libdir}/X11/etc/xmodmap.std
-%{_libdir}/X11/xman.help
 
-%attr(755,root,root) %{_bindir}/lbxproxy
-%attr(755,root,root) %{_bindir}/proxymngr
-%attr(755,root,root) %{_bindir}/rstartd
-%attr(755,root,root) %{_bindir}/xfindproxy
-%attr(755,root,root) %{_bindir}/xfwp
-%attr(755,root,root) %{_bindir}/lndir
-%attr(755,root,root) %{_bindir}/mkdirhier
-%attr(755,root,root) %{_bindir}/gccmakedep
-%attr(755,root,root) %{_bindir}/mergelib
-%attr(755,root,root) %{_bindir}/makeg
+%attr(755,root,root) %{_bindir}/SuperProbe
+%attr(755,root,root) %{_bindir}/Xmark
 %attr(755,root,root) %{_bindir}/appres
+%attr(755,root,root) %{_bindir}/atobm
 %attr(755,root,root) %{_bindir}/bdftopcf
-%attr(755,root,root) %{_bindir}/beforelight
 %attr(755,root,root) %{_bindir}/bitmap
 %attr(755,root,root) %{_bindir}/bmtoa
-%attr(755,root,root) %{_bindir}/atobm
+%attr(755,root,root) %{_bindir}/dga
 %attr(755,root,root) %{_bindir}/editres
 %attr(755,root,root) %{_bindir}/iceauth
+%attr(755,root,root) %{_bindir}/lbxproxy
+%attr(755,root,root) %{_bindir}/lndir
+%attr(755,root,root) %{_bindir}/makeg
+%attr(755,root,root) %{_bindir}/makestrs
+%attr(755,root,root) %{_bindir}/mergelib
+%attr(755,root,root) %{_bindir}/mkdirhier
 %attr(755,root,root) %{_bindir}/mkfontdir
-%attr(755,root,root) %{_bindir}/showrgb
+%attr(755,root,root) %{_bindir}/pcitweak
+%attr(755,root,root) %{_bindir}/proxymngr
+%attr(755,root,root) %{_bindir}/resize
+%attr(755,root,root) %{_bindir}/revpath
 %attr(755,root,root) %{_bindir}/rstart
+%attr(755,root,root) %{_bindir}/rstartd
+%attr(755,root,root) %{_bindir}/scanpci
+%attr(755,root,root) %{_bindir}/setxkbmap
+%attr(755,root,root) %{_bindir}/showrgb
 %attr(755,root,root) %{_bindir}/smproxy
-%attr(755,root,root) %{_bindir}/x11perf
-%attr(755,root,root) %{_bindir}/x11perfcomp
-%attr(755,root,root) %{_bindir}/Xmark
-%attr(755,root,root) %{_bindir}/xclipboard
-%attr(755,root,root) %{_bindir}/xcutsel
-%attr(755,root,root) %{_bindir}/xclock
+%attr(755,root,root) %{_bindir}/startx
 %attr(755,root,root) %{_bindir}/xcmsdb
 %attr(755,root,root) %{_bindir}/xconsole
+%attr(755,root,root) %{_bindir}/xcutsel
 %attr(755,root,root) %{_bindir}/xdpyinfo
-%attr(755,root,root) %{_bindir}/dga
-%attr(755,root,root) %{_bindir}/xfd
+%attr(755,root,root) %{_bindir}/xf86config
+%attr(755,root,root) %{_bindir}/xfindproxy
+%attr(755,root,root) %{_bindir}/xfwp
+%attr(755,root,root) %{_bindir}/xgamma
 %attr(755,root,root) %{_bindir}/xhost
-%attr(755,root,root) %{_bindir}/xieperf
 %attr(755,root,root) %{_bindir}/xinit
-
-%attr(755,root,root) %{_bindir}/startx
-
-%attr(755,root,root) %{_bindir}/xterm
-
-%attr(755,root,root) %{_bindir}/setxkbmap
+%attr(755,root,root) %{_bindir}/xkbbell
 %attr(755,root,root) %{_bindir}/xkbcomp
 %attr(755,root,root) %{_bindir}/xkbevd
 %attr(755,root,root) %{_bindir}/xkbprint
 %attr(755,root,root) %{_bindir}/xkbvleds
 %attr(755,root,root) %{_bindir}/xkbwatch
-%attr(755,root,root) %{_bindir}/xkbbell
-%attr(755,root,root) %{_bindir}/xkill
-%attr(755,root,root) %{_bindir}/xlogo
 %attr(755,root,root) %{_bindir}/xlsatoms
 %attr(755,root,root) %{_bindir}/xlsclients
 %attr(755,root,root) %{_bindir}/xlsfonts
-%attr(755,root,root) %{_bindir}/xmag
 %attr(755,root,root) %{_bindir}/xmodmap
+%attr(755,root,root) %{_bindir}/xon
 %attr(755,root,root) %{_bindir}/xprop
 %attr(755,root,root) %{_bindir}/xrdb
-%attr(755,root,root) %{_bindir}/xset
 %attr(755,root,root) %{_bindir}/xrefresh
+%attr(755,root,root) %{_bindir}/xset
 %attr(755,root,root) %{_bindir}/xsetmode
 %attr(755,root,root) %{_bindir}/xsetpointer
 %attr(755,root,root) %{_bindir}/xsetroot
 %attr(755,root,root) %{_bindir}/xsm
 %attr(755,root,root) %{_bindir}/xstdcmap
-%attr(755,root,root) %{_bindir}/resize
+%attr(755,root,root) %{_bindir}/xterm
 %attr(755,root,root) %{_bindir}/xvidtune
 %attr(755,root,root) %{_bindir}/xwd
-%attr(755,root,root) %{_bindir}/xwininfo
 %attr(755,root,root) %{_bindir}/xwud
-%attr(755,root,root) %{_bindir}/xf86config
-%attr(755,root,root) %{_bindir}/scanpci
-%attr(755,root,root) %{_bindir}/SuperProbe
-%attr(755,root,root) %{_bindir}/xon
-%attr(755,root,root) %{_bindir}/makestrs
-%attr(755,root,root) %{_bindir}/oclock
-%attr(755,root,root) %{_bindir}/pcitweak
-%attr(755,root,root) %{_bindir}/revpath
-%attr(755,root,root) %{_bindir}/xedit
-%attr(755,root,root) %{_bindir}/xgamma
-%attr(755,root,root) %{_bindir}/ico
-%attr(755,root,root) %{_bindir}/listres
-%attr(755,root,root) %{_bindir}/showfont
-%attr(755,root,root) %{_bindir}/viewres
-%attr(755,root,root) %{_bindir}/xbiff
-%attr(755,root,root) %{_bindir}/xcalc
-%attr(755,root,root) %{_bindir}/xev
-%attr(755,root,root) %{_bindir}/xeyes
-%attr(755,root,root) %{_bindir}/xgc
-%attr(755,root,root) %{_bindir}/xload
-%attr(755,root,root) %{_bindir}/xman
-%attr(755,root,root) %{_bindir}/xmessage
 
 %{_includedir}/X11/bitmaps
 
@@ -1130,7 +1163,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/mkdirhier.1*
 %{_mandir}/man1/appres.1*
 %{_mandir}/man1/bdftopcf.1*
-%{_mandir}/man1/beforelight.1*
 %{_mandir}/man1/bitmap.1*
 %{_mandir}/man1/bmtoa.1*
 %{_mandir}/man1/atobm.1*
@@ -1141,30 +1173,21 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/rstart.1*
 %{_mandir}/man1/rstartd.1*
 %{_mandir}/man1/smproxy.1*
-%{_mandir}/man1/x11perf.1*
-%{_mandir}/man1/x11perfcomp.1*
-%{_mandir}/man1/xclipboard.1*
 %{_mandir}/man1/xcutsel.1*
-%{_mandir}/man1/xclock.1*
 %{_mandir}/man1/xcmsdb.1*
 %{_mandir}/man1/xconsole.1*
 %{_mandir}/man1/xdpyinfo.1*
 %{_mandir}/man1/dga.1*
-%{_mandir}/man1/xfd.1*
 %{_mandir}/man1/xhost.1*
-%{_mandir}/man1/xieperf.1*
 %{_mandir}/man1/xinit.1*
 %{_mandir}/man1/startx.1*
 %{_mandir}/man1/setxkbmap.1*
 %{_mandir}/man1/xkbcomp.1*
 %{_mandir}/man1/xkbevd.1*
 %{_mandir}/man1/xkbprint.1*
-%{_mandir}/man1/xkill.1*
-%{_mandir}/man1/xlogo.1*
 %{_mandir}/man1/xlsatoms.1*
 %{_mandir}/man1/xlsclients.1*
 %{_mandir}/man1/xlsfonts.1*
-%{_mandir}/man1/xmag.1*
 %{_mandir}/man1/xmodmap.1*
 %{_mandir}/man1/xprop.1*
 %{_mandir}/man1/xrdb.1*
@@ -1179,28 +1202,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/resize.1*
 %{_mandir}/man1/xvidtune.1*
 %{_mandir}/man1/xwd.1*
-%{_mandir}/man1/xwininfo.1*
 %{_mandir}/man1/xwud.1*
 %{_mandir}/man1/xf86config.1*
 %{_mandir}/man1/SuperProbe.1*
 %{_mandir}/man1/xon.1*
 %{_mandir}/man1/libxrx.1*
-%{_mandir}/man1/oclock.1*
 %{_mandir}/man1/revpath.1*
-%{_mandir}/man1/xedit.1*
 %{_mandir}/man1/xgamma.1*
-%{_mandir}/man1/ico.1*
-%{_mandir}/man1/listres.1*
-%{_mandir}/man1/showfont.1*
-%{_mandir}/man1/viewres.1*
-%{_mandir}/man1/xbiff.1*
-%{_mandir}/man1/xcalc.1*
-%{_mandir}/man1/xev.1*
-%{_mandir}/man1/xeyes.1*
-%{_mandir}/man1/xgc.1*
-%{_mandir}/man1/xload.1*
-%{_mandir}/man1/xman.1*
-%{_mandir}/man1/xmessage.1*
 %{_mandir}/man7/*
 
 /usr/bin/X11
@@ -1247,7 +1255,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/xdm
 /var/lib/xdm
 
-%config /etc/X11/app-defaults/Chooser
+%{_libdir}/X11/app-defaults/Chooser
 
 %attr(755,root,root) %{_libdir}/X11/xdm
 %attr(755,root,root) %{_bindir}/xdm
@@ -1325,6 +1333,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libGLU.a
 
 %files devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/gccmakedep
 %attr(755,root,root) %{_libdir}/libX*.so
 %attr(755,root,root) %{_libdir}/libI*.so
 %attr(755,root,root) %{_libdir}/libP*.so
@@ -1573,9 +1583,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/makepsres
 %attr(755,root,root) %{_bindir}/pswrap
-%attr(755,root,root) %{_libdir}/libdps.so.1.0
-%attr(755,root,root) %{_libdir}/libdpstk.so.1.0
-%attr(755,root,root) %{_libdir}/libpsres.so.1.0
+%attr(755,root,root) %{_libdir}/libdps.so.*.*
+%attr(755,root,root) %{_libdir}/libdpstk.so.*.*
+%attr(755,root,root) %{_libdir}/libpsres.so.*.*
 %{_mandir}/man1/makepsres*
 %{_mandir}/man1/pswrap*
 
@@ -1591,6 +1601,77 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libdps.a
 %{_libdir}/libdpstk.a
 %{_libdir}/libpsres.a
+
+%files tools
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/beforelight
+%attr(755,root,root) %{_bindir}/ico
+%attr(755,root,root) %{_bindir}/listres
+%attr(755,root,root) %{_bindir}/showfont
+%attr(755,root,root) %{_bindir}/viewres
+%attr(755,root,root) %{_bindir}/x11perf
+%attr(755,root,root) %{_bindir}/x11perfcomp
+%attr(755,root,root) %{_bindir}/xbiff
+%attr(755,root,root) %{_bindir}/xcalc
+%attr(755,root,root) %{_bindir}/xclipboard
+%attr(755,root,root) %{_bindir}/xclock
+#%attr(755,root,root) %{_bindir}/xditview
+%attr(755,root,root) %{_bindir}/xedit
+%attr(755,root,root) %{_bindir}/xev
+%attr(755,root,root) %{_bindir}/xeyes
+%attr(755,root,root) %{_bindir}/xfd
+#%attr(755,root,root) %{_bindir}/xfontsel
+%attr(755,root,root) %{_bindir}/xgc
+%attr(755,root,root) %{_bindir}/xieperf
+%attr(755,root,root) %{_bindir}/xload
+%attr(755,root,root) %{_bindir}/xmag
+%attr(755,root,root) %{_bindir}/xman
+%attr(755,root,root) %{_bindir}/xmessage
+%attr(755,root,root) %{_bindir}/xwininfo
+%attr(755,root,root) %{_bindir}/oclock
+%attr(755,root,root) %{_bindir}/xlogo
+%attr(755,root,root) %{_bindir}/xkill
+%{_libdir}/X11/xman.help
+%{_mandir}/man1/beforelight.1*
+%{_mandir}/man1/ico.1*
+%{_mandir}/man1/listres.1*
+%{_mandir}/man1/showfont.1*
+%{_mandir}/man1/viewres.1*
+%{_mandir}/man1/x11perf.1*
+%{_mandir}/man1/x11perfcomp.1*
+%{_mandir}/man1/xbiff.1*
+%{_mandir}/man1/xcalc.1*
+%{_mandir}/man1/xclipboard.1*
+%{_mandir}/man1/xclock.1*
+#%{_mandir}/man1/xditview.1*
+%{_mandir}/man1/xedit.1*
+%{_mandir}/man1/xev.1*
+%{_mandir}/man1/xeyes.1*
+%{_mandir}/man1/xfd.1*
+#%{_mandir}/man1/xfontsel.1*
+%{_mandir}/man1/xgc.1*
+%{_mandir}/man1/xieperf.1*
+%{_mandir}/man1/xload.1*
+%{_mandir}/man1/xmag.1*
+%{_mandir}/man1/xman.1*
+%{_mandir}/man1/xmessage.1*
+%{_mandir}/man1/xwininfo.1*
+%{_libdir}/X11/app-defaults/Beforelight
+%{_libdir}/X11/app-defaults/Bitmap
+%{_libdir}/X11/app-defaults/Bitmap-color
+%{_libdir}/X11/app-defaults/Clock-color
+%{_libdir}/X11/app-defaults/Editres
+%{_libdir}/X11/app-defaults/Editres-color
+%{_libdir}/X11/app-defaults/Viewres
+%{_libdir}/X11/app-defaults/Xvidtune
+%{_libdir}/X11/app-defaults/XConsole
+%{_libdir}/X11/app-defaults/Xedit
+%{_libdir}/X11/app-defaults/Xedit-color
+%{_libdir}/X11/app-defaults/Xfd
+%{_libdir}/X11/app-defaults/Xgc
+%{_libdir}/X11/app-defaults/Xmag
+%{_libdir}/X11/app-defaults/Xman
+%{_libdir}/X11/app-defaults/Xmessage
 
 #%files XF86Setup
 #%defattr(644,root,root,755)
