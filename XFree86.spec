@@ -120,14 +120,6 @@ will need to drive your video hardware. To control your video card, you'll
 need the particular X server package which corresponds to your computer's
 video card.
 
-In addition to installing this package, you will need to install the XFree86
-package which corresponds to your video card, the X11R6-contrib package, the
-Xconfigurator package and the XFree86-libs package. You may also need to
-install one of the XFree86 fonts packages.
-
-And finally, if you are going to develop applications that run as X clients,
-you will also need to install XFree86-devel.
-
 %description -l de
 X-Windows ist eine voll funktionsfähige grafische Benutzeroberfläche mit
 mehreren Fenstern, mehreren Clients und verschiedenen Arten von Fenstern. Es
@@ -190,14 +182,6 @@ XFree86-libs contains the shared libraries that most X programs need to run
 properly. These shared libraries are in a separate package in order to
 reduce the disk space needed to run X applications on a machine without an X
 server (i.e, over a network).
-
-If you are installing the X Window System on your machine, you will need to
-install XFree86-libs. You will also need to install the XFree86 package, the
-XFree86-75dpi-fonts package or the XFree86-100dpi-fonts package (depending
-upon your monitor's resolution), the Xconfigurator package and the
-X11R6-contrib package. And, finally, if you are going to be developing
-applications that run as X clients, you will also need to install
-XFree86-devel.
 
 %description -l de libs
 Dieses Paket enthält die zur gemeinsamen Nutzung vorgesehenen Libraries, die
@@ -386,11 +370,7 @@ Requires:	%{name}-modules = %{version}-%{release}
 XFree86-S3V is the X server for video cards based on the S3 ViRGE chipset.
 
 If you are installing the X Window System and you have a video card based on
-an S3 ViRGE chip, you should install XFree86-S3V. You will also need to
-install the XFree86 package, one or more of the XFree86 fonts packages, the
-X11R6-contrib package, the Xconfigurator package and the XFree86-libs
-package. And, finally, if you are going to develop applications that run as
-X clients, you will also need to install XFree86-devel.
+an S3 ViRGE chip, you should install XFree86-S3V.
 
 %description -l de S3V
 X-Server für Grafikkarten mit dem S3 Virge-Chipsatz.
@@ -421,12 +401,7 @@ this server is known to have problems with some Mach64 cards. Check
 http://www.xfree86.org for current information on updating this server.
 
 If you are installing the X Window System and the video card in your system
-is based on the Mach64 chip, you need to install XFree86-Mach64. You will
-also need to install the XFree86 package, one or more of the XFree86 fonts
-packages, the X11R6-contrib package, the Xconfigurator package and the
-XFree86-libs package. And, finally, if you are going to be developing
-applications that run as X clients, you will also need to install
-XFree86-devel.
+is based on the Mach64 chip, you need to install XFree86-Mach64.
 
 %description -l de Mach64
 X-Server für ATI Mach64-Karten wie Graphics Xpression, GUP Turbo, und
@@ -599,13 +574,6 @@ If you are installing the X Window System and the video card in your system
 is an older IBM 8514 or a compatible from a company such as ATI, you should
 install XFree86-8514.
 
-To install the X Window System, you will need to install the XFree86
-package, one or more of the XFree86 fonts packages, the X11R6-contrib
-package, the Xconfigurator package and the XFree86-libs package.
-
-If you are going to develop applications that run as X clients, you will
-also need to install the XFree86-devel package.
-
 %description -l fr 8514
 Serveur X pour les vieilles cartes IBM 8514 et compatibles comme lesATI.
 
@@ -631,13 +599,7 @@ This is the X server for AGX-based cards, such as the Boca Vortex, Orchid
 Celsius, Spider Black Widow and Hercules Graphite.
 
 If you are installing the X Window System and the video card in your system
-is an AGX, you'll need to install XFree86-AGX. To install the X Window
-System, you will need to install the XFree86 package, one or more of the
-XFree86 fonts packages, the X11R6-contrib package, the Xconfigurator package
-and the XFree86-libs package.
-
-Finally, if you are going to develop applications that run as X clients, you
-will also need to install the XFree86-devel package.
+is an AGX, you'll need to install XFree86-AGX.
 
 %description -l de AGX
 X-Server für Karten auf AGX-Basis wie etwa Boca Vortex, Orchid Celsius,
@@ -683,11 +645,7 @@ XFree86-Mach32 is the X server package for video cards built around ATI's
 Mach32 chip, including the ATI Graphics Ultra Pro and Ultra Plus.
 
 If you are installing the X Window System and the video card in your system
-is based on the Mach32 chip, you need to install XFree86-Mach32. You will
-also need to install the XFree86 package, one or more of the XFree86 fonts
-packages, the X11R6-contrib package, the Xconfigurator package and the
-XFree86-libs package. And, finally, if you are going to develop applications
-that run as X clients, you will also need to install XFree86-devel.
+is based on the Mach32 chip, you need to install XFree86-Mach32.
 
 %description -l de Mach32
 X-Server für Karten auf der Basis des ATI Mach32-Chip, einschließlich
@@ -720,12 +678,7 @@ XFree86-Mach 8 is the X server for video cards built around ATI's Mach8
 chip, including the ATI 8514 Ultra and Graphics Ultra.
 
 If you are installing the X Window System and the video card in your system
-is based on the Mach8 chip, you need to install XFree86-Mach8. You will also
-need to install the XFree86 package, one or more of the XFree86 fonts
-packages, the X11R6-contrib package, the Xconfigurator package and the
-XFree86-libs package. And, finally, if you are going to be developing
-applications that run as X clients, you will also need to install
-XFree86-devel.
+is based on the Mach8 chip, you need to install XFree86-Mach8.
 
 %description -l de Mach8
 X-Server für Karten auf der Basis des ATI Mach8-Chips, einschließlich
@@ -760,11 +713,7 @@ support a monochrome display.
 
 If you are installing the X Window System and your VGA card is not currently
 supported, you should install and try either XFree86-Mono or XFree86-VGA16,
-depending upon the capabilities of your display. You will also need to
-install the XFree86 package, one or more of the XFree86 fonts packages, the
-X11R6-contrib package, the Xconfigurator package and the XFree86-libs
-package. And, finally, if you are going to develop applications that run as
-X clients, you will also need to install XFree86-devel.
+depending upon the capabilities of your display.
 
 %description -l de Mono
 Generischer monochromer (Schwarzweiß-) Server für VGA-Karten, der
@@ -797,11 +746,7 @@ XFree86-P9000 is the X server for video cards built around the Weitek P9000
 chip, such as most Diamond Viper cards and the Orchid P9000 card.
 
 If you are installing the X Window System and you have a Weitek P9000 based
-video card, you should install XFree86-P9000. You will also need to install
-the XFree86 package, one or more of the XFree86 fonts packages, the
-X11R6-contrib package, the Xconfigurator package and the XFree86-libs
-package. And, finally, if you are going to develop applications that run as
-X clients, you will also need to install XFree86-devel.
+video card, you should install XFree86-P9000.
 
 %description -l de P9000
 X-Server für Karten auf Basis des Weitek P9000-Chip, wie die meisten
@@ -887,11 +832,7 @@ low resolution, 16 color display.
 If you are installing the X Window System and your VGA video card is not
 specifically supported by another X server package, you should install
 either XFree86-Mono or XFree86-VGA16, depending upon the capabilities of
-your display. You will also need to install the XFree86 package, one or more
-of the XFree86 fonts packages, the X11R6-contrib package, the Xconfigurator
-package and the XFree86-libs package. And, finally, if you are going to be
-develop applications that run as X clients, you will also need to install
-XFree86-devel.
+your display.
 
 %description -l de VGA16
 Generischer 16-Farben-Server für VGA-Karten. Funktioniert auf fast allen VGA-
@@ -927,11 +868,7 @@ WinFast S200, the Sigma Concorde, the STB LightSpeed, the TechWorks
 Thunderbolt, and the ViewTop PCI.
 
 If you are installing the X Window System and your VGA video card is based
-on the ET4000/W32 chipset, you should install XFree86-W32. You will also
-need to install the XFree86 package, one or more of the XFree86 fonts
-packages, the X11R6-contrib package, the Xconfigurator package and the
-XFree86-libs package. And, finally, if you are going to develop applications
-that run as X clients, you will also need to install XFree86-devel.
+on the ET4000/W32 chipset, you should install XFree86-W32.
 
 %description -l de W32
 Genoa 8900 Phantom 32I, Hercules Dynamite, LeaTek WinFast S200,
