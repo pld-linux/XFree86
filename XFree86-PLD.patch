@@ -386,20 +386,6 @@ diff -Nur XFree86-4.0.2.org/xc/config/cf/xfree86.cf XFree86-4.0.2/xc/config/cf/x
  #endif
  #ifndef XLogFile
  #define XLogFile		XFree86
-@@ -520,9 +520,10 @@
- 
- /* Pure PCI drivers should go first */
- # ifndef XF86CardDrivers
--#  define XF86CardDrivers	mga glint s3virge sis savage\
--				trident chips fbdev \
--				DevelDrivers vga \
-+#  define XF86CardDrivers	mga glint nv tga s3virge sis savage\
-+				neomagic i740 tdfx trident chips fbdev \
-+				DevelDrivers vga cirrus tseng apm ati\
-+				r128 ati v4l vga\
- 				XF86OSCardDrivers XF86ExtraCardDrivers
- # endif
- #endif
 diff -Nur XFree86-4.0.2.org/xc/config/imake/imake.c XFree86-4.0.2/xc/config/imake/imake.c
 --- XFree86-4.0.2.org/xc/config/imake/imake.c	Wed Nov 29 17:33:50 2000
 +++ XFree86-4.0.2/xc/config/imake/imake.c	Wed Dec 20 13:41:03 2000
