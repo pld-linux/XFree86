@@ -2150,6 +2150,7 @@ for lang in af az bg bg_BG.cp1251 br ca cs da de el en_GB eo es et eu fi \
 	echo "%lang(${lang}) %{_datadir}/locale/${lang}" >> XFree86-libs.lang
 done
 
+install synaptics/synclient   $RPM_BUILD_ROOT%{_bindir}
 install synaptics/*.synaptics $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/
 
 %ifnarch sparc sparc64
@@ -2361,6 +2362,7 @@ fi
 %attr(755,root,root) %{_bindir}/smproxy
 %attr(755,root,root) %{_bindir}/startx
 %attr(755,root,root) %{_bindir}/sxpm
+%attr(755,root,root) %{_bindir}/synclient
 %attr(755,root,root) %{_bindir}/uxterm
 %attr(755,root,root) %{_bindir}/xcmsdb
 %attr(755,root,root) %{_bindir}/xconsole
