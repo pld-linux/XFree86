@@ -2962,6 +2962,7 @@ fi
 %files driver-via
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/via_drv.o
+%{_mandir}/man4/via.4*
 %endif
 
 # Devel: sparc sparc64
@@ -3316,6 +3317,7 @@ fi
 
 %files xcursor-devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/xcursor-config
 %attr(755,root,root) %{_libdir}/libXcursor.so
 %{_includedir}/X11/Xcursor
 %{_pkgconfigdir}/xcursor.pc
