@@ -166,8 +166,6 @@ Obsoletes:	X11R6.1
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
-%define		_icondir	/usr/share/icons
-%define		_pixmapsdir	/usr/share/pixmaps
 %define		_soundsdir	/usr/share/sounds
 %define		_themesdir	/usr/share/themes
 %define		_wmpropsdir	/usr/share/wm-properties
@@ -1826,7 +1824,7 @@ rm -rf xc/fonts
 	CXXOPTIONS="%{rpmcflags}" \
 	CXXDEBUGFLAGS="" \
 	CDEBUGFLAGS="" \
-	ICONDIR="%{_icondir}" \
+	ICONDIR="%{_iconsdir}" \
 	LINUXDIR="%{_kernelsrcdir}"
 
 %ifnarch alpha
@@ -1852,7 +1850,7 @@ xmkmf $olddir/xc .
 	CXXOPTIONS="%{rpmcflags}" \
 	CXXDEBUGFLAGS="" \
 	CDEBUGFLAGS="" \
-	ICONDIR="%{_icondir}" \
+	ICONDIR="%{_iconsdir}" \
 	LINUXDIR="%{_kernelsrcdir}"
 cd $olddir
 %endif
@@ -1867,7 +1865,7 @@ TOPDIR=$(pwd)/xc
 	CXXOPTIONS="%{rpmcflags}" \
 	CXXDEBUGFLAGS="" \
 	CDEBUGFLAGS="" \
-	ICONDIR="%{_icondir}" \
+	ICONDIR="%{_iconsdir}" \
 	LINUXDIR="%{_kernelsrcdir}"
 
 cd synaptics
@@ -1887,7 +1885,7 @@ install -d $RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,security/console.apps,sysconfi
 	$RPM_BUILD_ROOT%{_sbindir} \
 	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
 	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
-	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}/mini} \
+	$RPM_BUILD_ROOT{%{_desktopdir},%{_iconsdir}/mini,%{_pixmapsdir}/mini} \
 	$RPM_BUILD_ROOT{%{_wmpropsdir},%{_soundsdir},%{_themesdir}/{Default,ThinIce}} \
 	$RPM_BUILD_ROOT%{_xsessdir}
 
@@ -1902,7 +1900,7 @@ install -d $RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,security/console.apps,sysconfi
 	CXXOPTIONS="%{rpmcflags}" \
 	CXXDEBUGFLAGS="" \
 	CDEBUGFLAGS="" \
-	ICONDIR="%{_icondir}" \
+	ICONDIR="%{_iconsdir}" \
 	LINUXDIR="%{_kernelsrcdir}"
 
 %ifnarch sparc sparc64
@@ -2153,8 +2151,8 @@ fi
 %{_appdefsdir}/XTerm
 %lang(pl) %{_appdefsdir}/pl/XTerm
 %{_appdefsdir}/XTerm-color
-%dir %{_icondir}
-%{_icondir}/*
+
+%{_iconsdir}/[!m]*
 
 %attr(755,root,root) %{_libdir}/X11/lbxproxy
 %attr(755,root,root) %{_libdir}/X11/proxymngr
@@ -2897,6 +2895,8 @@ fi
 %dir %{_sbindir}
 %dir %{_datadir}/locale
 %dir %{_datadir}/misc
+%dir %{_iconsdir}
+%dir %{_iconsdir}/mini
 %dir %{_pixmapsdir}
 %dir %{_pixmapsdir}/mini
 %dir %{_soundsdir}
