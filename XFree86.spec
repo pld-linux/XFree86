@@ -3,7 +3,7 @@
 # - separate XFS to be standalone - is it possible without duplicated files?
 #
 # Conditional build:
-%bcond_without	tdfx	# disables tdfx drivers building
+%bcond_without	glide	# don't build glide driver
 #
 Summary:	XFree86 Window System servers and basic programs
 Summary(de):	XFree86 Window-System-Server und grundlegende Programme
@@ -126,12 +126,9 @@ Patch56:	%{name}-exec-shield-GNU-stack.patch
 Patch57:	%{name}-libGL-exec-shield-fixes-v2.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	/usr/bin/perl
-%ifarch %{ix86} alpha amd64
-%{?with_tdfx:BuildRequires:	Glide3-DRI-devel}
-%endif
 # Required by xc/programs/Xserver/hw/xfree86/drivers/glide/glide_driver.c
-%ifarch %{ix86} amd64
-%{?with_tdfx:BuildRequires:	Glide2x_SDK}
+%ifarch %{ix86} amd64 ia64
+%{?with_glide:BuildRequires:	Glide2x_SDK}
 %endif
 BuildRequires:	bison
 BuildRequires:	ed
@@ -146,17 +143,16 @@ BuildRequires:	rpmbuild(macros) >= 1.143
 BuildRequires:	tcl-devel
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
-Requires:	%{name}-libs = %{epoch}:%{version}
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	xauth
 Requires:	pam >= 0.77.3
-ExclusiveArch:	%{ix86} alpha sparc m68k armv4l noarch ppc amd64
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	xpm-progs
 Obsoletes:	xterm
-
 %ifarch sparc sparc64
 Obsoletes:	X11R6.1
 %endif
+ExclusiveArch:	%{ix86} alpha amd64 armv4l ia64 m68k ppc sparc
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
@@ -1775,12 +1771,12 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch33 -p1
 #%patch34 -p1	-- seems not applied (was partially in rc1??? maybe another fix present?)
 #%patch35 -p1	-- obsoleted? (but doesn't look to be applied)
-%{?with_tdfx:%patch36 -p0}
+%patch36 -p0
 #%patch38 -p0	-- causing problems IIRC (but not really needed)
-%{?with_tdfx:%patch39 -p0}
+%patch39 -p0
 %patch40 -p1
 %{!?debug:%patch41 -p1}
-%{!?with_tdfx:%patch42 -p0}
+%{!?with_glide:%patch42 -p0}
 %patch43 -p0
 %patch44 -p0
 %patch45 -p1
@@ -2291,10 +2287,10 @@ fi
 %attr(755,root,root) %{_libdir}/libdps.so.*.*
 %attr(755,root,root) %{_libdir}/libdpstk.so.*.*
 %attr(755,root,root) %{_libdir}/libpsres.so.*.*
-%{_mandir}/man1/makepsres*
-%{_mandir}/man1/pswrap*
-%{_mandir}/man1/dpsexec*
-%{_mandir}/man1/dpsinfo*
+%{_mandir}/man1/makepsres.1*
+%{_mandir}/man1/pswrap.1*
+%{_mandir}/man1/dpsexec.1*
+%{_mandir}/man1/dpsinfo.1*
 
 %files DPS-devel
 %defattr(644,root,root,755)
@@ -2362,7 +2358,7 @@ fi
 # Linux OpenGL ABI compatibility symlink
 %attr(755,root,root) /usr/%{_lib}/libGLU.so.1
 %{_mandir}/man1/glxinfo.1*
-%{_mandir}/man1/glxgears.1x*
+%{_mandir}/man1/glxgears.1*
 
 %files OpenGL-static
 %defattr(644,root,root,755)
@@ -2469,91 +2465,92 @@ fi
 %{_includedir}/X11/Xserver
 
 # Devel: sparc sparc64
-%ifarch %{ix86} amd64
+%ifarch %{ix86} ia64 amd64
 %files driver-apm
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/apm_drv.o
-%{_mandir}/man4/apm*
+%{_mandir}/man4/apm.4*
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86} amd64
+%ifarch %{ix86} ia64 amd64
 %files driver-ark
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/ark_drv.o
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86} mips ppc arm amd64
+%ifarch %{ix86} ia64 amd64 mips ppc arm
 %files driver-chips
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/chips_drv.o
-%{_mandir}/man4/chips*
+%{_mandir}/man4/chips.4*
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86} alpha amd64
+%ifarch %{ix86} ia64 amd64 alpha
 %files driver-cirrus
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/cirrus_*.o
-%{_mandir}/man4/cirrus*
+%{_mandir}/man4/cirrus.4*
 %endif
 
-%ifarch %{ix86} amd64
+%ifarch %{ix86} ia64 amd64
 %files driver-cyrix
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/cyrix_drv.o
-%{_mandir}/man4/cyrix*
+%{_mandir}/man4/cyrix.4*
 %endif
 
-%ifarch %{ix86} sparc sparc64 mips ppc arm superh amd64
+%ifarch %{ix86} ia64 amd64 sparc sparc64 mips ppc arm superh
 %files driver-fbdev
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/fbdev_drv.o
 %{_mandir}/man4/fbdev.4*
 %endif
 
-%ifarch %{ix86}
-%if %{with tdfx}
+%ifarch %{ix86} ia64
+%if %{with glide}
 %files driver-glide
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/glide_drv.o
-%{_mandir}/man4/glide*
+%{_mandir}/man4/glide.4*
 %endif
 %endif
 
 %files driver-glint
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/glint_drv.o
-%ifarch %{ix86} alpha ppc arm amd64
+%ifarch %{ix86} ia64 amd64 alpha ppc arm
 %attr(755,root,root) %{_libdir}/modules/dri/gamma_dri.so
 %endif
-%{_mandir}/man4/glint*
+%{_mandir}/man4/glint.4*
 
 # Devel: sparc sparc64
-%ifarch %{ix86} amd64
+%ifarch %{ix86} ia64 amd64
 %files driver-i128
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i128_drv.o
-%{_mandir}/man4/i128*
+%{_mandir}/man4/i128.4*
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86}
+%ifarch %{ix86} ia64
 %files driver-i740
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i740_drv.o
-%{_mandir}/man4/i740*
+%{_mandir}/man4/i740.4*
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86}
+%ifarch %{ix86} ia64
 %files driver-i810
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i810_drv.o
+# i810_dri alone is built on amd64 - what for?
 %attr(755,root,root) %{_libdir}/modules/dri/i810_dri.so
 %attr(755,root,root) %{_libdir}/modules/dri/i830_dri.so
-%{_mandir}/man4/i810*
+%{_mandir}/man4/i810.4*
 %endif
 
 # Devel: %{ix86} sparc sparc64 ppc amd64
@@ -2568,18 +2565,18 @@ fi
 %files driver-mga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/mga_drv.o
-%ifarch %{ix86} alpha ppc arm amd64
+%ifarch %{ix86} ia64 amd64 alpha ppc arm
 %attr(755,root,root) %{_libdir}/modules/dri/mga_dri.so
 %endif
-%{_mandir}/man4/mga*
+%{_mandir}/man4/mga.4*
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86} amd64
+%ifarch %{ix86} ia64 amd64
 %files driver-neomagic
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/neomagic_drv.o
-%{_mandir}/man4/neomagic*
+%{_mandir}/man4/neomagic.4*
 %endif
 
 # Devel: %{ix86} sparc sparc64 amd64
@@ -2598,12 +2595,12 @@ fi
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86} mips alpha arm ppc amd64
+%ifarch %{ix86} ia64 amd64 mips alpha arm ppc
 %files driver-nv
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/nv_drv.o
 %attr(755,root,root) %{_libdir}/modules/drivers/riva128.o
-%{_mandir}/man4/nv*
+%{_mandir}/man4/nv.4*
 %endif
 
 %files driver-ati
@@ -2613,38 +2610,38 @@ fi
 %files driver-r128
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/r128*_drv.o
-%ifarch %{ix86} alpha ppc arm amd64
+%ifarch %{ix86} ia64 amd64 alpha ppc arm
 %attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
 %endif
-%{_mandir}/man4/r128*
+%{_mandir}/man4/r128.4*
 
 %files driver-radeon
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/radeon*_drv.o
-%ifarch %{ix86} alpha ppc arm amd64
+%ifarch %{ix86} ia64 amd64 alpha ppc arm
 %attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
 %attr(755,root,root) %{_libdir}/modules/dri/r200_dri.so
 %endif
-%{_mandir}/man4/radeon*
+%{_mandir}/man4/radeon.4*
 
 # Devel: sparc sparc64
-%ifarch %{ix86} alpha amd64
+%ifarch %{ix86} ia64 amd64 alpha
 %files driver-rendition
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/rendition_drv.o
 %{_libdir}/modules/*.uc
-%{_mandir}/man4/rendition*
+%{_mandir}/man4/rendition.4*
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86} mips alpha ppc arm amd64
+%ifarch %{ix86} ia64 amd64 mips alpha ppc arm
 %files driver-s3virge
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/s3virge_drv.o
-%{_mandir}/man4/s3virge*
+%{_mandir}/man4/s3virge.4*
 %endif
 
-%ifarch %{ix86} mips alpha ppc arm amd64
+%ifarch %{ix86} ia64 amd64 mips alpha ppc arm
 %files driver-s3
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/s3_drv.o
@@ -2652,116 +2649,115 @@ fi
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86} mips alpha ppc arm amd64
+%ifarch %{ix86} ia64 amd64 mips alpha ppc arm
 %files driver-savage
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/savage_drv.o
-%{_mandir}/man4/savage*
+%{_mandir}/man4/savage.4*
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86} alpha amd64
+%ifarch %{ix86} ia64 amd64 alpha
 %files driver-siliconmotion
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/siliconmotion_drv.o
-%{_mandir}/man4/siliconmotion*
+%{_mandir}/man4/siliconmotion.4*
 %endif
 
-%ifarch %{ix86} mips ppc arm amd64
+%ifarch %{ix86} ia64 amd64 mips ppc arm
 %files driver-sis
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
-%ifarch %{ix86}
+%ifarch %{ix86} ia64
 %attr(755,root,root) %{_libdir}/modules/dri/sis_dri.so
 %endif
-%{_mandir}/man4/sis*
+%{_mandir}/man4/sis.4*
 %endif
 
 %ifarch sparc sparc64
 %files driver-sunbw2
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/sunbw2_drv.o
-%{_mandir}/man4/sunbw2*
+%{_mandir}/man4/sunbw2.4*
 %endif
 
 %ifarch sparc sparc64
 %files driver-suncg14
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/suncg14_drv.o
-%{_mandir}/man4/suncg14*
+%{_mandir}/man4/suncg14.4*
 %endif
 
 %ifarch sparc sparc64
 %files driver-suncg3
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/suncg3_drv.o
-%{_mandir}/man4/suncg3*
+%{_mandir}/man4/suncg3.4*
 %endif
 
 %ifarch sparc sparc64
 %files driver-suncg6
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/suncg6_drv.o
-%{_mandir}/man4/suncg6*
+%{_mandir}/man4/suncg6.4*
 %endif
 
 %ifarch sparc sparc64
 %files driver-sunffb
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/sunffb_drv.o
+# Devel: %{ix86} ia64 (for fun?)
 %attr(755,root,root) %{_libdir}/modules/dri/ffb_dri.so
-%{_mandir}/man4/sunffb*
+%{_mandir}/man4/sunffb.4*
 %endif
 
 %ifarch sparc sparc64
 %files driver-sunleo
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/sunleo_drv.o
-%{_mandir}/man4/sunleo*
+%{_mandir}/man4/sunleo.4*
 %endif
 
 %ifarch sparc sparc64
 %files driver-suntcx
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/suntcx_drv.o
-%{_mandir}/man4/suntcx*
+%{_mandir}/man4/suntcx.4*
 %endif
 
-%ifarch %{ix86} sparc sparc64 mips alpha arm ppc amd64
-%if %{with tdfx}
+%ifarch %{ix86} ia64 amd64 sparc sparc64 mips alpha arm ppc
 %files driver-tdfx
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tdfx_drv.o
-%ifarch %{ix86} alpha arm ppc
+%ifarch %{ix86} ia64 alpha arm ppc
 %attr(755,root,root) %{_libdir}/modules/dri/tdfx_dri.so
 %endif
-%{_mandir}/man4/tdfx*
-%endif
+%{_mandir}/man4/tdfx.4*
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86} alpha amd64
+%ifarch %{ix86} ia64 amd64 alpha
 %files driver-tga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tga_drv.o
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86} mips ppc arm amd64
+%ifarch %{ix86} ia64 amd64 mips ppc arm
 %files driver-trident
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/trident_drv.o
-%{_mandir}/man4/trident*
+%{_mandir}/man4/trident.4*
 %endif
 
-%ifarch %{ix86} amd64
+%ifarch %{ix86} ia64 amd64
 %files driver-tseng
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tseng_drv.o
-%{_mandir}/man4/tseng*
+%{_mandir}/man4/tseng.4*
 %endif
 
-%ifarch %{ix86}
+%ifarch %{ix86} ia64
 %files driver-via
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/via_drv.o
@@ -2769,11 +2765,11 @@ fi
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86}
+%ifarch %{ix86} ia64
 %files driver-vmware
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/vmware_drv.o
-%{_mandir}/man4/vmware*
+%{_mandir}/man4/vmware.4*
 %endif
 
 %files libs
@@ -2857,10 +2853,10 @@ fi
 %ifnarch amd64
 %attr(755,root,root) %{_libdir}/modules/drivers/linux
 %endif
-%ifarch %{ix86} sparc sparc64 alpha ppc arm amd64
+%ifarch %{ix86} ia64 amd64 sparc sparc64 alpha ppc arm
 %attr(755,root,root) %{_libdir}/modules/drivers/vga_drv.o
 %endif
-%ifarch %{ix86} sparc sparc64 amd64
+%ifarch %{ix86} ia64 amd64 sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/drivers/vesa_drv.o
 %endif
 %dir %{_libdir}/modules/extensions
@@ -2878,33 +2874,33 @@ fi
 #%%{_mandir}/man1/xtr*
 %{_mandir}/man1/xkbcomp.1*
 %{_mandir}/man4/aiptek.4*
-%{_mandir}/man4/citron*
+%{_mandir}/man4/citron.4*
 %{_mandir}/man4/dmc.4*
-%{_mandir}/man4/dynapro*
+%{_mandir}/man4/dynapro.4*
+%{_mandir}/man4/elographics.4*
 %{_mandir}/man4/fbdevhw.4*
 %{_mandir}/man4/fpit.4*
 %{_mandir}/man4/js_x.4*
 %{_mandir}/man4/kbd.4*
-%{_mandir}/man4/keyboard*
-%{_mandir}/man4/microtouch*
+%{_mandir}/man4/keyboard.4*
+%{_mandir}/man4/microtouch.4*
 %{_mandir}/man4/mouse-x.4*
+%{_mandir}/man4/mutouch.4*
 %{_mandir}/man4/palmax.4*
 %{_mandir}/man4/penmount.4*
 %{_mandir}/man4/tek4957.4*
 %{_mandir}/man4/ur98.4*
 %ifnarch amd64
-%{_mandir}/man4/v4l*
+%{_mandir}/man4/v4l.4*
 %endif
-%ifarch %{ix86} sparc sparc64 alpha ppc arm amd64
-%{_mandir}/man4/vga*
+%ifarch %{ix86} ia64 amd64 sparc sparc64 alpha ppc arm
+%{_mandir}/man4/vga.4*
 %endif
-%ifarch %{ix86} sparc sparc64 amd64
-%{_mandir}/man4/vesa*
+%ifarch %{ix86} ia64 amd64 sparc sparc64
+%{_mandir}/man4/vesa.4*
 %endif
-%{_mandir}/man4/void*
-%{_mandir}/man4/wacom*
-%{_mandir}/man4/elographics*
-%{_mandir}/man4/mutouch*
+%{_mandir}/man4/void.4*
+%{_mandir}/man4/wacom.4*
 
 %files setup
 %defattr(644,root,root,755)
