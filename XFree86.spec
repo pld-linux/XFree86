@@ -2013,7 +2013,6 @@ rm -rf xc/fonts
 #	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 %endif
 
-#cd synaptics
 %{__make} -S -C synaptics clean all \
 	TOP=$(pwd)/xc \
         CC="%{__cc}" \
@@ -2025,6 +2024,7 @@ rm -rf xc/fonts
         ICONDIR="%{_icondir}" \
         LINUXDIR="%{_kernelsrcdir}"
 
+cd synaptics
 for f in COMPATIBILITY FEATURES INSTALL NEWS PARAMETER; do
 	cp -f ${f} ${f}.synaptics
 done
