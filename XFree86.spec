@@ -456,7 +456,7 @@ Ten pakiet zawiera biblioteki statyczne.
 %package render
 Summary:	X Render Extension
 Summary(pl):	Rozszerzenie X Render
-Group:          X11/Development
+Group:          X11/Development/Libraries
 Requires:       XFree86-devel
 
 %description render
@@ -464,72 +464,84 @@ This package contains header files and documentation for the X render
 extension.  Library and server implementations are separate.
 
 %description render -l pl
-Pakiet zawiera pliki nag³ówkowe i dokumenetacjê dla rozszerzenia X render.
-Biblioteka i implementacja serwera znajduj± siê w osobnym pakiecie.
-
+Pakiet zawiera pliki nag³ówkowe i dokumenetacjê dla rozszerzenia
+X render. Biblioteka i implementacja serwera znajduj± siê w osobnym
+pakiecie.
 
 %package xrender
 Summary:        X Render Extension
 Summary(pl):    Rozszerzenie X Render
 Group:          X11/Libraries
+Requires:	%{name}-libs = %{version}
 
 %description xrender
-X render library
+X render library.
 
 %description xrender -l pl
-Biblioteka X render
+Biblioteka X render.
 
 %package xrender-devel
 Summary:        X Render Extension headers
 Summary(pl):    Pliki nag³ówkowe rozszerzenia X Render
 Group:          X11/Libraries
-Requires:	%{name}-devel
-Requires:	xrender
+Requires:	%{name}-devel = %{version}
+Requires:	%{name}-render = %{version}
+Requires:	%{name}-xrender = %{version}
 
 %description xrender-devel
-X render library headers
+X render library headers.
 
 %description xrender-devel -l pl
-Pliki nag³ówkowe biblioteki X render
+Pliki nag³ówkowe biblioteki X render.
 
 %package xrender-static
 Summary:        X Render static library
 Summary(pl):    Biblioteka statyczna X render
 Group:          X11/Libraries/Development
-Requires:	%{name}-devel
-Requires:	%{name}-xrender-devel
+Requires:	%{name}-xrender-devel = %{version}
 
 %description xrender-static
-X render static library
+X render static library.
 
 %description xrender-static -l pl
-Biblioteka statyczna X render
-
+Biblioteka statyczna X render.
 
 %package xcursor
 Summary:        X cursor library
 Summary(pl):    Biblioteka X cursor
 Group:          X11/Libraries
+Requires:	%{name}-libs = %{version}
 
 %description xcursor
-X cursor library
+X cursor library.
 
 %description xcursor -l pl
-Biblioteka X cursor
+Biblioteka X cursor.
 
 %package xcursor-devel
 Summary:        X cursor library headers
 Summary(pl):    Pliki nag³ówkowe biblioteki X cursor
 Group:          X11/Libraries/Development
-Requires:	%{name}-devel
-Requires:	xcursor
+Requires:	%{name}-devel = %{version}
+Requires:	%{name}-xcursor = %{version}
 
 %description xcursor-devel
-X cursor library headers
+X cursor library headers.
 
 %description xcursor-devel -l pl
-Pliki nag³ówkowe biblioteki X cursor
+Pliki nag³ówkowe biblioteki X cursor.
 
+%package xcursor-static
+Summary:        X cursor static library
+Summary(pl):    Biblioteka statyczna X cursor
+Group:          X11/Libraries/Development
+Requires:	%{name}-xcursor-devel = %{version}
+
+%description xcursor-static
+X cursor static library.
+
+%description xcursor-static -l pl
+Biblioteka statyczna X cursor.
 
 %package OpenGL-core
 Summary:	OpenGL support for X11R6
@@ -576,7 +588,6 @@ Base headers (only gl?.h) for OpenGL for X11R6.
 
 %description OpenGL-devel-base -l pl
 Podstawowe pliki nag³ówkowe (tylko gl?.h) OpenGL dla systemu X11R6.
-
 
 %package OpenGL-libs
 Summary:	OpenGL libraries for X11R6
@@ -3292,10 +3303,11 @@ fi
 
 %files xrender-devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXrender.so
 %{_includedir}/X11/extensions/Xrender.h
-%{_libdir}/libXrender.so
 
 %files xrender-static
+%defattr(644,root,root,755)
 %{_libdir}/libXrender.a
 
 %files xcursor
@@ -3304,7 +3316,10 @@ fi
 
 %files xcursor-devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXcursor.so
 %{_includedir}/X11/Xcursor
 %{_pkgconfigdir}/xcursor.pc
-%{_libdir}/libXcursor.so
+
+%files xcursor-static
+%defattr(644,root,root,755)
 %{_libdir}/libXcursor.a
