@@ -1,0 +1,40 @@
+When using the "vesa" driver, if you also use the DisplaySize option in the
+config file, the server will crash with a floating point exception due to
+a divide by zero in miscreeninit().
+
+The problem is due to xf86SetDpi() being called too early in VESAPreInit()
+in the VESA driver.  It works normally because only when the DisplaySize
+option is used in the config file does it follows a codepath in which
+pScrn->virtualX and pScrn->virtualY are used to calculate the DPI.  Since
+these 2 struct members hadn't been initialized yet in the VESA driver,
+they default to zero, and DPI gets set to zero as well.  Later on, when
+the values are used, the FPE is triggered.
+
+I moved the call to xf86SetDpi() down further in the function to a more
+sensible location to ensure it is only called after the data it can
+potentially use has been initialized.
+
+        Mike A. Harris <mharris@redhat.com>
+
+--- XFree86-4.2.0/xc/programs/Xserver/hw/xfree86/drivers/vesa/vesa.c.vesa-xf86SetDpi-fix	Tue Jun 11 01:53:29 2002
++++ XFree86-4.2.0/xc/programs/Xserver/hw/xfree86/drivers/vesa/vesa.c	Tue Jun 11 04:46:18 2002
+@@ -524,9 +524,6 @@
+ 	xf86UnloadSubModule(pDDCModule);
+     }
+ 
+-    /* Set display resolution */
+-    xf86SetDpi(pScrn, 0, 0);
+-
+     if ((pScrn->monitor->DDC = pVesa->monitor) != NULL)
+ 	xf86SetDDCproperties(pScrn, pVesa->monitor);
+ 
+@@ -797,6 +794,9 @@
+     pScrn->displayWidth = pScrn->virtualX;
+ 
+     xf86PrintModes(pScrn);
++
++    /* Set display resolution */
++    xf86SetDpi(pScrn, 0, 0);
+ 
+     if (pScrn->modes == NULL) {
+ 	xf86DrvMsg(pScrn->scrnIndex, X_ERROR, "No modes\n");
