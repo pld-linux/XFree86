@@ -1923,7 +1923,7 @@ fi
 %pre -n xfs
 if [ -n "`/usr/bin/getgid xfs`" ]; then
 	if [ "`/usr/bin/getgid xfs`" != "56" ]; then
-		echo "Warning: group xfs hasn't gid=56. Correct this before installing xfs." 1>&2
+		echo "Error: group xfs doesn't have gid=56. Correct this before installing xfs." 1>&2
 		exit 1
 	fi
 else
@@ -1931,7 +1931,7 @@ else
 fi
 if [ -n "`/bin/id -u xfs 2>/dev/null`" ]; then
 	if [ "`/bin/id -u xfs`" != "56" ]; then
-		echo "Warning: user xfs hasn't uid=56. Corrent this before installing xfs." 1>&2
+		echo "Error: user xfs doesn't have uid=56. Corrent this before installing xfs." 1>&2
 		exit 1
 	fi
 else
