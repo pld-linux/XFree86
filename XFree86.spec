@@ -180,10 +180,10 @@ de réduire l'espace disque nécessaire à l'exécution des applications X
 sur une machine sans serveur X (en réseau).
 
 %description -l pl libs
-Pakiet zawieraj±cy podstawowe biblioteki dla programów kozystaj±cych z
-systemu X Window. Wydzielony w celu oszczednosci miejsca, nie wp³ywa
-na mo¿liwo¶ci pracy aplikacji X Window poprzez np. sieæ. Nie potrzebny
-dla komputerów nie posiadaj±cych X serwerów.
+Pakiet zawieraj±cy podstawowe biblioteki potrzebne dla wiêkszo¶ci
+programów korzystaj±cych z systemu X Window. Wydzielony w celu
+oszczêdno¶ci miejsca potrzebnego do uruchamiania aplikacji X Window
+na komputerach bez X serwera (np. przez sieæ).
 
 %description -l tr libs
 Bu paket X programlarýnýn düzgün çalýþabilmeleri için gereken
@@ -230,10 +230,10 @@ O'Reilly and Associates.
 
 %description -l pl devel
 Pliki nag³ówkowe, dokumentcja dla programistów rozwijaj±cych aplikacje
-klienckie pod X'y. Zawiera podstatwow± bibliotekê Xlib a tak¿e Xt i
-Xaw. Wiêcej informacji nt. pisania programów przy u¿yciu tych
+klienckie pod X Window. Zawiera podstawow± bibliotekê Xlib a tak¿e Xt
+i Xaw. Wiêcej informacji nt. pisania programów przy u¿yciu tych
 bibliotek mo¿esz znale¼æ w ksi±¿kach wydawnictwa O'Reilly and
-Associates (X Programming) polecanych przez Red Hat'a.
+Associates (X Programming) polecanych przez Red Hata.
 
 %description -l tr devel
 X istemcisi olarak çalýþacak programlar geliþtirmek için gereken
@@ -242,7 +242,7 @@ yanýsýra Xt ve Xaw arayüz kitaplýklarýný da içerir.
 
 %package static
 Summary:	X11R6 static libraries
-Summary(pl):	Biblioteki sytatyczne do X11R6
+Summary(pl):	Biblioteki statyczne do X11R6
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(pl):	X11/Biblioteki
@@ -257,11 +257,11 @@ Obsoletes:	xpm-static
 X11R6 static libraries.
 
 %description -l pl static
-Biblioteki sytatyczne do X11R6.
+Biblioteki statyczne do X11R6.
 
 %package OpenGL-core
 Summary:	OpenGL support for X11R6
-Summary(pl):	Wsparciem OpenGL dla systemu X11R6
+Summary(pl):	Wsparcie OpenGL dla systemu X11R6
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(pl):	X11/Biblioteki
@@ -290,7 +290,7 @@ Obsoletes:	Mesa
 OpenGL libraries for X11R6 system.
 
 %description -l pl OpenGL-libs
-Biblioteki OpenGL dla systemu X11R6
+Biblioteki OpenGL dla systemu X11R6.
 
 %package OpenGL-devel
 Summary:	OpenGL for X11R6 development
@@ -310,7 +310,7 @@ Pliki nag³ówkowe dla OpenGL dla systemu X11R6.
 
 %package OpenGL-static
 Summary:	X11R6 static libraries with OpenGL
-Summary(pl):	Biblioteki sytatyczne do X11R6 ze wsparciem dla OpenGL
+Summary(pl):	Biblioteki statyczne do X11R6 ze wsparciem dla OpenGL
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(pl):	X11/Biblioteki
@@ -322,7 +322,7 @@ Obsoletes:	Mesa-static
 X11R6 static libraries with OpenGL.
 
 %description -l pl OpenGL-static
-Biblioteki sytatyczne zawieraj±ce wsparcie dla OpenGL do X11R6.
+Biblioteki statyczne zawieraj±ce wsparcie dla OpenGL do X11R6.
 
 %package setup
 Summary:	Graphical configuration tool for XFree86
@@ -861,7 +861,7 @@ X-Windows Display PostScript is device-independent imaging model for
 displaying information on a screen.
 
 %description -l pl DPS
-X-Windows Display PostScript, to niezale¿ny od urz±dzenia model
+X-Windows Display PostScript to niezale¿ny od urz±dzenia model
 wy¶wietlania informacji na ekranie.
 
 %package DPS-devel
@@ -877,7 +877,7 @@ Obsoletes:	dgs-devel
 Header files for develop X-Windows Display Postscript.
 
 %description -l pl DPS-devel
-Pliki nag³ówkowe do biblioteki do X-Windows Display PostScript.
+Pliki nag³ówkowe do biblioteki X-Windows Display PostScript.
 
 %package DPS-static
 Summary:	Display PostScript
@@ -892,7 +892,7 @@ Obsoletes:	dgs-static
 X-Windows Display PostScript static libraries.
 
 %description -l pl DPS-static
-Statyczne biblioteko do X-Windows Display PostScript.
+Statyczne biblioteki do X-Windows Display PostScript.
 
 %package -n sessreg
 Summary:	sessreg - manage utmp/wtmp entries for non-init clients
