@@ -251,10 +251,10 @@ Group(pl):	X11/Biblioteki
 Obsoletes:	X11R6.1-devel
 %endif
 
-%description devel
+%description static
 X11R6 static libraries.
 
-%description -l pl devel
+%description -l pl static
 Biblioteki sytatyczne do X11R6.
 
 %package	XF86Setup
