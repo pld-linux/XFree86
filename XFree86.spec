@@ -1861,7 +1861,7 @@ done
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/{X11/fs,pam.d,rc.d/init.d,security/console.apps,sysconfig} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/{cs,da,de,es,fr,hu,it,ja,ko,nl,pl,pt,ru,sk,zh_CN.gb2312,zh_TW.big5} \
-	$RPM_BUILD_ROOT%{_datadir}/misc \
+	$RPM_BUILD_ROOT%{_datadir}/{misc,xsessions} \
 	$RPM_BUILD_ROOT%{_sbindir} \
 	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
 	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
@@ -1940,6 +1940,7 @@ install %{SOURCE10} $RPM_BUILD_ROOT/etc/sysconfig/xdm
 install %{SOURCE11} $RPM_BUILD_ROOT/etc/sysconfig/xfs
 
 install %{SOURCE20} $RPM_BUILD_ROOT%{_wmpropsdir}/twm.desktop
+install %{SOURCE20} $RPM_BUILD_ROOT%{_datadir}/xsessions/twm.desktop
 install %{SOURCE21} %{SOURCE22} %{SOURCE23} %{SOURCE24} %{SOURCE25} \
 	%{SOURCE26} %{SOURCE27} \
 	$RPM_BUILD_ROOT%{_desktopdir}
@@ -2857,6 +2858,7 @@ fi
 %dir %{_sbindir}
 %dir %{_datadir}/locale
 %dir %{_datadir}/misc
+%dir %{_datadir}/xsessions
 %dir %{_pixmapsdir}
 %dir %{_pixmapsdir}/mini
 %dir %{_soundsdir}
@@ -3088,6 +3090,7 @@ fi
 %files -n twm
 %defattr(644,root,root,755)
 %{_wmpropsdir}/twm.desktop
+%{_datadir}/xsessions/twm.desktop
 %attr(755,root,root) %{_bindir}/twm
 %dir %{_sysconfdir}/X11/twm
 %config %{_sysconfdir}/X11/twm/system.twmrc
