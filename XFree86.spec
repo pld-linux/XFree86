@@ -439,7 +439,7 @@ Wsparcie OpenGL dla systemu X11R6.
 %package OpenGL-devel
 Summary:	OpenGL for X11R6 development
 Summary(pl):	Pliki nagЁСwkowe OpenGL dla systemu X11R6
-Group:		X11/Libraries
+Group:		X11/Development/Libraries
 Requires:	%{name}-OpenGL-libs = %{version}
 Requires:	%{name}-devel
 Provides:	OpenGL-devel
@@ -472,7 +472,7 @@ Biblioteki OpenGL dla systemu X11R6.
 %package OpenGL-static
 Summary:	X11R6 static libraries with OpenGL
 Summary(pl):	Biblioteki statyczne do X11R6 ze wsparciem dla OpenGL
-Group:		X11/Libraries
+Group:		X11/Development/Libraries
 Requires:	%{name}-OpenGL-devel = %{version}
 Provides:	OpenGL-static
 Obsoletes:	Mesa-static
@@ -680,7 +680,7 @@ Summary(pl):	Pliki nagЁСwkowe X11R6
 Summary(ru):	Библиотеки разработчика, хедера и документация по программированию X11R6
 Summary(tr):	X11R6 ile geliЧtirme iГin gerekli dosyalar
 Summary(uk):	Б╕бл╕отеки програм╕ста, хедери та документац╕я по програмуванню X11R6
-Group:		X11/Libraries
+Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{version}
 Requires:	imake = %{version}
 Obsoletes:	xpm-devel
@@ -1477,7 +1477,7 @@ Summary:	X11R6 static libraries
 Summary(pl):	Biblioteki statyczne X11R6
 Summary(ru):	Статические библиотеки X11R6
 Summary(uk):	Статичн╕ б╕бл╕отеки X11R6
-Group:		X11/Libraries
+Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}
 %ifarch sparc sparc64
 Obsoletes:	X11R6.1-devel
