@@ -1,0 +1,627 @@
+diff -urN xc.org/extras/Mesa/src/glapi.c xc/extras/Mesa/src/glapi.c
+--- xc.org/extras/Mesa/src/glapi.c	2004-06-07 22:45:05.571381120 +0200
++++ xc/extras/Mesa/src/glapi.c	2004-06-07 23:11:34.201872576 +0200
+@@ -57,6 +57,7 @@
+ #include "glapioffsets.h"
+ #include "glapitable.h"
+ #include "glthread.h"
++#include "mem.h"
+ 
+ /***** BEGIN NO-OP DISPATCH *****/
+ 
+@@ -546,7 +547,7 @@
+       0xe8, 0x00, 0x00, 0x00, 0x00,
+       0xff, 0xa0, 0x00, 0x00, 0x00, 0x00
+    };
+-   unsigned char *code = (unsigned char *) malloc(sizeof(insn_template));
++   unsigned char *code = EXEC_MALLOC(sizeof(insn_template), 16);
+    unsigned int next_insn;
+    if (code) {
+       memcpy(code, insn_template, sizeof(insn_template));
+@@ -587,7 +588,7 @@
+ 	   0x01000000	/*  nop						  */
+    };
+ #endif
+-   unsigned int *code = (unsigned int *) malloc(sizeof(insn_template));
++   unsigned int *code = EXEC_MALLOC(sizeof(insn_template), 16);
+    unsigned long glapi_addr = (unsigned long) &_glapi_Dispatch;
+    if (code) {
+       memcpy(code, insn_template, sizeof(insn_template));
+diff -urN xc.org/extras/Mesa/src/imports.c xc/extras/Mesa/src/imports.c
+--- xc.org/extras/Mesa/src/imports.c	2004-06-07 22:45:05.943324576 +0200
++++ xc/extras/Mesa/src/imports.c	2004-06-07 23:08:05.289632064 +0200
+@@ -59,6 +59,19 @@
+ extern int vsnprintf(char *str, size_t count, const char *fmt, va_list arg);
+ #endif
+ 
++/* Define a struct for our private data. This is preferred over pointer
++ * arithmetic to access individual pieces of our private data because the
++ * compiler will help us get alignment correct in a portable way and it
++ * makes it much easier to add or remove items from our private data */
++
++typedef struct align_malloc_header {
++  void  *alloc_ptr;           /* actual allocation ptr */
++  size_t alloc_size;          /* actual allocation size */
++  void  *user_ptr;            /* ptr returned to caller */
++  size_t user_size;           /* size caller requested */
++} align_malloc_header;
++
++static unsigned long RoundUpPowerOf2(unsigned long val);
+ 
+ /**********************************************************************/
+ /* Wrappers for standard C library functions                          */
+@@ -175,6 +188,310 @@
+ #endif
+ }
+ 
++/*
++ * Execute permission implementation notes:
++ * John Dennis - jdennis@redhat.com - Red Hat Inc.
++ *
++ * Overview:
++ *
++ * Various parts of Mesa generate machine code during run time and
++ * then executes that code. We will use the term code gen to refer to
++ * this process. Some operating systems in an attempt to achieve
++ * better security enforce restrictions on which memory areas may
++ * contain executable code. In general execute permission is granted
++ * to .text sections and removed on stack or heap memory. It's the
++ * heap (and possibly the stack) where code is run time
++ * generated. This means on systems that enforce execute memory
++ * security you will get either a SEGV or SIGBUS exception when run
++ * time generated code executes and the process will be terminated.
++ *
++ * Implementation:
++ *
++ * The solution is to provide unique malloc/free functions which
++ * return memory with execute permission and to make sure these
++ * allocation functions are called for code gen.
++ *
++ * There are 3 possible implementation solutions.
++ *
++ * Solution A: use mprotect on malloc block.
++ * 
++ *   In this scenario after a block is allocated via malloc we call
++ *   mprotect on the pages containing the block and add execute
++ *   permission. In theory a free of the block removes the execute
++ *   permission. 
++ *
++ *   Pros: Simple to implement
++ *
++ *   Cons: Because execute permission is granted memory pages when
++ *         mprotect is called on the page containing the malloc block
++ *         every other malloc block in that page also receives execute
++ *         permission, this is insecure.
++ * 
++ *         When a malloc block is freed that had been allocated for
++ *         execute permission we should remove the execute permission
++ *         from that block so that when the heap manager resuses that
++ *         memory it will not be executable. But Because exectue
++ *         permission is granted to memory pages and a page may have
++ *         more than one malloc block with execute permission we
++ *         cannot remove execute permission because that would remove
++ *         execute permission on any executable malloc blocks still in
++ *         that page. By not removing the execution permission on free
++ *         we will tend to "leak" executable memory as more and more
++ *         heap pages accumulate execute permission, possible without
++ *         needing it.
++ *
++ * Solution B: use mmap to allocate block
++ *
++ *   In this scenario every call to alloc an executable block is
++ *   performed with anonymous mmap. Mmap always allocates pages of
++ *   memory. When free is called we unmap the pages.
++ *
++ *   Pros: This is much more secure. The kernel places the allocation
++ *         in special pages that have additional protection. These
++ *         pages are not near any other pages.
++ *
++ *         The pages used do not contain any heap allocation that is
++ *         not susposed to be executable, therefore we are not
++ *         inadvertantly granting execute permission to a malloc block
++ *         that happens to live in the same page as a execute malloc
++ *         block.
++ *
++ *         The allocation can be freed without affecting anyother
++ *         allocation and it will be reused by the kernel.
++ *
++ *         Its simple to implement. As simple as solution A.
++ *
++ *   Cons: Mmap only allocates in units of pages. Thus even a small
++ *         allocation will use an entire page. However note, only a
++ *         small number exec malloc's are done so the wasted memory
++ *         is not likely to be an issue.
++ *
++ *         Because every code generated function will live alone in
++ *         its own page this will probably introduce more cache misses
++ *         and page faults than if the all the code coalesced together
++ *         into one or more pages as would be the case with regular
++ *         .text sections.
++ *         
++ * Solution C: use separate malloc implementation using mmap'ed heap arena
++ * 
++ *   In this scenario a new heap manager is introduced which manages a
++ *   heap arena usning anonymous mmap with execute permission. All
++ *   executable allocations are provided using only this heap arena.
++ *
++ *   Pros: This is the ideal solution. As in Solution B executable and
++ *         non-executable allocations are never mixed. Executable
++ *         allocations are provided using the most secure pages the
++ *         kernel manages.
++ *
++ *         Pages will likely contain multiple allocations as opposed
++ *         to Solution B where pages will be sparsely used. This
++ *         improves cache and page fault behavior.
++ *
++ *   Cons: This is the most involved implementation and requires the
++ *         introduction of a heap manger implementation that has been
++ *         modified to work with anonymous mmap. However, note that
++ *         the GNU malloc implementation has been modified to work
++ *         with anonymous mmap.
++ */
++
++#if 1
++#define EXEC_ALLOC_USE_MMAP
++#else
++#define EXEC_ALLOC_USE_MALLOC
++#endif
++
++/* If input is power of 2 return that, else round up to next power of 2 */
++static unsigned long RoundUpPowerOf2(unsigned long val)
++{
++  int i, setBits;
++
++  if (val == 0) return(1UL);
++  if (val > (1UL << (sizeof(unsigned long) * 8 - 1))) {
++    /* out of range, should be fatal error?, for now return max power of 2 */
++    return (1UL << (sizeof(unsigned long) * 8 - 1));
++  }
++
++  for (i = setBits = 0; val && i < sizeof(unsigned long) * 8; i++, val >>= 1) {
++    if (val & 1UL) setBits++;
++  }
++  if (setBits > 1) 
++    return (1UL << i);		/* input was not power of 2 */
++  else
++    return (1UL << (i-1));	/* input was power of 2 */
++}
++
++/*
++ * Allocate N-byte aligned memory in executable region (uninitialized)
++ */
++
++#ifdef EXEC_ALLOC_USE_MALLOC
++void *
++_mesa_exec_malloc(size_t user_size, unsigned long user_align)
++{
++   unsigned long alloc_ptr, user_ptr, alloc_size, alloc_align;
++   align_malloc_header *pHeader;
++
++   ASSERT( user_align > 0 );
++
++   /* We store the pointer to the acutal address and size in a private
++    * header before the address the client sees. We need the actual 
++    * pointer to free with and we need the size to remove execute permission
++    * on the block */
++
++   if (user_align < sizeof(align_malloc_header))
++     alloc_align = RoundUpPowerOf2(sizeof(align_malloc_header));
++   else
++     alloc_align = user_align;
++   alloc_size = user_size + alloc_align;
++
++   alloc_ptr = (unsigned long) MALLOC(alloc_size);
++
++   if (!alloc_ptr) return(NULL);
++
++   user_ptr            = (alloc_ptr + alloc_align) & ~(unsigned long)(alloc_align - 1);
++   pHeader             = (align_malloc_header *) (user_ptr - sizeof(align_malloc_header));
++   pHeader->alloc_ptr  = (void *) alloc_ptr;
++   pHeader->alloc_size = alloc_size;
++   pHeader->user_ptr   = (void *) user_ptr;
++   pHeader->user_size  = user_size;
++
++   {
++     unsigned page_size, round;
++
++     page_size = getpagesize();
++     round = user_ptr & (page_size-1);
++     mprotect((void *)(user_ptr - round), (user_size + round + page_size-1) & ~(page_size-1),
++	      PROT_READ | PROT_WRITE | PROT_EXEC);
++   }
++
++#ifdef DEBUG
++   {
++     unsigned char *p    = (unsigned char *) alloc_ptr;
++     unsigned char *stop = (unsigned char *) pHeader;
++
++     /* mark the non-aligned area */
++     for(; p < stop; p++) {
++       *p = 0xcd;
++     }
++   }
++#endif
++
++   return (void *)user_ptr;
++}
++
++/*
++ * Free N-byte executable aligned memory
++ */
++void
++_mesa_exec_free(void *user_ptr)
++{
++   /* The header giving the real address and size is just prior to the address the client sees. */
++   align_malloc_header *pHeader;
++   void *alloc_ptr;
++   size_t user_size;
++
++   pHeader = (align_malloc_header *)((char *)user_ptr - sizeof(align_malloc_header));
++   alloc_ptr = pHeader->alloc_ptr;
++   user_size = pHeader->user_size;
++
++#if 0
++   /*
++    * Unfortunately we cannot remove the execute permission on this
++    * malloc block because execute permission is granted on a page
++    * basis. If the page containing this malloc block also contained
++    * another malloc block with execute permission that was still in
++    * effect then we will remove execute permission on a malloc block
++    * that should still be enforce. This does mean we will tend to
++    * "leak" execute permission in the heap. See above block comment
++    * on implementation issues.
++    *
++    * Note, we could keep a ref count on each page and when the ref count
++    * fell to zero we could remove the execute permission.
++    *
++    * If we did remove the execute permission this is how it would be done.
++    */
++   {
++     unsigned page_size, round;
++
++     page_size = getpagesize();
++     round = (unsigned long)user_ptr & (page_size-1);
++     mprotect((char *)user_ptr - round, (user_size + round + page_size-1) & ~(page_size-1),
++	      PROT_READ | PROT_WRITE);
++   }
++#endif
++   FREE(alloc_ptr);
++}
++
++#elif defined(EXEC_ALLOC_USE_MMAP)
++
++void *
++_mesa_exec_malloc(size_t user_size, unsigned long user_align)
++{
++   unsigned long alloc_ptr, user_ptr, alloc_size, alloc_align;
++   align_malloc_header *pHeader;
++
++   ASSERT( user_align > 0 );
++
++   /* We store the pointer to the acutal address and size in a private
++    * header before the address the client sees. We need the actual 
++    * pointer to free with and we need the size to unmap the region */
++
++   if (user_align < sizeof(align_malloc_header))
++     alloc_align = RoundUpPowerOf2(sizeof(align_malloc_header));
++   else
++     alloc_align = user_align;
++   alloc_size = user_size + alloc_align;
++
++   /* Note, I'm not sure how portable MAP_ANONYMOUS with fd=0 is, on some POSIX
++    * systems you may need to remove the MAP_ANONYMOUS flag and pass the 
++    * result of posix_typed_mem_open with POSIX_TYPED_MEM_ALLOCATE as the fd. */
++
++   alloc_ptr = (unsigned long) mmap(0, alloc_size,
++				    PROT_READ | PROT_WRITE | PROT_EXEC, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
++   if ((void *)alloc_ptr == MAP_FAILED) {
++     return(NULL);
++   }
++
++   user_ptr            = (alloc_ptr + alloc_align) & ~(unsigned long)(alloc_align - 1);
++   pHeader             = (align_malloc_header *) (user_ptr - sizeof(align_malloc_header));
++   pHeader->alloc_ptr  = (void *) alloc_ptr;
++   pHeader->alloc_size = alloc_size;
++   pHeader->user_ptr   = (void *) user_ptr;
++   pHeader->user_size  = user_size;
++
++#ifdef DEBUG
++   {
++     unsigned char *p    = (unsigned char *) alloc_ptr;
++     unsigned char *stop = (unsigned char *) pHeader;
++
++     /* mark the non-aligned area */
++     for(; p < stop; p++) {
++       *p = 0xcd;
++     }
++   }
++#endif
++
++   return (void *)user_ptr;
++}
++
++/*
++ * Free N-byte executable aligned memory
++ */
++void
++_mesa_exec_free(void *user_ptr)
++{
++   /* The header giving the real address and size is just prior to the address the client sees. */
++   align_malloc_header *pHeader;
++   void *alloc_ptr;
++   size_t alloc_size;
++
++   pHeader    = (align_malloc_header *)((char *)user_ptr - sizeof(align_malloc_header));
++   alloc_ptr  = pHeader->alloc_ptr;
++   alloc_size = pHeader->alloc_size;
++
++   munmap(alloc_ptr, alloc_size);
++}
++#endif
+ 
+ void *
+ _mesa_memcpy(void *dest, const void *src, size_t n)
+diff -urN xc.org/extras/Mesa/src/imports.h xc/extras/Mesa/src/imports.h
+--- xc.org/extras/Mesa/src/imports.h	2004-06-07 22:45:05.944324424 +0200
++++ xc/extras/Mesa/src/imports.h	2004-06-07 23:04:42.561451432 +0200
+@@ -50,6 +50,9 @@
+ #define ALIGN_MALLOC_STRUCT(T, N)  (struct T *) _mesa_align_malloc(sizeof(struct T), N)
+ #define ALIGN_CALLOC_STRUCT(T, N)  (struct T *) _mesa_align_calloc(sizeof(struct T), N)
+ #define ALIGN_FREE(PTR)            _mesa_align_free(PTR)
++/* These allocate aligned memory in a area with execute permission, used for code generation. */
++#define EXEC_MALLOC(BYTES, N)     (void *) _mesa_exec_malloc(BYTES, N)
++#define EXEC_FREE(PTR)            _mesa_exec_free(PTR)
+ 
+ #define MEMCPY( DST, SRC, BYTES)   _mesa_memcpy(DST, SRC, BYTES)
+ #define MEMSET( DST, VAL, N )      _mesa_memset(DST, VAL, N)
+@@ -120,6 +123,11 @@
+ _mesa_align_free( void *ptr );
+ 
+ extern void *
++_mesa_exec_malloc(size_t bytes, unsigned long alignment);
++extern void 
++_mesa_exec_free(void *ptr);
++
++extern void *
+ _mesa_memcpy( void *dest, const void *src, size_t n );
+ 
+ extern void
+diff -urN xc.org/extras/Mesa/src/mtypes.h xc/extras/Mesa/src/mtypes.h
+--- xc.org/extras/Mesa/src/mtypes.h	2004-06-07 22:45:05.956322600 +0200
++++ xc/extras/Mesa/src/mtypes.h	2004-06-07 23:05:35.023475992 +0200
+@@ -31,7 +31,8 @@
+ #ifndef TYPES_H
+ #define TYPES_H
+ 
+-
++#include <unistd.h>
++#include <sys/mman.h>
+ #include "glheader.h"
+ #include "config.h"		/* Hardwired parameters */
+ #include "glapitable.h"
+diff -urN xc.org/extras/Mesa/src/tnl/t_vtx_exec.c xc/extras/Mesa/src/tnl/t_vtx_exec.c
+--- xc.org/extras/Mesa/src/tnl/t_vtx_exec.c	2004-06-07 22:45:06.597225168 +0200
++++ xc/extras/Mesa/src/tnl/t_vtx_exec.c	2004-06-07 23:17:12.494444288 +0200
+@@ -593,7 +593,7 @@
+    struct dynfn *f, *tmp;
+    foreach_s (f, tmp, l) {
+       remove_from_list( f );
+-      ALIGN_FREE( f->code );
++      EXEC_FREE( f->code );
+       FREE( f );
+    }
+ }
+diff -urN xc.org/extras/Mesa/src/tnl/t_vtx_x86.c xc/extras/Mesa/src/tnl/t_vtx_x86.c
+--- xc.org/extras/Mesa/src/tnl/t_vtx_x86.c	2004-06-07 22:45:06.608223496 +0200
++++ xc/extras/Mesa/src/tnl/t_vtx_x86.c	2004-06-07 23:16:32.268559552 +0200
+@@ -75,7 +75,7 @@
+ 	 0xff, 0x25, 0, 0, 0, 0    	/* jmp    NOTIFY */
+       };
+ 
+-      dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++      dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+       memcpy (dfn->code, temp, sizeof(temp));
+       FIXUP(dfn->code, 3, 0x0, (int)&tnl->vertex[2]);
+       FIXUP(dfn->code, 9, 0x0, (int)&tnl->dmaptr);
+@@ -126,7 +126,7 @@
+ 	 0xff, 0x25, 0,0,0,0    	/* jmp    *NOTIFY */
+       };
+ 
+-      dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++      dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+       memcpy (dfn->code, temp, sizeof(temp));
+       FIXUP(dfn->code, 2, 0x0, (int)&tnl->dmaptr);
+       FIXUP(dfn->code, 25, 0x0, (int)&tnl->vertex[3]);
+@@ -163,7 +163,7 @@
+ 	 0xff, 0x25, 0,0,0,0,    	/* jmp    *NOTIFY */
+       };
+ 
+-      dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++      dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+       memcpy (dfn->code, temp, sizeof(temp));
+       FIXUP(dfn->code, 3, 0x0, (int)&tnl->dmaptr);
+       FIXUP(dfn->code, 28, 0x0, (int)&tnl->vertex[3]);
+@@ -205,7 +205,7 @@
+ 	 0xff, 0x25, 0, 0, 0, 0    	/* jmp    NOTIFY */
+       };
+ 
+-      dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++      dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+       memcpy (dfn->code, temp, sizeof(temp));
+       FIXUP(dfn->code, 3, 0x0, (int)&tnl->vertex[3]);
+       FIXUP(dfn->code, 9, 0x0, (int)&tnl->dmaptr);
+@@ -259,7 +259,7 @@
+ 	 0xff, 0x25, 0x08, 0, 0, 0,    	/* jmp    *0x8 */
+       };
+ 
+-      dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++      dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+       memcpy (dfn->code, temp, sizeof(temp));
+       FIXUP(dfn->code, 1, 0x00000000, (int)&tnl->dmaptr);
+       FIXUP(dfn->code, 27, 0x0000001c, (int)&tnl->vertex[3]);
+@@ -303,7 +303,7 @@
+ 	 0xff, 0x25, 0x08, 0, 0, 0,    	/* jmp    *0x8 */
+       };
+ 
+-      dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++      dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+       memcpy (dfn->code, temp, sizeof(temp));
+       FIXUP(dfn->code, 1, 0x00000000, (int)&tnl->dmaptr);
+       FIXUP(dfn->code, 27, 0x0000001c, (int)&tnl->vertex[3]);
+@@ -351,7 +351,7 @@
+ 	 0xff, 0x25, 0, 0, 0, 0    	/* jmp    NOTIFY */
+       };
+ 
+-      dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++      dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+       memcpy (dfn->code, temp, sizeof(temp));
+       FIXUP(dfn->code, 8, 0x01010101, (int)&tnl->dmaptr);
+       FIXUP(dfn->code, 32, 0x00000006, tnl->vertex_size-3);
+@@ -393,7 +393,7 @@
+ 
+    insert_at_head( &tnl->dfn_cache.Normal3fv, dfn );
+    dfn->key = key;
+-   dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++   dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+    memcpy (dfn->code, temp, sizeof(temp));
+    FIXUP(dfn->code, 5, 0x0, (int)tnl->normalptr); 
+    return dfn;
+@@ -421,7 +421,7 @@
+ 
+    insert_at_head( &tnl->dfn_cache.Normal3f, dfn );
+    dfn->key = key;
+-   dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++   dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+    memcpy (dfn->code, temp, sizeof(temp));
+    FIXUP(dfn->code, 1, 0x12345678, (int)tnl->normalptr); 
+    return dfn;
+@@ -449,7 +449,7 @@
+ 
+    insert_at_head( &tnl->dfn_cache.Normal3fv, dfn );
+    dfn->key = key;
+-   dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++   dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+    memcpy (dfn->code, temp, sizeof(temp));
+    FIXUP(dfn->code, 5, 0x0, (int)tnl->normalptr); 
+    return dfn;
+@@ -475,7 +475,7 @@
+ 
+    insert_at_head( &tnl->dfn_cache.Normal3f, dfn );
+    dfn->key = key;
+-   dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++   dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+    memcpy (dfn->code, temp, sizeof(temp));
+    FIXUP(dfn->code, 1, 0x12345678, (int)tnl->normalptr); 
+    return dfn;
+@@ -499,7 +499,7 @@
+ 	 0xc3,                     	/*  ret     */
+       };
+ 
+-      dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++      dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+       memcpy (dfn->code, temp, sizeof(temp));
+       FIXUP(dfn->code, 5, 0x12345678, (int)tnl->ubytecolorptr); 
+       return dfn;
+@@ -531,7 +531,7 @@
+ 	 0xc3,                          	/* ret     */
+       };
+ 
+-      dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++      dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+       memcpy (dfn->code, temp, sizeof(temp));
+       FIXUP(dfn->code, 2, 0x00000000, (int)_mesa_ubyte_to_float_color_tab); 
+       FIXUP(dfn->code, 27, 0xdeadbeaf, (int)tnl->floatcolorptr); 
+@@ -567,7 +567,7 @@
+       insert_at_head( &tnl->dfn_cache.Color4ub, dfn );
+       dfn->key = key;
+ 
+-      dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++      dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+       memcpy (dfn->code, temp, sizeof(temp));
+       FIXUP(dfn->code, 18, 0x0, (int)tnl->ubytecolorptr); 
+       FIXUP(dfn->code, 24, 0x0, (int)tnl->ubytecolorptr+1); 
+@@ -600,7 +600,7 @@
+ 
+    insert_at_head( &tnl->dfn_cache.TexCoord2fv, dfn );
+    dfn->key = key;
+-   dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++   dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+    memcpy (dfn->code, temp, sizeof(temp));
+    FIXUP(dfn->code, 5, 0x12345678, (int)tnl->texcoordptr[0]); 
+    return dfn;
+@@ -624,7 +624,7 @@
+ 
+    insert_at_head( &tnl->dfn_cache.TexCoord2f, dfn );
+    dfn->key = key;
+-   dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++   dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+    memcpy (dfn->code, temp, sizeof(temp));
+    FIXUP(dfn->code, 1, 0x12345678, (int)tnl->texcoordptr[0]); 
+    return dfn;
+@@ -648,7 +648,7 @@
+ 
+    insert_at_head( &tnl->dfn_cache.TexCoord2fv, dfn );
+    dfn->key = key;
+-   dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++   dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+    memcpy (dfn->code, temp, sizeof(temp));
+    FIXUP(dfn->code, 5, 0x12345678, (int)tnl->texcoordptr[0]); 
+    return dfn;
+@@ -670,7 +670,7 @@
+ 
+    insert_at_head( &tnl->dfn_cache.TexCoord2f, dfn );
+    dfn->key = key;
+-   dfn->code = ALIGN_MALLOC( sizeof(temp), 16 );
++   dfn->code = EXEC_MALLOC( sizeof(temp), 16 );
+    memcpy (dfn->code, temp, sizeof(temp));
+    FIXUP(dfn->code, 1, 0x12345678, (int)tnl->texcoordptr[0]); 
+    return dfn;
+diff -urN xc.org/lib/GL/mesa/src/drv/r200/r200_vtxfmt.c xc/lib/GL/mesa/src/drv/r200/r200_vtxfmt.c
+--- xc.org/lib/GL/mesa/src/drv/r200/r200_vtxfmt.c	2004-06-07 22:44:55.376930912 +0200
++++ xc/lib/GL/mesa/src/drv/r200/r200_vtxfmt.c	2004-06-07 22:48:38.196057256 +0200
+@@ -1074,7 +1074,7 @@
+    struct dynfn *f, *tmp;
+    foreach_s (f, tmp, l) {
+       remove_from_list( f );
+-      ALIGN_FREE( f->code );
++      EXEC_FREE( f->code );
+       FREE( f );
+    }
+ }
+diff -urN xc.org/lib/GL/mesa/src/drv/r200/r200_vtxfmt.h xc/lib/GL/mesa/src/drv/r200/r200_vtxfmt.h
+--- xc.org/lib/GL/mesa/src/drv/r200/r200_vtxfmt.h	2004-06-07 22:44:55.377930760 +0200
++++ xc/lib/GL/mesa/src/drv/r200/r200_vtxfmt.h	2004-06-07 22:48:38.192057864 +0200
+@@ -60,7 +60,7 @@
+    insert_at_head( &CACHE, dfn );			\
+    dfn->key[0] = key[0];					\
+    dfn->key[1] = key[1];					\
+-   dfn->code = ALIGN_MALLOC( end - start, 16 );		\
++   dfn->code = EXEC_MALLOC( end - start, 16 );		\
+    memcpy (dfn->code, start, end - start);		\
+ }							\
+ while ( 0 )
+diff -urN xc.org/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.c xc/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.c
+--- xc.org/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.c	2004-06-07 22:44:55.473916168 +0200
++++ xc/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.c	2004-06-07 22:48:38.218053912 +0200
+@@ -1042,7 +1042,7 @@
+    struct dynfn *f, *tmp;
+    foreach_s (f, tmp, l) {
+       remove_from_list( f );
+-      ALIGN_FREE( f->code );
++      EXEC_FREE( f->code );
+       FREE( f );
+    }
+ }
+diff -urN xc.org/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.h xc/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.h
+--- xc.org/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.h	2004-06-07 22:44:55.473916168 +0200
++++ xc/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.h	2004-06-07 22:48:38.214054520 +0200
+@@ -58,7 +58,7 @@
+    char *end = (char *)&FUNC##_end;			\
+    insert_at_head( &CACHE, dfn );			\
+    dfn->key = key;					\
+-   dfn->code = ALIGN_MALLOC( end - start, 16 );		\
++   dfn->code = EXEC_MALLOC( end - start, 16 );		\
+    memcpy (dfn->code, start, end - start);		\
+ }							\
+ while ( 0 )
+

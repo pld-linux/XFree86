@@ -1,0 +1,314 @@
+diff -urN xc.org/extras/Mesa/src/X86/3dnow_normal.S xc/extras/Mesa/src/X86/3dnow_normal.S
+--- xc.org/extras/Mesa/src/X86/3dnow_normal.S	2004-06-07 22:15:49.043413960 +0200
++++ xc/extras/Mesa/src/X86/3dnow_normal.S	2004-06-07 22:18:46.409450224 +0200
+@@ -834,3 +834,6 @@
+     POP_L      ( ESI )
+     POP_L      ( EDI )
+     RET
++
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/extras/Mesa/src/X86/3dnow_xform1.S xc/extras/Mesa/src/X86/3dnow_xform1.S
+--- xc.org/extras/Mesa/src/X86/3dnow_xform1.S	2004-06-07 22:15:49.049413048 +0200
++++ xc/extras/Mesa/src/X86/3dnow_xform1.S	2004-06-07 22:18:46.423448096 +0200
+@@ -420,3 +420,7 @@
+     POP_L     ( EDI )
+     POP_L     ( ESI )
+     RET
++
++.section .note.GNU-stack, "", @progbits
++.previous
++
+diff -urN xc.org/extras/Mesa/src/X86/3dnow_xform2.S xc/extras/Mesa/src/X86/3dnow_xform2.S
+--- xc.org/extras/Mesa/src/X86/3dnow_xform2.S	2004-06-07 22:15:49.054412288 +0200
++++ xc/extras/Mesa/src/X86/3dnow_xform2.S	2004-06-07 22:18:46.440445512 +0200
+@@ -461,3 +461,6 @@
+     POP_L     ( EDI )
+     POP_L     ( ESI )
+     RET
++
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/extras/Mesa/src/X86/3dnow_xform3.S xc/extras/Mesa/src/X86/3dnow_xform3.S
+--- xc.org/extras/Mesa/src/X86/3dnow_xform3.S	2004-06-07 22:15:49.080408336 +0200
++++ xc/extras/Mesa/src/X86/3dnow_xform3.S	2004-06-07 22:18:46.450443992 +0200
+@@ -545,3 +545,6 @@
+     POP_L     ( EDI )
+     POP_L     ( ESI )
+     RET
++
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/extras/Mesa/src/X86/3dnow_xform4.S xc/extras/Mesa/src/X86/3dnow_xform4.S
+--- xc.org/extras/Mesa/src/X86/3dnow_xform4.S	2004-06-07 22:15:49.099405448 +0200
++++ xc/extras/Mesa/src/X86/3dnow_xform4.S	2004-06-07 22:18:46.467441408 +0200
+@@ -554,3 +554,6 @@
+     POP_L     ( EDI )
+     POP_L     ( ESI )
+     RET
++
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/extras/Mesa/src/X86/common_x86_asm.S xc/extras/Mesa/src/X86/common_x86_asm.S
+--- xc.org/extras/Mesa/src/X86/common_x86_asm.S	2004-06-07 22:15:49.149397848 +0200
++++ xc/extras/Mesa/src/X86/common_x86_asm.S	2004-06-07 22:18:46.480439432 +0200
+@@ -235,3 +235,6 @@
+ 	RET
+ 
+ #endif
++
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/extras/Mesa/src/X86/glapi_x86.S xc/extras/Mesa/src/X86/glapi_x86.S
+--- xc.org/extras/Mesa/src/X86/glapi_x86.S	2004-06-07 22:15:49.180393136 +0200
++++ xc/extras/Mesa/src/X86/glapi_x86.S	2004-06-07 22:18:46.512434568 +0200
+@@ -4859,3 +4859,6 @@
+ 
+ 
+ #endif  /* __WIN32__ */
++
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/extras/Mesa/src/X86/mmx_blend.S xc/extras/Mesa/src/X86/mmx_blend.S
+--- xc.org/extras/Mesa/src/X86/mmx_blend.S	2004-06-07 22:15:49.182392832 +0200
++++ xc/extras/Mesa/src/X86/mmx_blend.S	2004-06-07 22:26:26.487507728 +0200
+@@ -363,3 +363,6 @@
+ 
+ #include "mmx_blendtmp.h"
+ 
++.section .note.GNU-stack, "", @progbits
++.previous
++
+diff -urN xc.org/extras/Mesa/src/X86/sse_normal.S xc/extras/Mesa/src/X86/sse_normal.S
+--- xc.org/extras/Mesa/src/X86/sse_normal.S	2004-06-07 22:15:49.260380976 +0200
++++ xc/extras/Mesa/src/X86/sse_normal.S	2004-06-07 22:18:46.527432288 +0200
+@@ -249,3 +249,6 @@
+ 	POP_L	( ESI )
+ 	RET
+ #undef FRAME_OFFSET
++
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/extras/Mesa/src/X86/sse_xform1.S xc/extras/Mesa/src/X86/sse_xform1.S
+--- xc.org/extras/Mesa/src/X86/sse_xform1.S	2004-06-07 22:15:49.267379912 +0200
++++ xc/extras/Mesa/src/X86/sse_xform1.S	2004-06-07 22:18:46.578424536 +0200
+@@ -430,3 +430,6 @@
+ 	POP_L( ESI )
+ 	RET
+ #undef FRAME_OFFSET
++
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/extras/Mesa/src/X86/sse_xform2.S xc/extras/Mesa/src/X86/sse_xform2.S
+--- xc.org/extras/Mesa/src/X86/sse_xform2.S	2004-06-07 22:15:49.269379608 +0200
++++ xc/extras/Mesa/src/X86/sse_xform2.S	2004-06-07 22:18:46.604420584 +0200
+@@ -449,3 +449,6 @@
+ 	POP_L( ESI )
+ 	RET
+ #undef FRAME_OFFSET
++
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/extras/Mesa/src/X86/sse_xform3.S xc/extras/Mesa/src/X86/sse_xform3.S
+--- xc.org/extras/Mesa/src/X86/sse_xform3.S	2004-06-07 22:15:49.284377328 +0200
++++ xc/extras/Mesa/src/X86/sse_xform3.S	2004-06-07 22:18:46.612419368 +0200
+@@ -495,3 +495,6 @@
+ 	POP_L( ESI )
+ 	RET
+ #undef FRAME_OFFSET
++
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/extras/Mesa/src/X86/sse_xform4.S xc/extras/Mesa/src/X86/sse_xform4.S
+--- xc.org/extras/Mesa/src/X86/sse_xform4.S	2004-06-07 22:15:49.285377176 +0200
++++ xc/extras/Mesa/src/X86/sse_xform4.S	2004-06-07 22:18:46.617418608 +0200
+@@ -223,3 +223,6 @@
+ 	POP_L( EDI )
+ 	POP_L( ESI )
+ 	RET
++
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/extras/Mesa/src/X86/x86_cliptest.S xc/extras/Mesa/src/X86/x86_cliptest.S
+--- xc.org/extras/Mesa/src/X86/x86_cliptest.S	2004-06-07 22:15:49.303374440 +0200
++++ xc/extras/Mesa/src/X86/x86_cliptest.S	2004-06-07 22:18:46.621418000 +0200
+@@ -398,3 +398,6 @@
+ 	POP_L( ESI )
+ 
+ 	RET
++
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/extras/Mesa/src/X86/x86_xform2.S xc/extras/Mesa/src/X86/x86_xform2.S
+--- xc.org/extras/Mesa/src/X86/x86_xform2.S	2004-06-07 22:15:49.304374288 +0200
++++ xc/extras/Mesa/src/X86/x86_xform2.S	2004-06-07 22:18:46.626417240 +0200
+@@ -560,3 +560,6 @@
+ 	POP_L( ESI )
+ 	RET
+ #undef FRAME_OFFSET
++
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/extras/Mesa/src/X86/x86_xform3.S xc/extras/Mesa/src/X86/x86_xform3.S
+--- xc.org/extras/Mesa/src/X86/x86_xform3.S	2004-06-07 22:15:49.328370640 +0200
++++ xc/extras/Mesa/src/X86/x86_xform3.S	2004-06-07 22:18:46.641414960 +0200
+@@ -630,3 +630,6 @@
+ 	POP_L( EDI )
+ 	POP_L( ESI )
+ 	RET
++
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/extras/Mesa/src/X86/x86_xform4.S xc/extras/Mesa/src/X86/x86_xform4.S
+--- xc.org/extras/Mesa/src/X86/x86_xform4.S	2004-06-07 22:15:49.358366080 +0200
++++ xc/extras/Mesa/src/X86/x86_xform4.S	2004-06-07 22:18:46.645414352 +0200
+@@ -663,3 +663,6 @@
+ 	POP_L( EDI )
+ 	POP_L( ESI )
+ 	RET
++
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/lib/GL/mesa/src/drv/r200/r200_vtxtmp_x86.S xc/lib/GL/mesa/src/drv/r200/r200_vtxtmp_x86.S
+--- xc.org/lib/GL/mesa/src/drv/r200/r200_vtxtmp_x86.S	2004-06-07 22:15:15.358534840 +0200
++++ xc/lib/GL/mesa/src/drv/r200/r200_vtxtmp_x86.S	2004-06-07 22:23:33.798760408 +0200
+@@ -492,3 +492,7 @@
+ 	ret
+ GLOBL( _sse_MultiTexCoord2f_2_end )
+ #endif
++
++.section .note.GNU-stack, "", @progbits
++.previous
++
+diff -urN xc.org/lib/GL/mesa/src/drv/radeon/radeon_vtxtmp_x86.S xc/lib/GL/mesa/src/drv/radeon/radeon_vtxtmp_x86.S
+--- xc.org/lib/GL/mesa/src/drv/radeon/radeon_vtxtmp_x86.S	2004-06-07 22:15:16.372380712 +0200
++++ xc/lib/GL/mesa/src/drv/radeon/radeon_vtxtmp_x86.S	2004-06-07 22:23:57.166208016 +0200
+@@ -492,3 +492,7 @@
+ 	ret
+ GLOBL( _sse_MultiTexCoord2f_2_end )
+ #endif
++
++.section .note.GNU-stack, "", @progbits
++.previous
++
+diff -urN xc.org/lib/GL/mesa/src/drv/tdfx/X86/fx_3dnow_fastpath.S xc/lib/GL/mesa/src/drv/tdfx/X86/fx_3dnow_fastpath.S
+--- xc.org/lib/GL/mesa/src/drv/tdfx/X86/fx_3dnow_fastpath.S	2004-06-07 22:15:16.909299088 +0200
++++ xc/lib/GL/mesa/src/drv/tdfx/X86/fx_3dnow_fastpath.S	2004-06-07 22:24:30.021213296 +0200
+@@ -81,4 +81,6 @@
+ #define TAG(x) x##_RGBA_TMU1
+ #include "fx_3dnow_fasttmp.h"
+ 
++.section .note.GNU-stack, "", @progbits
++.previous
+ 
+diff -urN xc.org/LOG xc/LOG
+--- xc.org/LOG	1970-01-01 01:00:00.000000000 +0100
++++ xc/LOG	2004-06-07 22:18:46.677409488 +0200
+@@ -0,0 +1,57 @@
++patching file extras/Mesa/src/X86/3dnow_normal.S
++patching file extras/Mesa/src/X86/3dnow_xform1.S
++patching file extras/Mesa/src/X86/3dnow_xform2.S
++patching file extras/Mesa/src/X86/3dnow_xform3.S
++patching file extras/Mesa/src/X86/3dnow_xform4.S
++patching file extras/Mesa/src/X86/common_x86_asm.S
++Hunk #1 succeeded at 235 (offset -2 lines).
++patching file extras/Mesa/src/X86/glapi_x86.S
++Hunk #1 succeeded at 4859 with fuzz 1 (offset 4085 lines).
++patching file extras/Mesa/src/X86/mmx_blend.S
++Hunk #1 FAILED at 416.
++1 out of 1 hunk FAILED -- saving rejects to file extras/Mesa/src/X86/mmx_blend.S.rej
++patching file extras/Mesa/src/X86/sse_normal.S
++can't find file to patch at input line 85
++Perhaps you used the wrong -p or --strip option?
++The text leading up to this was:
++--------------------------
++|--- xc/extras/Mesa/src/X86/sse_vertex.S.exec-shield-GNU-stack	2003-10-23 17:49:41.000000000 -0400
++|+++ xc/extras/Mesa/src/X86/sse_vertex.S	2003-10-23 17:51:50.000000000 -0400
++--------------------------
++File to patch: 
++Skip this patch? [y] 
++Skipping patch.
++1 out of 1 hunk ignored
++patching file extras/Mesa/src/X86/sse_xform1.S
++patching file extras/Mesa/src/X86/sse_xform2.S
++patching file extras/Mesa/src/X86/sse_xform3.S
++patching file extras/Mesa/src/X86/sse_xform4.S
++patching file extras/Mesa/src/X86/x86_cliptest.S
++Hunk #1 succeeded at 398 (offset -1 lines).
++can't find file to patch at input line 139
++Perhaps you used the wrong -p or --strip option?
++The text leading up to this was:
++--------------------------
++|--- xc/extras/Mesa/src/X86/x86_vertex.S.exec-shield-GNU-stack	2003-10-23 17:49:41.000000000 -0400
++|+++ xc/extras/Mesa/src/X86/x86_vertex.S	2003-10-23 17:52:30.000000000 -0400
++--------------------------
++File to patch: 
++Skip this patch? [y] 
++Skipping patch.
++1 out of 1 hunk ignored
++patching file extras/Mesa/src/X86/x86_xform2.S
++Hunk #1 succeeded at 560 (offset -1 lines).
++patching file extras/Mesa/src/X86/x86_xform3.S
++Hunk #1 succeeded at 630 (offset -1 lines).
++patching file extras/Mesa/src/X86/x86_xform4.S
++Hunk #1 succeeded at 663 (offset -1 lines).
++patching file lib/GL/mesa/src/drv/r200/r200_vtxtmp_x86.S
++Hunk #1 FAILED at 408.
++1 out of 1 hunk FAILED -- saving rejects to file lib/GL/mesa/src/drv/r200/r200_vtxtmp_x86.S.rej
++patching file lib/GL/mesa/src/drv/radeon/radeon_vtxtmp_x86.S
++Hunk #1 FAILED at 408.
++1 out of 1 hunk FAILED -- saving rejects to file lib/GL/mesa/src/drv/radeon/radeon_vtxtmp_x86.S.rej
++patching file programs/Xserver/hw/xfree86/drivers/nsc/nsc_msr_asm.S
++patching file programs/Xserver/hw/xfree86/os-support/misc/IODelay.S
++patching file programs/Xserver/hw/xfree86/os-support/misc/SlowBcopy.S
++patching file programs/Xserver/hw/xfree86/os-support/misc/BUSmemcpy.S
+diff -urN xc.org/programs/Xserver/hw/xfree86/drivers/nsc/nsc_msr_asm.S xc/programs/Xserver/hw/xfree86/drivers/nsc/nsc_msr_asm.S
+--- xc.org/programs/Xserver/hw/xfree86/drivers/nsc/nsc_msr_asm.S	2004-06-07 22:17:39.610605192 +0200
++++ xc/programs/Xserver/hw/xfree86/drivers/nsc/nsc_msr_asm.S	2004-06-07 22:18:46.673410096 +0200
+@@ -225,5 +225,8 @@
+ 	LEAVE
+ 	RET
+ 
++.section .note.GNU-stack, "", @progbits
++.previous
++
+ /*###################################*/
+ 
+diff -urN xc.org/programs/Xserver/hw/xfree86/os-support/misc/BUSmemcpy.S xc/programs/Xserver/hw/xfree86/os-support/misc/BUSmemcpy.S
+--- xc.org/programs/Xserver/hw/xfree86/os-support/misc/BUSmemcpy.S	2004-06-07 22:17:59.337606232 +0200
++++ xc/programs/Xserver/hw/xfree86/os-support/misc/BUSmemcpy.S	2004-06-07 22:18:46.678409336 +0200
+@@ -154,3 +154,5 @@
+ 	MOV_L	(EDX, EDI)
+ 	RET
+ 
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/programs/Xserver/hw/xfree86/os-support/misc/IODelay.S xc/programs/Xserver/hw/xfree86/os-support/misc/IODelay.S
+--- xc.org/programs/Xserver/hw/xfree86/os-support/misc/IODelay.S	2004-06-07 22:17:59.350604256 +0200
++++ xc/programs/Xserver/hw/xfree86/os-support/misc/IODelay.S	2004-06-07 22:18:46.675409792 +0200
+@@ -51,3 +51,5 @@
+ 	JNE	(delay_it)
+ 	RET
+ 
++.section .note.GNU-stack, "", @progbits
++.previous
+diff -urN xc.org/programs/Xserver/hw/xfree86/os-support/misc/PortIO.S xc/programs/Xserver/hw/xfree86/os-support/misc/PortIO.S
+--- xc.org/programs/Xserver/hw/xfree86/os-support/misc/PortIO.S	2004-06-07 22:17:59.366601824 +0200
++++ xc/programs/Xserver/hw/xfree86/os-support/misc/PortIO.S	2004-06-07 22:28:31.581490552 +0200
+@@ -54,4 +54,6 @@
+ 	MOV_L	(REGOFF(4,ESP), EDX)
+ 	IN_L
+ 	RET
++.section .note.GNU-stack, "", @progbits
++.previous
+ 
+diff -urN xc.org/programs/Xserver/hw/xfree86/os-support/misc/SlowBcopy.S xc/programs/Xserver/hw/xfree86/os-support/misc/SlowBcopy.S
+--- xc.org/programs/Xserver/hw/xfree86/os-support/misc/SlowBcopy.S	2004-06-07 22:17:59.367601672 +0200
++++ xc/programs/Xserver/hw/xfree86/os-support/misc/SlowBcopy.S	2004-06-07 22:18:46.676409640 +0200
+@@ -106,3 +106,6 @@
+ 	POP_L	(EBP)
+ 	RET
+ 
++.section .note.GNU-stack, "", @progbits
++.previous
++
