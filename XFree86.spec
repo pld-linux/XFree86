@@ -132,6 +132,13 @@ Patch50:	%{name}-xterm-256colors.patch
 Patch51:	%{name}-new-s3-pScreen.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	%{_bindir}/perl
+%ifarch %{ix86} alpha
+%{!?_without_tdfx:BuildRequires:	Glide3-DRI-devel}
+%endif
+# Required by xc/programs/Xserver/hw/xfree86/drivers/glide/glide_driver.c
+%ifarch %{ix86}
+%{!?_without_tdfx:BuildRequires:	Glide2x_SDK}
+%endif
 BuildRequires:	bison
 BuildRequires:	ed
 BuildRequires:	expat-devel
@@ -141,17 +148,11 @@ BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	pam-devel
+BuildRequires:	rpmbuild(macros) >= 1.122
 BuildRequires:	tcl-devel
+BuildRequires:	unzip
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
-BuildRequires:	unzip
-%ifarch %{ix86} alpha
-%{!?_without_tdfx:BuildRequires:	Glide3-DRI-devel}
-%endif
-# Required by xc/programs/Xserver/hw/xfree86/drivers/glide/glide_driver.c
-%ifarch %{ix86}
-%{!?_without_tdfx:BuildRequires:	Glide2x_SDK}
-%endif
 Requires:	%{name}-libs = %{epoch}:%{version}
 Requires:	xauth
 Requires:	pam >= 0.77.3
