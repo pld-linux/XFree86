@@ -53,10 +53,9 @@ Patch23:	%{name}-neomagic_swcursor.patch
 Patch24:	%{name}-mga-busmstr.patch
 Patch25:	%{name}-agpgart-load.patch
 Patch26:	%{name}-mkfontdir-chmod_644.patch
-Patch27:	%{name}-DEC.patch
-Patch28:	%{name}-HasFreetype2.patch
-Patch29:	%{name}-libXfont-put-eof.patch
-Patch30:	%{name}-config-s3.patch
+Patch27:	%{name}-HasFreetype2.patch
+Patch28:	%{name}-libXfont-put-eof.patch
+Patch29:	%{name}-config-s3.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1248,12 +1247,9 @@ X11R6-contrib in older releases.
 %patch24 -p1
 %patch25 -p1
 %patch26 -p1
-%ifarch alpha
-%patch27 -p0
-%endif
+%patch27 -p1
 %patch28 -p1
 %patch29 -p1
-%patch30 -p1
 rm -f xc/config/cf/host.def
 tar zx -f %{SOURCE15} -C xc/programs/Xserver/hw/xfree86/drivers/
 
