@@ -1405,7 +1405,7 @@ grep "^%{_libdir}$" /etc/ld.so.conf >/dev/null 2>&1
 %postun libs
 if [ "$1" = "0" ]; then
 	grep -v "%{_libdir}" /etc/ld.so.conf > /etc/ld.so.conf.new
-	mv l-f /etc/ld.so.conf.new /etc/ld.so.conf
+	mv -f /etc/ld.so.conf.new /etc/ld.so.conf
 fi
 /sbin/ldconfig
 
