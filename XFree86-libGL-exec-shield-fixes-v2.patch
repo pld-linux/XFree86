@@ -31,6 +31,15 @@
 diff -urN xc.org/extras/Mesa/src/glapi.c xc/extras/Mesa/src/glapi.c
 --- xc.org/extras/Mesa/src/glapi.c	2004-06-07 22:45:05.571381120 +0200
 +++ xc/extras/Mesa/src/glapi.c	2004-06-07 23:11:34.201872576 +0200
+@@ -50,6 +50,7 @@
+ #include "glapioffsets.h"
+ #include "glapitable.h"
+ #include "glthread.h"
++#include "imports.h"
+ 
+ extern hidden void *__glapi_noop_table[];
+ 
+
 @@ -546,7 +547,7 @@
        0xe8, 0x00, 0x00, 0x00, 0x00,
        0xff, 0xa0, 0x00, 0x00, 0x00, 0x00
