@@ -11,11 +11,11 @@ Summary(pt_BR):	Programas bАsicos e servidores para o sistema de janelas XFree86
 Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Name:		XFree86
-Version:	4.2.0
-Release:	6
+Version:	4.2.1
+Release:	1
 License:	MIT
 Group:		X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/%{version}/source/X%{_sver}src-1.tgz
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
 Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source2:	xdm.pamd
 Source3:	xserver.pamd
@@ -61,14 +61,14 @@ Patch25:	%{name}-mkfontdir-chmod_644.patch
 Patch26:	%{name}-HasFreetype2.patch
 Patch27:	%{name}-config-s3.patch
 Patch28:	%{name}-sparc_pci_domains.patch
-Patch29:	%{name}-xkb-us_intl-missing-commas.patch
+Patch29:	%{name}-XTerm.ad.patch
 Patch30:	%{name}-dri_directory_mode_fix.patch
 Patch31:	%{name}-alpha_GLX_align_fix.patch
 Patch32:	%{name}-XftConfig_in_correct_place.patch
 Patch33:	%{name}-PEX+XIE.patch
 Patch34:	%{name}-xman-manpaths.patch
 Patch35:	%{name}-ppc_drivers.patch
-Patch36:	%{name}-4.2.0-branch-20020524.patch
+Patch36:	ftp://ftp.xfree86.org/pub/XFree86/4.2.1/patches/4.2.0-4.2.1.diff.gz
 Patch37:	%{name}-clearrts.patch
 Patch38:	%{name}-mga020414.patch
 Patch39:	%{name}-trident-9397.patch
@@ -84,6 +84,9 @@ Patch48:	%{name}-tdfx-enable-interlaced-modes.patch
 Patch49:	%{name}-tdfx-fix-compiler-warnings.patch
 Patch50:	%{name}-tdfx-fix-vtswitch-font-corruption.patch
 Patch51:	%{name}-tdfx-should-be-2048-not-2046.patch
+Patch52:	%{name}-i740-driver-update-cvs-20020617.patch
+Patch53:	%{name}-sis-unresolved-symbols.patch
+Patch54:	%{name}-sis-maxxfbmem-fixup.patch
 
 BuildRequires:	bison
 BuildRequires:	flex
@@ -1723,9 +1726,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %ifarch ppc
 %patch35
 %endif
-cd xc
 %patch36 -p0
-cd ..
 %patch37 -p1
 %patch38 -p1
 #%patch39 -p1
@@ -1742,6 +1743,9 @@ cd ..
 #%patch49 -p0
 %patch50 -p0
 %patch51 -p0
+%patch52 -p1
+%patch53 -p1
+%patch54 -p1
 
 rm -f xc/config/cf/host.def
 
