@@ -1527,7 +1527,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %files Mach64
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_Mach64
 /usr/X11R6/share/man/man1/XF86_Mach64.1*
 /usr/X11R6/share/man/man1/XF86_Accel.1*
@@ -1536,7 +1536,7 @@ rm -rf $RPM_BUILD_ROOT
 %ifarch i386 i486 i586 i686 alpha
 
 %files P9000
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_P9000
 /usr/X11R6/share/man/man1/XF86_P9000.1*
 /usr/X11R6/share/man/man1/XF86_Accel.1*
@@ -1546,7 +1546,7 @@ rm -rf $RPM_BUILD_ROOT
 %ifarch i386 i486 i586 i686
 
 %files AGX
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_AGX
 /usr/X11R6/share/man/man1/XF86_AGX.1*
 /usr/X11R6/share/man/man1/XF86_Accel.1*
@@ -1556,7 +1556,7 @@ rm -rf $RPM_BUILD_ROOT
 %ifarch i386 i486 i586 i686
 
 %files I128
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_I128
 /usr/X11R6/share/man/man1/XF86_I128.1*
 /usr/X11R6/share/man/man1/XF86_Accel.1*
@@ -1566,7 +1566,7 @@ rm -rf $RPM_BUILD_ROOT
 %ifarch alpha
 
 %files TGA
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_TGA
 /usr/X11R6/share/man/man5/XF86Config.5*
 %endif
@@ -1583,7 +1583,7 @@ rm -rf $RPM_BUILD_ROOT
 %ifarch sparc
 
 %files SunMono
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/XsunMono
 %attr(-,root,root) /usr/X11R6/lib/X11/xkb
 /var/state/xkb
@@ -1592,7 +1592,7 @@ rm -rf $RPM_BUILD_ROOT
 %ifarch sparc
 
 %files Sun24
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/Xsun24
 %attr(-,root,root) /usr/X11R6/lib/X11/xkb
 /var/state/xkb
