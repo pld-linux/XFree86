@@ -17,7 +17,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.2.1
-Release:	4
+Release:	5
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
@@ -1828,12 +1828,12 @@ rm -f $RPM_BUILD_ROOT%{_bindir}/X
 ln -sf XFree86 $RPM_BUILD_ROOT%{_bindir}/X
 
 # setting ghost X in /etc/X11 -- xf86config will fix this ...
-ln -sf ../..%{_bindir}/XFree86 $RPM_BUILD_ROOT%{_sysconfdir}/X11/X
+ln -sf %{_bindir}/XFree86 $RPM_BUILD_ROOT%{_sysconfdir}/X11/X
 
 # add X11 links in /usr/bin, /usr/lib /usr/include
-ln -sf ../X11R6/include/X11 $RPM_BUILD_ROOT/usr/include/X11
-ln -sf ../X11R6/lib/X11 $RPM_BUILD_ROOT/usr/lib/X11
-ln -sf ../X11R6/bin $RPM_BUILD_ROOT/usr/bin/X11
+ln -sf %{_includedir}/X11 $RPM_BUILD_ROOT/usr/include/X11
+ln -sf %{_libdir}/X11 $RPM_BUILD_ROOT/usr/lib/X11
+ln -sf %{_bindir} $RPM_BUILD_ROOT/usr/bin/X11
 
 # fix libGL*.so links
 rm -f $RPM_BUILD_ROOT%{_libdir}/libGL*.so
@@ -1842,8 +1842,8 @@ ln -sf libGLU.so.1 $RPM_BUILD_ROOT%{_libdir}/libGLU.so
 
 # set up PLD xdm config
 rm -f $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/{*Console,Xaccess,Xsession,Xsetup*}
-install xdm-xinitrc-*/pixmaps/* $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/pixmaps/
-install xdm-xinitrc-*/{*Console,Xaccess,Xsession,Xsetup*} $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/
+install xdm-xinitrc-*/pixmaps/* $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/pixmaps
+install xdm-xinitrc-*/{*Console,Xaccess,Xsession,Xsetup*} $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm
 
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/xdm
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/xserver
@@ -1874,8 +1874,7 @@ ln -sf %{_fontsdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
 rm -f $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
 ln -sf %{_bindir}/xkbcomp $RPM_BUILD_ROOT%{_sysconfdir}/X11/xkb/xkbcomp
 
-ln -sf ../../../share/doc/%{name}-%{version} \
-	$RPM_BUILD_ROOT%{_libdir}/X11/doc
+ln -sf /usr/share/doc/%{name}-%{version} $RPM_BUILD_ROOT%{_libdir}/X11/doc
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
 
@@ -1941,7 +1940,7 @@ fi
 %triggerpostun modules -- XFree86-modules < 4.0.2
 if [ -d /usr/X11R6/lib/X11/xkb ]; then
 	rm -rf /usr/X11R6/lib/X11/xkb
-	ln -sf ../../../../etc/X11/xkb /usr/X11R6/lib/X11/xkb
+	ln -sf /etc/X11/xkb /usr/X11R6/lib/X11/xkb
 fi
 
 %post -n xdm
