@@ -94,9 +94,10 @@ Requires:	XFree86-fonts-ISO8859-1 = %{version}
 Requires:	XFree86-libs = %{version}
 Requires(post):	fileutils
 Prereq:		XFree86-libs
-Obsoletes:	xpm-progs
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
 Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Obsoletes:	xpm-progs
+Obsoletes:	xterm
 
 %ifarch sparc sparc64
 Obsoletes:	X11R6.1
