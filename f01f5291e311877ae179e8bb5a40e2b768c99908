@@ -1,0 +1,5 @@
+- 4.2.1 Errata
+  The MIT-SHM update in 4.2.1 is incomplete as the case where the X
+  server is started from xdm was not handled. A more complete fix from the
+  XFree86 trunk has been committed to the xf-4_2-branch branch.
+SECURITY update - STBR ASAP
