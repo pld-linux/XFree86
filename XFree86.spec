@@ -230,6 +230,7 @@ Summary(pl):	Wsparciem OpenGL dla systemu X11R6
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-libs = %{version}
+Provides:	OpenGL
 Obsoletes:	Mesa
 
 %description OpenGL
@@ -244,6 +245,7 @@ Summary(pl):	Pliki nag³ówkowe dla OpenGL dla systemu X11R6
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-OpenGL = %{version}
+Provides:	OpenGL-devel
 Obsoletes:	Mesa-devel
 
 %description OpenGL-devel
@@ -258,6 +260,7 @@ Summary(pl):	Biblioteki sytatyczne do X11R6 ze wsparciem dla OpenGL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-OpenGL-devel = %{version}
+Provides:	OpenGL-static
 Obsoletes:	Mesa-static
 
 %description OpenGL-static
