@@ -385,55 +385,56 @@ Font rendering library.
 %description xft1 -l pl
 Biblioteka wy¶wietlaj±ca fonty.
 
-%package xft2
+%package xft
 Summary:        X Font rendering library
 Summary(pl):    Biblioteka do renderowania fontów
 Group:          X11/XFree86
 Requires:       %{name}-libs = %{version}
 Provides:	Xft = 2.1
-Obsoletes:	XFree86-xft
+Obsoletes:	XFree86-xft2
 Obsoletes:	Xft
 
-%description xft2
+%description xft
 Xft is a font rendering library for X.
 
-%description xft2 -l pl
+%description xft -l pl
 Xft jest bibliotek± s³u¿±c± do renderowania fontów dla X Window.
 
-%package xft2-devel
+%package xft-devel
 Summary:        X Font Rendering library
 Summary(pl):    Biblioteka do renderowania fontów
 Group:          X11/Development/Libraries
-Requires:       %{name}-xft2 = %{version}
+Requires:       %{name}-xft = %{version}
 Requires:       %{name}-fontconfig-devel
 Provides:	Xft-devel = 2.1
-Obsoletes:      XFree86-xft-devel
+Obsoletes:      XFree86-xft2-devel
 Obsoletes:	Xft-devel
 
-%description xft2-devel
+%description xft-devel
 Xft is a font rendering library for X.
 
 This package contains the header files needed to develop programs that
 use these Xft.
 
-%description xft2-devel -l pl
+%description xft-devel -l pl
 Xft jest bibliotek± s³u¿±c± do renderowania fontów dla X Window.
 
 Ten pakiet zawiera pliki nag³ówkowe potrzebne do kompilowania
 programów korzystaj±cych z biblioteki Xft.
 
-%package xft2-static
+%package xft-static
 Summary:        X Font Rendering library
 Summary(pl):    Biblioteka do renderowania fontów
 Group:          X11/Development/Libraries
-Requires:       %{name}-xft2-devel = %{version}
+Requires:       %{name}-xft-devel = %{version}
+Obsoletes:      XFree86-xft2-static
 
-%description xft2-static
+%description xft-static
 Xft is a font rendering library for X.
 
 This package contains static libraries.
 
-%description xft2-static -l pl
+%description xft-static -l pl
 Xft jest bibliotek± s³u¿±c± do renderowania fontów dla X Window.
 
 Ten pakiet zawiera biblioteki statyczne.
@@ -2081,8 +2082,8 @@ rm -rf $RPM_BUILD_ROOT
 %post	xft1 -p /sbin/ldconfig
 %postun	xft1 -p /sbin/ldconfig
 
-%post   xft2 -p /sbin/ldconfig
-%postun xft2 -p /sbin/ldconfig
+%post   xft -p /sbin/ldconfig
+%postun xft -p /sbin/ldconfig
 
 %post	fontconfig -p /sbin/ldconfig
 %postun	fontconfig -p /sbin/ldconfig
@@ -2436,11 +2437,11 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libXft.so.1.1
 
-%files xft2
+%files xft
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libXft.so.2.0
 
-%files xft2-devel
+%files xft-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/xft-config
 %{_includedir}/X11/Xft
@@ -2448,7 +2449,7 @@ fi
 %{_mandir}/man3/Xft.3*
 %{_pkgconfigdir}/xft.pc
 
-%files xft2-static
+%files xft-static
 %defattr(644,root,root,755)
 %{_libdir}/libXft.a
 
