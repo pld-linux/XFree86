@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	3.3.3.1
-Release:	55
+Release:	56
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -76,14 +76,13 @@ Patch40:	XFree86-NVIDIA.patch
 Patch41:	XFree86-xf86config-3dfx.patch
 Patch42:	XFree86-G200dga.patch
 Patch43:	XFree86-ffbcrash.patch
-Patch44:	XFree86-fixiso8859-2.patch
-Patch45:	XFree86-ru_sparc.patch
-Patch46:	XFree86-xinitrace.patch
-Patch47:	XFree86-xterm-color.patch
-Patch48:	XFree86-xdm+pam_env.patch
-Patch49:	XFree86-XF86Config-path.patch
-Patch50:	XFree86-XF86Setup-fonts.patch
-Patch51:	XFree86-IPv6.patch
+Patch44:	XFree86-ru_sparc.patch
+Patch45:	XFree86-xinitrace.patch
+Patch46:	XFree86-xterm-color.patch
+Patch47:	XFree86-xdm+pam_env.patch
+Patch48:	XFree86-XF86Config-path.patch
+Patch49:	XFree86-XF86Setup-fonts.patch
+Patch50:	XFree86-polish_kbd.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -1007,7 +1006,6 @@ unset POSIXLY_CORRECT
 %patch48 -p1
 %patch49 -p1
 %patch50 -p1
-#%patch51 -p1
 
 ## Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
