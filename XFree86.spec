@@ -117,7 +117,7 @@ BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	pam-devel
-BuildRequires:	perl
+BuildRequires:	%{_bindir}/perl
 BuildRequires:	tcl-devel
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
