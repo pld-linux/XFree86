@@ -1120,6 +1120,7 @@ Summary(pl):	Display PostScript
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
+Provides:	DPS
 Obsoletes:	dgs
 
 %description DPS
