@@ -11,21 +11,20 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.1.0/source/X410src-1.tgz
-Source1:	ftp://download.sourceforge.net/pub/sourceforge/mesa3d/MesaLib-3.4.tar.bz2
-Source2:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
-Source3:	xdm.pamd
+Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
+Source2:	xdm.pamd
+Source3:	xserver.pamd
 Source4:	xdm.init
 Source5:	xfs.init
 Source6:	xfs.config
-Source7:	xserver.pamd
-Source8:	XTerm.ad-pl
-Source9:	xdm.sysconfig
-Source10:	xfs.sysconfig
-Source11:	twm.desktop
-Source12:	xclipboard.desktop
-Source13:	xconsole.desktop
-Source14:	xterm.desktop
-Source15:	xlogo64.png
+Source7:	XTerm.ad-pl
+Source8:	xdm.sysconfig
+Source9:	xfs.sysconfig
+Source10:	twm.desktop
+Source11:	xclipboard.desktop
+Source12:	xconsole.desktop
+Source13:	xterm.desktop
+Source14:	xlogo64.png
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -35,35 +34,26 @@ Patch5:		%{name}-xfs-fix.patch
 Patch6:		%{name}-xfs-logger.patch
 Patch7:		%{name}-xterm-utempter.patch
 Patch8:		%{name}-app_defaults_dir.patch
-Patch9:		%{name}-startx_xauth.patch
-Patch10:	%{name}-v4l.patch
-Patch11:	%{name}-broken-includes.patch
-Patch12:	%{name}-alpha-pcibus-lemming.patch
-Patch13:	%{name}-fhs.patch
-Patch14:	%{name}-xdmsecurity.patch
-Patch15:	%{name}-xman.patch
-Patch16:	%{name}-HasXdmAuth.patch
-Patch17:	%{name}-xdm-fixes.patch
-Patch18:	%{name}-imake-kernel-version.patch
-Patch19:	%{name}-no-kernel-modules.patch
-Patch20:	%{name}-locale.alias.patch
-Patch21:	%{name}-parallelmake.patch
-Patch22:	%{name}-portuguese.patch
-Patch23:	%{name}-XF86CardDrivers-cfg.patch
-Patch24:	%{name}-pic.patch
-Patch25:	ftp://ftp.xfree86.org/pub/XFree86/4.0.3/patches/4.0.2-4.0.3.diff.gz
-Patch26:	%{name}-defmodes-1400.patch
-Patch27:	%{name}-xft-match.patch
-Patch28:	%{name}-banshee-ramtiming.patch
-Patch29:	%{name}-r128-busmstr2.patch
-Patch30:	%{name}-r128-drm-do-wait-for-fifo.patch
-Patch31:	%{name}-neomagic_swcursor.patch
-Patch32:	%{name}-alpha-pci-resource.patch
-Patch33:	%{name}-mga-busmstr.patch
-Patch34:	%{name}-g450.patch
-Patch35:	%{name}-agpgart-load.patch
-Patch36:	%{name}-mkfontdir-chmod_644.patch
-Patch37:	%{name}-DEC.patch
+Patch9:		%{name}-v4l.patch
+Patch10:	%{name}-broken-includes.patch
+Patch11:	%{name}-alpha-pcibus-lemming.patch
+Patch12:	%{name}-fhs.patch
+Patch13:	%{name}-xdmsecurity.patch
+Patch14:	%{name}-xman.patch
+Patch15:	%{name}-HasXdmAuth.patch
+Patch16:	%{name}-xdm-fixes.patch
+Patch17:	%{name}-imake-kernel-version.patch
+Patch18:	%{name}-no-kernel-modules.patch
+Patch19:	%{name}-parallelmake.patch
+Patch20:	%{name}-XF86CardDrivers-cfg.patch
+Patch21:	%{name}-pic.patch
+Patch22:	%{name}-defmodes-1400.patch
+Patch23:	%{name}-r128-busmstr2.patch
+Patch24:	%{name}-neomagic_swcursor.patch
+Patch25:	%{name}-mga-busmstr.patch
+Patch26:	%{name}-agpgart-load.patch
+Patch27:	%{name}-mkfontdir-chmod_644.patch
+Patch28:	%{name}-DEC.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1196,47 +1186,38 @@ X11R6-contrib in older releases.
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c -a1 -a2
+%setup -q -c -a1
 %patch0 -p1
-#%patch1 -p1
-#%patch2 -p1
-##%patch3 -p1
-#%patch4 -p1
-#%patch5 -p0
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p0
 # Not ready yet
 #%patch6 -p0
-#%patch7 -p1
-#%patch8 -p1
-#%patch9 -p0
-#%patch10 -p1
-#%patch11 -p1
-#%patch12 -p0
-#%patch13 -p1
-#%patch14 -p1
-#%patch15 -p1
-#%patch16 -p1
-#%patch17 -p1
-#%patch18 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
+%patch10 -p1
+%patch11 -p0
+%patch12 -p1
+%patch13 -p1
+%patch14 -p1
+%patch15 -p1
+%patch16 -p1
+%patch17 -p1
+%patch18 -p1
 #%patch19 -p1
-#%patch20 -p0
-#%patch21 -p1
-#%patch22 -p1
-#%patch23 -p1
-#%patch24 -p1
-#%patch25 -p0
-#%patch26 -p1
-#%patch27 -p1
-#%patch28 -p1
-#%patch29 -p1
-#%patch30 -p1
-#%patch31 -p1
-#%patch32 -p1
-#%patch33 -p1
-#%patch34 -p1
-#%patch35 -p1
-#%patch36 -p1
+#%patch20 -p1
+%patch21 -p1
+%patch22 -p1
+%patch23 -p1
+%patch24 -p1
+%patch25 -p1
+%patch26 -p1
+%patch27 -p1
 %ifarch alpha
-%patch37 -p0
+%patch28 -p0
 %endif
 rm -f xc/config/cf/host.def
 
@@ -1249,37 +1230,6 @@ rm -f xc/config/cf/host.def
 	"CXXOPTIONS=%{rpmcflags}" \
 	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 
-cd Mesa*
-
-%configure \
-	--enable-static \
-	--enable-shared \
-	--with-ggi="no" \
-	--with-svga="no" \
-	--disable-ggi-fbdev \
-	--disable-ggi-genkgi \
-%ifarch %{ix86} \
-	--enable-x86 \
-  %ifarch i586 i686 \
-	--enable-mmx \
-	--enable-3dnow \
-  %else \
-    %ifarch k6 \
-	--enable-mmx \
-	--enable-3dnow" \
-    %else \
-	--disable-mmx \
-	--disable-3dnow \
-    %endif \
-  %endif \
-%else \
-	--disable-x86 \
-	--disable-mmx \
-	--disable-3dnow
-%endif
-
-%{__make} -C src-glu
-	
 #--- %install ------------------------
 
 %install
@@ -1304,11 +1254,6 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console
 		"CXXDEBUGFLAGS=" "CDEBUGFLAGS=" \
 		install install.man
 
-%{__make} -C Mesa*/src-glu install \
-	DESTDIR=$RPM_BUILD_ROOT
-
-install Mesa*/include/GL/glu.h $RPM_BUILD_ROOT%{_includedir}/GL/
-
 # setting default X
 rm -f $RPM_BUILD_ROOT%{_bindir}/X
 ln -sf XFree86 $RPM_BUILD_ROOT%{_bindir}/X
@@ -1331,22 +1276,22 @@ rm -f $RPM_BUILD_ROOT/etc/X11/xdm/{*Console,Xaccess,Xsession,Xsetup*}
 install xdm-xinitrc-*/pixmaps/* $RPM_BUILD_ROOT/etc/X11/xdm/pixmaps/
 install xdm-xinitrc-*/{*Console,Xaccess,Xsession,Xsetup*} $RPM_BUILD_ROOT/etc/X11/xdm/
 
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/xdm
-install %{SOURCE7} $RPM_BUILD_ROOT/etc/pam.d/xserver
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/xdm
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/xserver
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
 install %{SOURCE6} $RPM_BUILD_ROOT/etc/X11/fs/config
-install %{SOURCE8} $RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/pl/XTerm
+install %{SOURCE7} $RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/pl/XTerm
 
-install %{SOURCE9} $RPM_BUILD_ROOT/etc/sysconfig/xdm
-install %{SOURCE10} $RPM_BUILD_ROOT/etc/sysconfig/xfs
+install %{SOURCE8} $RPM_BUILD_ROOT/etc/sysconfig/xdm
+install %{SOURCE9} $RPM_BUILD_ROOT/etc/sysconfig/xfs
 
-install %{SOURCE11} $RPM_BUILD_ROOT%{_wmpropsdir}/twm.desktop
+install %{SOURCE10} $RPM_BUILD_ROOT%{_wmpropsdir}/twm.desktop
+install %{SOURCE11} $RPM_BUILD_ROOT%{_applnkdir}/Utilities
 install %{SOURCE12} $RPM_BUILD_ROOT%{_applnkdir}/Utilities
-install %{SOURCE13} $RPM_BUILD_ROOT%{_applnkdir}/Utilities
-install %{SOURCE14} $RPM_BUILD_ROOT%{_applnkdir}
+install %{SOURCE13} $RPM_BUILD_ROOT%{_applnkdir}
 
-install %{SOURCE15} $RPM_BUILD_ROOT%{_datadir}/pixmaps
+install %{SOURCE14} $RPM_BUILD_ROOT%{_datadir}/pixmaps
 
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
@@ -1779,13 +1724,11 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) /etc/X11/fs/config
 
 %attr(755,root,root) %{_bindir}/xfs
-%attr(755,root,root) %{_bindir}/fsinfo
 %attr(755,root,root) %{_bindir}/fslsfonts
 %attr(755,root,root) %{_bindir}/fstobdf
 %attr(755,root,root) %{_bindir}/mkcfm
 
 %{_mandir}/man1/xfs.1*
-%{_mandir}/man1/fsinfo.1*
 %{_mandir}/man1/fslsfonts.1*
 %{_mandir}/man1/fstobdf.1*
 %{_mandir}/man1/mkcfm.1*
@@ -1834,7 +1777,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files OpenGL-devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libGLU.la
 %attr(755,root,root) %{_libdir}/libGL*.so
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/libOSMesa*.so
