@@ -24,7 +24,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.2.99.901
-Release:	0.20030207.3
+Release:	0.20030207.4
 License:	MIT
 Group:		X11/XFree86
 #Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
@@ -113,8 +113,8 @@ Patch52:	%{name}-sis-option-swcursor.patch
 Patch54:	%{name}-sis-maxxfbmem-fixup.patch
 #Patch55:	%{name}-Radeon9000.patch
 Patch56:	%{name}-Xfont-Type1-large-DoS.patch
-# "strip -g libGLcore.a" left empty object debug_xform.o, which caused GLcore
-# loading failure with "debug_xform.o: no symbols"
+# "strip -g libGLcore.a" leaves empty objects m_debug_*.o, which cause
+# warnings during GLcore loading ("m_debug_*.o: no symbols") - shut up them
 Patch57:	%{name}-GLcore-strip-a-workaround.patch
 # Original from: ftp://ftp.xfree86.org/pub/XFree86/4.2.1/fixes/4.2.1-mit-shm-security.patch
 #Patch58:	%{name}-4.2.1-mit-shm-security.patch
@@ -1915,7 +1915,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #%patch54 -p1	-- obsoleted? (code looks very different)
 #%patch55 -p0	-- obsoleted
 %patch56 -p1
-#%%{!?debug:%patch57 -p1} --obsoleted
+%{!?debug:%patch57 -p1}
 #%patch58 -p0  --obsoleted
 %{?_without_tdfx:%patch59 -p0}
 %patch60 -p0
@@ -2119,7 +2119,8 @@ fi
 %post -n xdm
 /sbin/chkconfig --add xdm
 if [ -f /var/lock/subsys/xdm ]; then
-	/etc/rc.d/init.d/xdm restart >&2
+	echo "Run \"/etc/rc.d/init.d/xdm restart\" to restart xdm." >&2
+	echo "WARNING: it will terminate all sessions opened from xdm!" >&2
 else
 	echo "Run \"/etc/rc.d/init.d/xdm start\" to start xdm." >&2
 fi
