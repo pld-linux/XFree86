@@ -1570,6 +1570,7 @@ rm -rf $RPM_BUILD_ROOT
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/libOSMesa*.so
 %endif
+%dir %{_includedir}/GL
 %attr(644,root,root) %{_includedir}/GL/*
 %{_mandir}/man3/glX*
 
@@ -1605,6 +1606,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libxf86config.a
 %{_libdir}/libXinerama.a
 
+%dir %{_includedir}/X11
 %{_includedir}/X11/*.h
 %{_includedir}/X11/ICE
 %{_includedir}/X11/PEX5
