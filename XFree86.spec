@@ -56,7 +56,7 @@ Patch26:	%{name}-mkfontdir-chmod_644.patch
 Patch27:	%{name}-DEC.patch
 Patch28:	%{name}-HasFreetype2.patch
 Patch29:	%{name}-libXfont-put-eof.patch
-Patch30:	%{name}-makefile-s3.patch
+Patch30:	%{name}-config-s3.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
