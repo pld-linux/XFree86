@@ -172,6 +172,7 @@ Obsoletes:	X11R6.1
 %define		_themesdir	/usr/share/themes
 %define		_wmpropsdir	/usr/share/wm-properties
 %define		_xsessdir	/usr/share/xsessions
+%define		_appdefsdir	%{_libdir}/X11/app-defaults
 
 # avoid Mesa dependency in XFree86-OpenGL-libs
 # Glide3 (libglide3.so.3) can be provided by Glide_V3-DRI or Glide_V5-DRI
@@ -1881,7 +1882,7 @@ done
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,security/console.apps,sysconfig,xdg} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/X11/fs \
-	$RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/{cs,da,de,es,fr,hu,it,ja,ko,nl,pl,pt,ru,sk,zh_CN.gb2312,zh_TW.big5} \
+	$RPM_BUILD_ROOT%{_appdefsdir}/{cs,da,de,es,fr,hu,it,ja,ko,nl,pl,pt,ru,sk,zh_CN.gb2312,zh_TW.big5} \
 	$RPM_BUILD_ROOT%{_datadir}/misc \
 	$RPM_BUILD_ROOT%{_sbindir} \
 	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
@@ -1960,7 +1961,7 @@ install %{SOURCE5} $RPM_BUILD_ROOT/etc/pam.d/xserver
 install %{SOURCE6} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
 install %{SOURCE7} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
 install %{SOURCE8} $RPM_BUILD_ROOT%{_sysconfdir}/X11/fs/config
-install %{SOURCE9} $RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/pl/XTerm
+install %{SOURCE9} $RPM_BUILD_ROOT%{_appdefsdir}/pl/XTerm
 
 install %{SOURCE10} $RPM_BUILD_ROOT/etc/sysconfig/xdm
 install %{SOURCE11} $RPM_BUILD_ROOT/etc/sysconfig/xfs
@@ -2142,19 +2143,19 @@ fi
 %doc %{_libdir}/X11/doc
 %endif
 
-%{_libdir}/X11/app-defaults/UXTerm
-%{_libdir}/X11/app-defaults/XCalc
-%{_libdir}/X11/app-defaults/XCalc-color
-%{_libdir}/X11/app-defaults/XClipboard
-%{_libdir}/X11/app-defaults/XClock
-%{_libdir}/X11/app-defaults/XClock-color
-%{_libdir}/X11/app-defaults/XLoad
-%{_libdir}/X11/app-defaults/XLogo
-%{_libdir}/X11/app-defaults/XLogo-color
-%{_libdir}/X11/app-defaults/XSm
-%{_libdir}/X11/app-defaults/XTerm
-%lang(pl) %{_libdir}/X11/app-defaults/pl/XTerm
-%{_libdir}/X11/app-defaults/XTerm-color
+%{_appdefsdir}/UXTerm
+%{_appdefsdir}/XCalc
+%{_appdefsdir}/XCalc-color
+%{_appdefsdir}/XClipboard
+%{_appdefsdir}/XClock
+%{_appdefsdir}/XClock-color
+%{_appdefsdir}/XLoad
+%{_appdefsdir}/XLogo
+%{_appdefsdir}/XLogo-color
+%{_appdefsdir}/XSm
+%{_appdefsdir}/XTerm
+%lang(pl) %{_appdefsdir}/pl/XTerm
+%{_appdefsdir}/XTerm-color
 %dir %{_icondir}
 %{_icondir}/*
 
@@ -2264,7 +2265,7 @@ fi
 %{_pixmapsdir}/xlogo64.png
 %{_pixmapsdir}/xterm.png
 
-%{_libdir}/X11/app-defaults/Xvidtune
+%{_appdefsdir}/Xvidtune
 
 %{_mandir}/man1/Xmark.1*
 %{_mandir}/man1/appres.1*
@@ -2877,21 +2878,21 @@ fi
 %dir %{_themesdir}/ThinIce
 %{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XKeysymDB
-%dir %{_libdir}/X11/app-defaults
-%lang(cs) %dir %{_libdir}/X11/app-defaults/cs
-%lang(da) %dir %{_libdir}/X11/app-defaults/da
-%lang(de) %dir %{_libdir}/X11/app-defaults/de
-%lang(es) %dir %{_libdir}/X11/app-defaults/es
-%lang(fr) %dir %{_libdir}/X11/app-defaults/fr
-%lang(hu) %dir %{_libdir}/X11/app-defaults/hu
-%lang(ko) %dir %{_libdir}/X11/app-defaults/ko
-%lang(nl) %dir %{_libdir}/X11/app-defaults/nl
-%lang(pl) %dir %{_libdir}/X11/app-defaults/pl
-%lang(pt) %dir %{_libdir}/X11/app-defaults/pt
-%lang(ru) %dir %{_libdir}/X11/app-defaults/ru
-%lang(sk) %dir %{_libdir}/X11/app-defaults/sk
-%lang(zh_CN) %dir %{_libdir}/X11/app-defaults/zh_CN.gb2312
-%lang(zh_TW) %dir %{_libdir}/X11/app-defaults/zh_TW.big5
+%dir %{_appdefsdir}
+%lang(cs) %dir %{_appdefsdir}/cs
+%lang(da) %dir %{_appdefsdir}/da
+%lang(de) %dir %{_appdefsdir}/de
+%lang(es) %dir %{_appdefsdir}/es
+%lang(fr) %dir %{_appdefsdir}/fr
+%lang(hu) %dir %{_appdefsdir}/hu
+%lang(ko) %dir %{_appdefsdir}/ko
+%lang(nl) %dir %{_appdefsdir}/nl
+%lang(pl) %dir %{_appdefsdir}/pl
+%lang(pt) %dir %{_appdefsdir}/pt
+%lang(ru) %dir %{_appdefsdir}/ru
+%lang(sk) %dir %{_appdefsdir}/sk
+%lang(zh_CN) %dir %{_appdefsdir}/zh_CN.gb2312
+%lang(zh_TW) %dir %{_appdefsdir}/zh_TW.big5
 %{_libdir}/X11/locale
 %dir %{_includedir}
 %dir %{_includedir}/X11
@@ -3003,7 +3004,7 @@ fi
 %endif
 %attr(755,root,root) %{_bindir}/xf86cfg
 %attr(755,root,root) %{_bindir}/xf86config
-%{_libdir}/X11/app-defaults/XF86Cfg
+%{_appdefsdir}/XF86Cfg
 %ifnarch ppc
 %{_mandir}/man1/scanpci.1*
 %endif
@@ -3113,26 +3114,26 @@ fi
 
 %lang(pl) %{_mandir}/pl/man1/rman.1*
 
-%{_libdir}/X11/app-defaults/Beforelight
-%{_libdir}/X11/app-defaults/Bitmap
-%{_libdir}/X11/app-defaults/Bitmap-color
-%{_libdir}/X11/app-defaults/Clock-color
-%{_libdir}/X11/app-defaults/Editres
-%{_libdir}/X11/app-defaults/Editres-color
-%{_libdir}/X11/app-defaults/Viewres
-%{_libdir}/X11/app-defaults/XConsole
-%{_libdir}/X11/app-defaults/Xedit
-%{_libdir}/X11/app-defaults/Xedit-color
-%{_libdir}/X11/app-defaults/Xfd
-%{_libdir}/X11/app-defaults/Xgc
-%{_libdir}/X11/app-defaults/Xmag
-%{_libdir}/X11/app-defaults/Xman
-%{_libdir}/X11/app-defaults/Xmessage
-%{_libdir}/X11/app-defaults/Xmessage-color
-%{_libdir}/X11/app-defaults/Xmh
-%{_libdir}/X11/app-defaults/XFontSel
-%{_libdir}/X11/app-defaults/Xditview
-%{_libdir}/X11/app-defaults/Xditview-chrtr
+%{_appdefsdir}/Beforelight
+%{_appdefsdir}/Bitmap
+%{_appdefsdir}/Bitmap-color
+%{_appdefsdir}/Clock-color
+%{_appdefsdir}/Editres
+%{_appdefsdir}/Editres-color
+%{_appdefsdir}/Viewres
+%{_appdefsdir}/XConsole
+%{_appdefsdir}/Xedit
+%{_appdefsdir}/Xedit-color
+%{_appdefsdir}/Xfd
+%{_appdefsdir}/Xgc
+%{_appdefsdir}/Xmag
+%{_appdefsdir}/Xman
+%{_appdefsdir}/Xmessage
+%{_appdefsdir}/Xmessage-color
+%{_appdefsdir}/Xmh
+%{_appdefsdir}/XFontSel
+%{_appdefsdir}/Xditview
+%{_appdefsdir}/Xditview-chrtr
 
 %{_desktopdir}/oclock.desktop
 %{_desktopdir}/xcalc.desktop
@@ -3195,7 +3196,7 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/xdm
 /var/lib/xdm
 
-%{_libdir}/X11/app-defaults/Chooser
+%{_appdefsdir}/Chooser
 
 %attr(755,root,root) %{_libdir}/X11/xdm
 %attr(755,root,root) %{_bindir}/xdm
