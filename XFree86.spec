@@ -108,6 +108,8 @@ Patch42:	%{name}-disable_glide.patch
 Patch43:	%{name}-expat.patch
 Patch44:	%{name}-pkgconfig.patch
 Patch45:	%{name}-VidMode-nocrashafterfailure.patch
+# spencode.o in libspeedo.a is empty - patch like for libGLcore.a
+Patch46:	%{name}-spencode-nowarning.patch
 BuildRequires:	bison
 BuildRequires:	expat-devel
 BuildRequires:	flex
@@ -1937,6 +1939,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch43 -p0
 %patch44 -p0
 %patch45 -p1
+%patch46 -p1
 
 rm -f xc/config/cf/host.def
 
