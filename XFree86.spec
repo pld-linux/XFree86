@@ -1376,7 +1376,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/X11/xkb
 /var/lib/xkb
 %dir %{_libdir}/modules
+%ifnarch alpha
 %dir %{_libdir}/modules/dri
+%endif
 %dir %{_libdir}/modules/drivers
 %{_libdir}/modules/*.uc
 %attr(755,root,root) %{_libdir}/modules/*.a
@@ -1494,12 +1496,16 @@ rm -rf $RPM_BUILD_ROOT
 %files OpenGL-libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libGLU.so.*.*
+%ifnarch alpha
 %attr(755,root,root) %{_libdir}/libOSMesa.so.*.*
+%endif
 
 %files OpenGL-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libGL*.so
+%ifnarch alpha
 %attr(755,root,root) %{_libdir}/libOSMesa*.so
+%endif
 %attr(644,root,root) %{_includedir}/GL/*
 %{_mandir}/man3/glX*
 
@@ -1650,7 +1656,9 @@ rm -rf $RPM_BUILD_ROOT
 %files driver-glint
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/glint_drv.o
+%ifnarch alpha
 %attr(755,root,root) %{_libdir}/modules/dri/gamma_dri.so
+%endif
 %{_mandir}/man4/glint*
 
 %files driver-i740
@@ -1669,7 +1677,9 @@ rm -rf $RPM_BUILD_ROOT
 %files driver-mga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/mga_drv.o
+%ifnarch alpha
 %attr(755,root,root) %{_libdir}/modules/dri/mga_dri.so
+%endif
 %{_mandir}/man4/mga*
 
 %files driver-neomagic
@@ -1685,7 +1695,9 @@ rm -rf $RPM_BUILD_ROOT
 %files driver-r128
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/r128_drv.o
+%ifnarch alpha
 %attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
+%endif
 %{_mandir}/man4/r128*
 
 %files driver-rendition
