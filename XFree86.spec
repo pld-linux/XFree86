@@ -112,13 +112,14 @@ BuildRequires:	expat-devel
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
 BuildRequires:	gcc-c++
+BuildRequires:	libpng-devel
+BuildREquires:	libstdc++-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	pam-devel
 BuildRequires:	perl
 BuildRequires:	tcl-devel
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
-BuildRequires:	libstdc++-devel
 %ifarch %{ix86} alpha
 %{!?_without_tdfx:BuildRequires:	Glide3-DRI-devel}
 %endif
