@@ -23,12 +23,12 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
-Version:	4.2.99.901
-Release:	0.20030207.4
+Version:	4.2.99.902
+Release:	0.20030218.1
 License:	MIT
 Group:		X11/XFree86
 #Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
-Source0:	X4299901src-1-20030207.tar.bz2
+Source0:	XFree86-4.2.99.902.tar.bz2
 Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source2:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
 Source3:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
@@ -1853,7 +1853,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c -a1
+%setup -q -a1
 %patch0 -p0
 %patch1 -p1
 %patch2 -p1
