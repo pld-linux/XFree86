@@ -400,6 +400,7 @@ Summary:	OpenGL support for X11R6
 Summary(pl):	Wsparcie OpenGL dla systemu X11R6
 Group:		X11/Libraries
 Requires:	%{name}-libs = %{version}
+Obsoletes:	XFree86-driver-nvidia
 
 %description OpenGL-core
 OpenGL support for X11R6 system.
