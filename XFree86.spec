@@ -87,7 +87,6 @@ BuildRequires:	Glide3-DRI-devel
 %ifarch %{ix86}
 BuildRequires:	Glide2x_SDK
 %endif
-Requires(post):	fileutils
 Requires:	xauth
 Requires:	%{name}-libs = %{version}
 Requires:	%{name}-common = %{version}
@@ -1644,7 +1643,6 @@ bzip2 -dc %{SOURCE15} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 > $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 > $RPM_BUILD_ROOT/etc/security/blacklist.xserver
 > $RPM_BUILD_ROOT/etc/security/blacklist.xdm
-> $RPM_BUILD_ROOT/var/log/XFree86.0.log
 
 ln -sf %{_fontsdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
 
@@ -1682,12 +1680,6 @@ gunzip $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
 rm -rf $RPM_BUILD_ROOT
 
 #--- %post{un}, %preun, %verifyscript, %trigge ----------
-
-%post
-touch /var/log/XFree86.0.log
-chmod 000 /var/log/XFree86.0.log
-chown root.root /var/log/XFree86.0.log
-chmod 640 /var/log/XFree86.0.log
 
 %post	DPS -p /sbin/ldconfig
 %postun	DPS -p /sbin/ldconfig
@@ -1905,8 +1897,6 @@ fi
 
 %{_includedir}/X11/bitmaps
 %{_includedir}/X11/pixmaps
-
-%attr(640,root,root) %ghost /var/log/XFree86.0.log
 
 %{_applnkdir}/Utilities/xconsole.desktop
 %{_applnkdir}/Terminals/*
@@ -2668,15 +2658,15 @@ fi
 %{_mandir}/man1/xdm.1*
 
 %dir /etc/X11/xdm
-%attr(755,root,root) %config /etc/X11/xdm/GiveConsole
-%attr(755,root,root) %config /etc/X11/xdm/TakeConsole
-%attr(755,root,root) %config /etc/X11/xdm/Xsession
-%attr(755,root,root) %config /etc/X11/xdm/Xsetup_0
-%attr(755,root,root) %config /etc/X11/xdm/Xwilling
-%config /etc/X11/xdm/Xaccess
-%config /etc/X11/xdm/Xresources
-%config /etc/X11/xdm/Xservers
-%config /etc/X11/xdm/xdm-config
+%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/GiveConsole
+%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/TakeConsole
+%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xsession
+%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xsetup_0
+%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xwilling
+%config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xaccess
+%config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xresources
+%config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xservers
+%config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/xdm-config
 /etc/X11/xdm/pixmaps
 /etc/X11/xdm/authdir
 
