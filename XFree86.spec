@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	3.9.17
-Release:	5
+Release:	6
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -33,7 +33,7 @@ BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
 BuildRequires:	utempter-devel
 BuildRequires:	tcl-devel
-Requires:	pam
+BuildRequires:	pam-devel
 Requires:	xauth
 Exclusivearch:	i386 i486 i586 i686 alpha sparc m68k armv4l
 Buildroot:	/tmp/%{name}-%{version}-root/
