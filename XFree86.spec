@@ -46,6 +46,7 @@ Patch16:	%{name}-xdmsecurity.patch
 Patch17:	%{name}-xman.patch
 Patch18:	%{name}-HasXdmAuth.patch
 Patch19:	%{name}-xdm-fixes.patch
+Patch20:	%{name}-imake-kernel-version.patch
 
 BuildRequires:	flex
 BuildRequires:	ncurses-devel
@@ -887,6 +888,7 @@ X11R6-contrib in older releases.
 %patch17 -p1
 %patch18 -p1
 %patch19 -p1
+%patch20 -p1
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
