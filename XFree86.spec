@@ -115,7 +115,7 @@ Patch45:	%{name}-VidMode-nocrashafterfailure.patch
 Patch46:	%{name}-spencode-nowarning.patch
 # Small (maybe buggy) patch to resolve problems with totem 0.97.0
 Patch47:	%{name}-lock.patch
-#Patch48:	%{name}-savage-20030505.patch
+Patch48:	%{name}-linux-version.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	bison
 BuildRequires:	expat-devel
@@ -1978,7 +1978,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch45 -p1
 %patch46 -p1
 %patch47 -p0
-#%patch48 -p1	-- seems applied
+%patch48 -p1
 
 rm -f xc/config/cf/host.def
 
