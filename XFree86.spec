@@ -18,9 +18,13 @@ Source5:	xfs.initd
 Source6:	xfs.config
 Source7:	xserver.pamd
 Source8:	XTerm.ad-pl
-Source9:	twm.desktop
-Source10:	xdm.sysconfig
-Source11:	xfs.sysconfig
+Source9:	xdm.sysconfig
+Source10:	xfs.sysconfig
+Source11:	twm.desktop
+Source12:	xclipboard.desktop
+Source13:	xconsole.desktop
+Source14:	xterm.desktop
+Source15:	xlogo64.png
 Patch0:		XFree86-3.9.17-PLD.patch
 
 BuildRequires:	ncurses-devel
@@ -39,6 +43,7 @@ Obsoletes: X11R6.1
 %define		_fontdir	/usr/share/fonts
 %define		_prefix		/usr/X11R6
 %define		_mandir		/usr/X11R6/man
+%define		_appnkldir	%{_datadir}/applnk
 
 %description
 If you want to install the X Window System (TM) on your machine, you'll
@@ -611,7 +616,8 @@ install -d $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
 	$RPM_BUILD_ROOT/var/state/xkb \
 	$RPM_BUILD_ROOT/usr/include \
 	$RPM_BUILD_ROOT/usr/bin \
-	$RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties
+	$RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties \
+	$RPM_BUILD_ROOT{%{_appnkldir}/Utilities,%{_datadir}/pixmaps}
 
 make -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -660,10 +666,16 @@ install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
 install %{SOURCE6} $RPM_BUILD_ROOT/etc/X11/fs/config
 install %{SOURCE8} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/XTerm
-install %{SOURCE9} $RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties/twm.desktop
 
-install %{SOURCE10} $RPM_BUILD_ROOT/etc/sysconfig/xdm
-install %{SOURCE11} $RPM_BUILD_ROOT/etc/sysconfig/xfs
+install %{SOURCE9} $RPM_BUILD_ROOT/etc/sysconfig/xdm
+install %{SOURCE10} $RPM_BUILD_ROOT/etc/sysconfig/xfs
+
+install %{SOURCE11} $RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties/twm.desktop
+install %{SOURCE12} $RPM_BUILD_ROOT%{_appnkldir}/Utilities
+install %{SOURCE13} $RPM_BUILD_ROOT%{_appnkldir}/Utilities
+install %{SOURCE14} $RPM_BUILD_ROOT%{_appnkldir}
+
+install %{SOURCE15} $RPM_BUILD_ROOT%{_datadir}/pixmaps
 
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
@@ -927,6 +939,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xgamma
 
 %{_includedir}/X11/bitmaps
+
+%{_appnkldir}/Utilities/*.desktop
+%{_appnkldir}/*.desktop
+%{_datadir}/pixmaps/*
 
 %{_mandir}/man1/lbxproxy.1*
 %{_mandir}/man1/proxymngr.1*
