@@ -1075,7 +1075,7 @@ rm -rf $RPM_BUILD_ROOT
 /etc/X11/xserver/SecurityPolicy
 /etc/X11/xsm/*
 
-%lang(pl) %{_libdir}/X11/pl
+%lang(pl) %{_libdir}/X11/app-defaults/pl
 
 %attr(755,root,root) %{_libdir}/X11/x11perfcomp/*
 %{_libdir}/X11/*.txt
