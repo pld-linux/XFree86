@@ -918,9 +918,9 @@ rm -f xc/config/cf/host.def
 mv -f xc/Makefile ./
 sed 's/^WORLDOPTS.*//g' Makefile > xc/Makefile
 %{__make} -S -C xc World \
-	"BOOTSTRAPCFLAGS=%{!?debug:$RPM_OPT_FLAGS}%{!?debug:-O -g}" \
-	"CDEBUGFLAGS=" "CCOPTIONS=%{!?debug:$RPM_OPT_FLAGS}%{!?debug:-O -g}" \
-	"CXXDEBUGFLAGS=" "CXXOPTIONS=%{!?debug:$RPM_OPT_FLAGS}%{!?debug:-O -g}" \
+	"BOOTSTRAPCFLAGS=%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
+	"CDEBUGFLAGS=" "CCOPTIONS=%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
+	"CXXDEBUGFLAGS=" "CXXOPTIONS=%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
 	"RAWCPP=/lib/cpp" \
 	"WORLDOPTS=-S"
 
