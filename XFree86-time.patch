@@ -1,28 +1,19 @@
-diff -urN xc.org/include/Xos.h xc/include/Xos.h
---- xc.org/include/Xos.h	Fri Mar  9 09:04:10 2001
-+++ xc/include/Xos.h	Fri Mar  9 10:22:56 2001
-@@ -155,6 +155,7 @@
- #ifdef SYSV
- 
- #ifndef USL
+--- XFree86-4.0.2/xc/include/Xos.h.tm   Wed Feb 14 19:43:19 2001
++++ XFree86-4.0.2/xc/include/Xos.h      Wed Feb 14 19:45:26 2001
+@@ -149,6 +149,14 @@ extern int sys_nerr;
+ #endif /* CSRG_BASED */
+
+ /*
++ * Get struct tm
++ */
++
++#if defined(__linux__)
 +#include <time.h>
- #include <sys/time.h>
- #endif
- #include <time.h>
-@@ -186,6 +187,7 @@
- #if defined(_POSIX_SOURCE) && defined(SVR4)
- /* need to omit _POSIX_SOURCE in order to get what we want in SVR4 */
- #undef _POSIX_SOURCE
-+#include <time.h>
- #include <sys/time.h>
- #define _POSIX_SOURCE
- #elif defined(WIN32)
-@@ -218,6 +220,7 @@
- #include <sys/time.h>
- #include <time.h>
- #else
-+#include <time.h>
- #include <sys/time.h>
- #endif /* QNX */
- #endif /* defined(_POSIX_SOURCE) && defined(SVR4) */
++#endif
++
++/*
+  * Get struct timeval
+  */
+
+
 
