@@ -2640,7 +2640,7 @@ fi
 %endif
 
 # Devel: sparc sparc64
-%ifarch %{ix86} mips alpha arm
+%ifarch %{ix86} mips alpha arm ppc
 %files driver-nv
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/nv_drv.o
@@ -2801,11 +2801,11 @@ fi
 %{_mandir}/man4/suntcx*
 %endif
 
-%ifarch %{ix86} sparc sparc64 mips alpha arm
+%ifarch %{ix86} sparc sparc64 mips alpha arm ppc
 %{!?_without_tdfx:%files driver-tdfx}
 %{!?_without_tdfx:%defattr(644,root,root,755)}
 %{!?_without_tdfx:%attr(755,root,root) %{_libdir}/modules/drivers/tdfx_drv.o}
-%ifarch %{ix86} alpha arm
+%ifarch %{ix86} alpha arm ppc
 %{!?_without_tdfx:%attr(755,root,root) %{_libdir}/modules/dri/tdfx_dri.so}
 %endif
 %{!?_without_tdfx:%{_mandir}/man4/tdfx*}
