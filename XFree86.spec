@@ -32,19 +32,19 @@ Patch2:		%{name}-DisableDebug.patch
 Patch3:		%{name}-%{version}-Xwrapper.patch
 Patch4:		%{name}-%{version}-xfs.patch
 Patch5:		%{name}-xfs-fix.patch
-Patch6:		%{name}-xfs-logger.patch
+#Patch6:		%{name}-xfs-logger.patch
 Patch7:		%{name}-xterm-utempter.patch
 Patch8:		%{name}-app_defaults_dir.patch
 Patch9:		%{name}-%{version}-startx_xauth.patch
 Patch10:	%{name}-v4l.patch
-Patch11:	%{name}-fixemacs.patch
+#Patch11:	%{name}-fixemacs.patch
 Patch14:	%{name}-sparc3.patch.gz
 Patch15:	%{name}-sparc4.patch.gz
-Patch16:	%{name}-shared.patch
+#Patch16:	%{name}-shared.patch
 Patch17:	%{name}-broken-includes.patch
-Patch18:	%{name}-Xaw-unaligned.patch
-Patch19:	%{name}-4.0.1-alpha-pcibus-lemming.patch
-Patch20:	%{name}-xdm-pam.patch
+#Patch18:	%{name}-Xaw-unaligned.patch
+#Patch19:	%{name}-4.0.1-alpha-pcibus-lemming.patch
+Patch20:	%{name}-%{version}-xdm-pam.patch
 Patch21:	%{name}-xlib-textmeasure.patch
 Patch22:	%{name}-fhs.patch
 Patch23:	%{name}-xdmsecurity.patch
@@ -899,7 +899,7 @@ X11R6-contrib in older releases.
 %patch17 -p1
 #%patch18 -p1 #not needed, included in 4.0.2
 #%patch19 -p0 #not needed, included in 4.0.2
-#%patch20 -p1
+%patch20 -p1
 #%patch21 -p0
 #%patch22 -p1
 #%patch23 -p1
