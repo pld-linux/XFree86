@@ -1743,7 +1743,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #%patch49 -p0
 %patch50 -p0
 %patch51 -p0
-%patch52 -p1
+#%patch52 -p1
 #%patch53 -p1
 %patch54 -p1
 
