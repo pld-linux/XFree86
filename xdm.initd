@@ -30,7 +30,7 @@ case "$1" in
 	rm -f /var/lock/subsys/xdm
 	;;
   status)
-	status xfs
+	status xdm
 	;;
   restart)
 	$0 stop
