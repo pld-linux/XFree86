@@ -1,0 +1,3133 @@
+diff -ruN xc.old/IPv6-README xc/IPv6-README
+--- xc.old/IPv6-README	Thu Jan  1 01:00:00 1970
++++ xc/IPv6-README	Wed Feb 24 14:33:54 1999
+@@ -0,0 +1,88 @@
++This patch is fot the INRIA Net/FreeBSD IPv6 code
++It can also work on KAME IPv6 code. For support see at the end
++
++1/ This patch is based on the distribution XFree86 Release 3.3.3 patch 1
++   It also works on the xsrc distribution provided with NetBSD 1.3.3
++
++2/ This patch contains a xc/config/cf/host.def file which sets the compile
++   option -pipe and suppress the build of the fonts.
++
++3/ For FreeBSD3.0, if you use elf format (the default), you should add the
++   generation of the shared libraries in aout format (legacy format)
++    To do this, add in the file xc/config/cf/host.def the line:
++#define BuildAoutLibraries	YES
++
++4/ In the NetBSD 1.3.3 case some -orig files do not match with the distribution,
++   but the IPv6 patch compiles and works.
++
++==== INSTALL ===
++To apply the patch on FreeBSD:
++- Install XFree86 from binary distribution
++- Get the distributed source archive source/X333src-1.tgz on a XFree86-3.3.3
++	or XFree86-3.3.3.1 ftp repository
++  BEWARE: the source distribution is at level 3.3.3, NOT 3.3.3.1
++- Get the upgrade patch(es) 3.3.3->3.3.3.1 on a XFree86-3.3.3.1 repository
++   (It should be the file fixes/3.3.3-3.3.3.1.diff.gz) and apply it
++   (in the source directory containing the xc dir, using:
++	cd ..../xc/..
++	patch -p -E < 3.3.3-3.3.3.1.diff
++   )
++- Go in the source directory containing the xc dir, expand the IPv6 patch, and
++  install it by renaming the XX-new files, replacing the original XX file.
++	cd ..../xc/..
++	tar zxf X11-990111.tgz
++	find . -type f -name '*-new' -exec csh -c \
++		'set f={}; set f=$f:s/-new//; cp -p ${f}-new $f' \;
++- Update the xc/config/cf/host.def for aout libraries if needed
++- make the X11 world and install it
++	BEWARE : the installation will overrides the installed X server.
++	Before the install, note the name of the installed X server
++	(ls -l /usr/X11R6/bin/X) and restore the correct link after the
++	installation.
++
++To apply the patch on NetBSD:
++- Install X11 from binary distribution
++- Get the distributed source/sets/xsrc.tgz on a ftp NetBSD repository
++- Go in the source directory containing the xc dir, expand the IPv6 patch, and
++  install it by renaming the XX-new files, replacing the original XX file.
++	cd ..../xc/..
++	tar zxf X11-990111.tgz
++	find . -type f -name '*-new' -exec csh -c \
++		'set f={}; set f=$f:s/-new//; cp -p ${f}-new $f' \;
++- Update the xc/config/cf/host.def if needed (e.g. for building fonts)
++- make the X11 world and install it
++	BEWARE : the installation may overrides the installed X server.
++	Before the install, note the name of the installed X server
++	(ls -l /usr/X11R6/bin/X) and restore the correct link after the
++	installation.
++
++=========
++KAME support : You need to add -linet6 to library list; For example, add
++the following lines at the end of the xc/config/cf/host.def file:
++
++*** ../src.Free//xc/config/cf/host.def	Wed Feb 24 14:29:40 1999
++--- xc/config/cf/host.def	Wed Feb 24 14:28:07 1999
++***************
++*** 44,46 ****
++--- 44,64 ----
++  #  endif
++  # endif
++  #endif
+++ 
+++ /*
+++  * Set KAME library - copied form *BSD.cf, and modified
+++  */
+++ #ifdef AfterVendorCF
+++ # ifdef FreeBSDArchitecture  
+++ /* support for multi-byte locales is in libxpg4 rather than libc */
+++ #if OSMajorVersion > 2 || (OSMajorVersion == 2 && OSMinorVersion >= 2)
+++ #undef ExtraLibraries
+++ #define ExtraLibraries		-lxpg4 -L/usr/local/v6/lib -linet6
+++ #else
+++ #define ExtraLibraries		-L/usr/local/v6/lib -linet6
+++ #endif
+++ # endif
+++ # ifdef NetBSDArchitecture  
+++ #define ExtraLibraries		-L/usr/local/v6/lib -linet6
+++ # endif
+++ #endif
+diff -ruN xc.old/config/cf/host.def xc/config/cf/host.def
+--- xc.old/config/cf/host.def	Thu Jan  1 01:00:00 1970
++++ xc/config/cf/host.def	Tue Apr 14 15:50:10 1998
+@@ -0,0 +1,28 @@
++/*
++ * Do not build fonts: use the binary distrib
++ */
++#define BuildFonts		NO
++
++/*
++ * Don't build PC98 servers
++ */
++#define BuildPC98Servers	NO
++
++/*
++ * Set -pipe for XFree86 for NetBSD 1.3 on i386
++ */
++#ifdef i386Architecture
++# define DefaultGcc2i386Opt	-O2 -fno-strength-reduce -pipe
++#endif
++
++/*
++ * Set -pipe for NetBSD 1.3 on sparc
++ */
++#ifdef NetBSDArchitecture  
++# ifdef SparcArchitecture
++#  ifdef AfterVendorCF
++#   undef OptimizedCDebugFlags
++#   define OptimizedCDebugFlags 	-O2 -pipe
++#  endif
++# endif
++#endif
+diff -ruN xc.old/lib/SM/sm_genid.c xc/lib/SM/sm_genid.c
+--- xc.old/lib/SM/sm_genid.c	Sun Oct  4 16:36:38 1998
++++ xc/lib/SM/sm_genid.c	Fri Jan  8 19:37:33 1999
+@@ -64,6 +64,7 @@
+ #define XOS_USE_NO_LOCKING
+ #define X_INCLUDE_NETDB_H
+ #include <X11/Xos_r.h>
++#include <resolv.h>
+ #endif
+ 
+ #else /* WIN32 */
+@@ -137,6 +138,7 @@
+ 
+ #if defined(TCPCONN) || defined(STREAMSCONN)
+     {
++    u_long options;
+     char* inet_addr;
+     char temp[4], *ptr1, *ptr2;
+     unsigned char decimal[4];
+@@ -144,7 +146,13 @@
+     _Xgethostbynameparams hparams;
+     struct hostent *hostp;
+ 
+-    if ((hostp = _XGethostbyname (hostname,hparams)) != NULL)
++    if ((_res.options & RES_INIT) == 0)
++	(void) res_init ();
++    options = _res.options;
++    _res.options &= ~RES_USE_INET6;
++    hostp = _XGethostbyname (hostname,hparams);
++    _res.options = options;
++    if (hostp != NULL)
+ 	inet_addr = inet_ntoa (*(struct in_addr *)(hostp->h_addr));
+     else
+ 	return NULL;
+diff -ruN xc.old/lib/X11/ConnDis.c xc/lib/X11/ConnDis.c
+--- xc.old/lib/X11/ConnDis.c	Sat Jan 18 07:51:49 1997
++++ xc/lib/X11/ConnDis.c	Tue Mar 17 15:52:29 1998
+@@ -163,7 +163,9 @@
+ 
+     if (!lastc) return NULL;		/* must have a colon */
+ 
+-    if ((lastp != lastc) && (*(lastc - 1) == ':')) {
++    /* :: is DECnet, : and ::: are IPv6 */
++    if ((lastp != lastc) && (*(lastc - 1) == ':') &&
++	(lastp == lastc-1 || *(lastc - 2) != ':') ) {
+ 	/* DECnet display specified */
+ 
+ #ifndef DNETCONN
+@@ -334,7 +336,7 @@
+ 	_X11TransGetPeerAddr(trans_conn, &family, &saddrlen, &saddr);
+ 
+ 	/*
+-	 * The family is given in a socket format (ie AF_INET). This
++	 * The family is given in a socket format (ie AF_INET[6]). This
+ 	 * will convert it to the format used by the authorization and
+ 	 * X protocol (ie FamilyInternet).
+ 	 */
+@@ -1026,6 +1028,21 @@
+ 	    for(i=4; i<8; i++)	/* do sin_addr */
+ 		xdmcp_data[j++] = ((char *)addr)[i];
+ 	    for(i=2; i<4; i++)	/* do sin_port */
++		xdmcp_data[j++] = ((char *)addr)[i];
++	    break;
++	}
++#endif /* AF_INET */
++#ifdef AF_INET6
++	case AF_INET6:
++	{
++	    /*
++	     * addr will contain a sockaddr_in6 with all
++	     * of the members already in network byte order.
++	     */
++
++	    for(i=20; i<24; i++) /* do sin6_addr last 4 bytes */
++		xdmcp_data[j++] = ((char *)addr)[i];
++	    for(i=2; i<4; i++)	/* do sin6_port */
+ 		xdmcp_data[j++] = ((char *)addr)[i];
+ 	    break;
+ 	}
+diff -ruN xc.old/lib/X11/Imakefile xc/lib/X11/Imakefile
+--- xc.old/lib/X11/Imakefile	Fri Nov  6 17:32:30 1998
++++ xc/lib/X11/Imakefile	Fri Jan  8 19:46:58 1999
+@@ -947,6 +947,7 @@
+ InstallLintLibrary(X11,$(LINTLIBDIR))
+ 
+ 
++SpecialCLibObjectRule(AuGetBest,$(ICONFIGFILES),$(CONN_DEFINES))
+ LinkSourceFile(AuDispose.c,$(XAUTHSRC))
+ LinkSourceFile(AuGetBest.c,$(XAUTHSRC))
+ LinkSourceFile(AuFileName.c,$(XAUTHSRC))
+diff -ruN xc.old/lib/Xau/AuGetBest.c xc/lib/Xau/AuGetBest.c
+--- xc.old/lib/Xau/AuGetBest.c	Sun Dec 22 04:20:12 1996
++++ xc/lib/Xau/AuGetBest.c	Fri Mar 27 16:12:54 1998
+@@ -49,6 +49,32 @@
+     return 1;
+ }
+ 
++#if defined(TCPCONN)
++#include <netinet/in.h>
++#include <X11/X.h>
++#define MAPTOIPV4(a)	((char *)(a) + sizeof(struct in6_addr) - \
++					sizeof(struct in_addr))
++#define acmp(a1, a2, len) memcmp((char *)(a1), (char *)(a2), len)
++static int
++inetMapEqual (a4, l4, a6, l6)
++    char *a4, *a6;
++    int l4, l6;
++{
++    /* compare IPv4 with special IPv6 : mapped, loopback */
++    if (l4 == sizeof(struct in6_addr) && l6 == sizeof(struct in_addr)) {
++	char *a = a4;
++	a4 = a6;
++	a6 = a;
++    } else if (l6 != sizeof(struct in6_addr) || l4 != sizeof(struct in_addr))
++	return 0;
++    if (IN6_IS_ADDR_V4MAPPED((struct in6_addr *)a6))
++	return !acmp(a4, MAPTOIPV4(a6), sizeof(*a4));
++    else
++	return (a4[0] == 127 && a4[1] == 0 && a4[2] == 0 && a4[3] == 1 &&
++		acmp(a6, &in6addr_loopback, sizeof(*a6)) == 0);
++}
++#endif
++
+ #if NeedFunctionPrototypes
+ Xauth *
+ XauGetBestAuthByAddr (
+@@ -147,6 +173,13 @@
+ 	     (entry->family == family &&
+ 	     ((address_length == entry->address_length &&
+ 	      binaryEqual (entry->address, address, (int)address_length))
++#if defined(TCPCONN)
++	     || (family == FamilyInternet &&
++		address_length != entry->address_length &&
++	        inetMapEqual ((char *)entry->address,
++			      (int)entry->address_length,
++			      (char *)address, (int)address_length))
++#endif
+ #ifdef hpux
+ 	     || (family == FamilyLocal &&
+ 		fully_qual_address_length == entry->address_length &&
+diff -ruN xc.old/lib/Xau/Imakefile xc/lib/Xau/Imakefile
+--- xc.old/lib/Xau/Imakefile	Fri Nov  6 17:32:44 1998
++++ xc/lib/Xau/Imakefile	Fri Jan  8 19:44:33 1999
+@@ -23,6 +23,9 @@
+ INCLUDES =
+ #endif
+ 
++   CONN_DEFINES = ConnectionFlags
++ DEPEND_DEFINES = $(CONN_DEFINES)
++
+ HEADERS = \
+ 	Xauth.h
+ 
+@@ -33,6 +36,8 @@
+ 	AuRead.o AuUnlock.o AuWrite.o $(K5ENCOBJ)
+ 
+ #include <Library.tmpl>
++
++SpecialCLibObjectRule(AuGetBest,$(ICONFIGFILES),$(CONN_DEFINES))
+ 
+ InstallLinkKitLibrary(Xau,$(LINKKITDIR)/lib)
+ 
+diff -ruN xc.old/lib/Xmu/CvtStdSel.c xc/lib/Xmu/CvtStdSel.c
+--- xc.old/lib/Xmu/CvtStdSel.c	Sat Jan 18 07:52:13 1997
++++ xc/lib/Xmu/CvtStdSel.c	Mon Jul  7 22:19:34 1997
+@@ -225,7 +225,9 @@
+ 	if ((hostp = _XGethostbyname (hostname,hparams)) == NULL)
+ 	    return False;
+ 
+-	if (hostp->h_addrtype != AF_INET) return False;
++	if ((hostp->h_addrtype != AF_INET) &&
++	    (hostp->h_addrtype != AF_INET6))
++	    return False;
+ 	*length = hostp->h_length;
+ 	*value = XtMalloc(*length);
+ 	(void) memmove (*value, hostp->h_addr, *length);
+diff -ruN xc.old/lib/xtrans/Xtrans.c xc/lib/xtrans/Xtrans.c
+--- xc.old/lib/xtrans/Xtrans.c	Sun Dec 13 18:12:01 1998
++++ xc/lib/xtrans/Xtrans.c	Fri Jan  8 21:05:29 1999
+@@ -218,7 +218,9 @@
+      *
+      * If the protocol part is missing, then assume INET.
+      * If the protocol part and host part are missing, then assume local.
+-     * If a "::" is found then assume DNET.
++     * If a "host::" is found then assume DNET.
++     * For IPv6, pb with possible : in host --> use rightmost : and test
++     *		x:y->inet, x::y->dnet, x:::y->inet(v6)
+      */
+ 
+     char	*mybuf, *tmpptr;
+@@ -289,7 +291,23 @@
+ 
+     _host = mybuf;
+ 
+-    if ((mybuf = strchr (mybuf,':')) == NULL)
++    /* For IPv6, we need the rightmost : in the non-catalog part */
++    {
++	char *p;
++#if defined(FONT_t) || defined(FS_t)
++	char *f = strchr (mybuf, '/');
++	if (f) *f = 0;
++#endif
++	p = strrchr (mybuf,':');
++	if (p && p > mybuf && p[-1] == ':')
++	    if (p-1 == mybuf || p[-2] != ':')
++		p--;
++	mybuf = p;
++#if defined(FONT_t) || defined(FS_t)
++	if (f) *f = '/';
++#endif
++    }
++    if (mybuf == NULL)
+     {
+ 	*protocol = NULL;
+ 	*host = NULL;
+diff -ruN xc.old/lib/xtrans/Xtranssock.c xc/lib/xtrans/Xtranssock.c
+--- xc.old/lib/xtrans/Xtranssock.c	Fri Dec 18 15:56:11 1998
++++ xc/lib/xtrans/Xtranssock.c	Fri Jan  8 21:06:42 1999
+@@ -70,6 +70,7 @@
+ #define X_INCLUDE_NETDB_H
+ #define XOS_USE_NO_LOCKING
+ #include <X11/Xos_r.h>
++#include <resolv.h>
+ #endif
+ 
+ #ifdef UNIXCONN
+@@ -190,8 +191,8 @@
+ 
+ static Sockettrans2dev Sockettrans2devtab[] = {
+ #ifdef TCPCONN
+-    {"inet",AF_INET,SOCK_STREAM,SOCK_DGRAM,0},
+-    {"tcp",AF_INET,SOCK_STREAM,SOCK_DGRAM,0},
++    {"inet",AF_INET6,SOCK_STREAM,SOCK_DGRAM,0},
++    {"tcp",AF_INET6,SOCK_STREAM,SOCK_DGRAM,0},
+ #endif /* TCPCONN */
+ #ifdef UNIXCONN
+     {"unix",AF_UNIX,SOCK_STREAM,SOCK_DGRAM,0},
+@@ -294,7 +295,7 @@
+ XtransConnInfo ciptr;
+ 
+ {
+-    struct sockaddr_in 	sockname;
++    struct sockaddr_in6	sockname;
+ #if defined(SVR4) || defined(SCO325)
+     size_t namelen = sizeof sockname;
+ #else
+@@ -322,7 +323,7 @@
+         return -1;
+     }
+ 
+-    ciptr->family = sockname.sin_family;
++    ciptr->family = sockname.sin6_family;
+     ciptr->addrlen = namelen;
+     memcpy (ciptr->addr, &sockname, ciptr->addrlen);
+ 
+@@ -341,7 +342,7 @@
+ XtransConnInfo ciptr;
+ 
+ {
+-    struct sockaddr_in 	sockname;
++    struct sockaddr_in6	sockname;
+ #if defined(SVR4) || defined(SCO325)
+     size_t namelen = sizeof sockname;
+ #else
+@@ -410,10 +411,11 @@
+     }
+ 
+ #ifdef TCP_NODELAY
+-    if (Sockettrans2devtab[i].family == AF_INET)
++    if ((Sockettrans2devtab[i].family == AF_INET) ||
++	(Sockettrans2devtab[i].family == AF_INET6))
+     {
+ 	/*
+-	 * turn off TCP coalescence for INET sockets
++	 * turn off TCP coalescence for INET[6] sockets
+ 	 */
+ 
+ 	int tmp = 1;
+@@ -546,10 +548,11 @@
+ #ifdef SO_REUSEADDR
+ 
+     /*
+-     * SO_REUSEADDR only applied to AF_INET
++     * SO_REUSEADDR only applied to AF_INET6
+      */
+ 
+-    if (Sockettrans2devtab[i].family == AF_INET)
++    if ((Sockettrans2devtab[i].family == AF_INET) ||
++	(Sockettrans2devtab[i].family == AF_INET6))
+     {
+ 	int one = 1;
+ 	setsockopt (ciptr->fd, SOL_SOCKET, SO_REUSEADDR,
+@@ -770,7 +773,8 @@
+ 
+     PRMSG (3, "SocketCreateListener(%x,%d)\n", ciptr, fd, 0);
+ 
+-    if (Sockettrans2devtab[ciptr->index].family == AF_INET)
++    if ((Sockettrans2devtab[ciptr->index].family == AF_INET) ||
++	(Sockettrans2devtab[ciptr->index].family == AF_INET6))
+ 	retry = 20;
+     else
+ 	retry = 0;
+@@ -793,7 +797,8 @@
+ #endif /* SO_REUSEDADDR */
+     }
+ 
+-    if (Sockettrans2devtab[ciptr->index].family == AF_INET) {
++    if ((Sockettrans2devtab[ciptr->index].family == AF_INET) ||
++	(Sockettrans2devtab[ciptr->index].family == AF_INET)) {
+ #ifdef SO_DONTLINGER
+ 	setsockopt (fd, SOL_SOCKET, SO_DONTLINGER, (char *) NULL, 0);
+ #else
+@@ -830,7 +835,7 @@
+ char 		*port;
+ 
+ {
+-    struct sockaddr_in	sockname;
++    struct sockaddr_in6	sockname;
+     int		namelen = sizeof(sockname);
+     int		status;
+     short	tmpport;
+@@ -878,22 +883,23 @@
+ 		      port, 0, 0);
+ 		return TRANS_CREATE_LISTENER_FAILED;
+ 	    }
+-	    sockname.sin_port = servp->s_port;
++	    sockname.sin6_port = servp->s_port;
+ 	}
+ 	else
+ 	{
+ 	    tmpport = (short) atoi (port);
+-	    sockname.sin_port = htons (tmpport);
++	    sockname.sin6_port = htons (tmpport);
+ 	}
+     }
+     else
+-	sockname.sin_port = htons (0);
++	sockname.sin6_port = htons (0);
+ 
+ #ifdef BSD44SOCKETS
+-    sockname.sin_len = sizeof (sockname);
++    sockname.sin6_len = sizeof (sockname);
+ #endif
+-    sockname.sin_family = AF_INET;
+-    sockname.sin_addr.s_addr = htonl (INADDR_ANY);
++    sockname.sin6_family = AF_INET6;
++    sockname.sin6_flowinfo = 0;
++    sockname.sin6_addr = in6addr_any;
+ 
+     if ((status = TRANS(SocketCreateListener) (ciptr,
+ 	(struct sockaddr *) &sockname, namelen)) < 0)
+@@ -1089,7 +1095,7 @@
+ 
+ {
+     XtransConnInfo	newciptr;
+-    struct sockaddr_in	sockname;
++    struct sockaddr_in6	sockname;
+     int			namelen = sizeof(sockname);
+ 
+     PRMSG (2, "SocketINETAccept(%x,%d)\n", ciptr, ciptr->fd, 0);
+@@ -1252,7 +1258,7 @@
+ char 		*port;
+ 
+ {
+-    struct sockaddr_in	sockname;
++    struct sockaddr_in6	sockname;
+ #if defined(SVR4) || defined(SCO325)
+     size_t namelen = sizeof sockname;
+ #else
+@@ -1262,14 +1268,15 @@
+     _Xgetservbynameparams sparams;
+     struct hostent	*hostp;
+     struct servent	*servp;
++    u_long options;
+ 
+ #define PORTBUFSIZE	64	/* what is a real size for this? */
+     char	portbuf[PORTBUFSIZE];
+ 
+     int			ret;
+     short		tmpport;
+-    unsigned long 	tmpaddr;
+     char 		hostnamebuf[256];		/* tmp space */
++    char		v[64];				/* Vixie's tmp space */
+ 
+     PRMSG (2,"SocketINETConnect(%d,%s,%s)\n", ciptr->fd, host, port);
+ 
+@@ -1305,67 +1312,44 @@
+      */
+ 
+ #ifdef BSD44SOCKETS
+-    sockname.sin_len = sizeof (struct sockaddr_in);
++    sockname.sin6_len = sizeof (struct sockaddr_in6);
+ #endif
+-    sockname.sin_family = AF_INET;
++    sockname.sin6_family = AF_INET6;
++    sockname.sin6_flowinfo = 0;
+ 
+     /*
+-     * fill in sin_addr
++     * fill in sin6_addr
+      */
+ 
+-    /* check for ww.xx.yy.zz host string */
+-
+-    if (isascii (host[0]) && isdigit (host[0])) {
+-	tmpaddr = inet_addr (host); /* returns network byte order */
+-    } else {
+-	tmpaddr = -1;
+-    }
+-
+-    PRMSG (4,"SocketINETConnect: inet_addr(%s) = %x\n",
+-	host, tmpaddr, 0);
++    /* ww.xx.yy.zz host string done by _XGethostbyname() */
+ 
+-    if (tmpaddr == -1)
+-    {
+-	if ((hostp = _XGethostbyname(host,hparams)) == NULL)
+-	{
+-	    PRMSG (1,"SocketINETConnect: Can't get address for %s\n",
+-		  host, 0, 0);
+-	    ESET(EINVAL);
+-	    return TRANS_CONNECT_FAILED;
+-	}
+-	if (hostp->h_addrtype != AF_INET)  /* is IP host? */
+-	{
+-	    PRMSG (1,"SocketINETConnect: not INET host%s\n",
+-		  host, 0, 0);
+-	    ESET(EPROTOTYPE);
+-	    return TRANS_CONNECT_FAILED;
+-	}
+-	
+-#if defined(CRAY) && defined(OLDTCP)
+-        /* Only Cray UNICOS3 and UNICOS4 will define this */
+-        {
+-	long t;
+-	memcpy ((char *)&t, (char *) hostp->h_addr, sizeof (t));
+-	sockname.sin_addr = t;
+-        }
+-#else
+-        memcpy ((char *) &sockname.sin_addr, (char *) hostp->h_addr,
+-		sizeof (sockname.sin_addr));
+-#endif /* CRAY and OLDTCP */
+-	
++    if ((_res.options & RES_INIT) == 0)
++	(void)res_init();
++    options = _res.options;
++    _res.options |= RES_USE_INET6;
++
++    hostp = _XGethostbyname(host,hparams);
++    _res.options = options;
++    if (hostp == NULL)
++    {
++	PRMSG (1,"SocketINETConnect: Can't get address for %s\n",
++	       host, 0, 0);
++	ESET(EINVAL);
++	return TRANS_CONNECT_FAILED;
+     }
+-else
++    if (hostp->h_addrtype != AF_INET6)  /* is IPv6 host? */
+     {
+-#if defined(CRAY) && defined(OLDTCP)
+-	/* Only Cray UNICOS3 and UNICOS4 will define this */
+-	sockname.sin_addr = tmpaddr;
+-#else
+-	sockname.sin_addr.s_addr = tmpaddr;
+-#endif /* CRAY and OLDTCP */
++	PRMSG (1,"SocketINETConnect: not INET host%s\n",
++	       host, 0, 0);
++	ESET(EPROTOTYPE);
++	return TRANS_CONNECT_FAILED;
+     }
++	
++    memcpy ((char *) &sockname.sin6_addr, (char *) hostp->h_addr,
++		sizeof (sockname.sin6_addr));
+ 
+     /*
+-     * fill in sin_port
++     * fill in sin6_port
+      */
+     
+     /* Check for number in the port string */
+@@ -1378,16 +1362,16 @@
+ 		  portbuf, 0, 0);
+ 	    return TRANS_CONNECT_FAILED;
+ 	}
+-	sockname.sin_port = servp->s_port;
++	sockname.sin6_port = servp->s_port;
+     }
+     else
+     {
+ 	tmpport = (short) atoi (portbuf);
+-	sockname.sin_port = htons (tmpport);
++	sockname.sin6_port = htons (tmpport);
+     }
+     
+-    PRMSG (4,"SocketINETConnect: sockname.sin_port = %d\n",
+-	  ntohs(sockname.sin_port), 0, 0);
++    PRMSG (4,"SocketINETConnect: sockname.sin6_port = %d\n",
++	  ntohs(sockname.sin6_port), 0, 0);
+ 
+     /*
+      * Do the connect()
+@@ -1475,13 +1459,21 @@
+ 	 * by TRANS(GetHostname)), then the two hostnames are equivalent,
+ 	 * and we know that 'host' is really a local host.
+ 	 */
+-	char specified_local_addr_list[10][4];
++	char specified_local_addr_list[10][16];
+ 	int scount, equiv, i, j;
+ 	_Xgethostbynameparams hparams;
+ 	struct hostent *hostp;
++	u_long options;
+ 
+-	if ((hostp = _XGethostbyname (host,hparams)) == NULL)
++	if ((_res.options & RES_INIT) == 0)
++	    (void)res_init();
++	options = _res.options;
++	_res.options |= RES_USE_INET6;
++
++	if ((hostp = _XGethostbyname (host,hparams)) == NULL) {
++	    _res.options = options;
+ 	    return (0);
++	}
+ 
+ 	scount = 0;
+ 	while (hostp->h_addr_list[scount] && scount <= 8)
+@@ -1491,17 +1483,14 @@
+ 	     * from the 1st call, so we must save the address list.
+ 	     */
+ 
+-	    specified_local_addr_list[scount][0] = 
+-				hostp->h_addr_list[scount][0];
+-	    specified_local_addr_list[scount][1] = 
+-				hostp->h_addr_list[scount][1];
+-	    specified_local_addr_list[scount][2] = 
+-				hostp->h_addr_list[scount][2];
+-	    specified_local_addr_list[scount][3] = 
+-				hostp->h_addr_list[scount][3];
++	    memcpy(specified_local_addr_list[scount],
++		   hostp->h_addr_list[scount],
++		   hostp->h_length);
+ 	    scount++;
+ 	}
+-	if ((hostp = _XGethostbyname (hostnamebuf,hparams)) == NULL)
++	hostp = _XGethostbyname (hostnamebuf,hparams);
++	_res.options = options;
++	if (hostp == NULL)
+ 	    return (0);
+ 
+ 	equiv = 0;
+@@ -1513,14 +1502,9 @@
+ 
+ 	    while (hostp->h_addr_list[j])
+ 	    {
+-		if ((specified_local_addr_list[i][0] == 
+-					hostp->h_addr_list[j][0]) &&
+-		    (specified_local_addr_list[i][1] == 
+-					hostp->h_addr_list[j][1]) &&
+-		    (specified_local_addr_list[i][2] == 
+-					hostp->h_addr_list[j][2]) &&
+-		    (specified_local_addr_list[i][3] == 
+-					hostp->h_addr_list[j][3]))
++		if (memcmp(specified_local_addr_list[i],
++			   hostp->h_addr_list[j],
++			   hostp->h_length) == 0)
+ 		{
+ 		    /* They're equal, so we're done */
+ 		    
+diff -ruN xc.old/lib/xtrans/Xtransutil.c xc/lib/xtrans/Xtransutil.c
+--- xc.old/lib/xtrans/Xtransutil.c	Mon Dec 23 07:04:18 1996
++++ xc/lib/xtrans/Xtransutil.c	Tue Jul  8 02:11:26 1997
+@@ -84,7 +84,7 @@
+ /*
+  * TRANS(ConvertAddress) converts a sockaddr based address to an
+  * X authorization based address. Some of this is defined as part of
+- * the ChangeHost protocol. The rest is just doen in a consistent manner.
++ * the ChangeHost protocol. The rest is just done in a consistent manner.
+  */
+ 
+ int
+@@ -134,6 +134,32 @@
+ 	}
+ 	break;
+     }
++
++    case AF_INET6:
++    {
++	/*
++	 * Check for the hack localhost address ::1.
++	 * In this case, we are really FamilyLocal.
++	 */
++
++	struct sockaddr_in6 saddr;
++	int len = sizeof(saddr.sin6_addr);
++	char *cp = (char *) &saddr.sin6_addr;
++
++	memcpy (&saddr, *addrp, sizeof (struct sockaddr_in6));
++
++	if (memcmp(cp, (char *)&in6addr_loopback, len) == 0)
++	{
++	    *familyp=FamilyLocal;
++	}
++	else
++	{
++	    *familyp=FamilyInternet;
++	    *addrlenp=len;
++	    memcpy(*addrp,&saddr.sin6_addr,len);
++	}
++	break;
++    }
+ #endif /* defined(TCPCONN) || defined(STREAMSCONN) || MNX_TCPCONN */
+ 
+ #if defined(DNETCONN)
+@@ -269,6 +295,18 @@
+ 	sprintf (networkId, "%s/%s:%s", transName, hostnamebuf, portnumbuf);
+ 	break;
+     }
++
++    case AF_INET6:
++    {
++	struct sockaddr_in6 *saddr = (struct sockaddr_in6 *) addr;
++	char portnumbuf[10];
++
++	sprintf (portnumbuf, "%d", ntohs (saddr->sin6_port));
++	networkId = (char *) xalloc (3 + strlen (transName) +
++	    strlen (hostnamebuf) + strlen (portnumbuf));
++	sprintf (networkId, "%s/%s:%s", transName, hostnamebuf, portnumbuf);
++	break;
++    }
+ #endif /* defined(TCPCONN) || defined(STREAMSCONN) || MNX_TCPCONN */
+ 
+ #if defined(DNETCONN)
+@@ -377,6 +415,42 @@
+ 	  addr = hostp->h_name;
+ 	else
+ 	  addr = inet_ntoa (saddr->sin_addr);
++	break;
++    }
++
++    case AF_INET6:
++    {
++	struct sockaddr_in6 *saddr = (struct sockaddr_in6 *) peer_addr;
++	_Xgethostbynameparams hparams;
++	struct hostent * hostp;
++	static char v[64];
++
++#ifdef SIGALRM
++	/*
++	 * gethostbyaddr can take a LONG time if the host does not exist.
++	 * Assume that if it does not respond in NAMESERVER_TIMEOUT seconds
++	 * that something is wrong and do not make the user wait.
++	 * gethostbyaddr will continue after a signal, so we have to
++	 * jump out of it. 
++	 */
++
++	nameserver_timedout = 0;
++	signal (SIGALRM, nameserver_lost);
++	alarm (4);
++	if (setjmp(env) == 0) {
++#endif
++	    hostp = _XGethostbyaddr ((char *) &saddr->sin6_addr,
++		sizeof (saddr->sin6_addr), AF_INET6, hparams);
++#ifdef SIGALRM
++	}
++	alarm (0);
++#endif
++	if (hostp != NULL)
++	  addr = hostp->h_name;
++	else {
++	  inet_ntop (AF_INET6, &saddr->sin6_addr, v, sizeof (v));
++	  addr = addrbuf;
++	}
+ 	break;
+     }
+ 
+diff -ruN xc.old/programs/Xserver/os/access.c xc/programs/Xserver/os/access.c
+--- xc.old/programs/Xserver/os/access.c	Tue Dec 22 15:23:30 1998
++++ xc/programs/Xserver/os/access.c	Fri Jan  8 21:08:44 1999
+@@ -163,6 +163,7 @@
+ #else
+ #if !defined(AMOEBA) && !defined(MINIX)
+ #include <netdb.h>
++#include <resolv.h>
+ #else
+ #ifdef AMOEBA
+ #include <server/ip/gen/netdb.h>
+@@ -215,10 +216,12 @@
+ 
+ #define acmp(a1, a2, len) memcmp((char *)(a1), (char *)(a2), len)
+ #define acopy(a1, a2, len) memmove((char *)(a2), (char *)(a1), len)
++#if !defined(TCPCONN)
+ #define addrEqual(fam, address, length, host) \
+ 			 ((fam) == (host)->family &&\
+ 			  (length) == (host)->len &&\
+ 			  !acmp (address, (host)->addr, length))
++#endif
+ 
+ static int ConvertAddr(
+ #if NeedFunctionPrototypes
+@@ -260,6 +263,49 @@
+ static int LocalHostEnabled = FALSE;
+ static int UsingXdmcp = FALSE;
+ 
++#if defined(TCPCONN)
++#define MAPTOIPV4(a)	((char *)(a) + sizeof(struct in6_addr) - \
++					sizeof(struct in_addr))
++#define MAPTOIPV6(d,a)	{ \
++		bzero(&d.s6_addr[0], \
++		      sizeof(struct in6_addr)-2-sizeof(struct in_addr)); \
++		d.s6_addr[10] = d.s6_addr[11] = 0xff; \
++		acopy(a, MAPTOIPV4(&d.s6_addr[0]), sizeof(struct in_addr)); \
++	}
++
++static int
++addrEqual(fam, addr, len, host)
++    unsigned char *addr;
++    register HOST *host;
++    int	fam, len;
++{
++    char *a4, *a6;
++
++    if (fam != host->family)
++	return FALSE;
++    if (len == host->len)
++	return !acmp (addr, host->addr, len);
++    if (fam != FamilyInternet)
++	return FALSE;
++
++    /* compare IPv4 with special IPv6 : mapped, loopback */
++    if (len == sizeof(struct in6_addr) &&
++	host->len == sizeof(struct in_addr)) {
++	a4 = host->addr;
++	a6 = addr;
++    } else if (len == sizeof(struct in_addr) &&
++	       host->len == sizeof(struct in6_addr)) {
++	a4 = addr;
++	a6 = host->addr;
++    } else
++	return FALSE;
++    if (IN6_IS_ADDR_V4MAPPED((struct in6_addr *)a6))
++	return !acmp(a4, MAPTOIPV4(a6), sizeof(*a4));
++    else
++	return (a4[0] == 127 && a4[1] == 0 && a4[2] == 0 && a4[3] == 1 &&
++		acmp(a6, &in6addr_loopback, sizeof(*a6)) == 0);
++}
++#endif
+ 
+ /*
+  * called when authorization is not enabled to add the
+@@ -634,6 +680,7 @@
+     int 		family;
+     register HOST 	*host;
+     register struct ifreq *ifr;
++    struct in6_addr	mapped;
+     
+ #ifdef DNETCONN
+     struct dn_naddr *dnaddr = getnodeadd();
+@@ -692,10 +739,32 @@
+         if (family == -1 || family == FamilyLocal)
+ 	    continue;
+ #ifdef DEF_SELF_DEBUG
+-	if (family == FamilyInternet) 
+-	    ErrorF("Xserver: DefineSelf(): ifname = %s, addr = %d.%d.%d.%d\n",
+-		   ifr->ifr_name, addr[0], addr[1], addr[2], addr[3]);
++	if (family == FamilyInternet) {
++	    char v[64];
++
++	    ErrorF("Xserver: DefineSelf(): ifname = %s, addr = %s\n",
++		   ifr->ifr_name,
++		   inet_ntop(len == 4 ? AF_INET : AF_INET6, addr, v, 64));
++	}
+ #endif
++	if (family == FamilyInternet) {
++	    if (len == 4) {
++		/* Mapped IPv4 to IPv6 with special case for loopback */
++		if (addr[0] == 127 && addr[1] == 0 &&
++		    addr[2] == 0 && addr[3] == 1)
++		    addr = (unsigned char *)&in6addr_loopback;
++		else {
++		    MAPTOIPV6(mapped, addr);
++		    addr = (unsigned char *) &mapped;
++		}
++		len = sizeof(mapped);
++	    }
++	    /*
++	     * Link local addresses are too weird
++	     */
++	    if (IN6_IS_ADDR_LINKLOCAL((struct in6_addr *)addr))
++		continue;
++	}
+         for (host = selfhosts;
+  	     host && !addrEqual (family, addr, len, host);
+ 	     host = host->next)
+@@ -724,13 +793,15 @@
+ 	    /*
+  	     * ignore 'localhost' entries as they're not useful
+ 	     * on the other end of the wire
++ 	     * ignore 'link local' entries
+ 	     */
+-	    if (len == 4 &&
+-		addr[0] == 127 && addr[1] == 0 &&
+-		addr[2] == 0 && addr[3] == 1)
++	    if (acmp(addr, &in6addr_loopback, len)==0)
+ 		continue;
+ 
+ 	    XdmcpRegisterConnection (family, (char *)addr, len);
++	/* what to do with INET6 ???? */
++	    if (ifr->ifr_addr.sa_family != AF_INET);
++		continue;
+ 	    broad_addr = ifr->ifr_addr;
+ 	    ((struct sockaddr_in *) &broad_addr)->sin_addr.s_addr =
+ 		htonl (INADDR_BROADCAST);
+@@ -794,10 +865,22 @@
+     int family;
+     pointer addr;
+     register HOST *host;
++    struct in6_addr mapped;
+ 
+     family = ConvertAddr(from, &len, (pointer *)&addr);
+     if (family == -1 || family == FamilyLocal)
+ 	return;
++    if ((family == FamilyInternet) && (len == 4)) {
++	/* Mapped IPv4 to IPv6 with special case for loopback */
++	if (((char *)addr)[0] == 127 && ((char *)addr)[1] == 0 &&
++	    ((char *)addr)[2] == 0 && ((char *)addr)[3] == 1)
++	    addr = (pointer)&in6addr_loopback;
++	else {
++	    MAPTOIPV6(mapped, addr);
++	    addr = (unsigned char *) &mapped;
++	}
++	len = sizeof(mapped);
++    }
+     for (host = selfhosts; host; host = host->next)
+     {
+ 	if (addrEqual(family, addr, len, host))
+@@ -840,7 +923,7 @@
+     union {
+         struct sockaddr	sa;
+ #if defined(TCPCONN) || defined(STREAMSCONN) || defined(MNX_TCPCONN)
+-        struct sockaddr_in in;
++        struct sockaddr_in6 in;
+ #endif /* TCPCONN || STREAMSCONN */
+ #ifdef DNETCONN
+         struct sockaddr_dn dn;
+@@ -978,12 +1061,16 @@
+ #endif /* SECURE_RPC */
+ #if defined(TCPCONN) || defined(STREAMSCONN) || defined(MNX_TCPCONN)
+ 	{
++	    if ((_res.options & RES_INIT) == 0)
++		(void)res_init();
++	    _res.options |= RES_USE_INET6;
++
+     	    /* host name */
+     	    if (family == FamilyInternet && (hp = gethostbyname (hostname)) ||
+ 		 (hp = gethostbyname (hostname)))
+ 	    {
+     		saddr.sa.sa_family = hp->h_addrtype;
+-		len = sizeof(saddr.sa);
++		len = sizeof(saddr.in);
+     		if ((family = ConvertAddr (&saddr.sa, &len, (pointer *)&addr)) != -1)
+ 		{
+ #ifdef h_addr				/* new 4.3bsd version of gethostent */
+@@ -1072,6 +1159,7 @@
+     pointer             pAddr;
+ {
+     int			len;
++    struct in6_addr	mapped;
+ 
+     if (!AuthorizedClient(client))
+ 	return(BadAccess);
+@@ -1092,6 +1180,11 @@
+ 	break;
+ #endif
+     case FamilyInternet:
++	if (length == sizeof (struct in_addr)) {
++	    MAPTOIPV6(mapped, pAddr);
++	    pAddr = (char *)& mapped;
++	    length = sizeof(mapped);
++	}
+     case FamilyDECnet:
+     case FamilyChaos:
+ 	if ((len = CheckAddr (family, pAddr, length)) < 0)
+@@ -1174,6 +1267,7 @@
+ {
+     int			len;
+     register HOST	*host, **prev;
++    struct in6_addr	mapped;
+ 
+     if (!AuthorizedClient(client))
+ 	return(BadAccess);
+@@ -1193,6 +1287,11 @@
+ 	break;
+ #endif
+     case FamilyInternet:
++	if (length == sizeof (struct in_addr)) {
++	    MAPTOIPV6(mapped, pAddr);
++	    pAddr = (char *)& mapped;
++	    length = sizeof(mapped);
++	}
+     case FamilyDECnet:
+     case FamilyChaos:
+     	if ((len = CheckAddr (family, pAddr, length)) < 0)
+@@ -1236,7 +1335,12 @@
+     for (host = validhosts; host; host = host->next)
+     {
+ 	nHosts++;
+-	n += (((host->len + 3) >> 2) << 2) + sizeof(xHostEntry);
++	len = host->len;
++	if (host->family == FamilyInternet &&
++	    len == sizeof (struct in6_addr) &&
++	    IN6_IS_ADDR_V4MAPPED((struct in6_addr *)host->addr))
++		len =  sizeof (struct in_addr);
++	n += (((len + 3) >> 2) << 2) + sizeof(xHostEntry);
+     }
+     if (n)
+     {
+@@ -1247,11 +1351,19 @@
+ 	}
+         for (host = validhosts; host; host = host->next)
+ 	{
++	    char *ad = host->addr;
++
+ 	    len = host->len;
+ 	    ((xHostEntry *)ptr)->family = host->family;
++	    if (host->family == FamilyInternet &&
++		len == sizeof (struct in6_addr) &&
++		IN6_IS_ADDR_V4MAPPED((struct in6_addr *)host->addr)) {
++		len =  sizeof (struct in_addr);
++		ad = MAPTOIPV4(ad);
++	    }
+ 	    ((xHostEntry *)ptr)->length = len;
+ 	    ptr += sizeof(xHostEntry);
+-	    acopy (host->addr, ptr, len);
++	    acopy (ad, ptr, len);
+ 	    ptr += ((len + 3) >> 2) << 2;
+         }
+     } else {
+@@ -1277,11 +1389,7 @@
+     {
+ #if defined(TCPCONN) || defined(STREAMSCONN) || defined(AMTCPCONN) || defined(MNX_TCPCONN)
+       case FamilyInternet:
+-#if !defined(AMOEBA)
+-	if (length == sizeof (struct in_addr))
+-#else
+-	if (length == sizeof(ipaddr_t))
+-#endif
++	if (length == sizeof (struct in6_addr))
+ 	    len = length;
+ 	else
+ 	    len = -1;
+@@ -1312,11 +1420,7 @@
+  * Returns 1 if host is invalid, 0 if we've found it. */
+ 
+ InvalidHost (saddr, len)
+-#ifndef AMOEBA_ORIG
+     register struct sockaddr	*saddr;
+-#else
+-    register ipaddr_t		*saddr;
+-#endif
+     int				len;
+ {
+     int 			family;
+@@ -1359,11 +1463,7 @@
+ 
+ static int
+ ConvertAddr (saddr, len, addr)
+-#ifndef AMOEBA_ORIG
+     register struct sockaddr	*saddr;
+-#else
+-    register ipaddr_t		*saddr;
+-#endif
+     int				*len;
+     pointer			*addr;
+ {
+@@ -1381,6 +1481,10 @@
+     case AF_INET:
+         *len = sizeof (struct in_addr);
+         *addr = (pointer) &(((struct sockaddr_in *) saddr)->sin_addr);
++        return FamilyInternet;
++    case AF_INET6:
++        *len = sizeof (struct in6_addr);
++        *addr = (pointer) &(((struct sockaddr_in6 *) saddr)->sin6_addr);
+         return FamilyInternet;
+ #endif
+ #ifdef DNETCONN
+diff -ruN xc.old/programs/Xserver/os/connection.c xc/programs/Xserver/os/connection.c
+--- xc.old/programs/Xserver/os/connection.c	Fri Dec 18 15:56:32 1998
++++ xc/programs/Xserver/os/connection.c	Fri Jan  8 21:09:37 1999
+@@ -477,6 +477,7 @@
+     int auth_id;
+ {
+     char addr[128];
++    char v[64];
+     char *out = addr;
+ 
+     if (!((OsCommPtr)client->osPrivate)->trans_conn) {
+@@ -499,6 +500,13 @@
+ 	    sprintf(out, "IP %s port %d",
+ 		    inet_ntoa(((struct sockaddr_in *) saddr)->sin_addr),
+ 		    ntohs(((struct sockaddr_in *) saddr)->sin_port));
++	    break;
++	case AF_INET6:
++	    sprintf(out, "IPv6 %s port %d",
++		    inet_ntop(AF_INET6,
++			      &((struct sockaddr_in6 *) saddr)->sin6_addr,
++			      v, sizeof (v)),
++		    ntohs(((struct sockaddr_in6 *) saddr)->sin6_port));
+ 	    break;
+ #endif
+ #ifdef DNETCONN
+diff -ruN xc.old/programs/Xserver/os/k5auth.c xc/programs/Xserver/os/k5auth.c
+--- xc.old/programs/Xserver/os/k5auth.c	Fri May 10 09:02:15 1996
++++ xc/programs/Xserver/os/k5auth.c	Mon Jul  7 23:00:58 1997
+@@ -277,7 +277,7 @@
+     long addrlen;
+     krb5_error_code retval, retval2;
+     register char n;
+-    struct sockaddr cli_net_addr;
++    struct sockaddr_in6 cli_net_addr;
+     xReq prefix;
+     krb5_principal cprinc;
+     krb5_data buf;
+@@ -299,15 +299,15 @@
+     }
+     addrlen = sizeof (cli_net_addr);
+     if (getpeername(((OsCommPtr)client->osPrivate)->fd,
+-		    &cli_net_addr, &addrlen) == -1)
++		    (struct sockaddr *)&cli_net_addr, &addrlen) == -1)
+     {
+ 	if (creds)
+ 	    krb5_free_creds(creds);
+ 	return(SendConnSetup(client, "Krb5 stage1: getpeername failed"));
+     }
+-    if (cli_net_addr.sa_family == AF_UNSPEC
++    if (cli_net_addr.sin6_family == AF_UNSPEC
+ #if defined(UNIXCONN) || defined(LOCALCONN) || defined(OS2PIPECONN)
+-	|| cli_net_addr.sa_family == AF_UNIX
++	|| cli_net_addr.sin6_family == AF_UNIX
+ #endif
+ 	)			/* assume local host */
+     {
+@@ -324,9 +324,9 @@
+     }
+     else
+     {
+-	cli_addr.addrtype = cli_net_addr.sa_family; /* the values
++	cli_addr.addrtype = cli_net_addr.sin6_family; /* the values
+ 						       are compatible */
+-	switch (cli_net_addr.sa_family)
++	switch (cli_net_addr.sin6_family)
+ 	{
+ #ifdef TCPCONN
+ 	case AF_INET:
+@@ -334,6 +334,11 @@
+ 	    cli_addr.contents =
+ 		(krb5_octet *)&((struct sockaddr_in *)&cli_net_addr)->sin_addr;
+ 	    break;
++	case AF_INET6:
++	    cli_addr.length = sizeof (struct in6_addr);
++	    cli_addr.contents =
++		(krb5_octet *)&(&cli_net_addr)->sin6_addr;
++	    break;
+ #endif
+ #ifdef DNETCONN
+ 	case AF_DECnet:
+@@ -348,7 +353,7 @@
+ 	    if (creds)
+ 		krb5_free_creds(creds);
+ 	    sprintf(kerror, "Krb5 stage1: unknown address family %d from getpeername",
+-		    cli_net_addr.sa_family);    
++		    cli_net_addr.sin6_family);    
+ 	    return(SendConnSetup(client, kerror));
+ 	}
+     }
+diff -ruN xc.old/programs/Xserver/os/utils.c xc/programs/Xserver/os/utils.c
+--- xc.old/programs/Xserver/os/utils.c	Sun Dec 27 06:01:20 1998
++++ xc/programs/Xserver/os/utils.c	Fri Jan  8 21:10:38 1999
+@@ -1112,7 +1112,9 @@
+ 
+ #if defined(TCPCONN) || defined(STREAMSCONN)
+ #ifndef WIN32
++#include <netinet/in.h>
+ #include <netdb.h>
++#include <resolv.h>
+ #endif
+ #endif
+ 
+@@ -1134,6 +1136,10 @@
+ 	char hname[1024], *hnameptr;
+ 	struct hostent *host;
+ 	int len;
++
++	if ((_res.options & RES_INIT) == 0)
++	    (void)res_init();
++	_res.options |= RES_USE_INET6;
+ 
+ 	gethostname(hname, 1024);
+ 	host = gethostbyname(hname);
+diff -ruN xc.old/programs/Xserver/os/xdmcp.c xc/programs/Xserver/os/xdmcp.c
+--- xc.old/programs/Xserver/os/xdmcp.c	Fri Dec 18 15:56:34 1998
++++ xc/programs/Xserver/os/xdmcp.c	Fri Jan  8 21:11:28 1999
+@@ -38,6 +38,8 @@
+ #endif
+ #include <netinet/in.h>
+ #include <netdb.h>
++#include <resolv.h>
++#undef QUERY
+ #else
+ #if defined(MINIX)
+ #include <net/hton.h>
+@@ -81,7 +83,7 @@
+ 
+ static int		    xdmcpSocket, sessionSocket;
+ static xdmcp_states	    state;
+-static struct sockaddr_in   req_sockaddr;
++static struct sockaddr_in6  req_sockaddr;
+ static int		    req_socklen;
+ static CARD32		    SessionID;
+ static CARD32		    timeOutTime;
+@@ -96,7 +98,7 @@
+ 
+ static XdmcpBuffer	    buffer;
+ 
+-static struct sockaddr_in   ManagerAddress;
++static struct sockaddr_in6  ManagerAddress;
+ 
+ static void get_xdmcp_sock(
+ #if NeedFunctionPrototypes
+@@ -112,7 +114,7 @@
+ 
+ static void recv_willing_msg(
+ #if NeedFunctionPrototypes
+-    struct sockaddr_in */*from*/,
++    struct sockaddr_in6 */*from*/,
+     int /*fromlen*/,
+     unsigned /*length*/
+ #endif
+@@ -332,24 +334,27 @@
+ 
+ #define MAX_BROADCAST	10
+ 
+-static struct sockaddr_in   BroadcastAddresses[MAX_BROADCAST];
++static struct sockaddr_in6  BroadcastAddresses[MAX_BROADCAST];
+ static int		    NumBroadcastAddresses;
+ 
+ void
+ XdmcpRegisterBroadcastAddress (addr)
+     struct sockaddr_in	*addr;
+ {
+-    struct sockaddr_in	*bcast;
++    struct sockaddr_in6	*bcast;
+     if (NumBroadcastAddresses >= MAX_BROADCAST)
+ 	return;
+     bcast = &BroadcastAddresses[NumBroadcastAddresses++];
+-    bzero (bcast, sizeof (struct sockaddr_in));
++    bzero (bcast, sizeof (struct sockaddr_in6));
++    /* mapped the IPv4 broadcast address to IPv6 */
+ #ifdef BSD44SOCKETS
+-    bcast->sin_len = addr->sin_len;
++    bcast->sin6_len = sizeof(struct sockaddr_in6);
+ #endif
+-    bcast->sin_family = addr->sin_family;
+-    bcast->sin_port = htons (xdm_udp_port);
+-    bcast->sin_addr = addr->sin_addr;
++    bcast->sin6_family = AF_INET6;
++    bcast->sin6_port = htons (xdm_udp_port);
++    bcast->sin6_flowinfo = 0;
++    bcast->sin6_addr.s6_addr[10] = bcast->sin6_addr.s6_addr[11] = 0xff;
++    memmove(&bcast->sin6_addr.s6_addr[12], &addr->sin_addr, 4);
+ }
+ 
+ /*
+@@ -464,6 +469,13 @@
+ 	XdmcpDisposeARRAYofARRAY8 (&ConnectionAddresses);
+ 	xdmcpGeneration = serverGeneration;
+     }
++  /* for INET6, try go back to INET, to help not INET6 managers !! */
++    if (type == FamilyInternet &&
++	addrlen == sizeof (struct in6_addr) &&
++	IN6_IS_ADDR_V4MAPPED((struct in6_addr *)address)) {
++	    addrlen = sizeof (struct in_addr);
++	    address += sizeof (struct in6_addr) - sizeof (struct in_addr);
++    }
+     newAddress = (CARD8 *) xalloc (addrlen * sizeof (CARD8));
+     if (!newAddress)
+ 	return;
+@@ -750,7 +762,7 @@
+ 
+ /*ARGSUSED*/
+ XdmcpAddHost(from, fromlen, AuthenticationName, hostname, status)
+-    struct sockaddr_in  *from;
++    struct sockaddr_in6  *from;
+     ARRAY8Ptr		AuthenticationName, hostname, status;
+ {
+     XdmcpSelectHost(from, fromlen, AuthenticationName);
+@@ -766,8 +778,8 @@
+ static void
+ receive_packet()
+ {
+-    struct sockaddr_in from;
+-    int fromlen = sizeof(struct sockaddr_in);
++    struct sockaddr_in6 from;
++    int fromlen = sizeof(struct sockaddr_in6);
+     XdmcpHeader	header;
+ 
+     /* read message off socket */
+@@ -980,7 +992,7 @@
+ #ifndef _MINIX
+     int soopts = 1;
+ 
+-    if ((xdmcpSocket = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
++    if ((xdmcpSocket = socket(AF_INET6, SOCK_DGRAM, 0)) < 0)
+ #else /* MINIX */
+     char *udp_device;
+     int r, s_errno;
+@@ -1066,7 +1078,7 @@
+ 
+ 	for (i = 0; i < NumBroadcastAddresses; i++)
+ 	    XdmcpFlush (xdmcpSocket, &buffer, &BroadcastAddresses[i],
+-			sizeof (struct sockaddr_in));
++			sizeof (struct sockaddr_in6));
+     }
+     else
+     {
+@@ -1077,7 +1089,7 @@
+ 
+ static void
+ recv_willing_msg(from, fromlen, length)
+-    struct sockaddr_in	*from;
++    struct sockaddr_in6	*from;
+     int			fromlen;
+     unsigned		length;
+ {
+@@ -1380,23 +1392,29 @@
+ 	ErrorF("Xserver: missing host name in command line\n");
+ 	exit(1);
+     }
++
++    if ((_res.options & RES_INIT) == 0)
++	(void)res_init();
++    _res.options |= RES_USE_INET6;
++
+     if (!(hep = gethostbyname(argv[i])))
+     {
+ 	ErrorF("Xserver: unknown host: %s\n", argv[i]);
+ 	exit(1);
+     }
+ #ifndef _MINIX
+-    if (hep->h_length == sizeof (struct in_addr))
++    if (hep->h_length == sizeof (struct in6_addr))
+ #else
+     if (hep->h_length == sizeof (ipaddr_t))
+ #endif
+     {
+-	memmove(&ManagerAddress.sin_addr, hep->h_addr, hep->h_length);
++	memmove(&ManagerAddress.sin6_addr, hep->h_addr, hep->h_length);
+ #ifdef BSD44SOCKETS
+-	ManagerAddress.sin_len = sizeof(ManagerAddress);
++	ManagerAddress.sin6_len = sizeof(ManagerAddress);
+ #endif
+-	ManagerAddress.sin_family = AF_INET;
+-	ManagerAddress.sin_port = htons (xdm_udp_port);
++	ManagerAddress.sin6_family = AF_INET6;
++	ManagerAddress.sin6_port = htons (xdm_udp_port);
++	ManagerAddress.sin6_flowinfo = 0;
+     }
+     else
+     {
+diff -ruN xc.old/programs/lbxproxy/os/connection.c xc/programs/lbxproxy/os/connection.c
+--- xc.old/programs/lbxproxy/os/connection.c	Thu Nov  5 20:27:57 1998
++++ xc/programs/lbxproxy/os/connection.c	Fri Jan  8 19:56:54 1999
+@@ -231,7 +231,7 @@
+ int retry;  /* boolean - retry if addr busy */
+ 
+ {
+-    struct sockaddr_in insock;
++    struct sockaddr_in6 insock;
+     int request;
+     int retryCount;
+ #ifndef SO_DONTLINGER
+@@ -240,7 +240,7 @@
+ #endif /* SO_LINGER */
+ #endif /* SO_DONTLINGER */
+ 
+-    if ((request = socket (AF_INET, SOCK_STREAM, 0)) < 0) 
++    if ((request = socket (AF_INET6, SOCK_STREAM, 0)) < 0) 
+     {
+ 	Error ("Creating TCP socket");
+ 	return -1;
+@@ -255,11 +255,12 @@
+     {
+     bzero ((char *)&insock, sizeof (insock));
+ #ifdef BSD44SOCKETS
+-    insock.sin_len = sizeof(insock);
++    insock.sin6_len = sizeof(insock);
+ #endif
+-    insock.sin_family = AF_INET;
+-    insock.sin_port = htons ((unsigned short)(X_TCP_PORT + atoi (display)));
+-    insock.sin_addr.s_addr = htonl(INADDR_ANY);
++    insock.sin6_family = AF_INET6;
++    insock.sin6_flowinfo = 0;
++    insock.sin6_port = htons ((unsigned short)(X_TCP_PORT + atoi (display)));
++    insock.sin6_addr = in6addr_any;
+ 
+     retryCount = retry ? 19 : 0;
+ 
+@@ -1730,7 +1731,7 @@
+ 	struct sockaddr_un un;
+ #endif /* UNIXCONN */
+ #ifdef TCPCONN
+-	struct sockaddr_in in;
++	struct sockaddr_in6 in;
+ #endif /* TCPCONN */
+ #ifdef DNETCONN
+ 	struct sockaddr_dn dn;
+@@ -1755,7 +1756,9 @@
+ 	fromlen = sizeof (from);
+ 	if (!getpeername (newconn, &from.sa, &fromlen))
+ 	{
+-	    if (fromlen && (from.sa.sa_family == AF_INET)) 
++	    if (fromlen &&
++		((from.sa.sa_family == AF_INET) ||
++		 (from.sa.sa_family == AF_INET6)))
+ 	    {
+ 		int mi = 1;
+ 		setsockopt (newconn, IPPROTO_TCP, TCP_NODELAY,
+diff -ruN xc.old/programs/xauth/gethost.c xc/programs/xauth/gethost.c
+--- xc.old/programs/xauth/gethost.c	Sun Sep 13 15:15:53 1998
++++ xc/programs/xauth/gethost.c	Fri Jan  8 19:58:51 1999
+@@ -144,15 +144,21 @@
+ 	alarm (4);
+ 	if (setjmp(env) == 0) {
+ #endif
+-	    hp = gethostbyaddr (auth->address, auth->address_length, AF_INET);
++	    hp = gethostbyaddr (auth->address, auth->address_length,
++			auth->address_length == 4 ? AF_INET : AF_INET6);
+ #ifdef SIGALRM
+ 	}
+ 	alarm (0);
+ #endif
+ 	if (hp)
+ 	  return (hp->h_name);
+-	else
+-	  return (inet_ntoa(*((struct in_addr *)(auth->address))));
++	else {
++	  static char v[64];
++
++	  inet_ntop (auth->address_length == 4 ? AF_INET : AF_INET6,
++		     auth->address, v, sizeof(v));
++	  return (v);
++	}
+     }
+ #endif
+ #ifdef DNETCONN
+@@ -172,38 +178,26 @@
+ }
+ 
+ #ifdef TCPCONN
+-/*
+- * cribbed from lib/X/XConnDis.c
+- */
+ static Bool get_inet_address (name, resultp)
+     char *name;
+-    unsigned int *resultp;		/* return */
++    struct in6_addr *resultp;		/* return */
+ {
+-    unsigned int hostinetaddr = inet_addr (name);
+     struct hostent *host_ptr;
+-    struct sockaddr_in inaddr;		/* dummy variable for size calcs */
+ 
+-#ifndef INADDR_NONE
+-#define INADDR_NONE -1
+-#endif
+-
+-    if (hostinetaddr == INADDR_NONE) {
+-	if ((host_ptr = gethostbyname (name)) == NULL) {
+-	    /* No such host! */
+-	    errno = EINVAL;
+-	    return False;
+-	}
+-	/* Check the address type for an internet host. */
+-	if (host_ptr->h_addrtype != AF_INET) {
+-	    /* Not an Internet host! */
+-	    errno = EPROTOTYPE;
+-	    return False;
+-	}
+- 
+-	memmove( (char *)&hostinetaddr, (char *)host_ptr->h_addr, 
+-	      sizeof(inaddr.sin_addr));
++    if ((host_ptr = gethostbyname (name)) == NULL) {
++	/* No such host! */
++	errno = EINVAL;
++	return False;
+     }
+-    *resultp = hostinetaddr;
++    /* Check the address type for an internet host. */
++    if (host_ptr->h_addrtype != AF_INET6) {
++	/* Not an Internet host! */
++	errno = EPROTOTYPE;
++	return False;
++    }
++ 
++    memmove( (char *)resultp, (char *)host_ptr->h_addr, 
++	      host_ptr->h_length);
+     return True;
+ }
+ #endif
+@@ -239,8 +233,7 @@
+     int len = 0;
+     char *src = NULL;
+ #ifdef TCPCONN
+-    unsigned int hostinetaddr;
+-    struct sockaddr_in inaddr;		/* dummy variable for size calcs */
++    struct in6_addr hostinetaddr;
+ #endif
+ #ifdef DNETCONN
+     struct dn_naddr dnaddr;
+@@ -273,7 +266,7 @@
+ #ifdef TCPCONN
+ 	if (!get_inet_address (host, &hostinetaddr)) return NULL;
+ 	src = (char *) &hostinetaddr;
+-	len = 4; /* sizeof inaddr.sin_addr, would fail on Cray */
++	len = (sizeof hostinetaddr);
+ 	break;
+ #else
+ 	return NULL;
+diff -ruN xc.old/programs/xauth/parsedpy.c xc/programs/xauth/parsedpy.c
+--- xc.old/programs/xauth/parsedpy.c	Mon Feb 16 01:43:19 1998
++++ xc/programs/xauth/parsedpy.c	Thu Apr  2 17:24:14 1998
+@@ -115,12 +115,18 @@
+     if (!displayname || !displayname[0]) return False;
+ 
+ 					/* must have at least :number */
+-    ptr = strchr(displayname, ':');
++    /*
++     * If a "host::" is found then assume DNET.
++     * For IPv6, pb with possible : in host --> use rightmost : and test
++     *		x:y->inet, x::y->dnet, x:::y->inet(v6)
++     */
++    ptr = strrchr(displayname, ':');
+     if (!ptr || !ptr[1]) return False;
+-    if (ptr[1] == ':') {
+-	if (ptr[2] == '\0') return False;
+-	dnet = True;
+-    }
++    if (ptr > displayname && ptr[-1] == ':')
++	if (ptr-1 == displayname || ptr[-2] != ':') {
++	    ptr--;
++	    dnet = True;
++	}
+ 
+ 
+     /*
+diff -ruN xc.old/programs/xauth/xauth.c xc/programs/xauth/xauth.c
+--- xc.old/programs/xauth/xauth.c	Wed Apr 27 09:19:54 1994
++++ xc/programs/xauth/xauth.c	Mon Jul  7 23:10:46 1997
+@@ -32,6 +32,8 @@
+ 
+ #include "xauth.h"
+ 
++#include <netinet/in.h>
++#include <resolv.h>
+ 
+ /*
+  * global data
+@@ -102,6 +104,10 @@
+     int status;
+ 
+     ProgramName = argv[0];
++
++    if ((_res.options & RES_INIT) == 0)
++	(void)res_init();
++    _res.options |= RES_USE_INET6;
+ 
+     for (i = 1; i < argc; i++) {
+ 	char *arg = argv[i];
+diff -ruN xc.old/programs/xdm/access.c xc/programs/xdm/access.c
+--- xc.old/programs/xdm/access.c	Sat Jan 18 08:02:17 1997
++++ xc/programs/xdm/access.c	Mon Jul  7 23:12:04 1997
+@@ -379,6 +379,11 @@
+ 	    	display->connectionType = FamilyInternet;
+ 	    	break;
+ #endif
++#ifdef AF_INET6
++	    case AF_INET6:
++	    	display->connectionType = FamilyInternet;
++	    	break;
++#endif
+ #ifdef AF_DECnet
+ 	    case AF_DECnet:
+ 	    	display->connectionType = FamilyDECnet;
+diff -ruN xc.old/programs/xdm/auth.c xc/programs/xdm/auth.c
+--- xc.old/programs/xdm/auth.c	Tue Dec 22 15:23:31 1998
++++ xc/programs/xdm/auth.c	Fri Jan  8 21:12:32 1999
+@@ -86,8 +86,8 @@
+ # endif /* ESIX */
+ #endif /* i386 */
+ 
+-#ifdef SVR4
+ # include <netdb.h>
++#ifdef SVR4
+ # ifndef SCO325
+ # include <sys/sockio.h>
+ # endif
+@@ -988,6 +988,21 @@
+ 		    Debug ("Skipping localhost address\n");
+ 		    continue;
+ 	    }
++	    if (len == sizeof (struct in6_addr)) {
++	        if (bcmp(addr, &in6addr_loopback, len) == 0)
++	        {
++		    Debug ("Skipping localhost address\n");
++		    continue;
++	        }
++	    /*
++	     * ignore Link local address, the semantic would be weird
++	     */
++		if (IN6_IS_ADDR_LINKLOCAL((struct in6_addr *)addr))
++	        {
++		    Debug ("Skipping link-local address\n");
++		    continue;
++	        }
++	    }
+ 	    family = FamilyInternet;
+ 	}
+ 	Debug ("DefineSelf: write network address, length %d\n", len);
+@@ -1014,10 +1029,10 @@
+ 
+     union {
+ 	struct  sockaddr   sa;
+-	struct  sockaddr_in  in;
++	struct  sockaddr_in6  in;
+     } saddr;
+ 	
+-    struct	sockaddr_in	*inetaddr;
++    struct	sockaddr_in6	*inetaddr;
+ 
+     /* hpux:
+      * Why not use gethostname()?  Well, at least on my system, I've had to
+@@ -1029,12 +1044,12 @@
+     hp = gethostbyname (name.nodename);
+     if (hp != NULL) {
+ 	saddr.sa.sa_family = hp->h_addrtype;
+-	inetaddr = (struct sockaddr_in *) (&(saddr.sa));
+-	memmove( (char *) &(inetaddr->sin_addr), (char *) hp->h_addr, (int) hp->h_length);
++	inetaddr = (struct sockaddr_in6 *) (&(saddr.sa));
++	memmove( (char *) &(inetaddr->sin6_addr), (char *) hp->h_addr, (int) hp->h_length);
+ 	family = ConvertAddr ( &(saddr.sa), &len, &addr);
+ 	if ( family >= 0) {
+-	    writeAddr (FamilyInternet, sizeof (inetaddr->sin_addr),
+-			(char *) (&inetaddr->sin_addr), file, auth);
++	    writeAddr (FamilyInternet, sizeof (inetaddr->sin6_addr),
++			(char *) (&inetaddr->sin6_addr), file, auth);
+ 	}
+     }
+ }
+@@ -1101,7 +1116,7 @@
+     	tcp_device= TCP_DEVICE;
+     fd = open(tcp_device, O_RDWR);
+ #else
+-    fd = socket (AF_INET, SOCK_STREAM, 0);
++    fd = socket (AF_INET6, SOCK_STREAM, 0);
+ #endif
+     DefineSelf (fd, file, auth);
+     close (fd);
+@@ -1133,6 +1148,35 @@
+     setAuthNumber (auth, name);
+     family = ConvertAddr (peer, &peerlen, &addr);
+     Debug ("writeRemoteAuth: family %d\n", family);
++  /* if remote and name, set all the remote addresses */
++    if (family == FamilyInternet)
++    {
++	struct in6_addr tmp;
++	struct hostent *hp;
++	char **ad, *colon;
++	int af;
++
++	if (peerlen == sizeof (struct in6_addr) &&
++	    !IN6_IS_ADDR_V4MAPPED((struct in6_addr *)addr))
++	    af = AF_INET6;
++	else
++	    af = AF_INET;
++    	colon = strrchr(name, ':');
++	if (colon) {
++	    *colon = 0;
++	    if (inet_pton(af, name, &tmp) == 0 &&
++		(hp = gethostbyname2(name, af))) {
++		for(ad = hp->h_addr_list; *ad; ad++) {
++		    Debug ("writeRemoteAuth: %d, %d, %x\n",
++			    family, hp->h_length, *(int *)*ad);
++		    writeAddr (family, hp->h_length, *ad, file, auth);
++		}
++		*colon = ':';
++		return;
++	    }
++	    *colon = ':';
++	}
++    }
+     if (family != FamilyLocal)
+     {
+ 	Debug ("writeRemoteAuth: %d, %d, %x\n",
+diff -ruN xc.old/programs/xdm/choose.c xc/programs/xdm/choose.c
+--- xc.old/programs/xdm/choose.c	Sat Jan 18 08:02:19 1997
++++ xc/programs/xdm/choose.c	Mon Jul  7 23:13:47 1997
+@@ -232,6 +232,22 @@
+ 	    result_len = 8;
+ 	}
+ 	break;
++    case AF_INET6:
++	{
++	    char *port;
++	    int portlen;
++	    ARRAY8Ptr localAddress, getLocalAddress ();
++
++	    port = NetaddrPort((XdmcpNetaddr)addr_buf, &portlen);
++	    result_buf[0] = netfamily >> 8;
++	    result_buf[1] = netfamily & 0xFF;
++	    result_buf[2] = port[0];
++	    result_buf[3] = port[1];
++	    localAddress = getLocalAddress ();
++	    memmove( (char *)result_buf+4, (char *)localAddress->data, 16);
++	    result_len = 20;
++	}
++	break;
+ #ifdef AF_DECnet
+     case AF_DECnet:
+ 	break;
+diff -ruN xc.old/programs/xdm/chooser.c xc/programs/xdm/chooser.c
+--- xc.old/programs/xdm/chooser.c	Tue Dec 22 15:23:31 1998
++++ xc/programs/xdm/chooser.c	Fri Jan  8 21:13:28 1999
+@@ -88,6 +88,7 @@
+ #endif
+ #include    <netinet/in.h>
+ #include    <arpa/inet.h>
++#include    <resolv.h>
+ #else /* MINIX */
+ #include <net/hton.h>
+ #include <net/netlib.h>
+@@ -347,6 +348,11 @@
+ 	hostAddr.length = 4;
+ 	connectionType = FamilyInternet;
+ 	break;
++    case AF_INET6:
++	hostAddr.data = (CARD8 *) &((struct sockaddr_in6 *) addr)->sin6_addr;
++	hostAddr.length = 16;
++	connectionType = FamilyInternet;
++	break;
+     default:
+ 	hostAddr.data = (CARD8 *) "";
+ 	hostAddr.length = 0;
+@@ -376,11 +382,12 @@
+ 	    switch (addr->sa_family)
+ 	    {
+ 	    case AF_INET:
++	    case AF_INET6:
+ 	    	{
+ 	    	    struct hostent  *hostent;
+ 		    char	    *host;
+     	
+-	    	    hostent = gethostbyaddr ((char *)hostAddr.data, hostAddr.length, AF_INET);
++	    	    hostent = gethostbyaddr ((char *)hostAddr.data, hostAddr.length, addr->sa_family);
+ 	    	    if (hostent)
+ 	    	    {
+ 			XdmcpDisposeARRAY8 (hostname);
+@@ -493,7 +500,7 @@
+     ARRAY8	    hostname;
+     ARRAY8	    status;
+     int		    saveHostname = 0;
+-    struct sockaddr addr;
++    struct sockaddr_in6 addr;
+     int		    addrlen;
+ #ifdef MINIX
+     int r;
+@@ -750,6 +757,7 @@
+ 	    in_addr.sin_family = AF_INET;
+ 	else
+ 	{
++	    /* TODO */
+ 	    hostent = gethostbyname (name);
+ 	    if (!hostent)
+ 		return;
+@@ -920,7 +928,7 @@
+     ref.ref_int= socketFD;
+     nbio_setcallback(socketFD, ASIO_READ, read_cb, ref);
+ #else /* !MINIX */
+-    if ((socketFD = socket (AF_INET, SOCK_DGRAM, 0)) < 0)
++    if ((socketFD = socket (AF_INET6, SOCK_DGRAM, 0)) < 0)
+ 	return 0;
+ #endif /* MINIX */
+ #endif
+@@ -950,7 +958,7 @@
+ {
+     if (app_resources.xdmAddress)
+     {
+-	struct sockaddr_in  in_addr;
++	struct sockaddr_in6  in_addr;
+ 	struct sockaddr	*addr;
+ 	int		family;
+ 	int		len;
+@@ -970,13 +978,14 @@
+ 	xdm = (char *) app_resources.xdmAddress->data;
+ 	family = (xdm[0] << 8) + xdm[1];
+ 	switch (family) {
+-	case AF_INET:
++	case AF_INET6:
+ #ifdef BSD44SOCKETS
+-	    in_addr.sin_len = sizeof(in_addr);
++	    in_addr.sin6_len = sizeof(in_addr);
+ #endif
+-	    in_addr.sin_family = family;
+-	    memmove( &in_addr.sin_port, xdm + 2, 2);
+-	    memmove( &in_addr.sin_addr, xdm + 4, 4);
++	    in_addr.sin6_family = family;
++	    in_addr.sin6_flowinfo = 0;
++	    memmove( &in_addr.sin6_port, xdm + 2, 2);
++	    memmove( &in_addr.sin6_addr, xdm + 4, 16);
+ 	    addr = (struct sockaddr *) &in_addr;
+ 	    len = sizeof (in_addr);
+ 	    break;
+@@ -1172,6 +1181,10 @@
+     Arg		position[3];
+     Dimension   width, height;
+     Position	x, y;
++
++    if ((_res.options & RES_INIT) == 0)
++	(void)res_init();
++    _res.options |= RES_USE_INET6;
+ 
+     toplevel = XtInitialize (argv[0], "Chooser", options, XtNumber(options), &argc, argv);
+ 
+diff -ruN xc.old/programs/xdm/dm.c xc/programs/xdm/dm.c
+--- xc.old/programs/xdm/dm.c	Sat Oct 31 21:17:43 1998
++++ xc/programs/xdm/dm.c	Fri Jan  8 20:04:21 1999
+@@ -79,6 +79,8 @@
+ extern int errno;
+ #endif
+ 
++#include	<netinet/in.h>
++#include	<resolv.h>
+ 
+ #if defined(SVR4) && !defined(SCO)
+ extern FILE    *fdopen();
+@@ -118,6 +120,10 @@
+     Title = argv[0];
+     TitleLen = (argv[argc - 1] + strlen(argv[argc - 1])) - Title;
+ #endif
++
++    if ((_res.options & RES_INIT) == 0)
++	(void)res_init();
++    _res.options |= RES_USE_INET6;
+ 
+     /*
+      * Step 1 - load configuration parameters
+diff -ruN xc.old/programs/xdm/netaddr.c xc/programs/xdm/netaddr.c
+--- xc.old/programs/xdm/netaddr.c	Sat Jan 18 08:02:21 1997
++++ xc/programs/xdm/netaddr.c	Mon Jul  7 23:15:59 1997
+@@ -65,7 +65,7 @@
+ #endif
+ 
+ /* given an XdmcpNetaddr, returns the socket protocol family used,
+-   e.g., AF_INET */
++   e.g., AF_INET[6] */
+ 
+ int NetaddrFamily(netaddrp)
+     XdmcpNetaddr netaddrp;
+@@ -96,6 +96,9 @@
+     case AF_INET:
+ 	*lenp = 2;
+ 	return (char *)&(((struct sockaddr_in *)netaddrp)->sin_port);
++    case AF_INET6:
++	*lenp = 2;
++	return (char *)&(((struct sockaddr_in6 *)netaddrp)->sin6_port);
+     default:
+ 	*lenp = 0;
+ 	return NULL;
+@@ -125,6 +128,9 @@
+     case AF_INET:
+         *lenp = sizeof (struct in_addr);
+         return (char *) &(((struct sockaddr_in *)netaddrp)->sin_addr);
++    case AF_INET6:
++        *lenp = sizeof (struct in6_addr);
++        return (char *) &(((struct sockaddr_in6 *)netaddrp)->sin6_addr);
+ #endif
+ #ifdef DNETCONN
+     case AF_DECnet:
+@@ -177,6 +183,7 @@
+ #endif
+ #ifdef TCPCONN
+       case AF_INET:
++      case AF_INET6:
+         retval = FamilyInternet;
+ 	break;
+ #endif
+@@ -248,6 +255,20 @@
+ 
+ 	Debug ("port %d, host %d.%d.%d.%d\n",
+ 		(p[0] << 8) + p[1], t[0], t[1], t[2], t[3]);
++	break;
++    }
++#endif
++#ifdef AF_INET6
++    case AF_INET6:
++
++	p = (unsigned char *) &((struct sockaddr_in6 *) a)->sin6_port;
++	t = (unsigned char *) &((struct sockaddr_in6 *) a)->sin6_addr;
++
++	Debug ("port %d, host %2x%02x:%2x%02x:%2x%02x:%2x%02x:%2x%02x:%2x%02x:%2x%02x:%2x%02x\n",
++		(p[0] << 8) + p[1],
++	        t[0], t[1], t[2], t[3], t[4], t[5], t[6], t[7],
++	        t[8], t[9], t[10], t[11], t[12], t[13], t[14], t[15]);
++
+ 	break;
+     }
+ #endif
+diff -ruN xc.old/programs/xdm/socket.c xc/programs/xdm/socket.c
+--- xc.old/programs/xdm/socket.c	Sat Jan 18 08:02:24 1997
++++ xc/programs/xdm/socket.c	Mon Jul  7 23:16:50 1997
+@@ -84,7 +84,7 @@
+ CreateWellKnownSockets ()
+ {
+ #ifndef MINIX
+-    struct sockaddr_in	sock_addr;
++    struct sockaddr_in6	sock_addr;
+ #else /* MINIX */
+     char *tcp_device, *udp_device;
+     nwio_udpopt_t udpopt;
+@@ -103,7 +103,7 @@
+     	udp_device= UDP_DEVICE;
+     xdmcpFd = open(udp_device, O_RDWR);
+ #else
+-    xdmcpFd = socket (AF_INET, SOCK_DGRAM, 0);
++    xdmcpFd = socket (AF_INET6, SOCK_DGRAM, 0);
+ #endif
+     if (xdmcpFd == -1) {
+ 	LogError ("XDMCP socket creation failed, errno %d\n", errno);
+@@ -145,11 +145,12 @@
+     /* zero out the entire structure; this avoids 4.4 incompatibilities */
+     bzero ((char *) &sock_addr, sizeof (sock_addr));
+ #ifdef BSD44SOCKETS
+-    sock_addr.sin_len = sizeof(sock_addr);
++    sock_addr.sin6_len = sizeof(sock_addr);
+ #endif
+-    sock_addr.sin_family = AF_INET;
+-    sock_addr.sin_port = htons ((short) request_port);
+-    sock_addr.sin_addr.s_addr = htonl (INADDR_ANY);
++    sock_addr.sin6_family = AF_INET6;
++    sock_addr.sin6_port = htons ((short) request_port);
++    sock_addr.sin6_flowinfo = 0;
++    sock_addr.sin6_addr = in6addr_any;
+     if (bind (xdmcpFd, (struct sockaddr *)&sock_addr, sizeof (sock_addr)) == -1)
+     {
+ 	LogError ("error %d binding socket address %d\n", errno, request_port);
+@@ -167,7 +168,7 @@
+     	tcp_device= TCP_DEVICE;
+     chooserFd = open(tcp_device, O_RDWR);
+ #else
+-    chooserFd = socket (AF_INET, SOCK_STREAM, 0);
++    chooserFd = socket (AF_INET6, SOCK_STREAM, 0);
+ #endif
+     Debug ("Created chooser socket %d\n", chooserFd);
+     if (chooserFd == -1)
+@@ -216,7 +217,7 @@
+     char	*addr;
+     int		*lenp;
+ {
+-    struct sockaddr_in	in_addr;
++    struct sockaddr_in6	in_addr;
+     int			len;
+ 
+     len = sizeof in_addr;
+diff -ruN xc.old/programs/xdm/xdmcp.c xc/programs/xdm/xdmcp.c
+--- xc.old/programs/xdm/xdmcp.c	Sun Feb  1 22:44:04 1998
++++ xc/programs/xdm/xdmcp.c	Thu Apr  2 17:10:26 1998
+@@ -66,6 +66,8 @@
+ #include <net/gen/netdb.h>
+ #endif /* !MINIX */
+ 
++# include	<arpa/inet.h>
++
+ #ifdef X_NOT_STDC_ENV
+ #define Time_t long
+ extern Time_t time ();
+@@ -133,8 +135,8 @@
+     ARRAY8Ptr	address;
+     char	*closure;
+ {
+-#ifdef AF_INET
+-    struct sockaddr_in	    in_addr;
++#ifdef AF_INET6
++    struct sockaddr_in6	    in_addr;
+ #endif
+ #ifdef AF_DECnet
+ #endif
+@@ -143,19 +145,20 @@
+ 
+     switch (connectionType)
+     {
+-#ifdef AF_INET
++#ifdef AF_INET6
+     case FamilyInternet:
+ 	addr = (struct sockaddr *) &in_addr;
+ 	bzero ((char *) &in_addr, sizeof (in_addr));
+ #ifdef BSD44SOCKETS
+-	in_addr.sin_len = sizeof(in_addr);
++	in_addr.sin6_len = sizeof(in_addr);
+ #endif
+-	in_addr.sin_family = AF_INET;
+-	in_addr.sin_port = htons ((short) XDM_UDP_PORT);
+-	if (address->length != 4)
++	in_addr.sin6_family = AF_INET6;
++	in_addr.sin6_flowinfo = 0;
++	in_addr.sin6_port = htons ((short) XDM_UDP_PORT);
++	if (address->length != 16)
+ 	    return;
+-	memmove( (char *) &in_addr.sin_addr, address->data, address->length);
+-	addrlen = sizeof (struct sockaddr_in);
++	memmove( (char *) &in_addr.sin6_addr, address->data, address->length);
++	addrlen = sizeof (struct sockaddr_in6);
+ 	break;
+ #endif
+ #ifdef AF_DECnet
+@@ -287,7 +290,7 @@
+ ProcessRequestSocket ()
+ {
+     XdmcpHeader		header;
+-    struct sockaddr_in	addr;
++    struct sockaddr_in6	addr;
+     int			addrlen = sizeof addr;
+ #ifdef MINIX
+     int			r;
+@@ -486,7 +489,8 @@
+ 
+ 	    data = connectionAddress->data;
+ 	    hostent = gethostbyaddr ((char *)data,
+-				     connectionAddress->length, AF_INET);
++			connectionAddress->length,
++			connectionAddress->length == 4 ? AF_INET : AF_INET6);
+ 	    if (sourceAddress && hostent) {
+ #if defined(__SVR4) && defined(__sun)
+ 		/*
+@@ -546,11 +550,34 @@
+ 	    }
+ 	    else
+ 	    {
++		if (multiHomed) {
++		    if (((struct sockaddr_in *)
++				originalAddress)->sin_family == AF_INET) {
++			data = (CARD8 *) &((struct sockaddr_in *)
++					originalAddress)->sin_addr.s_addr;
++			goto v4;
++		    }
++		    data = (CARD8 *) &((struct sockaddr_in6 *)
++					originalAddress)->sin6_addr;
++		    goto v6;
++		}
++		if (connectionAddress->length == sizeof (struct in6_addr)) {
++	v6:
++		    if (IN6_IS_ADDR_V4MAPPED((struct in6_addr *)data)) {
++			data += sizeof(struct in6_addr)-sizeof(struct in_addr);
++			goto v4;
++		    }
++		    if (!getString (name, INET6_ADDRSTRLEN+6))
++			return 0;
++		    (void) inet_ntop(AF_INET6, data, name, INET6_ADDRSTRLEN);
++		    sprintf(name+strlen(name), ":%d", displayNumber);
++		    return name;
++		}
++		if (connectionAddress->length != 4)
++		    return 0;
++	v4:
+ 		if (!getString (name, 25))
+ 		    return 0;
+-		if (multiHomed)
+-		    data = (CARD8 *) &((struct sockaddr_in *)originalAddress)->
+-				sin_addr.s_addr;
+ 		sprintf(name, "%d.%d.%d.%d:%d",
+ 			data[0], data[1], data[2], data[3], displayNumber);
+ 	    }
+@@ -631,6 +658,29 @@
+ 		}
+ 		break;
+ #endif
++#ifdef AF_INET6
++	    case AF_INET6:
++		{
++		    struct sockaddr_in6	in_addr;
++
++		    if (clientAddress.length != 16 ||
++		        clientPort.length != 2)
++		    {
++			goto badAddress;
++		    }
++		    bzero ((char *) &in_addr, sizeof (in_addr));
++#ifdef BSD44SOCKETS
++		    in_addr.sin6_len = sizeof(in_addr);
++#endif
++		    in_addr.sin6_family = AF_INET6;
++		    in_addr.sin6_flowinfo = 0;
++		    memmove( &in_addr.sin6_addr, clientAddress.data, 16);
++		    memmove( (char *) &in_addr.sin6_port, clientPort.data, 2);
++		    client = (struct sockaddr *) &in_addr;
++		    clientlen = sizeof (in_addr);
++		}
++		break;
++#endif
+ #ifdef AF_UNIX
+ 	    case AF_UNIX:
+ 		{
+@@ -1199,11 +1249,14 @@
+ 	    char *local_name;
+ 
+ 	    hostent = gethostbyaddr ((char *)connectionAddress->data,
+-				     connectionAddress->length, AF_INET);
++			connectionAddress->length,
++			connectionAddress->length == 4 ? AF_INET : AF_INET6);
+ 
+ 	    if (hostent)
+ 		local_name = hostent->h_name;
+ 	    else {
++		if (connectionAddress->length != 4)
++		    break;
+ 		/* can't get name, so use emergency fallback */
+ 		sprintf(dotted, "%d.%d.%d.%d",
+ 			connectionAddress->data[0],
+diff -ruN xc.old/programs/xfs/difs/main.c xc/programs/xfs/difs/main.c
+--- xc.old/programs/xfs/difs/main.c	Thu Nov  5 20:28:29 1998
++++ xc/programs/xfs/difs/main.c	Fri Jan  8 20:08:42 1999
+@@ -59,6 +59,10 @@
+ #include	"cache.h"
+ #include	"site.h"
+ 
++#include	<sys/types.h>
++#include	<netinet/in.h>
++#include	<resolv.h>
++
+ char       *ConnectionInfo;
+ int         ConnInfoLen;
+ 
+@@ -93,6 +97,10 @@
+ 
+     argcGlobal = argc;
+     argvGlobal = argv;
++
++    if ((_res.options & RES_INIT) == 0)
++	(void)res_init();
++    _res.options |= RES_USE_INET6;
+ 
+     configfilename = DEFAULT_CONFIG_FILE;
+ 
+diff -ruN xc.old/programs/xfs/os/access.c xc/programs/xfs/os/access.c
+--- xc.old/programs/xfs/os/access.c	Sat Jan 18 08:02:45 1997
++++ xc/programs/xfs/os/access.c	Mon Jul  7 23:26:42 1997
+@@ -93,7 +93,7 @@
+     char        hname[64];
+     struct hostent *hp;
+ 
+-    addr->addr_len = sizeof(struct in_addr);
++    addr->addr_len = sizeof(struct in6_addr);
+     addr->address = (pointer) fsalloc(addr->addr_len);
+     if (!addr->address)
+ 	return FSBadAlloc;
+diff -ruN xc.old/programs/xfwp/xfwp.c xc/programs/xfwp/xfwp.c
+--- xc.old/programs/xfwp/xfwp.c	Fri Jan 23 00:53:25 1998
++++ xc/programs/xfwp/xfwp.c	Thu Apr  2 17:17:41 1998
+@@ -57,6 +57,7 @@
+ #endif
+ #include <sys/wait.h>
+ #include <netdb.h>
++#include <resolv.h>
+ #if defined(_ANSI_SOURCE) && defined(__bsdi__)
+ #undef _ANSI_SOURCE
+ #include <signal.h>
+@@ -163,13 +164,13 @@
+ main (int argc, char * argv[])
+ {
+   struct clientDataStruct 	client_data;	
+-  struct sockaddr_in 		dest_server; 
++  struct sockaddr_in6 		dest_server; 
+   struct pm_policy 		policy;
+   int 				pm_listen_array[MAX_TRANSPORTS];
+   int 				pm_conn_counter;
+-  struct sockaddr_in		pm_sockaddr_in; 
++  struct sockaddr_in6		pm_sockaddr_in6; 
+   int   			rem_listen_counter; 
+-  struct sockaddr_in		rem_sockaddr_in;
++  struct sockaddr_in6		rem_sockaddr_in6;
+   fd_set 			readable, writable, rinit, winit;
+   int				nfds = 0;
+   int 				nready = 0;
+@@ -196,6 +197,10 @@
+   /*
+   // now do the rest of the setup
+   */
++  if ((_res.options & RES_INIT) == 0)
++    (void) res_init();
++  _res.options |= RES_USE_INET6;
++
+   doProcessInputArgs(config_info, argc, argv);
+   if ((config_status = doHandleConfigFile(config_info)) == FAILURE)
+     exit(1);
+@@ -515,7 +520,7 @@
+ {
+   int			this_server;
+   int 			one = 1;
+-  struct sockaddr_in 	rem_sockaddr_in;
++  struct sockaddr_in6 	rem_sockaddr_in6;
+   int 			port_counter;
+   int 			listen_port;
+   char			port_buff[10];
+@@ -578,7 +583,7 @@
+     return FAILURE;
+   }
+   if ((server_array[this_server]->client_listen_fd = 
+-					socket(AF_INET, SOCK_STREAM, 0)) < 0) 
++					socket(AF_INET6, SOCK_STREAM, 0)) < 0) 
+   {
+ #ifdef DEBUG
+       fprintf(stderr,"doRemClientSetup: socket() call failed!");
+@@ -599,8 +604,11 @@
+   /*
+   // set up the rest of the remote client listener
+   */
+-  bzero((char * ) &rem_sockaddr_in, sizeof(rem_sockaddr_in));
+-  rem_sockaddr_in.sin_family = AF_INET;
++  bzero((char * ) &rem_sockaddr_in6, sizeof(rem_sockaddr_in6));
++  rem_sockaddr_in6.sin6_family = AF_INET6;
++  rem_sockaddr_in6.sin6_len = sizeof(rem_sockaddr_in6);
++  rem_sockaddr_in6.sin6_flowinfo = 0;
++  rem_sockaddr_in6.sin6_addr = in6addr_any;
+   if (setsockopt(server_array[this_server]->client_listen_fd,
+ 		 SOL_SOCKET, SO_REUSEADDR,
+                  &one, sizeof(one)) < 0) 
+@@ -617,10 +625,10 @@
+   }
+ 
+   while (True) {
+-      rem_sockaddr_in.sin_port = htons(listen_port);
++      rem_sockaddr_in6.sin6_port = htons(listen_port);
+       if (bind(server_array[this_server]->client_listen_fd, 
+-	       (struct sockaddr *)&rem_sockaddr_in, 
+-	       sizeof(rem_sockaddr_in)) == 0)
++	       (struct sockaddr *)&rem_sockaddr_in6, 
++	       sizeof(rem_sockaddr_in6)) == 0)
+ 	  break;
+       if (errno != EADDRINUSE)
+       {
+@@ -1003,7 +1011,7 @@
+   int				server_reason_len;
+   int 				conn_auth_namelen, conn_auth_datalen;
+   char				throw_away[RWBUFFER_SIZE];
+-  struct sockaddr_in		server_sockaddr_in;
++  struct sockaddr_in6		server_sockaddr_in6;
+   enum CONFIG_CHECK		server_status;
+   xConnClientPrefix 		client;    
+   xConnSetupPrefix 		prefix;    
+@@ -1039,10 +1047,10 @@
+     int				check_sock_fd;
+     struct timeval		time_val;
+     struct timezone		time_zone;
+-    struct sockaddr_in		temp_sockaddr_in;
++    struct sockaddr_in6		temp_sockaddr_in6;
+     int				retval;
+     int				config_check;
+-    int				addrlen = sizeof(temp_sockaddr_in);
++    int				addrlen = sizeof(temp_sockaddr_in6);
+     /*
+     // start by accepting the connection if you can, use pm_listen_array 
+     // index to index into ICE listen_object list (this is because the
+@@ -1061,17 +1069,17 @@
+     // connection; start by using getpeername() to get endpoint info
+     */
+     retval = getpeername(temp_sock_fd, 
+-			 (struct sockaddr*)&temp_sockaddr_in, 
++			 (struct sockaddr*)&temp_sockaddr_in6, 
+ 			 &addrlen);
+ 
+-    assert(temp_sockaddr_in.sin_family == AF_INET);
++    assert(temp_sockaddr_in6.sin6_family == AF_INET6);
+     
+     /*
+     // then do the configuration check; NOTE:  we're not doing anything
+-    // with the server_sockaddr_in argument 
++    // with the server_sockaddr_in6 argument 
+     */
+-    if ((config_check = doConfigCheck(&temp_sockaddr_in, 
+-				      &server_sockaddr_in,
++    if ((config_check = doConfigCheck(&temp_sockaddr_in6, 
++				      &server_sockaddr_in6,
+ 				      config_info,
+ 				      PMGR,
+ 				      &log_data)) == FAILURE)
+@@ -1302,17 +1310,18 @@
+       // configuration, if connection allowed, allocate
+       // the read/write buffer for this connection;
+       */
+-      struct sockaddr_in  temp_sockaddr_in;
+-      int                 temp_sock_fd;
+-      int                 temp_sock_len;
+-      int                 host_count;
+-      int                 config_check;
+-      struct timeval	  time_val;
+-      struct timezone	  time_zone;
++      struct sockaddr_in6  temp_sockaddr_in6;
++      int                  temp_sock_fd;
++      int                  temp_sock_len;
++      int                  host_count;
++      int                  config_check;
++      struct timeval	   time_val;
++      struct timezone	   time_zone;
++      char		   v1[64], v2[64];
+ 
+-      temp_sock_len = sizeof(temp_sockaddr_in);
++      temp_sock_len = sizeof(temp_sockaddr_in6);
+       if ((temp_sock_fd = accept(fd_counter,
+-                                 (struct sockaddr *) &temp_sockaddr_in, 
++                                 (struct sockaddr *) &temp_sockaddr_in6, 
+ 	 			 &temp_sock_len)) < 0)
+       {
+         /*
+@@ -1336,7 +1345,7 @@
+       if ((server_status = 
+ 	doServerConnectSetup(server_array[listen_counter]->x_server_hostport, 
+ 			     &server_array[listen_counter]->server_fd, 
+-			     &server_sockaddr_in)) == FAILURE)
++			     &server_sockaddr_in6)) == FAILURE)
+       {
+ #ifdef DEBUG
+ 	fprintf(stderr, 
+@@ -1346,7 +1355,7 @@
+       }
+       if ((server_status = 
+ 		doServerConnect(&server_array[listen_counter]->server_fd, 
+-		&server_sockaddr_in)) == FAILURE)
++		&server_sockaddr_in6)) == FAILURE)
+       {
+ #ifdef DEBUG
+ 	fprintf(stderr, 
+@@ -1355,15 +1364,18 @@
+ 	return;
+       }
+       /*
+-      // derive and save the client IP source and destination address strings 
+-      // for logging purposes (have to do it here while we have them; even if
+-      // this client connection passes the config check, it might fail the
+-      // server security checks later); also, init the config_rule_num field
+-      */
+-      log_data.source = Malloc(strlen(inet_ntoa(temp_sockaddr_in.sin_addr)));
+-      log_data.destination = Malloc(strlen(inet_ntoa(server_sockaddr_in.sin_addr)));
+-      strcpy(log_data.source, inet_ntoa(temp_sockaddr_in.sin_addr));
+-      strcpy(log_data.destination, inet_ntoa(server_sockaddr_in.sin_addr)); 
++      // derive and save the client IPv6 source and destination
++      // address strings for logging purposes (have to do it here
++      // while we have them; even if this client connection passes
++      // the config check, it might fail the server security checks later);
++      // also, init the config_rule_num field
++      */
++      log_data.source = Malloc(strlen(inet_ntop(AF_INET6,
++			    &temp_sockaddr_in6.sin6_addr, v1, sizeof(v1))));
++      log_data.destination = Malloc(strlen(inet_ntop(AF_INET6,
++			    &server_sockaddr_in6.sin6_addr, v2, sizeof(v2))));
++      strcpy(log_data.source, v1);
++      strcpy(log_data.destination, v2);
+       log_data.config_rule_num = -1; 
+       /*
+       // do config check on client source and destination (must do
+@@ -1371,8 +1383,8 @@
+       // to query and we may not be able to resolve server name 
+       // alone from xfindproxy() 
+       */
+-      if ((config_check = doConfigCheck(&temp_sockaddr_in, 
+-				 	&server_sockaddr_in,
++      if ((config_check = doConfigCheck(&temp_sockaddr_in6, 
++				 	&server_sockaddr_in6,
+ 					config_info,
+ 					CLIENT,
+ 				        &log_data)) == FAILURE)
+@@ -1454,13 +1466,13 @@
+       // server security extension or other loggable events)
+       */
+       client_conn_array[temp_sock_fd]->source = 
+-			Malloc(strlen(inet_ntoa(temp_sockaddr_in.sin_addr)));
++			Malloc(strlen(inet_ntop(AF_INET6,
++			    &temp_sockaddr_in6.sin6_addr, v1, sizeof(v1))));
+       client_conn_array[temp_sock_fd]->destination = 
+-			Malloc(strlen(inet_ntoa(server_sockaddr_in.sin_addr)));
+-      strcpy(client_conn_array[temp_sock_fd]->source, 
+-	     inet_ntoa(temp_sockaddr_in.sin_addr));
+-      strcpy(client_conn_array[temp_sock_fd]->destination, 
+-             inet_ntoa(server_sockaddr_in.sin_addr)); 
++			Malloc(strlen(inet_ntop(AF_INET6,
++			    &server_sockaddr_in6.sin6_addr, v2, sizeof(v2))));
++      strcpy(client_conn_array[temp_sock_fd]->source, v1);
++      strcpy(client_conn_array[temp_sock_fd]->destination, v2);
+       /*
+       // allocate a buffer for the X server connection 
+       // and create the association between client and server 
+@@ -1959,7 +1971,7 @@
+ 	    fprintf(stderr, "Server replied AUTHENTICATE!\n");
+ #endif
+             /*
+-            // retrieve the client IP source and destination address strings 
++            // retrieve the client IPv6 source and destination address strings 
+             */
+             log_data.source = 
+ 	       Malloc(strlen
+@@ -2030,13 +2042,22 @@
+   }/* end if client_conn_array != NULL */
+ }
+ 
+-int doConfigCheck(struct sockaddr_in * source_sockaddr_in,
+-	          struct sockaddr_in * dest_sockaddr_in,
++#define IN6ADDR_MATCH(x,m,y)	\
++    match = 1; \
++    for (i = 0; i < sizeof(struct in6_addr) && (m).s6_addr[i] != 0; i++) \
++	if (((x).s6_addr[i] & (m).s6_addr[i]) != (y).s6_addr[i]) { \
++	    match = 0; \
++	    break; \
++	}
++
++int doConfigCheck(struct sockaddr_in6 * source_sockaddr_in6,
++	          struct sockaddr_in6 * dest_sockaddr_in6,
+ 		  struct config * config_info,
+ 		  int context,
+ 		  struct log_struct * log_data)
+ {
+   int			line_counter;
++  int			i, match;
+   /*
+   // look through the config file parse tree for a source IP address
+   // that matches this request
+@@ -2045,12 +2066,13 @@
+   {
+     if (config_info->config_file_data[line_counter] != NULL)
+     {
+-      if ((source_sockaddr_in->sin_addr.s_addr & 
+-	  (~(config_info->config_file_data[line_counter]->source_net))) ==
+-	  config_info->config_file_data[line_counter]->source_host)
++      IN6ADDR_MATCH(source_sockaddr_in6->sin6_addr,
++		    config_info->config_file_data[line_counter]->source_net,
++		    config_info->config_file_data[line_counter]->source_host);
++      if (match)
+       {
+ 	/*
+-	// okay, the source host and netmask fields pass, see if the
++	// okay, the source host and prefix length fields pass, see if the
+         // config file specifies "permit" or "deny" for this host
+         */
+         if (!strcmp(config_info->config_file_data[line_counter]->permit_deny,
+@@ -2065,9 +2087,10 @@
+ 	    /*
+             // compute destination info restrictions
+             */
+-            if ((dest_sockaddr_in->sin_addr.s_addr & 
+-	        (~(config_info->config_file_data[line_counter]->dest_net))) ==
+-	        config_info->config_file_data[line_counter]->dest_host)
++	    IN6ADDR_MATCH(dest_sockaddr_in6->sin6_addr,
++		config_info->config_file_data[line_counter]->dest_net,
++		config_info->config_file_data[line_counter]->dest_host);
++            if (match)
+ 	    {
+ 	      /*
+ 	      // you got a match on the destination, so look at 
+@@ -2171,9 +2194,10 @@
+ 	    /*
+             // compute destination info restrictions
+             */
+-            if ((dest_sockaddr_in->sin_addr.s_addr & 
+-	        (~(config_info->config_file_data[line_counter]->dest_net))) ==
+-	        config_info->config_file_data[line_counter]->dest_host)
++	    IN6ADDR_MATCH(dest_sockaddr_in6->sin6_addr,
++		config_info->config_file_data[line_counter]->dest_net,
++		config_info->config_file_data[line_counter]->dest_host);
++            if (match)
+ 	    {
+ 	      /*
+ 	      // you got a match on the destination, so look at
+@@ -2292,7 +2316,7 @@
+   if (config_info->config_file_path == NULL)
+   {
+     if (printConfigVerify)
+-	fputs("matched default permit 0.0.0.0 255.255.255.255\n", stderr);
++	fputs("matched default permit :: 0\n", stderr);
+     /*
+     // there's no rule match to save
+     */
+@@ -2301,7 +2325,7 @@
+   }
+ 
+   if (printConfigVerify)
+-      fputs("matched default deny 0.0.0.0 255.255.255.255\n", stderr);
++      fputs("matched default deny :: 0\n", stderr);
+   /*
+   // not in this case either 
+   */
+@@ -2395,8 +2419,8 @@
+       pmGetProxyAddrReplyMsg *	pReply;
+       char *			pReplyData;
+       struct hostent * 		hostptr;
+-      struct sockaddr_in	server_sockaddr_in;
+-      struct sockaddr_in	dummy_sockaddr_in;
++      struct sockaddr_in6	server_sockaddr_in6;
++      struct sockaddr_in6	dummy_sockaddr_in6;
+       char *			server_name_base;
+       int			config_check;
+       char *			config_failure = "unrecognized server or permission denied";
+@@ -2497,9 +2521,9 @@
+ #endif
+ 	goto sendFailure;
+       }
+-      memset(&server_sockaddr_in, 0, sizeof(server_sockaddr_in));
+-      memset(&dummy_sockaddr_in, 0, sizeof(dummy_sockaddr_in)); 
+-      memcpy((char *) &server_sockaddr_in.sin_addr, 
++      memset(&server_sockaddr_in6, 0, sizeof(server_sockaddr_in6));
++      memset(&dummy_sockaddr_in6, 0, sizeof(dummy_sockaddr_in6)); 
++      memcpy((char *) &server_sockaddr_in6.sin6_addr, 
+ 	 hostptr->h_addr,
+ 	 hostptr->h_length);
+ 
+@@ -2509,11 +2533,11 @@
+       // NOTE:  source configuration will always match (see XFWP man
+       // page) unless sysadmin explicitly chooses to deny 
+       */
+-      memcpy((char *) &dummy_sockaddr_in.sin_addr, 
++      memcpy((char *) &dummy_sockaddr_in6.sin6_addr, 
+ 	 hostptr->h_addr,
+ 	 hostptr->h_length);
+-      if ((config_check = doConfigCheck(&dummy_sockaddr_in, 
+-  				        &server_sockaddr_in,
++      if ((config_check = doConfigCheck(&dummy_sockaddr_in6, 
++  				        &server_sockaddr_in6,
+ 				        global_data.config_info,
+ 				        FINDPROXY,
+ 					&log_data)) == FAILURE)
+@@ -2759,7 +2783,7 @@
+ 
+ int doServerConnectSetup(char * x_server_hostport,
+                          int * server_connect_fd,
+-                         struct sockaddr_in * server_sockaddr_in)
++                         struct sockaddr_in6 * server_sockaddr_in6)
+ {
+   struct hostent * 	hostptr;
+   char *		server_name_base;
+@@ -2796,7 +2820,7 @@
+ #endif
+     return;
+   }
+-  if ((*server_connect_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
++  if ((*server_connect_fd = socket(AF_INET6, SOCK_STREAM, 0)) < 0)
+   {
+ #ifdef DEBUG
+     fprintf(stderr, 
+@@ -2805,20 +2829,21 @@
+ #endif
+     return FAILURE;
+   }
+-  memset(server_sockaddr_in, 0, sizeof(*server_sockaddr_in));
+-  server_sockaddr_in->sin_family = hostptr->h_addrtype;
+-  memcpy((char *) &server_sockaddr_in->sin_addr, 
++  memset(server_sockaddr_in6, 0, sizeof(*server_sockaddr_in6));
++  server_sockaddr_in6->sin6_family = hostptr->h_addrtype;
++  server_sockaddr_in6->sin6_len = sizeof(*server_sockaddr_in6);
++  memcpy((char *) &server_sockaddr_in6->sin6_addr, 
+ 	 hostptr->h_addr,
+ 	 hostptr->h_length);
+-  server_sockaddr_in->sin_port = htons(server_port);
++  server_sockaddr_in6->sin6_port = htons(server_port);
+   return SUCCESS;
+ }
+ 
+ int doServerConnect(int * server_connect_fd,
+-                    struct sockaddr_in * server_sockaddr_in)
++                    struct sockaddr_in6 * server_sockaddr_in6)
+ {
+-  if(connect(*server_connect_fd, (struct sockaddr * )server_sockaddr_in,
+-	     sizeof(*server_sockaddr_in)) < 0)
++  if(connect(*server_connect_fd, (struct sockaddr * )server_sockaddr_in6,
++	     sizeof(*server_sockaddr_in6)) < 0)
+   {
+ #ifdef DEBUG
+     fprintf(stderr, 
+@@ -3122,13 +3147,13 @@
+ 
+   config_lineP->permit_deny = NULL;
+   config_lineP->source_hostname = NULL;
+-  config_lineP->source_host = 0;
+-  config_lineP->source_netmask = NULL;
+-  config_lineP->source_net = 0;
++  bzero((char *)&config_lineP->source_host, sizeof(struct in6_addr));
++  config_lineP->source_preflen = NULL;
++  bzero((char *)&config_lineP->source_net, sizeof(struct in6_addr));
+   config_lineP->dest_hostname = NULL;
+-  config_lineP->dest_host = 0;
+-  config_lineP->dest_netmask = NULL;
+-  config_lineP->dest_net = 0;
++  bzero((char *)&config_lineP->dest_host, sizeof(struct in6_addr));
++  config_lineP->dest_preflen = NULL;
++  bzero((char *)&config_lineP->dest_net, sizeof(struct in6_addr));
+   config_lineP->operator = NULL;
+   config_lineP->service = NULL; 
+ 
+@@ -3200,7 +3225,7 @@
+   {
+     char   	token[64];
+     strcpy(token, result);
+-    if (doVerifyHostMaskToken(token))
++    if (doVerifyHostToken(token))
+     {
+       if ((config_file_data[line_number]->source_hostname = 
+ 				      (char *) malloc (strlen(result) + 1)) == NULL)
+@@ -3219,22 +3244,24 @@
+       /*
+       // generate network address format
+       */
+-      config_file_data[line_number]->source_host = 
+-	      inet_addr(config_file_data[line_number]->source_hostname);
++      inet_pton(AF_INET6,
++		config_file_data[line_number]->source_hostname,
++		&config_file_data[line_number]->source_host);
+     } else
+       bad_token = 1;
+   }
+ 
+   /*
+-  // now the source netmask field
++  // now the source prefix length field
+   */
+   if ((result = strtok(NULL, SEPARATOR1)) != NULL)
+   {
+     char   	token[64];
++    int		plen, j;
+     strcpy(token, result);
+-    if (doVerifyHostMaskToken(token))
++    if (doVerifyMaskToken(token))
+     {
+-      if ((config_file_data[line_number]->source_netmask = 
++      if ((config_file_data[line_number]->source_preflen = 
+ 				      (char *) malloc (strlen(result) + 1)) == NULL)
+       {
+ #ifdef DEBUG
+@@ -3242,14 +3269,18 @@
+ #endif
+ 	return 0;
+       }
+-      strcpy(config_file_data[line_number]->source_netmask, result);
++      strcpy(config_file_data[line_number]->source_preflen, result);
+ #ifdef DEBUG
+       fprintf(stderr, 
+ 	   "third token = %s\n", 
+-	    config_file_data[line_number]->source_netmask);
++	    config_file_data[line_number]->source_preflen);
+ #endif
+-      config_file_data[line_number]->source_net = 
+-	      inet_addr(config_file_data[line_number]->source_netmask);
++      plen = atoi(config_file_data[line_number]->source_preflen);
++      for (j = 0; plen >= 8; plen -= 8, j++)
++	config_file_data[line_number]->source_net.s6_addr[j] = 0xff;
++      if (plen != 0)
++	config_file_data[line_number]->source_net.s6_addr[j] =
++	    0xff << (8 - plen);
+     } else
+       bad_token = 1;
+   }
+@@ -3260,7 +3291,7 @@
+   {
+     char   	token[64];
+     strcpy(token, result);
+-    if (doVerifyHostMaskToken(token))
++    if (doVerifyHostToken(token))
+     {
+       if ((config_file_data[line_number]->dest_hostname = 
+ 				      (char *) malloc (strlen(result) + 1)) == NULL)
+@@ -3276,21 +3307,23 @@
+ 	   "fourth token = %s\n", 
+ 	    config_file_data[line_number]->dest_hostname);
+ #endif
+-      config_file_data[line_number]->dest_host = 
+-	      inet_addr(config_file_data[line_number]->dest_hostname);
++      inet_pton(AF_INET6,
++		config_file_data[line_number]->dest_hostname,
++		&config_file_data[line_number]->dest_host);
+     } else
+       bad_token = 1;
+   }
+   /*
+-  // now the destination netmask field
++  // now the destination prefix length field
+   */
+   if ((result = strtok(NULL, SEPARATOR1)) != NULL)
+   {
+     char   	token[64];
++    int		plen, j;
+     strcpy(token, result);
+-    if (doVerifyHostMaskToken(token))
++    if (doVerifyMaskToken(token))
+     {
+-      if ((config_file_data[line_number]->dest_netmask = 
++      if ((config_file_data[line_number]->dest_preflen = 
+ 				      (char *) malloc (strlen(result) + 1)) == NULL)
+       {
+ #ifdef DEBUG
+@@ -3298,14 +3331,18 @@
+ #endif
+ 	return 0;
+       }
+-      strcpy(config_file_data[line_number]->dest_netmask, result);
++      strcpy(config_file_data[line_number]->dest_preflen, result);
+ #ifdef DEBUG
+       fprintf(stderr, 
+ 	   "fifth token = %s\n", 
+-	    config_file_data[line_number]->dest_netmask);
++	    config_file_data[line_number]->dest_preflen);
+ #endif
+-      config_file_data[line_number]->dest_net = 
+-	      inet_addr(config_file_data[line_number]->dest_netmask);
++      plen = atoi(config_file_data[line_number]->dest_preflen);
++      for (j = 0; plen >= 8; plen -= 8, j++)
++	config_file_data[line_number]->dest_net.s6_addr[j] = 0xff;
++      if (plen != 0)
++	config_file_data[line_number]->dest_net.s6_addr[j] =
++	    0xff << (8 - plen);
+     } else
+       bad_token = 1;
+   }
+@@ -3377,9 +3414,9 @@
+       ((config_file_data[line_number]->permit_deny != NULL) && 
+        (config_file_data[line_number]->source_hostname == NULL)) ||
+       ((config_file_data[line_number]->source_hostname != NULL) && 
+-       (config_file_data[line_number]->source_netmask == NULL)) || 
++       (config_file_data[line_number]->source_preflen == NULL)) || 
+       ((config_file_data[line_number]->dest_hostname != NULL) && 
+-       (config_file_data[line_number]->dest_netmask == NULL)) || 
++       (config_file_data[line_number]->dest_preflen == NULL)) || 
+       ((config_file_data[line_number]->operator != NULL) && 
+        (config_file_data[line_number]->service == NULL)))
+       return 1;
+@@ -3388,27 +3425,23 @@
+   return 0;
+ }
+ 
+-int doVerifyHostMaskToken(char token[])
++int doVerifyHostToken(char token[])
+ {
+-  char * result;
+-  int	 delimiter_count = 0;
++  struct in6_addr addr;
+   /*
+-  // verify there are 3 "." delimiters in the token
++  // verify it is a real IPv6 address
+   */
+-  while (token)
+-  {
+-    if ((result = strchr(token, SEPARATOR2)) != NULL)
+-    {
+-      token = result;
+-      delimiter_count++;
+-      token ++;
+-    } else
+-      token = result;
+-  }
+-  if ((delimiter_count < 3) || (delimiter_count > 3))
+-    return 0; 
+-  else
+-    return 1;
++  return (inet_pton(AF_INET6, token, &addr) > 0);
++}
++
++int doVerifyMaskToken(char token[])
++{
++  int plen;
++  /*
++  // verify it is a legal prefix length
++  */
++  plen = atoi(token);
++  return ((plen >= 0) && (plen <= 128));
+ }
+ 
+ void BadSyntax(char *msg, int line)
+@@ -3483,8 +3516,8 @@
+   struct config_line *ruleP = config_info->config_file_data[line_counter];
+   fprintf(stderr,"matched: %s %s %s %s %s %s %s\n",
+ 	  ruleP->permit_deny,
+-	  ruleP->source_hostname, ruleP->source_netmask,
+-	  ruleP->dest_hostname, ruleP->dest_netmask,
++	  ruleP->source_hostname, ruleP->source_preflen,
++	  ruleP->dest_hostname, ruleP->dest_preflen,
+ 	  ruleP->operator,
+ 	  ruleP->service);
+ }
+diff -ruN xc.old/programs/xfwp/xfwp.h xc/programs/xfwp/xfwp.h
+--- xc.old/programs/xfwp/xfwp.h	Wed Jun 11 14:09:00 1997
++++ xc/programs/xfwp/xfwp.h	Wed Sep  3 22:53:27 1997
+@@ -61,7 +61,7 @@
+ /* allocate ADD_LINES entries at a time when loading the configuration */
+ #define ADD_LINES		20
+ #define SEPARATOR1              " \t\n"
+-#define SEPARATOR2              '.'
++#define SEPARATOR2              ':'
+ 
+ #define		min(a,b)		((a) < (b) ? (a) : (b))
+ #define		max(a,b)		((a) > (b) ? (a) : (b))
+@@ -194,13 +194,13 @@
+ {
+   char * 		permit_deny;
+   char * 		source_hostname;
+-  unsigned int		source_host;
+-  char * 		source_netmask;
+-  unsigned int  	source_net;
++  struct in6_addr	source_host;
++  char * 		source_preflen;
++  struct in6_addr  	source_net;
+   char * 		dest_hostname;
+-  unsigned int 	 	dest_host;
+-  char * 		dest_netmask;
+-  unsigned int	 	dest_net;
++  struct in6_addr 	dest_host;
++  char * 		dest_preflen;
++  struct in6_addr 	dest_net;
+   char * 		operator;
+   char * 		service;
+   int	 		service_id;
+@@ -303,8 +303,8 @@
+                       struct client_conn_buf * client_conn_array[],
+                       struct ice_data * ice_data);
+ 
+-int doConfigCheck(struct sockaddr_in * temp_sockaddr_in,
+-		  struct sockaddr_in * server_sockaddr_in,
++int doConfigCheck(struct sockaddr_in6 * temp_sockaddr_in6,
++		  struct sockaddr_in6 * server_sockaddr_in6,
+                   struct config * config_info,
+ 		  int context,
+ 		  struct log_struct * log_data);
+@@ -337,10 +337,10 @@
+ 
+ int doServerConnectSetup(char * x_server_hostport, 
+ 			 int * server_connect_fd, 
+-			 struct sockaddr_in * server_addr_in);
++			 struct sockaddr_in6 * server_addr_in6);
+ 
+ int doServerConnect(int * server_connect_fd, 
+-		    struct sockaddr_in * server_addr_in);
++		    struct sockaddr_in6 * server_addr_in6);
+ 
+ int doProcessLine(char *line,
+                    struct config * config_info,
+@@ -352,7 +352,9 @@
+ 
+ Bool doConfigRequireDisallow(int, char*);
+ 
+-int doVerifyHostMaskToken(char token[]);
++int doVerifyHostToken(char token[]);
++
++int doVerifyMaskToken(char token[]);
+ 
+ void doInstallIOErrorHandler();
+ 
+diff -ruN xc.old/programs/xfwp/xfwp.man xc/programs/xfwp/xfwp.man
+--- xc.old/programs/xfwp/xfwp.man	Tue Dec 24 11:04:47 1996
++++ xc/programs/xfwp/xfwp.man	Tue Jul  8 00:05:40 1997
+@@ -206,7 +206,7 @@
+ packet-filtering routers.  It contains zero or more source-destination
+ rules of the following form:
+ .PP
+-[#]{permit | deny} <src> <src mask> [<dest> <dest mask> [<operator> <service>]]
++[#]{permit | deny} <src> <src len> [<dest> <dest len> [<operator> <service>]]
+ .sp
+ .IP # 12
+ comment delimiter; evaluator will skip these lines 
+@@ -214,21 +214,21 @@
+ the keywords ``permit'' or ``deny'' indicate whether the 
+ rule will enable or disable access, respectively
+ .IP src 12
+-the IP address against the host who originated the 
+-connection request will be matched, expressed in IP 
+-format (x.x.x.x)
+-.IP "src mask" 12
+-a subnet mask, also in IP format, for further qualifying
+-the source mask.  Bits set in the mask indicate bits of the
++the IPv6 address against the host who originated the 
++connection request will be matched, expressed in IPv6
++format (x:x:x:x:x:x:x:x)
++.IP "src len" 12
++a prefix length, a number between 0 and 128, for further qualifying
++the source prefix.  Bits after the prefix indicate bits of the
+ incoming address to be \fIignored\fP when comparing to the specified src
+ .IP dest 12
+-the IP address against which the destination of the 
+-incoming connection request (i.e. the host IP of the 
++the IPv6 address against which the destination of the 
++incoming connection request (i.e. the host IPv6 of the 
+ X server to which the incoming client is attempting to
+ connect) will be matched
+-.IP "dest mask" 12
+-a subnet mask, also in IP format, for further qualifying
+-the destination mask.  Bits set in the mask indicate bits of the
++.IP "dest len" 12
++a prefix length, a number between 0 and 128, for further qualifying
++the destination prefix.  Bits after the prefix indicate bits of the
+ destination address to be \fIignored\fP when comparing to the specified dest
+ .IP operator 12
+ always ``eq'' (if the service field is not NULL)
+@@ -267,8 +267,8 @@
+ .RS 3
+   while (more entries to check)
+   {
+-    if ((<originator IP> AND (NOT <src mask>)) == src)
+-      [if ((<dest X server IP> AND (NOT <dest mask>)) == dest)] 
++    if ((<originator IPv6> AND (<src prefix>)) == src)
++      [if ((<dest X server IPv6> AND (<dest prefix>)) == dest)] 
+         [if (service fields present and matching)]
+           do either permit or deny connection depending on keyword
+     else
+@@ -312,22 +312,22 @@
+ require policy1
+ require policy2
+ #
+-# deny pm connections originating on 8.7.6.5 [NOTE:  If pm service
++# deny pm connections originating on 8:7:6:5:4:3:2:1 [NOTE:  If pm service
+ # is explicitly qualified, line must include destination fields as
+ # shown.]
+ #
+-deny  8.7.6.5  0.0.0.0  0.0.0.0  255.255.255.255  eq  pm
++deny  8:7:6:5:4:3:2:1  128  ::  0  eq  pm
+ #
+ # permit xfindproxy X server connects to anywhere [NOTE:  If
+ # fp service is explicitly qualified, line must include source fields
+ # as shown.]
+ #
+-permit  0.0.0.0  255.255.255.255   0.0.0.0  255.255.255.255  eq  fp 
++permit  ::  0   ::  0  eq  fp 
+ #
+-# permit all connection types originating from the 192.0.0.0 
+-# IP domain only 
++# permit all connection types originating from the fec0::/10
++# IPv6 domain only 
+ #
+-permit  192.0.0.0   0.255.255.255 
++permit  fec0::   10
+ .fi
+ \fP
+ .PP
+diff -ruN xc.old/programs/xhost/xhost.c xc/programs/xhost/xhost.c
+--- xc.old/programs/xhost/xhost.c	Sun Sep 13 15:15:59 1998
++++ xc/programs/xhost/xhost.c	Fri Jan  8 20:06:40 1999
+@@ -75,6 +75,7 @@
+ #endif
+ #include <netdb.h>
+ #include <netinet/in.h>
++#include <resolv.h>
+ #else
+ #include <server/ip/gen/socket.h>
+ #include <server/ip/types.h>
+@@ -153,6 +154,9 @@
+ #ifdef	AF_INET
+         { AF_INET, FamilyInternet },
+ #endif
++#ifdef	AF_INET6
++        { AF_INET6, FamilyInternet },
++#endif
+ };
+ 
+ #define FAMILIES ((sizeof familyMap)/(sizeof familyMap[0]))
+@@ -184,6 +188,12 @@
+  
+     ProgramName = argv[0];
+ 
++#ifdef NEEDSOCKETS
++    if ((_res.options & RES_INIT) == 0)
++	(void)res_init();
++    _res.options |= RES_USE_INET6;
++#endif
++
+     if ((dpy = XOpenDisplay(NULL)) == NULL) {
+ 	fprintf(stderr, "%s:  unable to open display \"%s\"\n",
+ 		ProgramName, XDisplayName (NULL));
+@@ -308,7 +318,7 @@
+ #endif
+ #ifdef NEEDSOCKETS
+ #ifndef AMTCPCONN
+-    static struct in_addr addr;	/* so we can point at it */
++    static struct in6_addr addr;	/* so we can point at it */
+ #else
+     static ipaddr_t addr;
+ #endif
+@@ -484,41 +494,30 @@
+     }
+ #ifdef NEEDSOCKETS
+     /*
+-     * First see if inet_addr() can grok the name; if so, then use it.
+-     */
+-#ifndef AMTCPCONN
+-    if ((addr.s_addr = inet_addr(name)) != -1) {
+-#else
+-    if ((addr = inet_addr(name)) != -1) {
+-#endif
+-	ha.family = FamilyInternet;
+-	ha.length = 4;		/* but for Cray would be sizeof(addr.s_addr) */
+-	ha.address = (char *)&addr; /* but for Cray would be &addr.s_addr */
+-	if (add) {
+-	    XAddHost (dpy, &ha);
+-	    printf ("%s %s\n", name, add_msg);
+-	} else {
+-	    XRemoveHost (dpy, &ha);
+-	    printf ("%s %s\n", name, remove_msg);
+-	}
+-	return 1;
+-    } 
+-    /*
++     * (gethostbyname knows how to handle litterals...)
+      * Is it in the namespace?
+      */
+-    else if (((hp = gethostbyname(name)) == (struct hostent *)NULL)
+-	     || hp->h_addrtype != AF_INET) {
++    if (((hp = gethostbyname(name)) == (struct hostent *)NULL)
++	     || hp->h_addrtype != AF_INET6) {
+ 	return 0;
+     } else {
+ 	ha.family = XFamily(hp->h_addrtype);
+-	ha.length = hp->h_length;
+ #ifdef h_addr			/* new 4.3bsd version of gethostent */
+     {
+ 	char **list;
+ 
+ 	/* iterate over the hosts */
+ 	for (list = hp->h_addr_list; *list; list++) {
++	    ha.length = hp->h_length;
+ 	    ha.address = *list;
++#ifdef UNMAPPED_IPV4
++	    if ((ha.family == FamilyInternet) &&
++		(ha.length == sizeof(struct in6_addr)) &&
++		IN6_IS_ADDR_V4MAPPED((struct in6_addr *)ha.address)) {
++		ha.length = sizeof(struct in_addr);
++		ha.address += sizeof(struct in6_addr) - sizeof(struct in_addr);
++	    }
++#endif
+ 	    if (add) {
+ 		XAddHost (dpy, &ha);
+ 	    } else {
+@@ -527,7 +526,16 @@
+ 	}
+     }
+ #else
++	ha.length = hp->h_length;
+ 	ha.address = hp->h_addr;
++#ifdef UNMAPPED_IPV4
++	if ((ha.family == FamilyInternet) &&
++	    (ha.length == sizeof(struct in6_addr)) &&
++	    IN6_IS_ADDR_V4MAPPED((struct in6_addr *)ha.address)) {
++	    ha.length = sizeof(struct in_addr);
++	    ha.address += sizeof(struct in6_addr) - sizeof(struct in_addr);
++	}
++#endif
+ 	if (add) {
+ 	    XAddHost (dpy, &ha);
+ 	} else {
+@@ -545,7 +553,7 @@
+ 
+ /*
+  * get_hostname - Given an internet address, return a name (CHARON.MIT.EDU)
+- * or a string representing the address (18.58.0.13) if the name cannot
++ * or a string representing the address (::ffff:18.58.0.13) if the name cannot
+  * be found.
+  */
+ 
+@@ -556,7 +564,7 @@
+ {
+ #if defined(TCPCONN) || defined(STREAMSCONN) || defined(AMTCPCONN)
+     struct hostent *hp = NULL;
+-    char *inet_ntoa();
++    static char v[64];
+ #endif
+ #ifdef DNETCONN
+     struct nodeent *np;
+@@ -571,12 +579,6 @@
+ 
+ #if defined(TCPCONN) || defined(STREAMSCONN) || defined(AMTCPCONN)
+     if (ha->family == FamilyInternet) {
+-#ifdef CRAY
+-	struct in_addr t_addr;
+-	bzero((char *)&t_addr, sizeof(t_addr));
+-	bcopy(ha->address, (char *)&t_addr, 4);
+-	ha->address = (char *)&t_addr;
+-#endif
+ 	/* gethostbyaddr can take a LONG time if the host does not exist.
+ 	   Assume that if it does not respond in NAMESERVER_TIMEOUT seconds
+ 	   that something is wrong and do not make the user wait.
+@@ -586,16 +588,17 @@
+ 	signal(SIGALRM, nameserver_lost);
+ 	alarm(4);
+ 	if (setjmp(env) == 0) {
+-	    hp = gethostbyaddr (ha->address, ha->length, AF_INET);
++	    hp = gethostbyaddr (ha->address, ha->length,
++				ha->length == 4 ? AF_INET : AF_INET6);
+ 	}
+ 	alarm(0);
+ 	if (hp)
+ 	    return (hp->h_name);
+-#ifndef AMTCPCONN
+-	else return (inet_ntoa(*((struct in_addr *)(ha->address))));
+-#else
+-	else return (inet_ntoa(*((ipaddr_t *)(ha->address))));
+-#endif
++	else {
++	    inet_ntop(ha->length == 4 ? AF_INET : AF_INET6,
++		      ha->address, v, sizeof(v));
++	    return (v);
++	}
+     }
+ #endif
+     if (ha->family == FamilyNetname) {
