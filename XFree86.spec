@@ -1877,7 +1877,8 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}/{X11/fs,pam.d,rc.d/init.d,security/cons
 	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
 	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}/mini} \
-	$RPM_BUILD_ROOT{%{_wmpropsdir},%{_soundsdir},%{_themesdir}/{Default,ThinIce}}
+	$RPM_BUILD_ROOT{%{_wmpropsdir},%{_soundsdir},%{_themesdir}/{Default,ThinIce}} \
+	$RPM_BUILD_ROOT%{_xsessdir}
 
 %{__make} -C xc	install	install.man \
 	DESTDIR="$RPM_BUILD_ROOT" \
