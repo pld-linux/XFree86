@@ -154,7 +154,7 @@ ofrece un servidor X que acceda tu hardware de vídeo -- estos son
 puestos a disposición en otro paquete.
 
 %description -l pl
-X Window System jest graficznym interfejsem u¿ytkownika, cechuje siê
+X Window System jest graficznym interfejsem u¿ytkownika; cechuje siê
 mo¿liwo¶ci± pracy w wielu oknach, z wieloma klientami i do tego w
 ró¿nych wystrojach okien. :) Jest u¿ywany na wiêkszo¶ci platform
 sytemów Unix, a klienci mog± byæ uruchamiani tak¿e pod innymi
@@ -261,7 +261,7 @@ de réduire l'espace disque nécessaire à l'exécution des applications X
 sur une machine sans serveur X (en réseau).
 
 %description libs -l pl
-Pakiet zawieraj±cy podstawowe biblioteki potrzebne dla wiêkszo¶ci
+Pakiet zawieraj±cy podstawowe biblioteki potrzebne wiêkszo¶ci
 programów korzystaj±cych z systemu X Window. Wydzielony w celu
 oszczêdno¶ci miejsca potrzebnego do uruchamiania aplikacji X Window na
 komputerach bez X serwera (np. przez sieæ).
@@ -282,7 +282,7 @@ aplicações X em uma máquina sem um servidor X (através da rede).
 Summary:	X11R6 headers and programming man pages
 Summary(de):	X11R6 Headers und man pages für Programmierer
 Summary(fr):	Pages man de programmation
-Summary(pl):	Pliki nag³ówkowe dla X11R6
+Summary(pl):	Pliki nag³ówkowe X11R6
 Summary(tr):	X11R6 ile geliþtirme için gerekli dosyalar
 Group:		X11/Libraries
 Group(de):	X11/Libraries
@@ -335,7 +335,7 @@ yanýsýra Xt ve Xaw arayüz kitaplýklarýný da içerir.
 
 %package static
 Summary:	X11R6 static libraries
-Summary(pl):	Biblioteki statyczne do X11R6
+Summary(pl):	Biblioteki statyczne X11R6
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
@@ -355,7 +355,7 @@ Obsoletes:	xpm-static
 X11R6 static libraries.
 
 %description static -l pl
-Biblioteki statyczne do X11R6.
+Biblioteki statyczne X11R6.
 
 %package OpenGL-core
 Summary:	OpenGL support for X11R6
@@ -402,7 +402,7 @@ Biblioteki OpenGL dla systemu X11R6.
 
 %package OpenGL-devel
 Summary:	OpenGL for X11R6 development
-Summary(pl):	Pliki nag³ówkowe dla OpenGL dla systemu X11R6
+Summary(pl):	Pliki nag³ówkowe OpenGL dla systemu X11R6
 Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(es):	X11/Bibliotecas
@@ -460,7 +460,7 @@ requires the generic VGA 16 color server be available.
 
 %description setup -l pl
 Pakiet setup zawiera narzêdzia do konfiguracji XFree86. Pozwala na
-skonfigurowanie ustawieñ wideo, klawiatury, typu myszki i innych
+skonfigurowanie ustawieñ obrazu, klawiatury, typu myszki i innych
 ró¿nych rzeczy. Jednak¿e jest wolny i wymaga dostêpno¶ci serwera do
 standardowej 16-kolorowej VGA.
 
@@ -542,7 +542,7 @@ Xprt jest X serwerem z rozszerzeniem Xprint.
 Summary:	XFree86 X display server
 Summary(de):	XFree86 Server
 Summary(fr):	Serveur XFree86
-Summary(pl):	XFree86 serwer
+Summary(pl):	Serwer XFree86
 Summary(tr):	XFree86 sunucusu
 Group:		X11/XFree86/Servers
 Group(de):	X11/XFree86/Server
@@ -591,10 +591,11 @@ pour de nombreux autres circuits et cartes. Essayez ce serveur si vous
 avez des problèmes.
 
 %description Xserver -l pl
-Jest to podstawowy X serwer wy¶wietlaj±cy obraz na karcie graficznej.
-Do dzia³ania wymaga odpowiedniego drivera - sam pakiet zawiera tylko
-drivery dla kart VGA oraz SVGA zgodnych z VESA (bez akceleracji). Inne
-drivery mo¿na znale¼æ w pakietach XFree86-driver-*.
+Jest to podstawowy Xserwer wy¶wietlaj±cy obraz na karcie graficznej.
+Do dzia³ania wymaga odpowiedniego sterownika - sam pakiet zawiera
+tylko odpowiedni dla kart VGA oraz SVGA zgodnych z VESA (bez
+akceleracji). Inne sterowniki mo¿na znale¼æ w pakietach
+XFree86-driver-*.
 
 %description Xserver -l tr
 ET4000, Cirrus Logic, Chips and Technologies dizüstü, Trident 8900 ve
@@ -1185,7 +1186,7 @@ Obsoletes:	dgs-devel
 Header files for develop X-Window Display Postscript.
 
 %description DPS-devel -l pl
-Pliki nag³ówkowe do biblioteki X-Window Display PostScript.
+Pliki nag³ówkowe biblioteki X-Window Display PostScript.
 
 %package DPS-static
 Summary:	Display PostScript
@@ -1200,7 +1201,7 @@ Obsoletes:	dgs-static
 X-Window Display PostScript static libraries.
 
 %description DPS-static -l pl
-Statyczne biblioteki do X-Window Display PostScript.
+Statyczne biblioteki X-Window Display PostScript.
 
 %package -n sessreg
 Summary:	sessreg - manage utmp/wtmp entries for non-init clients
@@ -1278,7 +1279,7 @@ definiowalne przypisania klawiszy i przycisków myszy.
 
 %package -n xfs
 Summary:	Font server for XFree86
-Summary(pl):	Serwer fontów do XFree86
+Summary(pl):	Serwer fontów dla XFree86
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1304,7 +1305,7 @@ serwerów lokalnych lub zdalnych.
 
 %package -n xauth
 Summary:	xauth - X authority file utility
-Summary(pl):	xauth - nadzêdzie do plików X authority
+Summary(pl):	xauth - narzêdzie do plików X authority
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1319,7 +1320,7 @@ granting access to other users).
 
 %description -n xauth -l pl
 Program xauth s³u¿y do edycji i wy¶wietlania informacji
-autoryzacyjnych u¿ywanych przy ³±czeniu z X serwerem. Ten program
+autoryzacyjnych u¿ywanych przy ³±czeniu z Xserwerem. Ten program
 przewa¿nie jest u¿ywany do wyci±gania rekordów autoryzacji z jednej
 maszyny i do³±czania ich na innej (w celu umo¿liwienia zdalnego
 logowania lub udostêpnienia innym u¿ytkownikom).
