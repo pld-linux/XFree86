@@ -86,38 +86,38 @@ Patch26:	%{name}-HasFreetype2.patch
 Patch27:	%{name}-config-s3.patch
 Patch28:	%{name}-sparc_pci_domains.patch
 Patch29:	%{name}-XTerm.ad.patch
-Patch30:	%{name}-dri_directory_mode_fix.patch
+#Patch30:	%{name}-dri_directory_mode_fix.patch
 Patch31:	%{name}-alpha_GLX_align_fix.patch
-Patch32:	%{name}-XftConfig_in_correct_place.patch
+#Patch32:	%{name}-XftConfig_in_correct_place.patch
 Patch33:	%{name}-PEX+XIE.patch
 Patch34:	%{name}-xman-manpaths.patch
 Patch35:	%{name}-ppc_drivers.patch
-Patch36:	ftp://ftp.xfree86.org/pub/XFree86/4.2.1/patches/4.2.0-4.2.1.diff.gz
+#Patch36:	ftp://ftp.xfree86.org/pub/XFree86/4.2.1/patches/4.2.0-4.2.1.diff.gz
 Patch37:	%{name}-clearrts.patch
-Patch38:	%{name}-mga020414.patch
-Patch39:	%{name}-trident-9397.patch
-Patch40:	%{name}-4.2.0-i810-driver-update-cvs-20020617.patch.bz2
-Patch41:	%{name}-nv020414.patch
-Patch42:	%{name}-fix-07-s3trio64v2gx+netfinity.patch
-Patch43:	%{name}-prosavage.patch
-Patch44:	%{name}-xtt-null-pointer.patch
+#Patch38:	%{name}-mga020414.patch
+#Patch39:	%{name}-trident-9397.patch
+#Patch40:	%{name}-4.2.0-i810-driver-update-cvs-20020617.patch.bz2
+#Patch41:	%{name}-nv020414.patch
+#Patch42:	%{name}-fix-07-s3trio64v2gx+netfinity.patch
+#Patch43:	%{name}-prosavage.patch
+#Patch44:	%{name}-xtt-null-pointer.patch
 Patch45:	%{name}-i740-driver-update-cvs-20020617.patch
-Patch46:	%{name}-neomagic-Xv-support.patch
+#Patch46:	%{name}-neomagic-Xv-support.patch
 Patch47:	%{name}-tdfx-disable-dri-on-16Mb-cards-in-hires.patch
-Patch48:	%{name}-tdfx-should-be-2048-not-2046.patch
+#Patch48:	%{name}-tdfx-should-be-2048-not-2046.patch
 Patch49:	%{name}-tdfx-interlace.patch
 Patch50:	%{name}-tdfx-fix-compiler-warnings.patch
 Patch51:	%{name}-tdfx-fix-vtswitch-font-corruption.patch
 Patch52:	%{name}-sis-option-swcursor.patch
-Patch53:	%{name}-sis-unresolved-symbols.patch
+#Patch53:	%{name}-sis-unresolved-symbols.patch
 Patch54:	%{name}-sis-maxxfbmem-fixup.patch
-Patch55:	%{name}-Radeon9000.patch
+#Patch55:	%{name}-Radeon9000.patch
 Patch56:	%{name}-Xfont-Type1-large-DoS.patch
 # "strip -g libGLcore.a" left empty object debug_xform.o, which caused GLcore
 # loading failure with "debug_xform.o: no symbols"
 Patch57:	%{name}-GLcore-strip-a-workaround.patch
 # Original from: ftp://ftp.xfree86.org/pub/XFree86/4.2.1/fixes/4.2.1-mit-shm-security.patch
-Patch58:	%{name}-4.2.1-mit-shm-security.patch
+#Patch58:	%{name}-4.2.1-mit-shm-security.patch
 Patch59:	%{name}-disable_glide.patch
 Patch60:	%{name}-expat.patch
 Patch61:	%{name}-pkgconfig.patch
@@ -155,7 +155,7 @@ Obsoletes:	X11R6.1
 %define		_icondir	/usr/share/icons
 %define		_pixmapsdir	/usr/share/pixmaps
 %define		_soundsdir	/usr/share/sounds
-%define		_wmpropsdir	%{_datadir}/wm-properties
+%define		_wmpropsdir	/usr/share/wm-properties
 
 # avoid Mesa dependency in XFree86-OpenGL-libs
 # Glide3 (libglide3.so.3) can be provided by Glide_V3-DRI or Glide_V5-DRI
@@ -371,17 +371,17 @@ PEX extension static library.
 Statyczna biblioteka rozszerzenia PEX.
 
 %package xft1
-Summary:	Font rendering library
-Summary(pl):	Biblioteka wy¶wietlaj±ca fonty
+Summary:	Old version of font rendering library
+Summary(pl):	Stara wersja biblioteki wy¶wietlaj±cej fonty
 Group:		X11/XFree86
 Requires:	%{name}-libs = %{version}
-Obsoletes:	XFree86-xft
+Obsoletes:	XFree86-xft < 4.2.99
 
 %description xft1
-Font rendering library.
+Old version of font rendering library.
 
 %description xft1 -l pl
-Biblioteka wy¶wietlaj±ca fonty.
+Stara wersja biblioteki wy¶wietlaj±cej fonty.
 
 %package xft
 Summary:        X Font rendering library
@@ -442,7 +442,7 @@ Summary:        Font configuration and customization library
 Summary(pl):    Biblioteka do konfigurowania fontów
 Requires:	%{name}-libs = %{version}
 Group:          Libraries
-Provides:	fontconfig
+Provides:	fontconfig = 1.0.1
 Obsoletes:	fontconfig
 
 %description fontconfig
@@ -457,9 +457,9 @@ systemie i wybierania ich w zale¿no¶ci od potrzeb aplikacji.
 Summary:        Font configuration and customization library
 Summary(pl):    Biblioteka do konfigurowania fontów
 Group:          Development/Libraries
-Provides:	fontconfig-devel
 Requires:       %{name}-fontconfig = %{version}
 Requires:       freetype-devel
+Provides:	fontconfig-devel = 1.0.1
 Obsoletes:	fontconfig-devel
 
 %description fontconfig-devel
@@ -1859,22 +1859,21 @@ System. ôÁËÏÖ ×ÁÍ ÐÒÉÊÄÅÔØÓÑ ×ÓÔÁÎÏ×ÉÔÉ ÎÁÓÔÕÐÎ¦ ÐÁËÅÔÉ: XFree86,
 %patch3 -p0
 %patch4 -p1
 %patch5 -p0
-# not ready yet
-#%patch6 -p0
+%patch6 -p0
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
-#%patch11 -p0 --seems to be obsoleted
+#%patch11 -p0	-- obsoleted???
 %patch12 -p1
 %patch13 -p1
 %patch14 -p0
 %patch15 -p1
 %patch16 -p0
-#%patch17 -p1 -- not ready, is it required?
+#%patch17 -p1	-- not ready, is it required?
 %patch18 -p1
-#%patch19 -p1
-%patch20 -p0 
+#%patch19 -p1	-- maybe should be updated to allow using make -j
+%patch20 -p0
 %patch21 -p1
 %patch22 -p1
 %patch23 -p1
@@ -1883,39 +1882,38 @@ System. ôÁËÏÖ ×ÁÍ ÐÒÉÊÄÅÔØÓÑ ×ÓÔÁÎÏ×ÉÔÉ ÎÁÓÔÕÐÎ¦ ÐÁËÅÔÉ: XFree86,
 %patch26 -p1
 %patch27 -p1
 %ifarch sparc sparc64
-# needs updating (14 rejects)
-#%patch28 -p1
+#%patch28 -p1	-- needs update
 %endif
 %patch29 -p0
 #%patch30 -p1 -- obsoleted
 %patch31 -p1
 #%patch32 -p1 --obsoleted
 %patch33 -p0
-#%patch34 -p1 --obsoleted????????
+%patch34 -p1
 %ifarch ppc
 %patch35	--new version required
 %endif
 #%%{?_without_tdfx:%patch35} --same as above
 #%patch36 -p0 --obsoleted
 %patch37 -p1
-####%patch38 -p1
-#%patch39 -p1
-####%patch40 -p0
-####%patch41 -p1
-####%patch42 -p1  --obsoleted (all with ####)
-####%patch43 -p1
-####%patch44 -p1
-####%patch45 -p1
-####%patch46 -p1
+#%patch38 -p1	-- obsoleted
+#%patch39 -p1	-- obsoleted
+#%patch40 -p0	-- obsoleted
+#%patch41 -p1	-- obsoleted
+#%patch42 -p1	-- obsoleted (only partially???)
+#%patch43 -p1	-- obsoleted
+#%patch44 -p1	-- obsoleted
+#%patch45 -p1	-- obsoleted? (but doesn't look to be applied)
+#%patch46 -p1	-- obsoleted
 %{!?_without_tdfx:%patch47 -p0}
-#%{!?_without_tdfx:%patch48 -p0}
+#%patch48 -p0	-- obsoleted
 %{!?_without_tdfx:%patch49 -p1}
-#%patch50 -p0
+#%patch50 -p0	-- causing problems IIRC (but not really needed)
 %{!?_without_tdfx:%patch51 -p0}
-#%patch52 -p1
-#%patch53 -p1
-#%patch54 -p1
-#%patch55 -p0
+#%patch52 -p1	-- probably not needed
+#%patch53 -p1	-- obsoleted
+#%patch54 -p1	-- obsoleted? (code looks very different)
+#%patch55 -p0	-- obsoleted
 %patch56 -p1
 #%%{!?debug:%patch57 -p1} --obsoleted
 #%patch58 -p0  --obsoleted
