@@ -2501,7 +2501,7 @@ fi
 
 %files devel
 %defattr(644,root,root,755)
-%{_bindir}/bdftopcf
+%attr(755,root,root) %{_bindir}/bdftopcf
 %{_includedir}/X11/PM
 %{_includedir}/X11/DECkeysym.h
 %{_includedir}/X11/HPkeysym.h
