@@ -19,15 +19,13 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
-Version:	4.3.99.903
+Version:	4.4.0
 Release:	0.1
 Epoch:		1
 License:	XFree86 1.1
 Group:		X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
-# Source0-md5:	9864cd3f5443849d13694d9b2a7b1e72
-#Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-2.tgz
-#Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-3.tgz
+Source0:	%{name}-%{version}.tar.bz2
+# Source0-md5:	79eafbc972b93dc78584f9c489f33e6e
 Source3:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
 # Source3-md5:	0a15b1c374256b5cad7961807baa3896
 Source4:	xdm.pamd
@@ -1794,7 +1792,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 
 %prep
 %setup -q -c -b3
-#-b1 -b2 -a3
+
 %patch0 -p0
 %patch1 -p1
 %patch2 -p1
