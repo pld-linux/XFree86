@@ -20,7 +20,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.99.902
-Release:	3
+Release:	3.1
 Epoch:		1
 License:	MIT
 Group:		X11/XFree86
@@ -2773,7 +2773,7 @@ fi
 %files driver-sis
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
-%ifarch %{ix86} amd64
+%ifarch %{ix86}
 %attr(755,root,root) %{_libdir}/modules/dri/sis_dri.so
 %endif
 %{_mandir}/man4/sis*
