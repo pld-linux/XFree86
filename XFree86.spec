@@ -2078,6 +2078,21 @@ gzip -9nf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
 gunzip $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
 %endif
 
+# kill some stuff for cleaner build
+# (packaged separately, DRM already in kernel)
+rm -rf $RPM_BUILD_ROOT%{_pkgconfigdir}/{xcursor,xft}.pc \
+	$RPM_BUILD_ROOT%{_libdir}/pkgconfig/fontconfig.pc} \
+	$RPM_BUILD_ROOT%{_mandir}/{man3/fontconfig.3x,man1/fc-{cache,list}.1x} \
+	$RPM_BUILD_ROOT%{_libdir}/{libfontconfig.*,libXrender.*,libXcursor.*,libXft.{a,so.2*}} \
+	$RPM_BUILD_ROOT%{_includedir}/{fontconfig,X11/{Xcursor,Xft}} \
+	$RPM_BUILD_ROOT%{_bindir}/{fc-cache,fc-list,xcursor-config,xft-config} \
+	$RPM_BUILD_ROOT/etc/fonts \
+	$RPM_BUILD_ROOT%{_prefix}/src
+
+# skipped from removal - %%exclude is used for these
+# %{_includedir}/X11/extensions/{Xrender.h,render.h,renderproto.h}
+# %{_mandir}/man3/Xft.3x
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -3026,6 +3041,7 @@ fi
 /etc/X11/xserver/SecurityPolicy
 #%%{_mandir}/man1/xtr*
 %{_mandir}/man1/xkbcomp.1*
+%{_mandir}/man4/aiptek.4*
 %{_mandir}/man4/citron*
 %{_mandir}/man4/dmc.4*
 %{_mandir}/man4/dynapro*
@@ -3038,6 +3054,7 @@ fi
 %{_mandir}/man4/palmax.4*
 %{_mandir}/man4/penmount.4*
 %{_mandir}/man4/tek4957.4*
+%{_mandir}/man4/ur98.4*
 %ifnarch amd64
 %{_mandir}/man4/v4l*
 %endif
