@@ -18,3 +18,17 @@
  # else
  #  define BuildXIE		NO
  # endif
+--- XFree86-4.2.0/xc/programs/xdpyinfo/Imakefile.orig	Thu Dec 27 21:02:34 2001
++++ XFree86-4.2.0/xc/programs/xdpyinfo/Imakefile	Sun Feb  3 10:56:30 2002
+@@ -10,11 +10,6 @@
+         SHMDEFINES = -DMITSHM
+ #endif
+ 
+-#if BuildXIElib
+-        XIEDEFINES = -DXIE
+-        XIEDEPLIBS = $(DEPXIELIB)
+-           XIELIBS = $(XIELIB)
+-#endif
+ 
+ #if BuildXF86VidModeLibrary
+     VIDMODEDEFINES = -DXF86VIDMODE
