@@ -8,6 +8,8 @@ Summary(fr):	Serveurs du systХme XFree86 et programmes de base
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularЩ ve temel programlar
 Summary(pt_BR):	Programas bАsicos e servidores para o sistema de janelas XFree86
+Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
+Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Name:		XFree86
 Version:	4.2.0
 Release:	3
@@ -178,6 +180,49 @@ flexibilidade em implementaГУes cliente/servidor.
 Este pacote contИm as fontes bАsicas, programas e documentaГЦo para
 uma estaГЦo de trabalho X. Ele nЦo fornece um servidor X que acessa
 seu hardware de vМdeo -- estes sЦo disponibilizados em outro pacote.
+
+%description -l ru
+X Window System предоставляет базу для разработки графических
+интерфейсов пользователя. Попросту говоря, X рисует элементы GUI на
+экране пользователя и стоит методы для передачи действий пользователя
+прикладным программам. X также поддерживает распределение приложений -
+запуск программ на удаленном компьютере с вводом/выводом на
+пользовательскую машину. X - это мощная среда, поддерживающая
+множество приложений, таких как игры, инструменты для программиста,
+графические программы, текстовые редакторы и т.п. XFree86 - это версия
+X, работающая на Linux и других системах.
+
+Этот пакет содержит базовые шрифты, программы и документацию для
+рабочей станции X.
+
+Дополнительно необходимо установить пакеты Xconfigurator, фонтсервер
+xfs и библиотеки XFree86-libs. Возможно придется установить также один
+или более пакетов шрифтов XFree86.
+
+Ну и, наконец, если вы собираетесь разрабатывать приложения,
+работающие как X-клиенты, вам также надо будет установить
+XFree86-devel.
+
+%description -l uk
+X Window System нада╓ базу для розробки граф╕чних ╕нтерфейс╕в
+користувача. Прост╕ше кажучи, X малю╓ елементи GUI на екран╕
+користувача та буду╓ методи для передач╕ д╕й користувача прикладним
+програмам. X також п╕дтриму╓ розпод╕л прикладних програм - запуск
+програм на в╕ддаленому комп'ютер╕ з вводом/виводом на машину
+користувача. X - це потужне середовище, яке п╕дтриму╓ велику к╕льк╕сть
+р╕зних програм, таких як ╕гри, ╕нструменти для програм╕ста, граф╕чн╕
+програми, текстов╕ редактори ╕ т.╕. XFree86 - це верс╕я X, яка працю╓
+на Linux та ╕нших системах.
+
+Цей пакет м╕стить базов╕ шрифти, програми та документац╕ю для робочо╖
+станц╕╖ X.
+
+Додатково необх╕дно встановити пакети Xconfigurator, фонтсервер xfs та
+б╕бл╕отеки XFree86-libs. Можливо також прийдеться встановити один або
+дек╕лька пакет╕в шрифт╕в XFree86.
+
+Ну ╕, нарешт╕, якщо ви збира╓тесь розробляти прикладн╕ програми, що
+працюють як X-кл╕╓нти, вам також треба буде встановити XFree86-devel.
 
 %package common
 Summary:	XFree86 files required both on server and client side
@@ -369,6 +414,8 @@ Biblioteki statyczne zawieraj╠ce wsparcie dla OpenGL do X11R6.
 %package Xnest
 Summary:	XFree86 Xnest server
 Summary(pl):	Serwer XFree86 Xnest
+Summary(ru):	"Вложенный" сервер XFree86
+Summary(uk):	"Вкладений" сервер XFree86
 Group:		X11/XFree86/Servers
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
@@ -387,6 +434,25 @@ run as a client of your real X server (perhaps for testing purposes).
 Xnest jest X serwerem uruchamianym w okienku innego X serwera. Xnest
 zachowuje siЙ jak X klient w stosunku do prawdziwego X serwera, a jak
 X serwer dla wЁasnych klientСw.
+
+%description Xnest -l ru
+Xnest - это сервер X Window System, который работает в окне X. На
+самом деле это клиент реального X-сервера, который управляет окнами и
+графическими запросами для Xnest в то время, как Xnest управляет
+окнами и графическими запросами для своих собственных клиентов.
+
+Вам надо установить Xnest если вам нужен X-сервер, который работает
+как клиент вашего реального X-сервера (скорее всего, в тестовых
+целях).
+
+%description Xnest -l uk
+Xnest - це сервер X Window System, який працю╓ у в╕кн╕ X. Фактично це
+кл╕╓нт реального X-сервера, який керу╓ в╕кнами та граф╕чними запитами
+для Xnest в той час, як Xnest керу╓ в╕кнами та граф╕чними запитами для
+сво╖х власних кл╕╓нт╕в.
+
+Вам треба встановити Xnest якщо вам потр╕бен X-сервер, який працю╓ як
+кл╕╓нт вашого реального X-сервера (скорше всього, у тестових ц╕лях).
 
 %package Xprt
 Summary:	X print server
@@ -464,6 +530,8 @@ sunucuyu deneyin.
 %package Xvfb
 Summary:	XFree86 Xvfb server
 Summary(pl):	Serwer XFree86 Xvfb
+Summary(ru):	Сервер XFree86 для виртуального фреймбуфера
+Summary(uk):	Сервер XFree86 для в╕ртуального фреймбуфера
 Group:		X11/XFree86/Servers
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
@@ -495,12 +563,50 @@ klientСw w rzadko u©ywanych konfiguracjach ekranu. Mo©na te© u©yФ Xvfb
 do uruchomienia aplikacji, ktСre w rzeczywisto╤ci nie wymagaj╠ X
 serwera, ale odmawiaj╠ uruchomienia bez niego.
 
+%description Xvfb -l ru
+Xvfb (X Virtual Frame Buffer) - это X-сервер, который способен
+работать на машинах без дисплейной аппаратуры и физических устройств
+ввода. Xvfb эмулирует простейший фреймбуфер используя виртуальную
+память. Xvfb не открывает никаких устройств, ведя себя как нормальный
+X-сервер во всем остальном. Обычно он используется для проверки
+серверов. Используя Xvfb, можно тестировать код mfb или cfb для любой
+глубины цвета без использования реальной аппаратуры, поддерживающей
+такую глубину. Xvfb также можно использовать для проверки X-клиентов с
+необычными глубинами цвета и конфигурациями экрана, производить
+пакетную обработку с Xvfb в качестве фонового рендерера, проводить
+нагрузочные тесты, для помощи в портировании X-сервера на новую
+платформу и для хитроумного запуска приложений, которым реально не
+нужен X-сервер, но которые настаивают на том, чтоб он был доступен.
+
+Если вам надо тестировать ваши X-сервера или X-клиенты, вы можете
+установить для этой цели Xvfb.
+
+%description Xvfb -l uk
+Xvfb (X Virtual Frame Buffer) - це X-сервер, здатний працювати на
+машинах без дисплейно╖ апаратури та в╕зичних пристро╖в вводу. Xvfb
+емулю╓ найпрост╕ший фреймбуфер використовуючи в╕ртуальну пам'ять. Xvfb
+не в╕дкрива╓ н╕яких пристро╖в, ведучи себе як нормальний X-сервер у
+решт╕ в╕дношень. Зазвичай його використовують для перев╕рки сервер╕в.
+Використовуючи Xvfb, можна тестувати код mfb або cfb для будь-яко╖
+глибини кольору та конф╕гурац╕╖ екрану без використання реально╖
+апаратури, яка п╕дтриму╓ так╕ режими. Також Xvfb можна використати для
+перев╕рки X-кл╕╓нт╕в з незвичними глибинами кольору та конф╕гурац╕ями
+екрану, проводити пакетну обробку з Xvfb у якост╕ фонового рендерера,
+проводити нагрузочн╕ тести, для допомоги у портуванн╕ X-сервера на
+нову платформу та запуску програм, яким реально не потр╕бен X-сервер,
+але як╕ наполягають на тому, щоб в╕н був доступний.
+
+Якщо вам потр╕бно тестувати ваш╕ X-сервери або X-кл╕╓нти, ви можете
+встановити для ц╕╓╖ ц╕л╕ Xvfb.
+
 %package devel
 Summary:	X11R6 headers and programming man pages
 Summary(de):	X11R6 Headers und man pages fЭr Programmierer
 Summary(fr):	Pages man de programmation
 Summary(pl):	Pliki nagЁСwkowe X11R6
+Summary(ru):	Библиотеки разработчика, хедера и документация по программированию X11R6
 Summary(tr):	X11R6 ile geliЧtirme iГin gerekli dosyalar
+Summary(uk):	Б╕бл╕отеки програм╕ста, хедери та документац╕я по програмуванню X11R6
 Group:		X11/Libraries
 Requires:	%{name}-libs = %{version}
 Requires:	imake = %{version}
@@ -539,10 +645,26 @@ i Xaw. WiЙcej informacji nt. pisania programСw przy u©yciu tych
 bibliotek mo©esz znale╪Ф w ksi╠©kach wydawnictwa O'Reilly and
 Associates (X Programming) polecanych przez Red Hata.
 
+%description devel -l ru
+XFree86-devel включает библиотеки, хедера и документацию, необходимые
+для разработки программ, работающих как X-клиенты. XFree86-devel
+включает базовую библиотеку Xlib и наборы примитивов Xt и Xaw.
+
+Установите XFree86-devel если вы собираетесь разрабатывать программы,
+которые будут работать как X-клиенты.
+
 %description devel -l tr
 X istemcisi olarak ГalЩЧacak programlar geliЧtirmek iГin gereken
 statik kitaplЩklar, baЧlЩk dosyalarЩ ve belgeler. Xlib kitaplЩПЩnЩn
 yanЩsЩra Xt ve Xaw arayЭz kitaplЩklarЩnЩ da iГerir.
+
+%description devel -l uk
+XFree86-devel м╕стить б╕бл╕отеки, хедери та документац╕ю, необх╕дн╕
+для розробки програм, як╕ працюють як X-кл╕╓нти. XFree86-devel м╕стить
+базову б╕бл╕отеку Xlib та набори прим╕тив╕в Xt та Xaw.
+
+Встанов╕ть XFree86-devel якщо ви збира╓тесь розробляти програми, як╕
+будуть працювати як X-кл╕╓нти.
 
 %package driver-apm
 Summary:	Alliance Promotion video driver
@@ -586,14 +708,14 @@ ATI video driver.
 Sterownik do kart ATI.
 
 %package driver-r128
-Summary:        ATI Rage 128 video driver
-Summary(pl):    Sterownik do kart ATI Rage 128
-Group:          X11/XFree86
-Requires:       %{name}-modules = %{version}-%{release}
-Requires:       %{name}-Xserver = %{version}-%{release}
-Requires:       OpenGL
+Summary:	ATI Rage 128 video driver
+Summary(pl):	Sterownik do kart ATI Rage 128
+Group:		X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+Requires:	OpenGL
 Conflicts:	XFree86-driver-nvidia
-Obsoletes:      XFree86-Rage128
+Obsoletes:	XFree86-Rage128
 
 %description driver-r128
 ATI Rage 128 video driver.
@@ -602,13 +724,13 @@ ATI Rage 128 video driver.
 Sterownik do kart ATI Rage 128.
 
 %package driver-radeon
-Summary:        ATI Radeon video driver
-Summary(pl):    Sterownik do kart ATI Radeon
-Group:          X11/XFree86
-Requires:       %{name}-modules = %{version}-%{release}
-Requires:       %{name}-Xserver = %{version}-%{release}
+Summary:	ATI Radeon video driver
+Summary(pl):	Sterownik do kart ATI Radeon
+Group:		X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	XFree86-driver-ati
-Requires:       OpenGL
+Requires:	OpenGL
 Conflicts:	XFree86-driver-nvidia
 
 %description driver-radeon
@@ -1059,9 +1181,11 @@ je╤li uruchamiasz Linuksa na wirtualnej maszynie VMware.
 Summary:	X11R6 shared libraries
 Summary(de):	X11R6 shared Libraries
 Summary(es):	Bibliotecas compartidas X11R6
-Summary(pl):	Biblioteki dzielone dla X11R6
 Summary(fr):	BibliothХques partagИes X11R6
+Summary(pl):	Biblioteki dzielone dla X11R6
 Summary(pt_BR):	Bibliotecas compartilhadas X11R6
+Summary(ru):	Разделяемые библиотеки для X Window System (X11R6.4)
+Summary(uk):	Б╕бл╕отеки сп╕льного використання для X Window System (X11R6.4)
 Group:		X11/XFree86
 PreReq:		grep
 Requires:	%{name}-common = %{version}
@@ -1113,17 +1237,46 @@ programСw korzystaj╠cych z systemu X Window. Wydzielony w celu
 oszczЙdno╤ci miejsca potrzebnego do uruchamiania aplikacji X Window na
 komputerach bez X serwera (np. przez sieФ).
 
+%description libs -l pt_BR
+Este pacote contИm bibliotecas compartilhadas que a maioria dos
+programas X precisam para rodar corretamente. Eles estЦo em um pacote
+separado para reduzir o espaГo em disco necessАrio para rodar
+aplicaГУes X em uma mАquina sem um servidor X (atravИs da rede).
+
 %description libs -l tr
 Bu paket X programlarЩnЩn dЭzgЭn ГalЩЧabilmeleri iГin gereken
 kitaplЩklarЩ iГerir. Bunlar, X programlarЩnЩ (sunucu olsun olmasЩn)
 ГalЩЧtЩrmak iГin gerekli disk alanЩnЩ azaltmak iГin ayrЩ bir paket
 olarak sunulmuЧtur.
 
-%description libs -l pt_BR
-Este pacote contИm bibliotecas compartilhadas que a maioria dos
-programas X precisam para rodar corretamente. Eles estЦo em um pacote
-separado para reduzir o espaГo em disco necessАrio para rodar
-aplicaГУes X em uma mАquina sem um servidor X (atravИs da rede).
+%description libs -l ru
+XFree86-libs содержит разделяемые библиотеки, которые необходимы для
+работы большинству программ для X. Эти библиотеки вынесены в отдельный
+пакет чтобы сэкономить дисковое пространство, необходимое для запуска
+приложений X на машинах без X-сервера (например, по сети).
+
+Если вы устанавливаете X Window System на вашей машине, вам необходимо
+установить XFree86-libs. Также необходимо установить следующие пакеты:
+XFree86, один или несколько пакетов шрифтов XFree86, Xconfigurator,
+XFree86-xfs.
+
+Если вы собираетесь разрабатывать программы, работающие как X-клиенты,
+вам также надо установить XFree86-devel.
+
+%description libs -l uk
+XFree86-libs м╕стить б╕бл╕отеки сп╕льного використання, котр╕
+необх╕дн╕ для роботи б╕льшост╕ прикладних програм для X. Ц╕ б╕бл╕отеки
+винесен╕ в окремий пакет для економ╕╖ дискового простору, необх╕дного
+для запуску прикладних програм X на машинах без X-серверу (наприклад,
+по мереж╕).
+
+Якщо ви встановлю╓те X Window System на ваш╕й машин╕, вам необх╕дно
+встановити XFree86-libs. Також необх╕дно встановити так╕ пакети:
+XFree86, один або дек╕лька пакет╕в шрифт╕в XFree86, Xconfigurator,
+XFree86-xfs.
+
+Якщо ви збира╓тесь розробляти програми, як╕ працюють як X-кл╕╓нти, вам
+також необх╕дно встановити XFree86-devel.
 
 %package modules
 Summary:	Modules with X servers extensions
@@ -1167,6 +1320,8 @@ XFree86 4.2.0 nie jest ju© doЁ╠czane domy╤lnie.
 %package setup
 Summary:	Graphical configuration tool for XFree86
 Summary(pl):	Graficzny konfigurator dla XFree86
+Summary(ru):	Утилита для конфигурации XFree86
+Summary(uk):	Утил╕та для конф╕гурування XFree86
 Group:		X11/XFree86
 Requires:	%{name}-Xserver = %{version}
 Obsoletes:	XFree86-xf86cfg
@@ -1183,9 +1338,17 @@ skonfigurowanie ustawieЯ obrazu, klawiatury, typu myszki i innych
 rС©nych rzeczy. Jednak©e jest wolny i wymaga dostЙpno╤ci serwera do
 standardowej 16-kolorowej VGA.
 
+%description setup -l ru
+Утилита для конфигурации XFree86.
+
+%description setup -l uk
+Утил╕та для конф╕гурування XFree86.
+
 %package static
 Summary:	X11R6 static libraries
 Summary(pl):	Biblioteki statyczne X11R6
+Summary(ru):	Статические библиотеки X11R6
+Summary(uk):	Статичн╕ б╕бл╕отеки X11R6
 Group:		X11/Libraries
 Requires:	%{name}-devel = %{version}
 %ifarch sparc sparc64
@@ -1200,9 +1363,20 @@ X11R6 static libraries.
 %description static -l pl
 Biblioteki statyczne X11R6.
 
+%description static -l ru
+XFree86-static включает статические библиотеки, необходимые для
+разработки программ, работающих как X-клиенты. собранные программы,
+которые будут работать как X-клиенты.
+
+%description static -l uk
+XFree86-static м╕стить статичн╕ б╕бл╕отеки, необх╕дн╕ для розробки
+програм, як╕ працюють як X-кл╕╓нти.
+
 %package tools
 Summary:	Various tools for XFree86
 Summary(pl):	RС©ne narzЙdzia dla XFree86
+Summary(ru):	Разнообразные утилиты для XFree86
+Summary(uk):	Р╕зноман╕тн╕ утил╕ти для XFree86
 Group:		X11/XFree86
 Requires:	%{name} >= %{version}
 Requires:	XFree86-libs = %{version}
@@ -1239,18 +1413,47 @@ klienci X, bЙdziesz musiaЁ zainstalowaФ rСwnie© XFree86-devel.
 Ten pakiet zawiera aplikacje, ktСre byЁy w X11R6-contrib w starszych
 wersjach X.
 
+%description tools -l ru
+Разнообразные утилиты для X, включая listres, xbiff, xedit, xeyes,
+xcalc, xload, xman и другие.
+
+Если вы устанавливаете X Window System, вам надо установить
+XFree86-tools. Также вам также необходимо установить такие пакеты:
+XFree86, Xconfigurator, XFree86-xfs и XFree86-libs. Возможно, вам надо
+установить и другие пакеты шрифтов XFree86.
+
+Если вы собираетесь разрабатывать программы, работающие как X-клиенты,
+вам также надо установить XFree86-devel.
+
+Этот пакет содержит все программы, которые раньше включались в
+X11R6-contrib.
+
+%description tools -l uk
+Р╕зноман╕тн╕ утил╕ти для X, включаючи listres, xbiff, xedit, xeyes,
+xcalc, xload, xman та ╕нш╕.
+
+Якщо ви встановлю╓те X Window System, вам необх╕дно встановити
+XFree86-tools. Також треба встановити так╕ пакети: XFree86,
+Xconfigurator, XFree86-xfs та XFree86-libs. Можливо, вам треба
+встановити й ╕нш╕ пакети шрифт╕в XFree86.
+
+Якщо ви збира╓тесь розробляти програми, як╕ працюють як X-кл╕╓нти, вам
+також необх╕дно встановити XFree86-devel.
+
+Цей пакет м╕стить ус╕ програми, як╕ ран╕ше входили до X11R6-contrib.
+
 %package -n imake
 Summary:	C preprocessor interface to the make utility
 Summary(pl):	Miedzymordzie do make oparte o preprocesor C
 Group:		Development/Building
 
 %description -n imake
-Imake is used to generate Makefiles from a template, a set of cpp macro
-functions, and a per-directory input file called an Imakefile. This
-allows machine dependencies (such as compiler options, alternate command
-names, and special make rules) to be kept separate from the descriptions
-of the various items to be built.
-		     
+Imake is used to generate Makefiles from a template, a set of cpp
+macro functions, and a per-directory input file called an Imakefile.
+This allows machine dependencies (such as compiler options, alternate
+command names, and special make rules) to be kept separate from the
+descriptions of the various items to be built.
+
 %description -n imake -l pl
 Imake jest u©ywany do generowania plikСw Makefile na bazie szablonu,
 zbioru makr preprocesora C oraz (dla ka©dego podkatalogu) pliku
@@ -1283,6 +1486,8 @@ indeksowanych poЁo©eniem w /etc/ttys.
 %package -n twm
 Summary:	Tab Window Manager for the X Window System
 Summary(pl):	Twm - podstawowy zarz╠dca okien dla X Window System
+Summary(ru):	Простой оконный менеджер
+Summary(uk):	Простий в╕конний менеджер
 Group:		X11/Window Managers
 Requires:	XFree86-libs = %{version}
 
@@ -1297,6 +1502,12 @@ Twm jest mened©erem okien dla X Window System. Daje belki tytuЁowe,
 ramki okien, parЙ form zarz╠dzania ikonami, definiowalne makra,
 ustawianie focusu klikniЙciem lub poЁo©eniem wska╪nika myszy,
 definiowalne przypisania klawiszy i przyciskСw myszy.
+
+%description -n twm -l ru
+Простой компактний оконный менеджер.
+
+%description -n twm -l uk
+Простий компактний в╕конний менеджер.
 
 %package -n xauth
 Summary:	xauth - X authority file utility
@@ -1321,6 +1532,8 @@ logowania lub udostЙpnienia innym u©ytkownikom).
 %package -n xdm
 Summary:	xdm - X Display Manager with support for XDMCP, host chooser
 Summary(pl):	XDM - display mened©er z obsЁug╠ XDMCP i wybieraniem hostСw
+Summary(ru):	Менеджер дисплея X
+Summary(uk):	Менеджер дисплею X
 Group:		X11/XFree86
 Requires:	%{name} = %{version}
 Requires:	pam >= 0.71
@@ -1344,9 +1557,17 @@ Xdm zarz╠dza zestawem ekranСw X, ktСre mog╠ byФ lokalne lub na
 zdalnych serwerach. ZostaЁ zaprojektowany zgodnie z potrzebami X
 terminali oraz standardem X Consortium XDMCP.
 
+%description -n xdm -l ru
+Менеджер дисплея X.
+
+%description -n xdm -l uk
+Менеджер дисплею X.
+
 %package -n xfs
 Summary:	Font server for XFree86
 Summary(pl):	Serwer fontСw dla XFree86
+Summary(ru):	Фонтсервер для X Window System
+Summary(uk):	Фонтсервер для X Window System
 Group:		X11/XFree86
 Requires:	%{name}-libs = %{version}
 Requires:	XFree86-fonts-base
@@ -1368,6 +1589,28 @@ installed on the remote computer.
 %description -n xfs -l pl
 Pakiet zawiera serwer fontСw dla XFree86. Mo©e udostЙpniaФ fonty dla X
 serwerСw lokalnych lub zdalnych.
+
+%description -n xfs -l ru
+XFree86-xfs содержит сервер шрифтов для XFree86. Xfs также может
+предоставлять шрифты удаленным X-серверам. Удаленная система будет
+способна использовать все шрифты, установленные на сервере шрифтов,
+даже если они не установлены на удаленном компьютере.
+
+Вы должны установить XFree86-xfs если вы устанавливаете X Window
+System. Также вам придется установить следующие пакеты: XFree86,
+пакет(ы) шрифтов XFree86, необходимые для вашей системы, Xconfigurator
+и XFree86-libs.
+
+%description -n xfs -l uk
+XFree86-xfs м╕стить сервер шрифт╕в для XFree86. Xfs також може
+надавати шрифти в╕ддаленим X-серверам. В╕ддалена система зможе
+використовувати ус╕ шрифти, як╕ встановлен╕ на сервер╕ шрифт╕в, нав╕ть
+якщо вони не встановлен╕ на в╕ддаленому комп'ютер╕.
+
+Ви повинн╕ встановити XFree86-xfs якщо ви встановлю╓те X Window
+System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
+пакет(и) шрифт╕в XFree86, необх╕дн╕ для вашо╖ системи, Xconfigurator
+та XFree86-libs.
 
 #--- %prep ---------------------------
 
@@ -2503,6 +2746,7 @@ fi
 %{_applnkdir}/Utilities/xclipboard.desktop
 
 %files -n imake
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/gccmakedep
 %attr(755,root,root) %{_bindir}/imake
 %attr(755,root,root) %{_bindir}/makedepend
