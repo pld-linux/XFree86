@@ -121,7 +121,6 @@ Patch57:	%{name}-GLcore-strip-a-workaround.patch
 Patch58:	%{name}-4.2.1-mit-shm-security.patch
 Patch59:	%{name}-disable_glide.patch
 Patch60:	%{name}-expat.patch
-Patch61:	%{name}-ProjectRoot.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1834,7 +1833,6 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #%patch58 -p0  --obsoleted
 %{?_without_tdfx:%patch59 -p0}
 %patch60 -p0
-%patch61 -p0
 
 rm -f xc/config/cf/host.def
 
