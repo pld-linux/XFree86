@@ -1112,7 +1112,9 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console
 	$RPM_BUILD_ROOT/usr/bin \
 	$RPM_BUILD_ROOT/usr/lib \
 	$RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties \
-	$RPM_BUILD_ROOT{%{_appnkldir}/Utilities,%{_datadir}/pixmaps}
+	$RPM_BUILD_ROOT%{_appnkldir}/Utilities \
+	$RPM_BUILD_ROOT%{_pixmapsdir} \
+	$RPM_BUILD_ROOT%{_datadir}/icons/mini
 
 %{__make} -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -1169,7 +1171,6 @@ touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xdm
 
-#ln -sf ../..%{_includedir}/X11 $RPM_BUILD_ROOT%{_includedir}/X11 ##change
 ln -sf %{_fontdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
 
 # do not duplicate xkbcomp program
@@ -1185,6 +1186,15 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
 :> $RPM_BUILD_ROOT/etc/X11/XF86Config
 
 rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/html
+
+# directories for applications locales
+:> XFree86-libs.lang
+for lang in af az bg bg_BG.cp1251 br ca cs da de el en_GB eo es et eu fi \
+    fr ga gl he hr hu is it ja ko lt mi mk nl nn no pl pt pt_BR ro ru sk \
+    sl sr sv ta th tr uk wa zh_CN zh_CN.GB2312 zh_TW.Big5 ; do
+	install -d $RPM_BUILD_ROOT%{_datadir}/locale/${lang}/LC_MESSAGES
+	echo "%lang(${lang}) %{_datadir}/locale/${lang}" >> XFree86-libs.lang
+done
 
 %ifnarch sparc sparc64
 gzip -9nf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
@@ -1293,7 +1303,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %ifnarch sparc sparc64
-%doc %{_docdir}/%{name}-%{version}/*
+%doc %{_docdir}/%{name}-%{version}
 %doc %{_libdir}/X11/doc
 %endif
 
@@ -1604,13 +1614,17 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xauth
 %{_mandir}/man1/xauth.1*
 
-%files libs
+%files libs -f XFree86-libs.lang
 %defattr(644,root,root,755)
 %dir %{_libdir}
 %dir %{_libdir}/X11
 /usr/lib/X11
 %dir %{_bindir}
 /usr/bin/X11
+%dir %{_datadir}/locale
+%dir %{_pixmapsdir}
+%dir %{_datadir}/icons
+%dir %{_datadir}/icons/mini
 %attr(755,root,root) %{_libdir}/libX*.so.*.*
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
 %attr(755,root,root) %{_libdir}/libP*.so.*.*
