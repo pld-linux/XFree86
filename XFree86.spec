@@ -897,8 +897,8 @@ X11R6-contrib in older releases.
 %endif 
 #%patch16 -p1 #not needed, included in 4.0.2
 %patch17 -p1
-#%patch18 -p1
-#%patch19 -p0
+#%patch18 -p1 #not needed, included in 4.0.2
+#%patch19 -p0 #not needed, included in 4.0.2
 #%patch20 -p1
 #%patch21 -p0
 #%patch22 -p1
