@@ -1269,7 +1269,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %config(noreplace) %verify(not md5 mtime size) /etc/X11/XF86Config
-%config /etc/pam.d/xserver
+%config %verify(not md5 mtime size) /etc/pam.d/xserver
 %config(missingok) /etc/security/console.apps/xserver
 %config /etc/X11/twm/system.twmrc
 %config /etc/X11/xsm/system.xsm
