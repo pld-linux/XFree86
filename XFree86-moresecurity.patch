@@ -1,0 +1,14 @@
+--- XFree86-4.0/xc/lib/X11/OpenDis.c.moresecurity	Wed Jun 28 18:54:22 2000
++++ XFree86-4.0/xc/lib/X11/OpenDis.c	Wed Jun 28 18:54:58 2000
+@@ -397,6 +397,11 @@
+  * now extract the vendor string...  String must be null terminated,
+  * padded to multiple of 4 bytes.
+  */
++        /* Check for a sane vendor string length */
++        if (u.setup->nbytesVendor > 256) {
++            OutOfMemory(dpy, setup);
++            return (NULL);
++        }                                                                       
+ 	dpy->vendor = (char *) Xmalloc((unsigned) (u.setup->nbytesVendor + 1));
+ 	if (dpy->vendor == NULL) {
+ 	    OutOfMemory(dpy, setup);
