@@ -1906,7 +1906,7 @@ install -d $RPM_BUILD_ROOT/etc/{X11/fs,pam.d,rc.d/init.d,security/console.apps,s
 	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
 	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
 	$RPM_BUILD_ROOT%{_applnkdir}/{Amusements,Editors,Utilities,Terminals} \
-	$RPM_BUILD_ROOT{%{_pixmapsdir}/mini,%{_wmpropsdir},%{_soundsdir},%{_themesdir}/Default}
+	$RPM_BUILD_ROOT{%{_pixmapsdir}/mini,%{_wmpropsdir},%{_soundsdir},%{_themesdir}/{Default,ThinIce}}
 
 %{__make} -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -2842,6 +2842,7 @@ fi
 %defattr(644,root,root,755)
 %dir %{_themesdir}
 %dir %{_themesdir}/Default
+%dir %{_themesdir}/ThinIce
 %{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XKeysymDB
 %dir %{_libdir}/X11/app-defaults
