@@ -40,6 +40,9 @@ BuildRequires:	zlib-devel
 BuildRequires:	utempter-devel
 BuildRequires:	tcl-devel
 BuildRequires:	pam-devel
+# u mnie glide sie nie kompiluje, a jest potrzebny dla _poprawnej_ kompilacji
+#BuildRequires:	glide-devel
+#
 Requires:	xauth
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
 Buildroot:	/tmp/%{name}-%{version}-root/
@@ -124,8 +127,6 @@ Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Prereq:		grep
 Prereq:		/sbin/ldconfig
-#Obsoletes:	Mesa
-#Obsoletes:	Mesa-devel
 
 %ifarch sparc
 Obsoletes: X11R6.1-libs
@@ -228,10 +229,7 @@ Summary:	OpenGL support for X11R6
 Summary(pl):	Wsparciem OpenGL dla systemu X11R6
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
-Requires:	%{name}-devel = %{version}
-#%ifarch sparc
-#Obsoletes:	X11R6.1-devel
-#%endif
+Requires:	%{name}-libs = %{version}
 Obsoletes:	Mesa
 
 %description OpenGL
@@ -245,10 +243,7 @@ Summary:	OpenGL for X11R6 development
 Summary(pl):	Pliki nag³ówkowe dla OpenGL dla systemu X11R6
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
-Requires:	%{name}-devel = %{version}
-#%ifarch sparc
-#Obsoletes:	X11R6.1-devel
-#%endif
+Requires:	%{name}-OpenGL = %{version}
 Obsoletes:	Mesa-devel
 
 %description OpenGL-devel
@@ -262,10 +257,7 @@ Summary:	X11R6 static libraries with OpenGL
 Summary(pl):	Biblioteki sytatyczne do X11R6 ze wsparciem dla OpenGL
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
-Requires:	%{name}-devel = %{version}
-%ifarch sparc
-Obsoletes:	X11R6.1-devel
-%endif
+Requires:	%{name}-OpenGL-devel = %{version}
 Obsoletes:	Mesa-static
 
 %description OpenGL-static
@@ -499,7 +491,6 @@ Requires:	%{name}-DPS-devel = %{version}
 
 %description DPS-static
 %description -l pl DPS-static
-
 
 %package -n sessreg
 Summary:	sessreg - manage utmp/wtmp entries for non-init clients
@@ -1033,10 +1024,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
-### remove libdps*.so.1.0
-### remove libGL*.so.*.*
-### remove libpsres.so.*.*
-%attr(755,root,root) %{_libdir}/lib*.so.*.*
+%attr(755,root,root) %{_libdir}/libX*.so.*.*
+%attr(755,root,root) %{_libdir}/libI*.so.*.*
+%attr(755,root,root) %{_libdir}/libP*.so.*.*
+%attr(755,root,root) %{_libdir}/libS*.so.*.*
+%attr(755,root,root) %{_libdir}/libx*.so.*.*
+%attr(755,root,root) %{_libdir}/libf*.so.*.*
+%attr(755,root,root) %{_libdir}/libo*.so.*.*
 
 %files OpenGL
 %defattr(644,root,root,755)
@@ -1046,11 +1040,20 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libGL*.so
 
+%files OpenGL-static
+%defattr(644,root,root,755)
+%{_libdir}/libGL.a
+%{_libdir}/libGLU.a
+
 %files devel
-## usunac libdps*.so
-## usunac libGL*.so
-## usunac libpsres.so
-%attr(755,root,root) %{_libdir}/lib*.so
+#%attr(755,root,root) %{_libdir}/lib*.so
+%attr(755,root,root) %{_libdir}/libX*.so
+%attr(755,root,root) %{_libdir}/libI*.so
+%attr(755,root,root) %{_libdir}/libP*.so
+%attr(755,root,root) %{_libdir}/libS*.so
+%attr(755,root,root) %{_libdir}/libx*.so
+%attr(755,root,root) %{_libdir}/libf*.so
+%attr(755,root,root) %{_libdir}/libo*.so
 %{_libdir}/libFS.a
 %{_libdir}/libXau.a
 %{_libdir}/libXdmcp.a
@@ -1075,7 +1078,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/X11/Xmu
 %{_includedir}/X11/extensions
 %{_includedir}/X11/fonts
-#%{_includedir}/GL
 %{_includedir}/xf86*.h
 %{_libdir}/X11/config
 
@@ -1090,15 +1092,8 @@ rm -rf $RPM_BUILD_ROOT
 
 /usr/include/X11
 
-%files OpenGL-static
-%defattr(644,root,root,755)
-%{_libdir}/libGL.a
-%{_libdir}/libGLU.a
-
 %files static
 %defattr(644,root,root,755)
-#%{_libdir}/libGL.a
-#%{_libdir}/libGLU.a
 %{_libdir}/libICE.a
 %{_libdir}/libPEX5.a
 %{_libdir}/libSM.a
