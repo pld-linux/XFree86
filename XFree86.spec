@@ -215,13 +215,64 @@ Requires:	%{name}-devel = %{version}
 %ifarch sparc
 Obsoletes:	X11R6.1-devel
 %endif
-Obsoletes:	Mesa-static
+#Obsoletes:	Mesa-static
 
 %description static
 X11R6 static libraries.
 
 %description -l pl static
 Biblioteki sytatyczne do X11R6.
+
+%package OpenGL
+Summary:	OpenGL support for X11R6
+Summary(pl):	Wsparciem OpenGL dla systemu X11R6
+Group:		X11/Libraries
+Group(pl):	X11/Biblioteki
+Requires:	%{name}-devel = %{version}
+#%ifarch sparc
+#Obsoletes:	X11R6.1-devel
+#%endif
+Obsoletes:	Mesa
+
+%description OpenGL
+OpenGL support for X11R6 system.
+
+%description -l pl OpenGL
+Wsparcie OpenGL dla systemu X11R6
+
+%package OpenGL-devel
+Summary:	OpenGL for X11R6 development
+Summary(pl):	Pliki nag³ówkowe dla OpenGL dla systemu X11R6
+Group:		X11/Libraries
+Group(pl):	X11/Biblioteki
+Requires:	%{name}-devel = %{version}
+#%ifarch sparc
+#Obsoletes:	X11R6.1-devel
+#%endif
+Obsoletes:	Mesa-devel
+
+%description OpenGL-devel
+Headert and man pages for OpenGL for X11R6.
+
+%description -l pl OpenGL-devel
+Pliki nag³ówkowe dla OpenGL dla systemu X11R6.
+
+%package OpenGL-static
+Summary:	X11R6 static libraries with OpenGL
+Summary(pl):	Biblioteki sytatyczne do X11R6 ze wsparciem dla OpenGL
+Group:		X11/Libraries
+Group(pl):	X11/Biblioteki
+Requires:	%{name}-devel = %{version}
+%ifarch sparc
+Obsoletes:	X11R6.1-devel
+%endif
+Obsoletes:	Mesa-static
+
+%description OpenGL-static
+X11R6 static libraries with OpenGL.
+
+%description -l pl OpenGL-static
+Biblioteki sytatyczne zawieraj±ce wsparcie dla OpenGL do X11R6.
 
 %package XF86Setup
 Summary:	Graphical configuration tool for XFree86
@@ -981,29 +1032,19 @@ rm -rf $RPM_BUILD_ROOT
 %files libs
 %defattr(644,root,root,755)
 ### remove libdps*.so.1.0
-
-
-
-
-
-
-
-
 %attr(755,root,root) %{_libdir}/lib*.so.*.*
 
-%files devel
+%files OpenGL
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libGL*.so.*.*
+
+%files OpenGL-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libGL*.so
+
+%files devel
 ## usunac libdps*.so
-
-
-
-
-
-
-
-
-
-
+## usunac libGL*.so
 %attr(755,root,root) %{_libdir}/lib*.so
 %{_libdir}/libFS.a
 %{_libdir}/libXau.a
@@ -1029,7 +1070,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/X11/Xmu
 %{_includedir}/X11/extensions
 %{_includedir}/X11/fonts
-%{_includedir}/GL
+#%{_includedir}/GL
 %{_includedir}/xf86*.h
 %{_libdir}/X11/config
 
@@ -1044,10 +1085,15 @@ rm -rf $RPM_BUILD_ROOT
 
 /usr/include/X11
 
-%files static
+%files OpenGL-static
 %defattr(644,root,root,755)
 %{_libdir}/libGL.a
 %{_libdir}/libGLU.a
+
+%files static
+%defattr(644,root,root,755)
+#%{_libdir}/libGL.a
+#%{_libdir}/libGLU.a
 %{_libdir}/libICE.a
 %{_libdir}/libPEX5.a
 %{_libdir}/libSM.a
@@ -1150,7 +1196,7 @@ rm -rf $RPM_BUILD_ROOT
 %files DPS-static
 %defattr(644,root,root,755)
 %{_libdir}/libdps.a
-%{_lindir}/libdpstk.a
+%{_libdir}/libdpstk.a
 
 #%files XF86Setup
 #%defattr(644,root,root,755)
