@@ -12,7 +12,7 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Name:		XFree86
 Version:	4.2.1
-Release:	2
+Release:	2.1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
@@ -80,15 +80,18 @@ Patch44:	%{name}-xtt-null-pointer.patch
 Patch45:	%{name}-i740-driver-update-cvs-20020617.patch
 Patch46:	%{name}-neomagic-Xv-support.patch
 Patch47:	%{name}-tdfx-disable-dri-on-16Mb-cards-in-hires.patch
-Patch48:	%{name}-tdfx-enable-interlaced-modes.patch
-Patch49:	%{name}-tdfx-fix-compiler-warnings.patch
-Patch50:	%{name}-tdfx-fix-vtswitch-font-corruption.patch
-Patch51:	%{name}-tdfx-should-be-2048-not-2046.patch
+Patch48:	%{name}-tdfx-should-be-2048-not-2046.patch
+Patch49:	%{name}-tdfx-interlace.patch
+Patch50:	%{name}-tdfx-fix-compiler-warnings.patch
+Patch51:	%{name}-tdfx-fix-vtswitch-font-corruption.patch
 Patch52:	%{name}-sis-option-swcursor.patch
 Patch53:	%{name}-sis-unresolved-symbols.patch
 Patch54:	%{name}-sis-maxxfbmem-fixup.patch
 Patch55:	%{name}-Radeon9000.patch
-
+Patch56:	%{name}-Xfont-Type1-large-DoS.patch
+# "strip -g libGLcore.a" left empty object debug_xform.o, which caused GLcore
+# loading failure with "debug_xform.o: no symbols"
+Patch57:	%{name}-GLcore-strip-a-workaround.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -125,6 +128,11 @@ Obsoletes:	X11R6.1
 # avoid Mesa dependency in XFree86-OpenGL-libs
 # Glide3 (libglide3.so.3) can be provided by Glide_V3-DRI or Glide_V5-DRI
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1 libOSMesa.so.3.3   libglide3.so.3
+
+# gcc 3.2 is still broken
+%ifarch athlon
+%define		optflags	-O2 -march=athlon -mno-mmx -mno-3dnow
+%endif
 
 %description
 If you want to install the X Window System (TM) on your machine,
@@ -1739,15 +1747,16 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch45 -p1
 %patch46 -p1
 %patch47 -p0
-# Causes build error - FIXME:
-#%patch48 -p0
-#%patch49 -p0
-%patch50 -p0
+%patch48 -p0
+%patch49 -p1
+#%patch50 -p0
 %patch51 -p0
 #%patch52 -p1
 #%patch53 -p1
 %patch54 -p1
 %patch55 -p0
+%patch56 -p1
+%{!?debug:%patch57 -p1}
 
 rm -f xc/config/cf/host.def
 
