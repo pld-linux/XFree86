@@ -71,7 +71,7 @@ lokalen Rechnern oder über ein Netz und bietet große Flexibilität bei
 Client-Server-Implementierungen.
 
 %description -l pl
-X Window System jest graficznym interfejsem u¿ytkownika, cechuje siê
+X Window System jest graficznym interfejsem u¿ytkownika. Cechuje siê
 mo¿liwo¶ci± pracy w wielu oknach, z wieloma klientami i do tego w ró¿nych
 wystrojach okien. :) Jest u¿ywany na wiêkszo¶ci platform sytemów Unix, a
 klienci mog± byæ uruchamiani tak¿e pod innymi popularnymi systemami
@@ -79,9 +79,7 @@ okienkowymi. Protokó³ X pozwala na uruchamianie aplikacji zarówno z lokalnej
 maszyny jak i poprzez sieæ daj±c przez to elastyczn± implementacjê
 architektury klient/serwer.
 
-Pakiet ten zawiera podstawowe fonty, programy oraz dokumentacje dla stacji X. 
-Nie zawiera X serwera który jest po¶rednikiem z Twoj± kart± graficzn± - jest
-on w innym pakiecie.
+Pakiet ten zawiera podstawowe fonty, programy oraz dokumentacje dla stacji X. Nie zawiera X serwera który jest po¶rednikiem z Twoj± kart± graficzn± - jest on w innym pakiecie.
 
 %description -l tr
 X Window sistemi, çoklu pencere, çoklu istemci ve çeþitli pencere stilleriyle
