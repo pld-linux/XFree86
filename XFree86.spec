@@ -2514,7 +2514,7 @@ fi
 %exclude %{_includedir}/X11/extensions/render.h
 %exclude %{_includedir}/X11/extensions/renderproto.h
 
-%{_mandir}/man3/[A-EH-Z]*
+%{_mandir}/man3/[A-FH-Z]*
 %exclude %{_mandir}/man3/Xft.3*
 
 %files Xserver-devel
