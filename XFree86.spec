@@ -885,16 +885,18 @@ X11R6-contrib in older releases.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p0
-#%patch10 -p1
-#%patch11 -p1
-#%patch12 -p0
-#%patch13 -p1
-#%patch14 -p1
+%patch10 -p1
+#%patch11 -p1 #not needed, included in 4.0.2 
+#%patch12 -p0 #patch not exist
+#%patch13 -p1 #patch not exist
+%ifarch sparc64
+%patch14 -p1
+%endif
 %ifarch alpha
 %patch15 -p0
 %endif 
-#%patch16 -p1
-#%patch17 -p1
+#%patch16 -p1 #not needed, included in 4.0.2
+%patch17 -p1
 #%patch18 -p1
 #%patch19 -p0
 #%patch20 -p1
