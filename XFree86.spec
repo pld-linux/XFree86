@@ -2081,7 +2081,9 @@ rm -rf $RPM_BUILD_ROOT
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
 %endif
+%ifnarch alpha
 %{_mandir}/man4/r128*
+%endif
 
 %endif
 
