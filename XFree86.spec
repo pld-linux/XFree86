@@ -547,7 +547,7 @@ Summary(pl):	Twm - podstawowy zarz±dca okien dla X Window System
 Group:		X11/Window Managers/Tools
 Group(es):	X11/Administraadores De Ventanas
 Group(fr):	X11/Gestionnaires De Fenêtres
-Group(pl):	X11/Zarz±dcy Okien/Narzêdzi
+Group(pl):	X11/Zarz±dcy Okien/Narzêdzia
 
 %description -n twm
 Twm is a window manager for the X Window System. It provides titlebars,
