@@ -4,13 +4,13 @@ Summary(fr):	Serveurs du système XFree86 et programmes de base
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
-Version:	4.0.2
-Release:	13
+Version:	4.0.3
+Release:	1
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0/source/X402src-1.tgz
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0.2/source/X402src-1.tgz
 Source1:	ftp://download.sourceforge.net/pub/sourceforge/mesa3d/MesaLib-3.4.tar.bz2
 Source2:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source3:	xdm.pamd
@@ -46,13 +46,13 @@ Patch16:	%{name}-HasXdmAuth.patch
 Patch17:	%{name}-xdm-fixes.patch
 Patch18:	%{name}-imake-kernel-version.patch
 Patch19:	%{name}-no-kernel-modules.patch
-Patch20:	%{name}-cirrus.patch
-Patch21:	%{name}-locale.alias.patch
-Patch22:	%{name}-parallelmake.patch
-Patch23:	%{name}-portuguese.patch
-Patch24:	%{name}-XF86CardDrivers-cfg.patch
-Patch25:	%{name}-pic.patch
-Patch26:	%{name}-time.patch
+Patch20:	%{name}-locale.alias.patch
+Patch21:	%{name}-parallelmake.patch
+Patch22:	%{name}-portuguese.patch
+Patch23:	%{name}-XF86CardDrivers-cfg.patch
+Patch24:	%{name}-pic.patch
+Patch25:	%{name}-time.patch
+Patch26:	ftp://ftp.xfree86.org/pub/XFree86/4.0.3/patches/4.0.2-4.0.3.diff.gz
 BuildRequires:	flex
 BuildRequires:	bison
 BuildRequires:	ncurses-devel
@@ -1033,12 +1033,12 @@ X11R6-contrib in older releases.
 %patch18 -p1
 %patch19 -p1
 %patch20 -p0
-%patch21 -p0
+%patch21 -p1
 %patch22 -p1
 %patch23 -p1
 %patch24 -p1
 %patch25 -p1
-%patch26 -p1
+%patch26 -p0
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
