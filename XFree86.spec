@@ -404,8 +404,8 @@ Ten pakiet zawiera biblioteki statyczne.
 Summary:	Font configuration and customization library
 Summary(pl):	Biblioteka do konfigurowania fontСw
 Group:		Libraries
-Requires:	%{name}-libs = %{version}
 Requires(post):	/sbin/ldconfig
+Requires:	%{name}-libs = %{version}
 Provides:	%{name}-fontconfig-realpkg = %{version}
 Provides:	fontconfig = 1.0.1
 Obsoletes:	fontconfig
@@ -1527,10 +1527,10 @@ Summary(pt_BR):	Bibliotecas compartilhadas X11R6
 Summary(ru):	Разделяемые библиотеки для X Window System (X11R6.4)
 Summary(uk):	Б╕бл╕отеки сп╕льного використання для X Window System (X11R6.4)
 Group:		X11/XFree86
-Requires:	%{name}-common = %{version}
 Requires(post,postun):	/sbin/ldconfig
 Requires(post,postun):	grep
 Requires(postun):	fileutils
+Requires:	%{name}-common = %{version}
 Provides:	xpm
 Obsoletes:	xpm
 
@@ -1850,13 +1850,13 @@ Summary(ru):	Менеджер дисплея X
 Summary(uk):	Менеджер дисплею X
 Group:		X11/XFree86
 PreReq:		rc-scripts
+Requires(post,preun):	/sbin/chkconfig
 Requires:	%{name} = %{version}
 Requires:	%{name}-libs = %{version}
 Requires:	/usr/X11R6/bin/sessreg
 Requires:	pam >= 0.71
 Requires:	sessreg = %{version}
 Requires:	/usr/X11R6/bin/sessreg
-Requires(post,preun):	/sbin/chkconfig
 Provides:	XDM
 Obsoletes:	XFree86-xdm
 Obsoletes:	gdm
@@ -1886,8 +1886,6 @@ Summary(ru):	Фонтсервер для X Window System
 Summary(uk):	Фонтсервер для X Window System
 Group:		X11/XFree86
 PreReq:		rc-scripts
-Requires:	%{name}-libs = %{version}
-Requires:	XFree86-fonts-base
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/useradd
@@ -1895,6 +1893,8 @@ Requires(pre):	/usr/sbin/groupadd
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
+Requires:	%{name}-libs = %{version}
+Requires:	XFree86-fonts-base
 Obsoletes:	xfsft XFree86-xfs
 
 %description -n xfs
