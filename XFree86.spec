@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	3.9.17
-Release:	4
+Release:	5
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -26,6 +26,8 @@ Source13:	xconsole.desktop
 Source14:	xterm.desktop
 Source15:	xlogo64.png
 Patch0:		XFree86-3.9.17-PLD.patch
+Patch1:		XFree86-HasZlib.patch
+Patch2:		XFree86-DisableDebug.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -414,19 +416,40 @@ If you are installing the X Window System and your system uses a Digital TGA
 board based on the DC21040 chip, you'll need to install the XFree86-TGA
 package.
 
+%package -n sessreg
+Summary:	sessreg - manage utmp/wtmp entries for non-init clients
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-libs = %{version}
+
+%description -n sessreg
+Sessreg is a simple program for managing utmp/wtmp entries for xdm sessions.
+
+System V has a better interface to /var/run/utmp than BSD; it dynamically
+allocates entries in the file, instead of writing them at fixed positions
+indexed by position in /etc/ttys.
+
 %package -n xdm
-Summary:	XDM
+Summary:	xdm - X Display Manager with support for XDMCP, host chooser
 Summary(pl):	XDM
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name} = %{version}
-Requires:	pam >= 0.66
+Requires:	pam >= 0.71
 Requires:	%{name}-libs = %{version}
+Requires:	sessreg = %{version}
+Requires:	/usr/X11R6/bin/sessreg
+Provides:	XDM
 Prereq:		chkconfig
 Obsoletes:	XFree86-xdm
+Obsoletes:	gdm
+Obsoletes:	kdm
 
 %description -n xdm
-X Display Manager.
+Xdm manages a collection of X displays, which may be on the local host or
+remote servers. The design of xdm was guided by the needs of X terminals as
+well as the X Consortium standard XDMCP, the X Display Manager Control
+Protocol.
 
 %package -n twm
 Summary:	Tab Window Manager for the X Window System
@@ -458,12 +481,16 @@ fonts installed on the font server, even if they are not installed on the
 remote computer.
 
 %package -n xauth
-Summary:	XAuth
+Summary:	xauth - X authority file utility
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Summary(pl):	XAuth
+Requires:	%{name}-libs = %{version}
 
 %description -n xauth
+The xauth program is used to edit and display the authorization information
+used in connecting to the X server. This program is usually used to extract
+authorization records from one machine and merge them in on another (as is
+the case when using remote logins or granting access to other users).
 
 %package fonts
 Summary:	XFree86 Fonts
@@ -597,6 +624,8 @@ Czcionki rastrowe ISO-8859-2.
 %prep
 %setup -q -c -a1 -a2
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 #--- %build --------------------------
 
@@ -972,7 +1001,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xclock.1*
 %{_mandir}/man1/xcmsdb.1*
 %{_mandir}/man1/xconsole.1*
-%{_mandir}/man1/sessreg.1*
 %{_mandir}/man1/xdpyinfo.1*
 %{_mandir}/man1/dga.1*
 %{_mandir}/man1/xfd.1*
@@ -1030,6 +1058,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %endif
 
+%files -n sessreg
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/sessreg
+%{_mandir}/man1/sessreg.1*
+
 %files -n xdm
 %defattr(644,root,root,755)
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xdm
@@ -1041,7 +1074,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %attr(755,root,root) %{_libdir}/X11/xdm
 %attr(755,root,root) %{_bindir}/xdm
-%attr(755,root,root) %{_bindir}/sessreg
 %{_mandir}/man1/xdm.1*
 
 %dir    /etc/X11/xdm
