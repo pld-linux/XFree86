@@ -359,28 +359,40 @@ Statyczna biblioteka rozszerzenia PEX.
 
 %package xft
 Summary:	Font rendering library
-Summary(pl):	Biblioteka rozszerzenia Xft
+Summary(pl):	Biblioteka wy¶wietlaj±ca fonty
 Group:		X11/XFree86
 Requires:	%{name}-libs = %{version}
 
 %description xft
 Font rendering library.
 
+%description xft -l pl
+Biblioteka wy¶wietlaj±ca fonty.
+
 %package xft-devel
 Summary:	Xft font rendering library headers
+Summary(pl):	Pliki nag³ówkowe biblioteki Xft wy¶wietlaj±cej fonty
 Group:		X11/XFree86
 Requires:	%{name}-Xft = %{version}
+Requires:	%{name}-devel = %{version}
 
 %description xft-devel
 Xft font rendering library headers.
 
+%description xft-devel -l pl
+Pliki nag³ówkowe biblioteki Xft wy¶wietlaj±cej fonty.
+
 %package xft-static
 Summary:	Xft font rendering static library
+Summary(pl):	Statyczna biblioteka Xft wy¶wietlaj±ca fonty
 Group:		X11/XFree86
 Requires:	%{name}-Xft-devel = %{version}
 
 %description xft-static
 Xft font rendering static library.
+
+%description xft-static -l pl
+Statyczna biblioteka Xft wy¶wietlaj±ca fonty.
 
 %package XIE
 Summary:	XIE extension library
