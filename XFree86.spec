@@ -92,6 +92,8 @@ Patch56:	%{name}-Xfont-Type1-large-DoS.patch
 # "strip -g libGLcore.a" left empty object debug_xform.o, which caused GLcore
 # loading failure with "debug_xform.o: no symbols"
 Patch57:	%{name}-GLcore-strip-a-workaround.patch
+# Original from: ftp://ftp.xfree86.org/pub/XFree86/4.2.1/fixes/4.2.1-mit-shm-security.patch
+Patch58:	%{name}-4.2.1-mit-shm-security.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1757,6 +1759,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch55 -p0
 %patch56 -p1
 %{!?debug:%patch57 -p1}
+%patch58 -p0
 
 rm -f xc/config/cf/host.def
 
