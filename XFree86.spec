@@ -17,7 +17,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.2.1
-Release:	9
+Release:	9.1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
@@ -356,6 +356,31 @@ PEX extension static library.
 
 %description PEX-static -l pl
 Statyczna biblioteka rozszerzenia PEX.
+
+%package xft
+Summary:	Font rendering library
+Summary(pl):	Biblioteka rozszerzenia Xft
+Group:		X11/XFree86
+Requires:	%{name}-libs = %{version}
+
+%description xft
+Font rendering library.
+
+%package xft-devel
+Summary:	Xft font rendering library headers
+Group:		X11/XFree86
+Requires:	%{name}-Xft = %{version}
+
+%description xft-devel
+Xft font rendering library headers.
+
+%package xft-static
+Summary:	Xft font rendering static library
+Group:		X11/XFree86
+Requires:	%{name}-Xft-devel = %{version}
+
+%description xft-static
+Xft font rendering static library.
 
 %package XIE
 Summary:	XIE extension library
@@ -1935,6 +1960,9 @@ rm -rf $RPM_BUILD_ROOT
 %post	XIE -p /sbin/ldconfig
 %postun	XIE -p /sbin/ldconfig
 
+%post	xft -p /sbin/ldconfig
+%postun	xft -p /sbin/ldconfig
+
 %post	OpenGL-libs -p /sbin/ldconfig
 %postun	OpenGL-libs -p /sbin/ldconfig
 
@@ -2265,6 +2293,20 @@ fi
 %{_libdir}/libPEX5.a
 %endif
 
+%files xft
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXft.so.*.*
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/X11/XftConfig
+
+%files xft-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXft.so
+%{_includedir}/X11/Xft
+
+%files xft-static
+%defattr(644,root,root,755)
+%{_libdir}/libXft.a
+
 %files XIE
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libXIE.so.*.*
@@ -2376,7 +2418,6 @@ fi
 %{_includedir}/X11/PM
 %{_includedir}/X11/SM
 %{_includedir}/X11/Xaw
-%{_includedir}/X11/Xft
 %{_includedir}/X11/Xmu
 %dir %{_includedir}/X11/extensions
 %{_includedir}/X11/extensions/[^X]*.h
@@ -2699,11 +2740,10 @@ fi
 %dir %{_pixmapsdir}
 %dir %{_pixmapsdir}/mini
 %dir %{_wmpropsdir}
-%attr(755,root,root) %{_libdir}/libX[1Ta-t]*.so.*.*
+%attr(755,root,root) %{_libdir}/libX[1Ta-eg-t]*.so.*.*
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
 %attr(755,root,root) %{_libdir}/libS*.so.*.*
 %attr(755,root,root) %{_libdir}/libx*.so.*.*
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/X11/XftConfig
 
 %files modules
 %defattr(644,root,root,755)
@@ -2791,7 +2831,6 @@ fi
 %{_libdir}/libSM.a
 %{_libdir}/libX11.a
 %{_libdir}/libXaw.a
-%{_libdir}/libXft.a
 %{_libdir}/libXext.a
 %{_libdir}/libXfont.a
 %{_libdir}/libXi.a
