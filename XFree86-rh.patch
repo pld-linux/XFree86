@@ -124,22 +124,6 @@
  /* You MAY need SetUID if users run the server by hand or under xinit */
 --- XFree86-3.3.3/xc/config/cf/linux.cf.rh	Sun Nov  8 06:34:50 1998
 +++ XFree86-3.3.3/xc/config/cf/linux.cf	Mon Nov 30 13:43:53 1998
-@@ -92,13 +92,13 @@
- 				-D_POSIX_SOURCE -D_XOPEN_SOURCE=500L \
- 				-D_BSD_SOURCE -D_SVID_SOURCE
- #define XawI18nDefines		-DHAS_WCHAR_H -DHAS_WCTYPE_H -DNO_WIDEC_H
--#if !defined(AlphaArchitecture)
-+/*#if !defined(AlphaArchitecture)*/
- #define HasPosixThreads		YES
- #define ThreadedX		YES
- #define HasThreadSafeAPI	YES
- #define ThreadsLibraries	-lpthread
- #define SystemMTDefines		-D_REENTRANT
--#endif
-+/*#endif*/
- #ifndef HasLibCrypt
- #define HasLibCrypt		YES
- #endif
 @@ -318,1 +318,5 @@
  #include <xfree86.cf>
 +

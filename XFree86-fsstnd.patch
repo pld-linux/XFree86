@@ -1,5 +1,18 @@
---- XFree86-3.3.2/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl.fsstnd	Mon Mar 30 10:46:28 1998
-+++ XFree86-3.3.2/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl	Mon Mar 30 10:46:49 1998
+diff -urN XFree86-3.3.5.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile XFree86-3.3.5/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile
+--- XFree86-3.3.5.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile	Sat Jan  9 15:19:00 1999
++++ XFree86-3.3.5/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile	Thu Sep  2 15:17:02 1999
+@@ -81,7 +81,7 @@
+ 
+  XCONFIG_DEFINES = $(EXT_DEFINES) -DXF86SETUP \
+ 		   '-DPROJECTROOT="$(PROJECTROOT)"' \
+-		   '-DSERVER_CONFIG_FILE="$(LIBDIR)/$(XCONFIGFILE)"'
++		   '-DSERVER_CONFIG_FILE="/etc/X11/$(XCONFIGFILE)"'
+ 
+  XF86SETUPLIBDIR = $(LIBDIR)/XF86Setup
+          DEFINES = -DCARD_DATABASE_FILE='"$(CARDDBFILE)"' \
+diff -urN XFree86-3.3.5.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl XFree86-3.3.5/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl
+--- XFree86-3.3.5.orig/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl	Sat Feb 21 07:07:02 1998
++++ XFree86-3.3.5/xc/programs/Xserver/hw/xfree86/XF86Setup/phase5.tcl	Thu Sep  2 15:17:02 1999
 @@ -38,7 +38,7 @@
  	set devid [lindex $DeviceIDs $idx]
          global Device_$devid
@@ -18,20 +31,10 @@
  		    mesg "Link creation failed!\n\
  			    You'll have to do it yourself" okay
  	        } else {
---- XFree86-3.3.2/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile.fsstnd	Mon Mar 30 10:46:28 1998
-+++ XFree86-3.3.2/xc/programs/Xserver/hw/xfree86/XF86Setup/Imakefile	Mon Mar 30 10:46:49 1998
-@@ -78,7 +78,7 @@
- 
-  XCONFIG_DEFINES = $(EXT_DEFINES) -DXF86SETUP \
- 		   '-DPROJECTROOT="$(PROJECTROOT)"' \
--		   '-DSERVER_CONFIG_FILE="$(LIBDIR)/$(XCONFIGFILE)"'
-+		   '-DSERVER_CONFIG_FILE="/etc/X11/$(XCONFIGFILE)"'
- 
-  XF86SETUPLIBDIR = $(LIBDIR)/XF86Setup
-          DEFINES = -DCARD_DATABASE_FILE='"$(CARDDBFILE)"' \
---- XFree86-3.3.2/xc/programs/Xserver/hw/xfree86/xf86config/xf86config.c.fsstnd	Mon Mar 30 10:46:36 1998
-+++ XFree86-3.3.2/xc/programs/Xserver/hw/xfree86/xf86config/xf86config.c	Mon Mar 30 10:46:49 1998
-@@ -104,7 +104,7 @@
+diff -urN XFree86-3.3.5.orig/xc/programs/Xserver/hw/xfree86/xf86config/xf86config.c XFree86-3.3.5/xc/programs/Xserver/hw/xfree86/xf86config/xf86config.c
+--- XFree86-3.3.5.orig/xc/programs/Xserver/hw/xfree86/xf86config/xf86config.c	Tue Aug 17 09:39:39 1999
++++ XFree86-3.3.5/xc/programs/Xserver/hw/xfree86/xf86config/xf86config.c	Thu Sep  2 15:19:14 1999
+@@ -107,7 +107,7 @@
  #endif
  
  /*
@@ -40,7 +43,7 @@
   * location to write the XF86Config file to.
   */
  #define PREFER_XF86CONFIG_IN_ETC
-@@ -210,7 +210,7 @@
+@@ -215,7 +215,7 @@
  "This program will create a basic " CONFIGNAME " file, based on menu selections you\n"
  "make.\n"
  "\n"
@@ -49,26 +52,30 @@
  CONFIGNAME " file is supplied with XFree86; it is configured for a standard\n"
  "VGA card and monitor with 640x480 resolution. This program will ask for a\n"
  "pathname when it is ready to write the file.\n"
-@@ -2827,11 +2827,11 @@
- #ifndef __EMX__
- 	if (getuid() == 0) {
+@@ -2986,7 +2986,7 @@
+ #endif
  #ifdef PREFER_XF86CONFIG_IN_ETC
+ #if !(defined(__QNX__) && !defined(__QNXNTO__))
 -		printf("Shall I write it to /etc/XF86Config? ");
 +		printf("Shall I write it to /etc/X11/XF86Config? ");
- 		getstring(s);
+ #else
+ 		printf("Shall I write it to /etc/config/X11/XF86Config.%d? ", 
+ 			getnid());
+@@ -2995,7 +2995,7 @@
  		printf("\n");
  		if (answerisyes(s))
+ #if !(defined(__QNX__) && !defined(__QNXNTO__))
 -			return "/etc/XF86Config";
 +			return "/etc/X11/XF86Config";
+ #else
+ 			/* In QNX, use XF86Config.nid for filename */
+ 			{
+@@ -3030,11 +3030,11 @@
  #endif
- 
- 		printf("Please answer the following question with either 'y' or 'n'.\n");
-@@ -2842,11 +2842,11 @@
- 			return "/usr/X11R6/lib/X11/XF86Config";
- 
- #ifndef PREFER_XF86CONFIG_IN_ETC
--		printf("Shall I write it to /etc/XF86Config? ");
-+		printf("Shall I write it to /etc/X11/XF86Config? ");
+   
+   #ifndef PREFER_XF86CONFIG_IN_ETC
+-  		printf("Shall I write it to /etc/XF86Config? ");
++  		printf("Shall I write it to /etc/X11/XF86Config? ");
  		getstring(s);
  		printf("\n");
  		if (answerisyes(s))
@@ -77,8 +84,9 @@
  #endif
  #else /* __EMX__ */
  	{
---- XFree86-3.3.2/xc/programs/Xserver/os/wrapper.c.fsstnd	Mon Mar 30 10:59:11 1998
-+++ XFree86-3.3.2/xc/programs/Xserver/os/wrapper.c	Mon Mar 30 10:59:57 1998
+diff -urN XFree86-3.3.5.orig/xc/programs/Xserver/os/wrapper.c XFree86-3.3.5/xc/programs/Xserver/os/wrapper.c
+--- XFree86-3.3.5.orig/xc/programs/Xserver/os/wrapper.c	Thu Jul 29 11:23:02 1999
++++ XFree86-3.3.5/xc/programs/Xserver/os/wrapper.c	Thu Sep  2 15:17:02 1999
 @@ -42,6 +42,9 @@
  #define XSERVER_PATH	"/usr/X11R6/bin/X"
  #endif
