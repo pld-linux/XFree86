@@ -79,6 +79,11 @@ Patch43:	%{name}-prosavage.patch
 Patch44:	%{name}-xtt-null-pointer.patch
 Patch45:	%{name}-vesa-xf86SetDpi-fix.patch
 Patch46:	%{name}-neomagic-Xv-support.patch
+Patch47:	%{name}-tdfx-disable-dri-on-16Mb-cards-in-hires.patch
+Patch48:	%{name}-tdfx-enable-interlaced-modes.patch
+Patch49:	%{name}-tdfx-fix-compiler-warnings.patch
+Patch50:	%{name}-tdfx-fix-vtswitch-font-corruption.patch
+Patch51:	%{name}-tdfx-should-be-2048-not-2046.patch
 
 BuildRequires:	bison
 BuildRequires:	flex
@@ -1731,6 +1736,12 @@ cd ..
 %patch44 -p1
 %patch45 -p1
 %patch46 -p1
+%patch47 -p0
+%patch48 -p0
+# Causes build error:
+#%patch49 -p0
+%patch50 -p0
+%patch51 -p0
 
 rm -f xc/config/cf/host.def
 
