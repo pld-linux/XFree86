@@ -26,7 +26,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.99.901
-Release:	0.1
+Release:	0.2
 Epoch:		1
 License:	MIT
 Group:		X11/XFree86
@@ -1572,6 +1572,48 @@ Xconfigurator, XFree86-xfs та XFree86-libs. Можливо, вам треба
 
 Цей пакет м╕стить ус╕ програми, як╕ ран╕ше входили до X11R6-contrib.
 
+%package -n XcursorTheme-handhelds
+Summary:	Cursors Theme "handhelds"
+Summary(pl):	Motyw kursorСw "handhelds"
+Group:		X11/Themes
+Requires:	XFree86-libs
+Requires:	xcursor
+Conflicts:	XFree86 < 4.3.99.901-0.2
+
+%description -n XcursorTheme-handhelds
+Cursors theme "handhelds" for X11.
+
+%description -n XcursorTheme-handhelds -l pl
+Motyw kursorСw "handhelds" dla X11.
+
+%package -n XcursorTheme-redglass
+Summary:	Cursors theme "redglass"
+Summary(pl):	Motyw kursorСw "redglass"
+Group:		X11/Themes
+Requires:	XFree86-libs
+Requires:	xcursor
+Conflicts:	XFree86 < 4.3.99.901-0.2
+
+%description -n XcursorTheme-redglass
+Cursors theme "redglass" for X11.
+
+%description -n XcursorTheme-redglass -l pl
+Motyw kursorСw "redglass" dla X11.
+
+%package -n XcursorTheme-whiteglass
+Summary:	Cursors theme "whiteglass"
+Summary(pl):	Motyw kursorСw "whiteglass"
+Group:		X11/Themes
+Requires:	XFree86-libs
+Requires:	xcursor
+Conflicts:	XFree86 < 4.3.99.901-0.2
+
+%description -n XcursorTheme-whiteglass
+Cursors theme "whiteglass" for X11.
+
+%description -n XcursorTheme-whiteglass -l pl
+Motyw kursorСw "whiteglass" dla X11.
+
 %package -n imake
 Summary:	C preprocessor interface to the make utility
 Summary(pl):	Miedzymordzie do make oparte o preprocesor C
@@ -2152,8 +2194,6 @@ fi
 %{_appdefsdir}/XTerm
 %lang(pl) %{_appdefsdir}/pl/XTerm
 %{_appdefsdir}/XTerm-color
-
-%{_iconsdir}/[!m]*
 
 %attr(755,root,root) %{_libdir}/X11/lbxproxy
 %attr(755,root,root) %{_libdir}/X11/proxymngr
@@ -3149,6 +3189,18 @@ fi
 %{_pixmapsdir}/xeyes.png
 %{_pixmapsdir}/xload.png
 %{_pixmapsdir}/xmag.png
+
+%files -n XcursorTheme-handhelds
+%defattr(644,root,root,755)
+%{_iconsdir}/handhelds
+
+%files -n XcursorTheme-redglass
+%defattr(644,root,root,755)
+%{_iconsdir}/redglass
+
+%files -n XcursorTheme-whiteglass
+%defattr(644,root,root,755)
+%{_iconsdir}/whiteglass
 
 %files -n imake
 %defattr(644,root,root,755)
