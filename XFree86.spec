@@ -23,12 +23,12 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
-Version:	4.3.99.9
+Version:	4.3.99.10
 Release:	0.1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
-# Source0-md5:	7e8241baed829f7a23cf5e99b61cbdec
+# Source0-md5:	d840a796e38d9a5fd30bdcd9a4c1383d
 #Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-2.tgz
 #Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-3.tgz
 Source3:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
@@ -114,7 +114,6 @@ Patch45:	%{name}-spencode-nowarning.patch
 Patch46:	%{name}-lock.patch
 Patch47:	%{name}-linux-version.patch
 Patch48:	%{name}-XF86_VERSION_SNAP.patch
-Patch49:	%{name}-compile_fix.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	%{_bindir}/perl
 BuildRequires:	bison
@@ -1982,7 +1981,6 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch46 -p0
 %patch47 -p1
 %patch48 -p0
-%patch49 -p1
 
 rm -f xc/config/cf/host.def
 
