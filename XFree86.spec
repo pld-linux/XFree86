@@ -73,6 +73,7 @@ BuildRequires:	perl
 BuildRequires:	tcl-devel
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
+BuildRequires:	libstdc++-devel
 %ifarch %{ix86} alpha
 BuildRequires:	Glide3-DRI-devel
 %endif
