@@ -41,23 +41,21 @@ Patch15:	XFree86-xfsft.patch
 Patch16:	XFree86-ru_SU.patch
 Patch17:	XFree86-startx_xauth.patch
 Patch18:	XFree86-xfsredhat.patch
-# the following patch is incomplete..broken..and thus commented out.
-Patch19:	XFree86-alphadga.patch
 # link xterm with libncurses instead libtermcap
-Patch20:	XFree86-ncurses.patch
+Patch19:	XFree86-ncurses.patch
 # Compile X serwers againsty system installed libz.so
-Patch21:	XFree86-HasZlib.patch
+Patch20:	XFree86-HasZlib.patch
 # Man dir in /usr/X11R6/man or %{_mandir}
-Patch22:	XFree86-fhs.patch
-Patch23:	XFree86-voodoo-Rush.patch
-Patch24:	XFree86-ffbcrash.patch
-Patch25:	XFree86-ru_sparc.patch
-Patch26:	XFree86-xinitrace.patch
-Patch27:	XFree86-xterm-color.patch
-Patch28:	XFree86-xdm+pam_env.patch
-Patch29:	XFree86-XF86Config-path.patch
-Patch30:	XFree86-XF86Setup-fonts.patch
-Patch31:	XFree86-polish_kbd.patch
+Patch21:	XFree86-fhs.patch
+Patch22:	XFree86-voodoo-Rush.patch
+Patch23:	XFree86-ffbcrash.patch
+Patch24:	XFree86-ru_sparc.patch
+Patch25:	XFree86-xinitrace.patch
+Patch26:	XFree86-xterm-color.patch
+Patch27:	XFree86-xdm+pam_env.patch
+Patch28:	XFree86-XF86Config-path.patch
+Patch29:	XFree86-XF86Setup-fonts.patch
+Patch30:	XFree86-polish_kbd.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -1071,18 +1069,17 @@ Fonty rastrowe czcionkami w cyrylicy.
 %patch16 -p1
 %patch17 -p1
 %patch18 -p1
-#%patch19 -p1 -b .alphadga
+%patch19 -p1
 %patch20 -p1
 %patch21 -p1
-%patch22 -p1
-%patch23 -p0
+%patch22 -p0
+%patch23 -p1
 %patch24 -p1
 %patch25 -p1
 %patch26 -p1
 %patch27 -p1
 %patch28 -p1
 %patch29 -p1
-%patch30 -p1
 #%patch31 -p1
 
 ## Clean up to save a *lot* of disk space
