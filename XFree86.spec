@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	3.3.3.1
-Release:	53
+Release:	54
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -15,6 +15,7 @@ Source2:	xdm.initd
 Source3:	xfs.initd
 Source4:	xfs.config
 Source5:	xserver.pamd
+Source6:	XTerm
 Patch0:		ftp://ftp.xfree86.org/pub/XFree86/3.3.3/fixes/3.3.3-3.3.3.1.diff.gz
 Patch1:		XFree86-rh.patch
 Patch2:		XFree86-rhxdm.patch
@@ -67,7 +68,7 @@ Patch34:	XFree86-tmpdir.patch
 Patch35:	XFree86-ncurses.patch
 # Compile X serwers againsty system installed libz.so
 Patch36:	XFree86-HasZlib.patch
-# Man dir in /usr/X11R6/share/man or %{_mandir}
+# Man dir in /usr/X11R6/man or %{_mandir}
 Patch37:	XFree86-fhs.patch
 Patch38:	XFree86-voodoo-Rush.patch
 Patch39:	XFree86-voodoo-Banshee.patch
@@ -78,11 +79,17 @@ Patch43:	XFree86-ffbcrash.patch
 Patch44:	XFree86-fixiso8859-2.patch
 Patch45:	XFree86-ru_sparc.patch
 Patch46:	XFree86-xinitrace.patch
+Patch47:	XFree86-xterm-color.patch
+Patch48:	XFree86-xdm+pam_env.patch
+Patch49:	XFree86-XF86Config-path.patch
+Patch50:	XFree86-XF86Setup-fonts.patch
 
 BuildPrereq:	ncurses-devel
 BuildPrereq:	zlib-devel
 BuildPrereq:	utempter-devel
 BuildPrereq:	tcl-devel
+Requires:	pam
+Requires:	xauth
 Exclusivearch:	i386 i486 i586 i686 alpha sparc m68k armv4l
 Buildroot:	/tmp/%{name}-%{version}-root/
 
@@ -157,7 +164,7 @@ Summary(pl):	Wspólne modu³y rozszerzeñ dla wszystkich X serwerów
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
 
-%description
+%description modules
 Modules with X servers extensions.
 
 %description -l pl modules
@@ -1006,56 +1013,62 @@ Summary(pl):	XAuth
 %prep
 %setup -q -c
 %patch0  -p0
-%patch1  -p1 -b .rh
-%patch2  -p1 -b .rhxdm
-%patch3  -p1 -b .fsstnd
-%patch4  -p1 -b .nopam
-%patch5  -p1 -b .pamconsole
-
+%patch1  -p1
+%patch2  -p1
+%patch3  -p1
+%patch4  -p1
+%patch5  -p1
 # the following patch is in CVS diff format, needs POSIXLY_CORRECT env var.
-#POSIXLY_CORRECT=1 patch -p1 -b -z .alpha-sockets -s < %PATCH6
-
-%patch7  -p1 -b .sparc
-%patch8  -p1 -b .ffb
-%patch9  -p1 -b .fbdev
-%patch10 -p1 -b .xinput
-%patch11 -p1 -b .suncards
-%patch12 -p1 -b .sparc2
-%patch13 -p1 -b .creator2
-%patch14 -p1 -b .newcreator
-%patch15 -p1 -b .sparc3
-%patch16 -p1 -b .mach64
-%patch17 -p1 -b .creator4
-%patch18 -p1 -b .jay
-%patch20 -p1 -b .czskkbd
-%patch21 -p1 -b .is_keyboard
-%patch22 -p1 -b .nosuidxterm
-%patch23 -p1 -b .joy
-%patch24 -p1 -b .arm
-%patch25 -p1 -b .xfsft
-%patch26 -p1 -b .ru_SU
-%patch27 -p1 -b .startx_xauth
-%patch28 -p1 -b .xfsredhat
-%patch29 -p1 -b .mgafix
+#export POSIXLY_CORRECT=1
+#%patch6 -p1 -b .alpha-sockets
+#unset POSIXLY_CORRECT
+%patch7  -p1
+%patch8  -p1
+%patch9  -p1
+%patch10 -p1
+%patch11 -p1
+%patch12 -p1
+%patch13 -p1
+%patch14 -p1
+%patch15 -p1
+%patch16 -p1
+%patch17 -p1
+%patch18 -p1
+%patch20 -p1
+%patch21 -p1
+%patch22 -p1
+%patch23 -p1
+%patch24 -p1
+%patch25 -p1
+%patch26 -p1
+%patch27 -p1
+%patch28 -p1
+%patch29 -p1
 #%patch30 -p1 -b .alphadga
-%patch31 -p0 -b .dga1.1
-%patch32 -p1 -b .thinkingmouse
-%patch33 -p0 -b .dvorak
-%patch34 -p1 -b .dainbramage
-%patch35 -p1 -b .ncurses
-%patch36 -p1 -b .HasZlib
-%patch37 -p1 -b .fhs
-%patch38 -p0 -b .Rush
-%patch39 -p0 -b .Banshee
+%patch31 -p0
+%patch32 -p1
+%patch33 -p0
+%patch34 -p1
+%patch35 -p1
+%patch36 -p1
+%patch37 -p1
+%patch38 -p0
+%patch39 -p0
 # the following patch is in CVS diff format, needs POSIXLY_CORRECT env var.
-POSIXLY_CORRECT=1 patch -p0 -b -z .NVIDIA -s < %{PATCH40}
+export POSIXLY_CORRECT=1
+%patch40 -p0
+unset POSIXLY_CORRECT
 # XFree make system is realy brain damaged
 #%patch41 -p1 -b .3dfx
-%patch42 -p1 -b .G200dga
-%patch43 -p1 -b .ffbcrash
-%patch44 -p1 -b .fixiso8859-2
-%patch45 -p1 -b .ru_sparc
-%patch46 -p1 -b .xinitrace
+%patch42 -p1
+%patch43 -p1
+%patch44 -p1
+%patch45 -p1
+%patch46 -p1
+%patch47 -p1
+%patch48 -p1
+%patch49 -p1
+%patch50 -p1
 
 ## Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
@@ -1074,7 +1087,7 @@ install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,lib/X11,man/man{1,3,5}} \
 	$RPM_BUILD_ROOT/var/state/xkb
 
 make -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
-		"DOCDIR=%{_defaultdocdir}/%{name}-%{version}" \
+		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
 		"INSTBINFLAGS=-m 755" \
 		"INSTPGMFLAGS=-m 755" \
 		install install.man
@@ -1120,6 +1133,7 @@ install %{SOURCE5} $RPM_BUILD_ROOT/etc/pam.d/xserver
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/X11/fs/config
+install %{SOURCE6} $RPM_BUILD_ROOT/usr/X11R6/lib/X11/app-defaults/XTerm.pl
 
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 
@@ -1140,6 +1154,10 @@ cp -a $RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/compiled/* \
 rm -rf $RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/compiled
 ln -sf ../../../../../var/state/xkb \
 	$RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/compiled
+
+# do not duplicate xkbcomp program
+rm -f $RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/xkbcomp
+ln -sf ../../../bin/xkbcomp $RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/xkbcomp
 
 ln -sf ../../../share/doc/%{name}-%{version} \
 	$RPM_BUILD_ROOT/usr/X11R6/lib/X11/doc
@@ -1176,7 +1194,10 @@ END
 _EOT_
 
 gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/man/man[135]/* \
-	$RPM_BUILD_ROOT%{_defaultdocdir}/%{name}-%{version}/*
+	$RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
+
+# don't gzip README.* files, they are needed by XF86Setup
+gzip -dnf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
 
 %post libs
 grep "^/usr/X11R6/lib$" /etc/ld.so.conf >/dev/null 2>&1
@@ -1202,9 +1223,17 @@ fi
 %post -n xfs
 /sbin/chkconfig --add xfs
 
+%post -n xdm
+/sbin/chkconfig --add xdm
+
 %postun -n xfs
 if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del xfs
+fi
+
+%postun -n xdm
+if [ "$1" = "0" ]; then
+	/sbin/chkconfig --del xdm
 fi
 
 %clean
@@ -1212,9 +1241,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%docdir %{_defaultdocdir}/%{name}-%{version}
+%docdir %{_docdir}/%{name}-%{version}
+%doc /%{_docdir}/%{name}-%{version}/*
+%doc /usr/X11R6/lib/X11/doc
 
-%config /usr/X11R6/lib/X11/XF86Config.eg
+%doc /usr/X11R6/lib/X11/XF86Config.eg
 %doc /usr/X11R6/lib/X11/Cards
 
 %ifarch ix86 alpha sparc
@@ -1736,6 +1767,18 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man1/xmseconfig.1*
 
 %changelog
+* Sat Jun 19 1999 Jan Rêkorajski <baggins@pld.org.pl>
+  [3.3.3.1-54]
+- removed "-b .*" in %prep, to save _a lot_ of disk space
+- xterm now negotiates xterm-color term type
+- manuals in /usr/X11R6/man (FHS 2.0)
+- added "Requires: pam" in main package (Xwrapper uses pam_console.so)
+- ln -s /usr/X11R6/bin/xkbcomp /usr/X11R6/lib/X11/xkb/xkbcomp
+- added XTerm polish resources
+- added pam_env support to xdm
+- Xservers now read XF86Config from /etc/X11/ (not /etc/)
+- added "Requires: xauth" for man package
+
 * Thu Jun 17 1999 Jan Rêkorajski <baggins@pld.org.pl>
   [3.3.3.1-53]
 - added patches for Riva TNT2, voodoo Rush, voodoo3 Banshee
