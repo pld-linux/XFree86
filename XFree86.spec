@@ -56,6 +56,7 @@ Patch27:	XFree86-xdm+pam_env.patch
 Patch28:	XFree86-XF86Config-path.patch
 Patch29:	XFree86-XF86Setup-fonts.patch
 Patch30:	XFree86-polish_kbd.patch
+Patch31:	XFree86-pam.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -1080,7 +1081,8 @@ Fonty rastrowe czcionkami w cyrylicy.
 %patch27 -p1
 %patch28 -p1
 %patch29 -p1
-#%patch31 -p1
+#%patch30 -p1
+%patch31 -p1
 
 ## Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
