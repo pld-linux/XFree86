@@ -17,7 +17,7 @@ Summary(uk):	âÁÚÏ×¦ ÛÒÉÆÔÉ, ÐÒÏÇÒÁÍÉ ÔÁ ÄÏËÕÍÅÎÔÁÃ¦Ñ ÄÌÑ ÒÏÂÏÞÏ§ ÓÔÁÎÃ¦§ Ð¦Ä X
 Summary(zh_CN):	XFree86 ´°¿ÚÏµÍ³·þÎñÆ÷ºÍ»ù±¾³ÌÐò
 Name:		XFree86
 Version:	4.2.1
-Release:	12
+Release:	13
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
@@ -1984,7 +1984,8 @@ fi
 %post -n xdm
 /sbin/chkconfig --add xdm
 if [ -f /var/lock/subsys/xdm ]; then
-	/etc/rc.d/init.d/xdm restart >&2
+	echo "Run \"/etc/rc.d/init.d/xdm restart\" to restart xdm." >&2
+	echo "WARNING: it will terminate all sessions opened from xdm!" >&2
 else
 	echo "Run \"/etc/rc.d/init.d/xdm start\" to start xdm." >&2
 fi
