@@ -20,7 +20,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.4.0
-Release:	0.2
+Release:	0.3
 Epoch:		1
 License:	XFree86 1.1
 Group:		X11/XFree86
@@ -176,7 +176,9 @@ Obsoletes:	X11R6.1
 
 # avoid Mesa dependency in XFree86-OpenGL-libs
 # Glide3 (libglide3.so.3) can be provided by Glide_V3-DRI or Glide_V5-DRI
-%define		_noautoreqdep	libGL.so.1 libGLU.so.1 libOSMesa.so.3.3 libglide3.so.3
+# and libraries provided by freedesktop xlibs
+
+%define	_noautoreqdep libGL.so.1 libGLU.so.1 libOSMesa.so.3.3 libglide3.so.3 libICE.so.6 libSM.so.6 libX11.so.6 libXRes.so.0 libXaw.so.7 libXext.so.6 libXfont.so.1 libXi.so.6 libXmu.so.6 libXmuu.so.1 libXpm.so.4 libXrandr.so.2 libXt.so.2 libXv.so.1
 
 # ELF objects with Rendition microcode - disliked by ELF utils
 %define		_noautostrip	.*\\.uc
@@ -2574,7 +2576,7 @@ fi
 %{_mandir}/man3/[A-FH-Z]*
 %exclude %{_mandir}/man3/Xft.3*
 # xlibs part
-%if %{with xlibs}
+%if %{without xlibs}
 %{_includedir}/X11/ICE
 %{_includedir}/X11/SM
 %{_includedir}/X11/Xaw
@@ -3101,7 +3103,7 @@ fi
 %attr(755,root,root) %{_libdir}/libxkbui.so.*.*
 %attr(755,root,root) %{_libdir}/libxrx.so.*.*
 # xlibs part
-%if %{with xlibs}
+%if %{without xlibs}
 %attr(755,root,root) %{_libdir}/libICE.so.*.*
 %attr(755,root,root) %{_libdir}/libSM.so.*.*
 %attr(755,root,root) %{_libdir}/libX11.so.*.*
