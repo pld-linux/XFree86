@@ -1109,11 +1109,12 @@ rm -f $RPM_BUILD_ROOT%{_bindir}/X
 ln -sf XFree86 $RPM_BUILD_ROOT%{_bindir}/X
 
 # setting ghost X in /etc/X11 -- xf86config will fix this ...
-ln -s ../..%{_bindir}/XFree86 $RPM_BUILD_ROOT/etc/X11/X
+ln -sf ../..%{_bindir}/XFree86 $RPM_BUILD_ROOT/etc/X11/X
 
-# add X11 links in /usr/bin and /usr/include
-ln -s ../X11R6/include/X11 $RPM_BUILD_ROOT/usr/include/X11
-ln -s ../X11R6/bin $RPM_BUILD_ROOT/usr/bin/X11
+# add X11 links in /usr/bin, /usr/lib /usr/include
+ln -sf ../X11R6/include/X11 $RPM_BUILD_ROOT/usr/include/X11
+ln -sf ../X11R6/lib/X11 $RPM_BUILD_ROOT/usr/lib/X11
+ln -sf ../X11R6/bin $RPM_BUILD_ROOT/usr/bin/X11
 
 # fix libGL*.so links
 rm -f $RPM_BUILD_ROOT%{_libdir}/libGL*.so
@@ -1273,11 +1274,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_docdir}/%{name}-%{version}/*
 %doc %{_libdir}/X11/doc
 %endif
-
-%dir %{_prefix}
-%dir %{_libdir}
-%dir %{_libdir}/X11
-%dir %{_bindir}
 
 %{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XftConfig
@@ -1466,8 +1462,6 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 %{_mandir}/man7/*
 
-/usr/bin/X11
-
 %files modules
 %defattr(-,root,root,755)
 %{_libdir}/X11/xkb
@@ -1584,6 +1578,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
+%dir %{_libdir}
+%dir %{_libdir}/X11
+/usr/lib/X11
+%dir %{_bindir}
+/usr/bin/X11
 %attr(755,root,root) %{_libdir}/libX*.so.*.*
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
 %attr(755,root,root) %{_libdir}/libP*.so.*.*
@@ -1652,7 +1651,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libfntstubs.a
 %{_libdir}/libxf86config.a
 %{_libdir}/libXinerama.a
-
+%dir %{_includedir}
 %dir %{_includedir}/X11
 %{_includedir}/X11/*.h
 %{_includedir}/X11/ICE
