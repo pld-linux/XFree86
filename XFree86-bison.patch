@@ -1,0 +1,19 @@
+--- XFree86-4.2.1/xc/programs/xkbcomp/xkbparse.y.orig	Thu Jan 18 00:45:45 2001
++++ XFree86-4.2.1/xc/programs/xkbcomp/xkbparse.y	Wed Nov 12 14:40:15 2003
+@@ -448,7 +448,6 @@
+ 
+ ShapeDecl	:	SHAPE String OBRACE OutlineList CBRACE SEMI
+ 			{ $$= ShapeDeclCreate($2,(OutlineDef *)&$4->common); }
+-		;
+ 		|	SHAPE String OBRACE CoordList CBRACE SEMI
+ 			{ 
+ 			    OutlineDef *outlines;
+@@ -511,7 +510,7 @@
+ 			{ 
+ 			    $$= (OverlayKeyDef *)
+ 				AppendStmt(&$1->common,&$3->common);
+-			};
++			}
+ 		|	OverlayKey
+ 			{ $$= $1; }
+ 		;
