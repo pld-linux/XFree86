@@ -1,0 +1,58 @@
+diff -Nur XFree86-4.0.2.org/xc/programs/xdm/greeter/verify.c XFree86-4.0.2/xc/programs/xdm/greeter/verify.c
+--- XFree86-4.0.2.org/xc/programs/xdm/greeter/verify.c	Wed Nov 29 17:46:09 2000
++++ XFree86-4.0.2/xc/programs/xdm/greeter/verify.c	Thu Dec 21 12:02:33 2000
+@@ -114,6 +114,7 @@
+ 
+ #ifdef USE_PAM
+ static char *PAM_password;
++extern pam_handle_t *pamh;
+ static int pam_error;
+ 
+ static int PAM_conv (int num_msg,
+@@ -162,12 +163,8 @@
+ Verify (struct display *d, struct greet_info *greet, struct verify_info *verify)
+ {
+ 	struct passwd	*p;
+-#ifdef USE_PAM
+-	pam_handle_t **pamhp = thepamhp();
+-#else
+ #ifdef USESHADOW
+ 	struct spwd	*sp;
+-#endif
+ #endif
+ #ifdef __OpenBSD__
+ 	char            *s;
+diff -Nur XFree86-4.0.2.org/xc/programs/xdm/session.c XFree86-4.0.2/xc/programs/xdm/session.c
+--- XFree86-4.0.2.org/xc/programs/xdm/session.c	Tue Dec  5 01:59:35 2000
++++ XFree86-4.0.2/xc/programs/xdm/session.c	Thu Dec 21 12:06:41 2000
+@@ -97,9 +97,9 @@
+ extern	char	*crypt(CRYPT_ARGS);
+ #endif
+ #ifdef USE_PAM
++pam_handle_t *pamh;
+ pam_handle_t **thepamhp()
+ {
+-	static pam_handle_t *pamh = NULL;
+ 	return &pamh;
+ }
+ 
+@@ -472,9 +472,6 @@
+ SessionExit (struct display *d, int status, int removeAuth)
+ {
+ #ifdef USE_PAM
+-	pam_handle_t *pamh = thepamh();
+-#endif
+-#ifdef USE_PAM
+     if (pamh) {
+         /* shutdown PAM session */
+ 	pam_close_session(pamh, 0);
+@@ -535,9 +532,6 @@
+     int	pid;
+ #ifdef HAS_SETUSERCONTEXT
+     struct passwd* pwd;
+-#endif
+-#ifdef USE_PAM 
+-    pam_handle_t *pamh = thepamh();
+ #endif
+ 
+     if (verify->argv) {
