@@ -2498,7 +2498,7 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules.gatos/drivers/r128*_drv.o
 %ifnarch sparc sparc64
-%attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
+%attr(755,root,root) %{_libdir}/modules.gatos/dri/r128_dri.so
 %endif
 %{_mandir}/man4/r128*
 %endif
@@ -2509,7 +2509,7 @@ fi
 %attr(755,root,root) %{_libdir}/modules.gatos/drivers/radeon*_drv.o
 %attr(755,root,root) %{_libdir}/modules.gatos/drivers/saa7114_drv.o
 %ifnarch sparc sparc64
-%attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
+%attr(755,root,root) %{_libdir}/modules.gatos/dri/radeon_dri.so
 %endif
 %endif
 
