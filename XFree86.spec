@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
 Version:	4.0.3
-Release:	2
+Release:	3
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -52,6 +52,16 @@ Patch22:	%{name}-portuguese.patch
 Patch23:	%{name}-XF86CardDrivers-cfg.patch
 Patch24:	%{name}-pic.patch
 Patch25:	ftp://ftp.xfree86.org/pub/XFree86/4.0.3/patches/4.0.2-4.0.3.diff.gz
+Patch26:	%{name}-defmodes-1400.patch
+Patch27:	%{name}-xft-match.patch
+Patch28:	%{name}-banshee-ramtiming.patch
+Patch29:	%{name}-r128-busmstr2.patch
+Patch30:	%{name}-r128-drm-do-wait-for-fifo.patch
+Patch31:	%{name}-neomagic_swcursor.patch
+Patch32:	%{name}-alpha-pci-resource.patch
+Patch33:	%{name}-mga-busmstr.patch
+Patch34:	%{name}-g450.patch
+Patch35:	%{name}-agpgart-load.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -354,7 +364,7 @@ Group:		X11/XFree86/Servers
 Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
+Requires:	%{name}-fonts >= 4.0.2
 
 %description Xvfb
 Xvfb (X Virtual Frame Buffer) is an X Window System server that is
@@ -389,7 +399,7 @@ Group:		X11/XFree86/Servers
 Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
+Requires:	%{name}-fonts >= 4.0.2
 
 %description Xnest
 Xnest is an X Window System server which runs in an X window. Xnest is
@@ -412,7 +422,7 @@ Group:		X11/XFree86/Servers
 Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
+Requires:	%{name}-fonts >= 4.0.2
 
 %description Xprt
 Xprt provides an X server with the print extension and special DDX
@@ -1064,6 +1074,16 @@ X11R6-contrib in older releases.
 %patch23 -p1
 %patch24 -p1
 %patch25 -p0
+%patch26 -p1
+%patch27 -p1
+%patch28 -p1
+%patch29 -p1
+%patch30 -p1
+%patch31 -p1
+%patch32 -p1
+%patch33 -p1
+%patch34 -p1
+%patch35 -p1
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
