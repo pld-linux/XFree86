@@ -3031,16 +3031,12 @@ fi
 %files setup
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/pcitweak
-%ifnarch ppc
 %attr(755,root,root) %{_bindir}/scanpci
-%endif
 %attr(755,root,root) %{_bindir}/xf86cfg
 %attr(755,root,root) %{_bindir}/xf86config
 %{_appdefsdir}/XF86Cfg
-%ifnarch ppc
-%{_mandir}/man1/scanpci.1*
-%endif
 %{_mandir}/man1/pcitweak.1*
+%{_mandir}/man1/scanpci.1*
 %{_mandir}/man1/xf86cfg.1*
 %{_mandir}/man1/xf86config.1*
 
