@@ -123,6 +123,7 @@ Patch59:	%{name}-disable_glide.patch
 Patch60:	%{name}-expat.patch
 Patch61:	%{name}-pkgconfig.patch
 BuildRequires:	bison
+BuildRequires:	expat-devel
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
 BuildRequires:	gcc-c++
