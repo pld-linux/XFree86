@@ -1,6 +1,15 @@
 diff -urN XFree86-4.0.orig/xc/config/cf/Imake.tmpl XFree86-4.0/xc/config/cf/Imake.tmpl
 --- XFree86-4.0.orig/xc/config/cf/Imake.tmpl	Tue Mar  7 16:54:17 2000
 +++ XFree86-4.0/xc/config/cf/Imake.tmpl	Fri Mar 17 02:19:49 2000
+@@ -208,7 +208,7 @@
+ 
+ #ifndef BuildHtmlManPages
+ #ifdef RmanCmd
+-#define BuildHtmlManPages YES
++#define BuildHtmlManPages NO
+ #else
+ #define BuildHtmlManPages NO
+ #endif
 @@ -585,11 +585,7 @@
  #define LintlibDir $(USRLIBDIR)/lint
  #endif
@@ -78,10 +87,23 @@ diff -urN XFree86-4.0.orig/xc/config/cf/linux.cf XFree86-4.0/xc/config/cf/linux.
  #        define BuildXF86DRM        YES
  #      else
           /* Only tested for Linux 2.3.0 through 2.3.18 */
+@@ -537,10 +537,10 @@
+ #endif
+ 
+ #ifndef LinkGLToUsrLib
+-#define LinkGLToUsrLib	YES
++#define LinkGLToUsrLib	NO
+ #endif
+ #ifndef LinkGLToUsrInclude
+-#define LinkGLToUsrInclude	YES
++#define LinkGLToUsrInclude	NO
+ #endif
+ 
+ 
 diff -urN XFree86-4.0.orig/xc/config/cf/site.def XFree86-4.0/xc/config/cf/site.def
 --- XFree86-4.0.orig/xc/config/cf/site.def	Mon Oct  5 05:52:26 1998
 +++ XFree86-4.0/xc/config/cf/site.def	Fri Mar 17 02:19:49 2000
-@@ -115,10 +115,10 @@
+@@ -115,10 +115,13 @@
  #define HasSentinel	YES
  */
  
@@ -92,7 +114,10 @@ diff -urN XFree86-4.0.orig/xc/config/cf/site.def XFree86-4.0/xc/config/cf/site.d
 +#define DefaultUserPath /bin:/usr/bin:/usr/local/bin
 +#undef DefaultSystemPath
 +#define DefaultSystemPath /sbin:/usr/sbin:/bin:/usr/bin
- 
++
++
++#define HasPam    YES
+
  
  /* You do NOT need SetUID if you only run the server under xdm */
 diff -urN XFree86-4.0.orig/xc/config/cf/xf86site.def XFree86-4.0/xc/config/cf/xf86site.def
