@@ -153,9 +153,6 @@ Obsoletes:	X11R6.1
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1 libOSMesa.so.3.3 libglide3.so.3
 
 %description
-If you want to install the X Window System (TM) on your machine,
-you'll need to install XFree86.
-
 The X Window System provides the base technology for developing
 graphical user interfaces. Simply stated, X draws the elements of the
 GUI on the user's screen and builds methods for sending user
@@ -1885,11 +1882,13 @@ rm -f xc/config/cf/host.def
 
 %build
 %{__make} -S -C xc World DEFAULT_OS_CPU_FROB=%{_target_cpu} \
-	"BOOTSTRAPCFLAGS=%{rpmcflags}" \
-	"CCOPTIONS=%{rpmcflags}" \
-	"CXXOPTIONS=%{rpmcflags}" \
-	"CXXDEBUGFLAGS=" "CDEBUGFLAGS=" \
-	"ICONDIR=%{_icondir}"
+	CC="%{__cc}" \
+	BOOTSTRAPCFLAGS="%{rpmcflags}" \
+	CCOPTIONS="%{rpmcflags}" \
+	CXXOPTIONS="%{rpmcflags}" \
+	CXXDEBUGFLAGS="" \
+	CDEBUGFLAGS="" \
+	ICONDIR="%{_icondir}"
 
 %ifnarch alpha
 #%%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" Makefiles
@@ -1913,17 +1912,18 @@ install -d $RPM_BUILD_ROOT/etc/{X11/fs,pam.d,rc.d/init.d,security/console.apps,s
 	$RPM_BUILD_ROOT%{_applnkdir}/{Amusements,Editors,Utilities,Terminals} \
 	$RPM_BUILD_ROOT{%{_pixmapsdir}/mini,%{_wmpropsdir},%{_soundsdir},%{_themesdir}/{Default,ThinIce}}
 
-%{__make} -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
-		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
-		"INSTBINFLAGS=-m 755" \
-		"INSTPGMFLAGS=-m 755" \
-		"RAWCPP=/lib/cpp" \
-		"BOOTSTRAPCFLAGS=%{rpmcflags}" \
-		"CCOPTIONS=%{rpmcflags}" \
-		"CXXOPTIONS=%{rpmcflags}" \
-		"CXXDEBUGFLAGS=" "CDEBUGFLAGS=" \
-		"ICONDIR=%{_icondir}" \
-		install install.man
+%{__make} -C xc	install	install.man \
+	DESTDIR="$RPM_BUILD_ROOT" \
+	DOCDIR="/usr/share/doc/%{name}-%{version}" \
+	INSTBINFLAGS="-m 755" \
+	INSTPGMFLAGS="-m 755" \
+	RAWCPP="/lib/cpp" \
+	BOOTSTRAPCFLAGS="%{rpmcflags}" \
+	CCOPTIONS="%{rpmcflags}" \
+	CXXOPTIONS="%{rpmcflags}" \
+	CXXDEBUGFLAGS="" \
+	CDEBUGFLAGS="" \
+	ICONDIR="%{_icondir}"
 
 %ifnarch alpha
 #install -d $RPM_BUILD_ROOT%{_libdir}/modules.gatos/{drivers,dri}
