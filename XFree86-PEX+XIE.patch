@@ -1,15 +1,15 @@
---- XFree86-4.2.0/xc/config/cf/xfree86.cf.orig	Sat Feb  2 22:43:40 2002
-+++ XFree86-4.2.0/xc/config/cf/xfree86.cf	Sun Feb  3 01:19:18 2002
-@@ -815,7 +815,7 @@
-  */
- #if !defined(BuildPexExt)
- # if XF86Server && !defined(AlphaArchitecture) && !defined(ia64Architecture) && !defined(s390xArchitecture)
+--- XFree86-4.3.0/xc/config/cf/xfree86.cf.orig	Wed May 14 22:40:08 2003
++++ XFree86-4.3.0/xc/config/cf/xfree86.cf	Wed May 14 22:42:15 2003
+@@ -1185,7 +1185,7 @@
+   && !defined(ia64Architecture) \
+   && !defined(s390xArchitecture) \
+   && !defined (x86_64Architecture)
 -#  define BuildPexExt		NO	/* But we turn off PEX anyway now */
 +#  define BuildPexExt		YES	/* But we turn off PEX anyway now */
  # else
  #  define BuildPexExt		NO
  # endif
-@@ -1021,7 +1021,7 @@
+@@ -1434,7 +1434,7 @@
   */
  #ifndef BuildXIE
  # if XF86Server

@@ -192,10 +192,9 @@ diff -Nur XFree86-4.0.2.org/xc/config/cf/X11.tmpl XFree86-4.0.2/xc/config/cf/X11
             RGBSRC = $(XTOP)/programs/rgb
        BDFTOPCFSRC = $(PROGRAMSRC)/bdftopcf
       MKFONTDIRSRC = $(PROGRAMSRC)/mkfontdir
-diff -Nur XFree86-4.0.2.org/xc/config/cf/linux.cf XFree86-4.0.2/xc/config/cf/linux.cf
---- XFree86-4.0.2.org/xc/config/cf/linux.cf	Thu Dec 14 20:24:08 2000
-+++ XFree86-4.0.2/xc/config/cf/linux.cf	Wed Dec 20 13:45:03 2000
-@@ -286,7 +286,7 @@
+--- XFree86-4.3.0.org/xc/config/cf/linux.cf.orig	Mon Feb 17 18:07:32 2003
++++ XFree86-4.3.0.org/xc/config/cf/linux.cf	Wed May 14 16:25:13 2003
+@@ -320,7 +320,7 @@
   */
  #if BuildXF86DRI
  # if defined(i386Architecture)
@@ -204,8 +203,8 @@ diff -Nur XFree86-4.0.2.org/xc/config/cf/linux.cf XFree86-4.0.2/xc/config/cf/lin
  # endif
  #endif
  
-@@ -298,7 +298,7 @@
- #  if defined(i386Architecture) || defined(ia64Architecture)
+@@ -339,7 +339,7 @@
+ #  if defined(i386Architecture) || defined(ia64Architecture) || defined(SparcArchitecture) || defined(AlphaArchitecture) || defined(x86_64Architecture)
  #    if OSMajorVersion == 2
         /* Only tested for Linux 2.2.0 through 2.2.12 */
 -#      if OSMinorVersion == 2 && OSTeenyVersion <= 12
@@ -213,16 +212,16 @@ diff -Nur XFree86-4.0.2.org/xc/config/cf/linux.cf XFree86-4.0.2/xc/config/cf/lin
  #        define BuildXF86DRM	YES
  #      else
           /* Only tested for Linux 2.3.0 through 2.3.18 */
-@@ -565,7 +565,7 @@
- #define StandardCppDefines	StandardDefines
+@@ -728,7 +728,7 @@
  
  #define HasVarRun		YES
--#define VarDbDirectory		$(VARDIR)/lib
-+#define VarDbDirectory		/var/lib
+ #ifndef VarDbDirectory
+-# define VarDbDirectory		$(VARDIR)/lib
++# define VarDbDirectory		/var/lib
+ #endif
  
  #ifndef XF86OSCardDrivers
- # define XF86OSCardDrivers	v4l
-@@ -704,10 +704,10 @@
+@@ -943,10 +943,10 @@
  #endif
  
  #ifndef LinkGLToUsrLib
@@ -235,7 +234,6 @@ diff -Nur XFree86-4.0.2.org/xc/config/cf/linux.cf XFree86-4.0.2/xc/config/cf/lin
  #endif
  
  
-diff -Nur XFree86-4.0.2.org/xc/config/cf/site.def XFree86-4.0.2/xc/config/cf/site.def
 --- XFree86-4.0.2.org/xc/config/cf/site.def	Tue Jun 27 02:55:45 2000
 +++ XFree86-4.0.2/xc/config/cf/site.def	Wed Dec 20 13:41:02 2000
 @@ -131,10 +131,14 @@
@@ -256,29 +254,49 @@ diff -Nur XFree86-4.0.2.org/xc/config/cf/site.def XFree86-4.0.2/xc/config/cf/sit
  
  
  /* You do NOT need SetUID if you only run the server under xdm */
-diff -Nur XFree86-4.0.2.org/xc/config/cf/xf86site.def XFree86-4.0.2/xc/config/cf/xf86site.def
---- XFree86-4.0.2.org/xc/config/cf/xf86site.def	Thu Dec 14 20:24:16 2000
-+++ XFree86-4.0.2/xc/config/cf/xf86site.def	Wed Dec 20 13:41:03 2000
-@@ -134,16 +134,16 @@
-  * Some Linux releases don't have a libtermcap.  In this case you may need
-  * to uncomment the following
+--- XFree86-4.3.0/xc/config/cf/xf86site.def.orig	Fri Oct 11 03:40:22 2002
++++ XFree86-4.3.0/xc/config/cf/xf86site.def	Thu May 15 03:40:17 2003
+@@ -234,7 +234,7 @@
+ /*
+  * To not build/install the Cyrillic fonts, uncomment the following
   *
--#define TermcapLibrary		-lncurses
+-#define BuildCyrillicFonts	NO
++#define BuildCyrillicFonts	YES
   */
-+#define TermcapLibrary		-lncurses
  
  /*
-  * If you have Tk (which is required to build XF86Setup), uncomment this
-  * Note: version 4.0 or 4.1 is required, and XF86Setup links it statically by
-  * default.
+@@ -281,26 +281,26 @@
+  * HasGlide2 to YES and set the Glide2IncDir variable. 
+  * HasGlide2 is per default NO.
   *
--#define HasTk			YES
+-#define HasGlide2 YES
   */
-+#define HasTk			YES
++#define HasGlide2 YES
  
  /*
-  * Set the paths and names for your Tk library if they don't match the
-@@ -156,25 +156,25 @@
+  * Set the path to your Glide include files.
+  *
+-#define Glide2IncDir /usr/include/glide
+  */
++#define Glide2IncDir /usr/include/glide
+ 
+ /* 
+  * Have glide 3?
+  *
+-#define HasGlide3 YES
+  */
++#define HasGlide3 YES
+ 
+ /*
+  * Set the path to your Glide 3 include files.
+  *
+-#define Glide3IncDir /usr/include/glide3
+  */
++#define Glide3IncDir /usr/include/glide3
+ 
+ 
+ 
+@@ -427,25 +427,25 @@
   *
   * Some Linux releases need TkLibDir set to /usr/X11R6/lib
   *
@@ -309,7 +327,7 @@ diff -Nur XFree86-4.0.2.org/xc/config/cf/xf86site.def XFree86-4.0.2/xc/config/cf
  
  /*
   * Set the paths and names for your Tcl library if they don't match the
-@@ -184,17 +184,17 @@
+@@ -455,17 +455,17 @@
   *
   * Some Linux releases need TclIncDir set to /usr/include/tcl.
   *
@@ -331,17 +349,7 @@ diff -Nur XFree86-4.0.2.org/xc/config/cf/xf86site.def XFree86-4.0.2/xc/config/cf
  
  /*
   * Build a server that dynamically loads the modules by setting
-@@ -436,8 +436,8 @@
- /*
-  * To not build/install the Cyrillic fonts, uncomment the following
-  *
--#define BuildCyrillicFonts	NO
-  */
-+#define BuildCyrillicFonts	YES
- 
- /*
-  * To not build/install the Latin2 fonts, uncomment the following
-@@ -626,8 +626,8 @@
+@@ -677,8 +677,8 @@
   * To forceably build static libraries in addition to shared libraries,
   * uncomment this.
   *
@@ -351,38 +359,6 @@ diff -Nur XFree86-4.0.2.org/xc/config/cf/xf86site.def XFree86-4.0.2/xc/config/cf
  
  /*
   * Uncomment this if your default tools (eg, gcc, ld, as, etc) are
-@@ -713,26 +713,26 @@
-  * HasGlide2 to YES and set the Glide2IncDir variable. 
-  * HasGlide2 is per default NO.
-  *
--#define HasGlide2 YES
-  */
-+#define HasGlide2 YES
- 
- /*
-  * Set the path to your Glide include files.
-  *
--#define Glide2IncDir /usr/include/glide
-  */
-+#define Glide2IncDir /usr/include/glide
- 
- /* 
-  * The 3Dfx 3D DRI driver requires glide 3.
-  *
--#define HasGlide3 YES
-  */
-+#define HasGlide3 YES
- 
- /*
-  * Set the path to your Glide 3 include files.
-  *
--#define Glide3IncDir /usr/include/glide3
-  */
-+#define Glide3IncDir /usr/include/glide3
- 
- /*
-  * Undefine the following if you don't want to have config files and
-diff -Nur XFree86-4.0.2.org/xc/config/cf/xfree86.cf XFree86-4.0.2/xc/config/cf/xfree86.cf
 --- XFree86-4.0.2.org/xc/config/cf/xfree86.cf	Thu Dec 14 20:24:17 2000
 +++ XFree86-4.0.2/xc/config/cf/xfree86.cf	Wed Dec 20 13:52:03 2000
 @@ -28,7 +28,7 @@
@@ -535,10 +511,9 @@ diff -Nur XFree86-4.0.2.org/xc/programs/xdm/resource.c XFree86-4.0.2/xc/programs
  #endif
  #ifndef DEF_USER_AUTH_DIR
  #define DEF_USER_AUTH_DIR	"/tmp"
-diff -Nur XFree86-4.0.2.org/xc/programs/xinit/Imakefile XFree86-4.0.2/xc/programs/xinit/Imakefile
---- XFree86-4.0.2.org/xc/programs/xinit/Imakefile	Tue Dec  5 01:59:44 2000
-+++ XFree86-4.0.2/xc/programs/xinit/Imakefile	Wed Dec 20 13:41:03 2000
-@@ -41,11 +41,13 @@
+--- XFree86-4.3.0/xc/programs/xinit/Imakefile.orig	Fri May 31 20:46:13 2002
++++ XFree86-4.3.0/xc/programs/xinit/Imakefile	Wed May 14 16:32:09 2003
+@@ -39,11 +39,12 @@
  InstallNamedProg(startx,startx,$(BINDIR))
  InstallManPage(startx,$(MANDIR))
  
@@ -553,13 +528,11 @@ diff -Nur XFree86-4.0.2.org/xc/programs/xinit/Imakefile XFree86-4.0.2/xc/program
 +XCOMM #else
 +XCOMM InstallNonExecFileNoClobber($(SAMPLECONFIG),$(XINITDIR))
 +XCOMM #endif
-+
- #endif
  
  LinkConfDirectory(xinit,.,xinit,.)
-diff -Nur XFree86-4.0.2.org/xc/programs/xterm/Imakefile XFree86-4.0.2/xc/programs/xterm/Imakefile
---- XFree86-4.0.2.org/xc/programs/xterm/Imakefile	Tue Dec  5 02:00:14 2000
-+++ XFree86-4.0.2/xc/programs/xterm/Imakefile	Wed Dec 20 13:43:30 2000
+ 
+--- XFree86-4.3.0/xc/programs/xterm/Imakefile.orig	Fri Nov 22 23:56:06 2002
++++ XFree86-4.3.0/xc/programs/xterm/Imakefile	Wed May 14 16:36:10 2003
 @@ -36,6 +36,10 @@
  #define XkbClientLibs /**/
  #endif
@@ -577,19 +550,18 @@ diff -Nur XFree86-4.0.2.org/xc/programs/xterm/Imakefile XFree86-4.0.2/xc/program
  
 +         PTYLIB = -lutil
 +
- #if ((LinuxCLibMajorVersion == 6) && (LinuxCLibMinorVersion < 1))
-          PTYLIB = -lutil
- #endif
-@@ -109,7 +115,7 @@
- 		  -DOSMINORVERSION=$(OSMINORVERSION)
+ #if defined(NetBSDArchitecture) || defined(OpenBSDArchitecture) || \
+     (defined(LinuxArchitecture) && \
+      (LinuxCLibMajorVersion == 6) && (LinuxCLibMinorVersion < 1))
+@@ -110,7 +116,7 @@
     MISC_DEFINES = /* -DALLOWLOGGING -DALLOWLOGFILEEXEC */
      XKB_DEFINES = XkbClientDefines
--        DEFINES = -I. $(XKB_DEFINES) $(TERMCAPDEFINES) $(FEATURE_DEFINES) $(SCROLLBAR_RIGHT) $(UTF8_OPTION) $(XRFDEF)
-+        DEFINES = -I. -I/usr/include/ncurses $(XKB_DEFINES) $(TERMCAPDEFINES) $(FEATURE_DEFINES) $(SCROLLBAR_RIGHT) $(UTF8_OPTION) $(XRFDEF)
+    PATH_DEFINES = -DPROJECTROOT=$(PROJECTROOT)
+-        DEFINES = -I. $(XKB_DEFINES) $(TERMCAPDEFINES) $(FEATURE_DEFINES) $(SCROLLBAR_RIGHT) $(UTF8_OPTION) $(XRFDEF) $(PATH_DEFINES) $(TRACEDEF)
++        DEFINES = -I. -I/usr/include/ncurses $(XKB_DEFINES) $(TERMCAPDEFINES) $(FEATURE_DEFINES) $(SCROLLBAR_RIGHT) $(UTF8_OPTION) $(XRFDEF) $(PATH_DEFINES) $(TRACEDEF)
+        INCLUDES = $(XRFINCLUDES)
  
  #ifdef OS2Architecture
-           MAINSRC = os2main.c
-diff -Nur XFree86-4.0.2.org/xc/programs/xterm/xterm.h XFree86-4.0.2/xc/programs/xterm/xterm.h
 --- XFree86-4.0.2.org/xc/programs/xterm/xterm.h	Sat Dec  9 05:02:44 2000
 +++ XFree86-4.0.2/xc/programs/xterm/xterm.h	Wed Dec 20 13:41:03 2000
 @@ -62,7 +62,7 @@
