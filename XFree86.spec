@@ -348,11 +348,12 @@ Summary(pl):	Wsparcie OpenGL dla systemu X11R6 - biblioteka GL
 Group:		X11/Libraries
 Requires:	XFree86-OpenGL-core = %{version}
 Obsoletes:	XFree86-driver-firegl
+Conflicts:	OpenGL-core < 4.3.99.12
 
-%description OpenGL-core
+%description OpenGL-libGL
 OpenGL support for X11R6 system - GL library.
 
-%description OpenGL-core -l pl
+%description OpenGL-libGL -l pl
 Wsparcie OpenGL dla systemu X11R6 - biblioteka GL.
 
 %package OpenGL-devel
