@@ -12,7 +12,7 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Name:		XFree86
 Version:	4.2.0
-Release:	3.2
+Release:	3.3
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/%{version}/source/X%{_sver}src-1.tgz
@@ -739,6 +739,54 @@ ATI Radeon video driver.
 
 %description driver-radeon -l pl
 Sterownik do kart ATI Radeon.
+
+%package driver-ati.2
+Summary:	ATI video driver (ATI.2)
+Summary(pl):	Sterownik do kart ATI (ATI.2)
+Group:		X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+Obsoletes:	XFree86-ATI XFree86-Mach32 XFree86-Mach64
+Conflicts:	XFree86-driver-ati XFree86-driver-r128 XFree86-driver-radeon
+
+%description driver-ati.2
+ATI video driver (ATI.2).
+
+%description driver-ati.2 -l pl
+Sterownik do kart ATI (ATI.2).
+
+%package driver-r128.2
+Summary:	ATI Rage 128 video driver (ATI.2)
+Summary(pl):	Sterownik do kart ATI Rage 128 (ATI.2)
+Group:		X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+Requires:	OpenGL
+Requires:	XFree86-driver-ati.2
+Conflicts:	XFree86-driver-nvidia XFree86-driver-ati XFree86-driver-r128 XFree86-driver-radeon
+Obsoletes:	XFree86-Rage128
+
+%description driver-r128
+ATI Rage 128 video driver (ATI.2).
+
+%description driver-r128 -l pl
+Sterownik do kart ATI Rage 128 (ATI.2).
+
+%package driver-radeon.2
+Summary:	ATI Radeon video driver (ATI.2)
+Summary(pl):	Sterownik do kart ATI Radeon (ATI.2)
+Group:		X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+Requires:	XFree86-driver-ati.2
+Requires:	OpenGL
+Conflicts:	XFree86-driver-nvidia XFree86-driver-ati XFree86-driver-r128 XFree86-driver-radeon
+
+%description driver-radeon
+ATI Radeon video driver (ATI.2).
+
+%description driver-radeon -l pl
+Sterownik do kart ATI Radeon (ATI.2).
 
 %package driver-chips
 Summary:	Chips and Technologies video driver
@@ -1712,7 +1760,7 @@ install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysc
 		install install.man
 
 %ifnarch alpha
-install -d $RPM_BUILD_ROOT%{_libdir}/modules/drivers/ati.2/
+install -d $RPM_BUILD_ROOT%{_libdir}/modules/drivers/ati.2
 install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_drv.o \
 	$RPM_BUILD_ROOT%{_libdir}/modules/drivers/ati.2/
 %endif
@@ -2366,20 +2414,17 @@ fi
 %{_mandir}/man4/nv*
 %endif
 
+
 %ifnarch alpha
 %files driver-ati
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/ati*_drv.o
-%dir %{_libdir}/modules/drivers/ati.2
-%attr(755,root,root) %{_libdir}/modules/drivers/ati.2/ati*_drv.o
-%attr(755,root,root) %{_libdir}/modules/drivers/ati.2/[bfmt]*_drv.o
 %endif
 
 %ifnarch alpha
 %files driver-r128
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/r128*_drv.o
-%attr(755,root,root) %{_libdir}/modules/drivers/ati.2/r128*_drv.o
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
 %endif
@@ -2390,6 +2435,33 @@ fi
 %files driver-radeon
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/radeon*_drv.o
+%ifnarch sparc sparc64
+%attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
+%endif
+%endif
+
+
+%ifnarch alpha
+%files driver-ati.2
+%defattr(644,root,root,755)
+%dir %{_libdir}/modules/drivers/ati.2
+%attr(755,root,root) %{_libdir}/modules/drivers/ati.2/ati*_drv.o
+%attr(755,root,root) %{_libdir}/modules/drivers/ati.2/[bfmt]*_drv.o
+%endif
+
+%ifnarch alpha
+%files driver-r128.2
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/ati.2/r128*_drv.o
+%ifnarch sparc sparc64
+%attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
+%endif
+%{_mandir}/man4/r128*
+%endif
+
+%ifnarch alpha
+%files driver-radeon.2
+%defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/ati.2/radeon*_drv.o
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
