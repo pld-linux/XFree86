@@ -2307,7 +2307,6 @@ fi
 
 %files OpenGL-core
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/glxgears
 %attr(755,root,root) %{_libdir}/modules/extensions/libglx.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libGLcore.a
 %{_mandir}/man1/glxgears.1x*
@@ -2352,6 +2351,7 @@ fi
 %files OpenGL-libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/glxinfo
+%attr(755,root,root) %{_bindir}/glxgears
 %attr(755,root,root) %{_libdir}/libGLU.so.*.*
 # to be fixed: it contains unresolved symbols and would need -lXm
 #%attr(755,root,root) %{_libdir}/libGLw.so.*.*
