@@ -25,6 +25,7 @@ Source11:	xclipboard.desktop
 Source12:	xconsole.desktop
 Source13:	xterm.desktop
 Source14:	xlogo64.png
+Source15:	s3-0.3.21.tgz
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -55,6 +56,7 @@ Patch26:	%{name}-mkfontdir-chmod_644.patch
 Patch27:	%{name}-DEC.patch
 Patch28:	%{name}-HasFreetype2.patch
 Patch29:	%{name}-libXfont-put-eof.patch
+Patch30:	%{name}-makefile-s3.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -806,6 +808,22 @@ S3 ViRGE/Trio3D video driver.
 %description -l pl driver-s3virge
 Driver do kart na uk³adach S3 ViRGE i Trio3D.
 
+%package driver-s3
+Summary:        S3 Trio video driver
+Summary(pl):    Driver do kart na uk³adach S3 ViRGE i Trio3D
+Group:          X11/XFree86
+Group(de):      X11/XFree86
+Group(pl):      X11/XFree86
+Requires:       %{name}-modules = %{version}-%{release}
+Requires:       %{name}-Xserver = %{version}-%{release}
+
+%description driver-s3
+S3 Trio video driver.
+
+%description -l pl driver-s3
+Driver do kart na uk³adach S3 Trio.
+
+
 %package driver-savage
 Summary:	S3 Savage video driver
 Summary(pl):	Driver do kart na uk³adach S3 Savage
@@ -1236,7 +1254,9 @@ X11R6-contrib in older releases.
 %endif
 %patch28 -p1
 %patch29 -p1
+%patch30 -p1
 rm -f xc/config/cf/host.def
+tar zx -f %{SOURCE15} -C xc/programs/Xserver/hw/xfree86/drivers/
 
 #--- %build --------------------------
 
@@ -2074,6 +2094,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/s3virge_drv.o
 %{_mandir}/man4/s3virge*
+
+%endif
+%ifnarch sparc sparc64
+
+%files driver-s3
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/s3_drv.o
+#%{_mandir}/man4/s3*
 
 %endif
 %ifnarch sparc sparc64 alpha
