@@ -432,6 +432,7 @@ Summary:	Font configuration and customization library
 Summary(pl):	Biblioteka do konfigurowania fontów
 Requires:	%{name}-libs = %{version}
 Group:		Libraries
+Requires(post):	/sbin/ldconfig
 Provides:	fontconfig = 1.0.1
 Obsoletes:	fontconfig
 
@@ -2102,7 +2103,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %post	fontconfig
 /sbin/ldconfig
-HOME=/root %{_bindir}/fc-cache -f 2> /dev/nul
+HOME=/root %{_bindir}/fc-cache -f 2>/dev/null
 
 %postun	fontconfig -p /sbin/ldconfig
 
