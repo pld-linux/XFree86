@@ -2850,7 +2850,7 @@ fi
 
 %files libs -f XFree86-libs.lang
 %defattr(644,root,root,755)
-%dir %{_sysconfdir}/xdg
+%dir /etc/xdg
 %dir %{_themesdir}
 %dir %{_themesdir}/Default
 %dir %{_themesdir}/ThinIce
