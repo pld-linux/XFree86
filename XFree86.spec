@@ -641,11 +641,26 @@ Summary(uk):	Б╕бл╕отеки програм╕ста, хедери та документац╕я по програмуванню X11
 Group:		X11/Development/Libraries
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	imake = %{epoch}:%{version}-%{release}
+Requires:	fontconfig-devel
+Provides:	render
+Provides:	xcursor-devel
+Provides:	xft-devel
 Provides:	xpm-devel
-Obsoletes:	xpm-devel
+Provides:	xrender-devel
 %ifarch sparc sparc64
 Obsoletes:	X11R6.1-devel
 %endif
+Obsoletes:	XFree86-render
+Obsoletes:	XFree86-xcursor-devel
+Obsoletes:	XFree86-xft-devel
+Obsoletes:	XFree86-xft2-devel
+Obsoletes:	XFree86-xrender-devel
+Obsoletes:	Xft-devel
+Obsoletes:	render
+Obsoletes:	xcursor-devel
+Obsoletes:	xft-devel
+Obsoletes:	xpm-devel
+Obsoletes:	xrender-devel
 
 %description devel
 Libraries, header files, and documentation for developing programs
@@ -1297,12 +1312,22 @@ Requires(post,postun):	/sbin/ldconfig
 Requires(post,postun):	grep
 Requires(postun):	fileutils
 Requires:	%{name}-common = %{epoch}:%{version}-%{release}
+Provides:	xcursor
+Provides:	xft
 Provides:	xpm
-Obsoletes:	xpm
-
+Provides:	xrender
 %ifarch sparc sparc64
 Obsoletes:	X11R6.1-libs
 %endif
+Obsoletes:	XFree86-xcursor
+Obsoletes:	XFree86-xft
+Obsoletes:	XFree86-xft2
+Obsoletes:	XFree86-xrender
+Obsoletes:	Xft
+Obsoletes:	xcursor
+Obsoletes:	xft
+Obsoletes:	xpm
+Obsoletes:	xrender
 
 %description libs
 XFree86-libs contains the shared libraries that most X programs need
@@ -1431,10 +1456,21 @@ Summary(ru):	Статические библиотеки X11R6
 Summary(uk):	Статичн╕ б╕бл╕отеки X11R6
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
+Provides:	xcursor-static
+Provides:	xft-static
+Provides:	xpm-static
+Provides:	xrender-static
 %ifarch sparc sparc64
 Obsoletes:	X11R6.1-devel
 %endif
+Obsoletes:	XFree86-xcursor-static
+Obsoletes:	XFree86-xft-static
+Obsoletes:	XFree86-xrender-static
+Obsoletes:	Xft-devel
+Obsoletes:	xcursor-static
+Obsoletes:	xft-static
 Obsoletes:	xpm-static
+Obsoletes:	xrender-static
 
 %description static
 X11R6 static libraries.
@@ -1941,19 +1977,14 @@ gunzip $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
 %endif
 
 # kill some stuff for cleaner build
-# (packaged separately, DRM already in kernel)
-rm -rf $RPM_BUILD_ROOT%{_pkgconfigdir}/{xcursor,xft}.pc \
-	$RPM_BUILD_ROOT%{_libdir}/pkgconfig/fontconfig.pc \
+# (fontconfig packaged separately, DRM already in kernel)
+rm -rf $RPM_BUILD_ROOT%{_libdir}/pkgconfig/fontconfig.pc \
 	$RPM_BUILD_ROOT%{_mandir}/{man3/fontconfig.3x,man1/fc-{cache,list}.1x} \
-	$RPM_BUILD_ROOT%{_libdir}/{libfontconfig.*,libXrender.*,libXcursor.*,libXft.{a,so.2*}} \
-	$RPM_BUILD_ROOT%{_includedir}/{fontconfig,X11/{Xcursor,Xft}} \
-	$RPM_BUILD_ROOT%{_bindir}/{fc-cache,fc-list,xcursor-config,xft-config} \
+	$RPM_BUILD_ROOT%{_libdir}/libfontconfig.* \
+	$RPM_BUILD_ROOT%{_includedir}/fontconfig \
+	$RPM_BUILD_ROOT%{_bindir}/{fc-cache,fc-list} \
 	$RPM_BUILD_ROOT/etc/fonts \
 	$RPM_BUILD_ROOT%{_prefix}/src
-
-# skipped from removal - %%exclude is used for these
-# %{_includedir}/X11/extensions/{Xrender.h,render.h,renderproto.h}
-# %{_mandir}/man3/Xft.3x
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -2191,7 +2222,6 @@ fi
 %{_mandir}/man1/Xmark.1*
 %{_mandir}/man1/appres.1*
 %{_mandir}/man1/atobm.1*
-%{_mandir}/man1/bdftopcf.1*
 %{_mandir}/man1/bitmap.1*
 %{_mandir}/man1/bmtoa.1*
 %{_mandir}/man1/cxpm.1*
@@ -2408,6 +2438,8 @@ fi
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/bdftopcf
+%attr(755,root,root) %{_bindir}/xcursor-config
+%attr(755,root,root) %{_bindir}/xft-config
 %attr(755,root,root) %{_libdir}/libFS.so
 %attr(755,root,root) %{_libdir}/libI810XvMC.so
 %attr(755,root,root) %{_libdir}/libICE.so
@@ -2416,9 +2448,11 @@ fi
 %attr(755,root,root) %{_libdir}/libXRes.so
 %attr(755,root,root) %{_libdir}/libXTrap.so
 %attr(755,root,root) %{_libdir}/libXaw.so
+%attr(755,root,root) %{_libdir}/libXcursor.so
 %attr(755,root,root) %{_libdir}/libXext.so
 %attr(755,root,root) %{_libdir}/libXfont.so
 %attr(755,root,root) %{_libdir}/libXfontcache.so
+%attr(755,root,root) %{_libdir}/libXft.so
 %attr(755,root,root) %{_libdir}/libXi.so
 %attr(755,root,root) %{_libdir}/libXinerama.so
 %attr(755,root,root) %{_libdir}/libXmu.so
@@ -2426,6 +2460,7 @@ fi
 %attr(755,root,root) %{_libdir}/libXp.so
 %attr(755,root,root) %{_libdir}/libXpm.so
 %attr(755,root,root) %{_libdir}/libXrandr.so
+%attr(755,root,root) %{_libdir}/libXrender.so
 %attr(755,root,root) %{_libdir}/libXss.so
 %attr(755,root,root) %{_libdir}/libXt.so
 %attr(755,root,root) %{_libdir}/libXtst.so
@@ -2449,19 +2484,18 @@ fi
 %{_includedir}/X11/PM
 %{_includedir}/X11/SM
 %{_includedir}/X11/Xaw
+%{_includedir}/X11/Xcursor
+%{_includedir}/X11/Xft
 %{_includedir}/X11/Xmu
 %dir %{_includedir}/X11/extensions
 %{_includedir}/X11/extensions/*.h
 %{_includedir}/X11/fonts
 %{_includedir}/xf86*.h
 %{_libx11dir}/config
-
-%exclude %{_includedir}/X11/extensions/Xrender.h
-%exclude %{_includedir}/X11/extensions/render.h
-%exclude %{_includedir}/X11/extensions/renderproto.h
-
+%{_pkgconfigdir}/xcursor.pc
+%{_pkgconfigdir}/xft.pc
+%{_mandir}/man1/bdftopcf.1*
 %{_mandir}/man3/[A-FH-Z]*
-%exclude %{_mandir}/man3/Xft.3*
 
 %files Xserver-devel
 %defattr(644,root,root,755)
@@ -2824,9 +2858,12 @@ fi
 %attr(755,root,root) %{_libdir}/libXRes.so.*.*
 %attr(755,root,root) %{_libdir}/libXTrap.so.*.*
 %attr(755,root,root) %{_libdir}/libXaw.so.*.*
+%attr(755,root,root) %{_libdir}/libXcursor.so.*.*
 %attr(755,root,root) %{_libdir}/libXext.so.*.*
 %attr(755,root,root) %{_libdir}/libXfont.so.*.*
 %attr(755,root,root) %{_libdir}/libXfontcache.so.*.*
+%attr(755,root,root) %{_libdir}/libXft.so.1.*
+%attr(755,root,root) %{_libdir}/libXft.so.2.*
 %attr(755,root,root) %{_libdir}/libXi.so.*.*
 %attr(755,root,root) %{_libdir}/libXinerama.so.*.*
 %attr(755,root,root) %{_libdir}/libXmu.so.*.*
@@ -2834,6 +2871,7 @@ fi
 %attr(755,root,root) %{_libdir}/libXp.so.*.*
 %attr(755,root,root) %{_libdir}/libXpm.so.*.*
 %attr(755,root,root) %{_libdir}/libXrandr.so.*.*
+%attr(755,root,root) %{_libdir}/libXrender.so.*.*
 %attr(755,root,root) %{_libdir}/libXss.so.*.*
 %attr(755,root,root) %{_libdir}/libXt.so.*.*
 %attr(755,root,root) %{_libdir}/libXtst.so.*.*
@@ -2933,7 +2971,9 @@ fi
 %{_libdir}/libXRes.a
 %{_libdir}/libXTrap.a
 %{_libdir}/libXaw.a
+%{_libdir}/libXcursor.a
 %{_libdir}/libXext.a
+%{_libdir}/libXft.a
 %{_libdir}/libXfont.a
 %{_libdir}/libXfontcache.a
 %{_libdir}/libXi.a
@@ -2943,6 +2983,7 @@ fi
 %{_libdir}/libXp.a
 %{_libdir}/libXpm.a
 %{_libdir}/libXrandr.a
+%{_libdir}/libXrender.a
 %{_libdir}/libXss.a
 %{_libdir}/libXt.a
 %{_libdir}/libXtst.a
