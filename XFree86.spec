@@ -2014,10 +2014,6 @@ gzip -9nf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
 gunzip $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
 %endif
 
-%ifnarch sparc sparc64 ppc
-chmod 0 $RPM_BUILD_ROOT%{_libdir}/modules/*.uc
-%endif
-
 # kill some stuff for cleaner build
 # (packaged separately, DRM already in kernel)
 rm -rf $RPM_BUILD_ROOT%{_pkgconfigdir}/{xcursor,xft}.pc \
@@ -2735,6 +2731,7 @@ fi
 %files driver-rendition
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/rendition_drv.o
+%{_libdir}/modules/*.uc
 %{_mandir}/man4/rendition*
 %endif
 
@@ -2956,9 +2953,6 @@ fi
 %dir %{_libdir}/modules
 %dir %{_libdir}/modules/dri
 %dir %{_libdir}/modules/drivers
-%ifnarch sparc sparc64 ppc
-%{_libdir}/modules/*.uc
-%endif
 %attr(755,root,root) %{_libdir}/modules/*.a
 %attr(755,root,root) %{_libdir}/modules/codeconv
 %ifnarch amd64
