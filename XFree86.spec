@@ -93,7 +93,6 @@ BuildRequires:	Glide2x_SDK
 Requires:	XFree86-fonts-ISO8859-1 = %{version}
 Requires:	XFree86-libs = %{version}
 Requires:	xauth
-Requires(post):	fileutils
 ExclusiveArch:	%{ix86} alpha sparc m68k armv4l noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	xpm-progs
@@ -1494,7 +1493,6 @@ bzip2 -dc %{SOURCE16} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 > $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 > $RPM_BUILD_ROOT/etc/security/blacklist.xserver
 > $RPM_BUILD_ROOT/etc/security/blacklist.xdm
-> $RPM_BUILD_ROOT/var/log/XFree86.0.log
 
 ln -sf %{_fontsdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
 
@@ -1532,12 +1530,6 @@ gunzip $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
 rm -rf $RPM_BUILD_ROOT
 
 #--- %post{un}, %preun, %verifyscript, %trigge ----------
-
-%post
-touch /var/log/XFree86.0.log
-chmod 000 /var/log/XFree86.0.log
-chown root.root /var/log/XFree86.0.log
-chmod 640 /var/log/XFree86.0.log
 
 %post	DPS -p /sbin/ldconfig
 %postun	DPS -p /sbin/ldconfig
@@ -1753,8 +1745,6 @@ fi
 
 %{_includedir}/X11/bitmaps
 %{_includedir}/X11/pixmaps
-
-%attr(640,root,root) %ghost /var/log/XFree86.0.log
 
 %{_applnkdir}/Utilities/*
 %{_applnkdir}/Terminals/*
