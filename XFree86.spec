@@ -19,13 +19,13 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
-Version:	4.3.99.902
-Release:	4
+Version:	4.3.99.903
+Release:	1
 Epoch:		1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
-# Source0-md5:	eec2d5e4b980ec73a7772b9362ed9021
+# Source0-md5:	9864cd3f5443849d13694d9b2a7b1e72
 #Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-2.tgz
 #Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-3.tgz
 Source3:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
@@ -118,12 +118,10 @@ Patch45:	%{name}-spencode-nowarning.patch
 Patch46:	%{name}-lock.patch
 Patch47:	%{name}-sparc-kbd.patch
 
-Patch49:	%{name}-mandir-fix.patch
 Patch50:	%{name}-xterm-256colors.patch
 
 Patch52:	%{name}-kernel_headers.patch
 Patch53:	%{name}-stdint.patch
-Patch54:	%{name}-fontfile.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	/usr/bin/perl
 %ifarch %{ix86} alpha amd64
@@ -1843,11 +1841,9 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch45 -p1
 %patch46 -p0
 %patch47 -p1
-%patch49 -p1
 %patch50 -p0
 %patch52 -p1
 %patch53 -p0
-%patch54 -p0
 
 rm -f xc/config/cf/host.def
 
