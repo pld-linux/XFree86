@@ -300,6 +300,7 @@ Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-OpenGL-libs = %{version}
+Requires:	%{name}-devel
 Provides:	OpenGL-devel
 Obsoletes:	Mesa-devel glxMesa-devel
 
