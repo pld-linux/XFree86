@@ -123,6 +123,7 @@ Patch50:	%{name}-xterm-256colors.patch
 
 Patch52:	%{name}-kernel_headers.patch
 Patch53:	%{name}-stdint.patch
+Patch54:	%{name}-fontfile.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	/usr/bin/perl
 %ifarch %{ix86} alpha amd64
@@ -1846,6 +1847,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch50 -p0
 %patch52 -p1
 %patch53 -p0
+%patch54 -p0
 
 rm -f xc/config/cf/host.def
 
