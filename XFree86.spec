@@ -60,6 +60,7 @@ Patch28:	%{name}-tdfxdrmfixes.patch
 Patch29:	%{name}-HasXdmAuth.patch
 Patch30:	%{name}-Xserver_observe_XAUTHORITY.patch
 Patch31:	%{name}-xdm-fixes.patch
+Patch32:	%{name}-4.0.1-11.diff.gz
 
 BuildRequires:	flex
 BuildRequires:	ncurses-devel
