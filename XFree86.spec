@@ -732,6 +732,7 @@ Summary(fr):	Serveur XFree86 pour P9000
 Summary(pl):	XFree86 serwer dla kart P9000
 Summary(tr):	XFree86 P9000 sunucusu
 Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-fonts = %{version}
 
