@@ -141,7 +141,7 @@ BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	pam-devel
-BuildRequires:	rpmbuild(macros) >= 1.122
+BuildRequires:	rpmbuild(macros) >= 1.143
 BuildRequires:	tcl-devel
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
@@ -166,10 +166,13 @@ Obsoletes:	X11R6.1
 %define		_libx11dir	%{_prefix}/lib/X11
 %define		_appdefsdir	%{_libx11dir}/app-defaults
 
-
 # avoid Mesa dependency in XFree86-OpenGL-libs
 # Glide3 (libglide3.so.3) can be provided by Glide_V3-DRI or Glide_V5-DRI
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1 libOSMesa.so.3.3 libglide3.so.3
+
+# ELF objects with Rendition microcode - disliked by ELF utils
+%define		_noautostrip	.*\\.uc
+%define		_noautochrpath	.*\\.uc
 
 %description
 The X Window System provides the base technology for developing
