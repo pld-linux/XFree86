@@ -51,8 +51,7 @@ Patch21:	%{name}-parallelmake.patch
 Patch22:	%{name}-portuguese.patch
 Patch23:	%{name}-XF86CardDrivers-cfg.patch
 Patch24:	%{name}-pic.patch
-Patch25:	%{name}-time.patch
-Patch26:	ftp://ftp.xfree86.org/pub/XFree86/4.0.3/patches/4.0.2-4.0.3.diff.gz
+Patch25:	ftp://ftp.xfree86.org/pub/XFree86/4.0.3/patches/4.0.2-4.0.3.diff.gz
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -79,6 +78,9 @@ Obsoletes:	X11R6.1
 %define		_mandir		/usr/X11R6/man
 %define		_appnkldir	%{_datadir}/applnk
 
+# avoid Mesa dependency in XFree86-OpenGL-libs
+%define		_noautoreqdep	libGL.so.1
+
 %description
 If you want to install the X Window System (TM) on your machine,
 you'll need to install XFree86.
@@ -100,7 +102,7 @@ video card, you'll need the particular X server package which
 corresponds to your computer's video card.
 
 %description -l de
-X-Windows ist eine voll funktionsfähige grafische Benutzeroberfläche
+X-Window ist eine voll funktionsfähige grafische Benutzeroberfläche
 mit mehreren Fenstern, mehreren Clients und verschiedenen Arten von
 Fenstern. Es kommt auf den meisten Unix-Plattformen zum Einsatz. Die
 Clients lassen sich auch mit Hilfe anderer Fenstersysteme anzeigen.
@@ -274,7 +276,7 @@ Obsoletes:	Mesa
 OpenGL support for X11R6 system.
 
 %description -l pl OpenGL-core
-Wsparcie OpenGL dla systemu X11R6
+Wsparcie OpenGL dla systemu X11R6.
 
 %package OpenGL-libs
 Summary:	OpenGL libraries for X11R6
@@ -355,7 +357,7 @@ Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-fonts = %{version}
 
 %description Xvfb
-Xvfb (X Virtual Frame Buffer) is an X Windows System server that is
+Xvfb (X Virtual Frame Buffer) is an X Window System server that is
 capable of running on machines with no display hardware and no
 physical input devices. Xvfb emulates a dumb framebuffer using virtual
 memory. Xvfb doesn't open any devices, but behaves otherwise as an X
@@ -370,6 +372,15 @@ don't need an X server but insist on having one.
 
 If you need to test your X server or your X clients, you may want to
 install Xvfb for that purpose.
+
+%description -l pl Xvfb
+Xvfb (X Virtual Frame Buffer) jest X serwerem, który mo¿na uruchamiaæ
+na maszynach bez urz±dzeñ wy¶wietlaj±cych ani fizycznych urz±dzeñ
+wej¶ciowych. Xvfb emuluje prosty framebuffer w pamiêci. Zwykle jest
+u¿ywany do testowania X serwerów, mo¿e te¿ byæ u¿ywany do testowania
+X klientów w rzadko u¿ywanych konfiguracjach ekranu. Mo¿na te¿ u¿yæ
+Xvfb do uruchomienia aplikacji, które w rzeczywisto¶ci nie wymagaj±
+X serwera, ale odmawiaj± uruchomienia bez niego.
 
 %package Xnest
 Summary:	XFree86 Xnest server
@@ -389,9 +400,14 @@ manages the windows and graphics requests for its own clients.
 You will need to install Xnest if you require an X server which will
 run as a client of your real X server (perhaps for testing purposes).
 
+%description -l pl Xnest
+Xnest jest X serwerem uruchamianym w okienku innego X serwera. Xnest
+zachowuje siê jak X klient w stosunku do prawdziwego X serwera, a jak
+X serwer dla w³asnych klientów.
+
 %package Xprt
 Summary:	X print server
-Summary(pl):	X print server
+Summary(pl):	X serwer z rozszerzeniem Xprint
 Group:		X11/XFree86/Servers
 Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
@@ -401,6 +417,9 @@ Requires:	%{name}-fonts = %{version}
 %description Xprt
 Xprt provides an X server with the print extension and special DDX
 implementation.
+
+%description -l pl Xprt
+Xprt jest X serwerem z rozszerzeniem Xprint.
 
 %package Xserver
 Summary:	XFree86 X display server
@@ -431,12 +450,10 @@ Obsoletes:	XFree86-Sun XFree86-Sun24 XFree86-SunMono
 Obsoletes:	XFree86-XF86Setup, Xconfigurator
 
 %description Xserver
-X server for most simple framebuffer SVGA devices, including cards
-built from ET4000 chips, Cirrus Logic chips, Chips and Technologies
-laptop chips, Trident 8900 and 9000 chips. It works for Diamond
-Speedstar, Orchid Kelvins, STB Nitros and Horizons, Genoa 8500VL, most
-Actix boards, the Spider VLB Plus. It also works for many other chips
-and cards, so try this server if you are having problems.
+Generally used X server which uses display hardware. It requires proper
+driver for your display hardware - package itself contains only drivers
+for VGA and VESA-compliant cards (without acceleration). Other drivers
+can be found in XFree86-driver-* packages.
 
 %description -l de Xserver
 X-Server für die elementarsten Framebuffer-SVGA-Geräte, einschließlich
@@ -457,12 +474,10 @@ pour de nombreux autres circuits et cartes. Essayez ce serveur si vous
 avez des problèmes.
 
 %description -l pl Xserver
-X serwer dla wiêkszo¶ci prostych kart SVGA, w³±czaj±c karty zbudowane
-na uk³adach ET4000, Cirrus Logic, Trident 8900 i 9000, oraz uk³ady
-wystêpuj±ce w laptopach. Dzia³a tak¿e z kartami Diamnod Speedstar,
-Orchid Kelvins, STB Nitros i Horizons, Genoa 8500VL, wiêkszo¶æ Actix,
-Spider VLB Plus. Dzia³a równie¿ na wielu innych kartach opartych na
-innych uk³adach wiêc spróbuj tego serwera je¶li masz jakie¶ problemy.
+Jest to podstawowy X serwer wy¶wietlaj±cy obraz na karcie graficznej.
+Do dzia³ania wymaga odpowiedniego drivera - sam pakiet zawiera tylko
+drivery dla kart VGA oraz SVGA zgodnych z VESA (bez akceleracji).
+Inne drivery mo¿na znale¼æ w pakietach XFree86-driver-*.
 
 %description -l tr Xserver
 ET4000, Cirrus Logic, Chips and Technologies dizüstü, Trident 8900 ve
@@ -860,11 +875,11 @@ Group(pl):	X11/XFree86
 Obsoletes:	dgs
 
 %description DPS
-X-Windows Display PostScript is device-independent imaging model for
+X-Window Display PostScript is device-independent imaging model for
 displaying information on a screen.
 
 %description -l pl DPS
-X-Windows Display PostScript to niezale¿ny od urz±dzenia model
+X-Window Display PostScript to niezale¿ny od urz±dzenia model
 wy¶wietlania informacji na ekranie.
 
 %package DPS-devel
@@ -877,10 +892,10 @@ Requires:	%{name}-DPS = %{version}
 Obsoletes:	dgs-devel
 
 %description DPS-devel
-Header files for develop X-Windows Display Postscript.
+Header files for develop X-Window Display Postscript.
 
 %description -l pl DPS-devel
-Pliki nag³ówkowe do biblioteki X-Windows Display PostScript.
+Pliki nag³ówkowe do biblioteki X-Window Display PostScript.
 
 %package DPS-static
 Summary:	Display PostScript
@@ -892,25 +907,30 @@ Requires:	%{name}-DPS-devel = %{version}
 Obsoletes:	dgs-static
 
 %description DPS-static
-X-Windows Display PostScript static libraries.
+X-Window Display PostScript static libraries.
 
 %description -l pl DPS-static
-Statyczne biblioteki do X-Windows Display PostScript.
+Statyczne biblioteki do X-Window Display PostScript.
 
 %package -n sessreg
 Summary:	sessreg - manage utmp/wtmp entries for non-init clients
+Summary(pl):	Program do zarz±dzania wpisami w utmp/wtmp
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-libs = %{version}
 
 %description -n sessreg
-Sessreg is a simple program for managing utmp/wtmp entries for xdm
+sessreg is a simple program for managing utmp/wtmp entries for xdm
 sessions.
 
 System V has a better interface to /var/run/utmp than BSD; it
 dynamically allocates entries in the file, instead of writing them at
 fixed positions indexed by position in /etc/ttys.
+
+%description -l pl -n sessreg
+sessreg jest prostym programem do zarz±dzania wpisami w utmp/wtmp dla
+sesji xdm.
 
 %package -n xdm
 Summary:	xdm - X Display Manager with support for XDMCP, host chooser
@@ -971,6 +991,10 @@ This is a font server for XFree86. You can serve fonts to other X
 servers remotely with this package, and the remote system will be able
 to use all fonts installed on the font server, even if they are not
 installed on the remote computer.
+
+%description -l pl -n xfs
+Pakiet zawiera serwer fontów dla XFree86. Mo¿e udostêpniaæ fonty dla
+X serwerów lokalnych lub zdalnych.
 
 %package -n xauth
 Summary:	xauth - X authority file utility
@@ -1039,8 +1063,7 @@ X11R6-contrib in older releases.
 %patch22 -p1
 %patch23 -p1
 %patch24 -p1
-%patch25 -p1
-%patch26 -p0
+%patch25 -p0
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
@@ -1094,7 +1117,7 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console
 	$RPM_BUILD_ROOT/usr/bin \
 	$RPM_BUILD_ROOT/usr/lib \
 	$RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties \
-	$RPM_BUILD_ROOT{%{_appnkldir}/Utilities,%{_datadir}/pixmaps}
+	$RPM_BUILD_ROOT{%{_appnkldir}/Utilities,%{_pixmapsdir}/mini}
 
 %{__make} -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -1151,7 +1174,6 @@ touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xdm
 
-#ln -sf ../..%{_includedir}/X11 $RPM_BUILD_ROOT%{_includedir}/X11 ##change
 ln -sf %{_fontdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
 
 # do not duplicate xkbcomp program
@@ -1167,6 +1189,15 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
 :> $RPM_BUILD_ROOT/etc/X11/XF86Config
 
 rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/html
+
+# directories for applications locales
+echo '%defattr(644,root,root,755)' > XFree86-libs.lang
+for lang in af az bg bg_BG.cp1251 br ca cs da de el en_GB eo es et eu fi \
+    fr ga gl he hr hu is it ja ko lt mi mk nl nn no pl pt pt_BR ro ru sk \
+    sl sr sv ta th tr uk wa zh_CN zh_CN.GB2312 zh_TW.Big5 ; do
+	install -d $RPM_BUILD_ROOT%{_datadir}/locale/${lang}/LC_MESSAGES
+	echo "%lang(${lang}) %{_datadir}/locale/${lang}" >> XFree86-libs.lang
+done
 
 %ifnarch sparc sparc64
 gzip -9nf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
@@ -1275,7 +1306,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %ifnarch sparc sparc64
-%doc %{_docdir}/%{name}-%{version}/*
+%doc %{_docdir}/%{name}-%{version}
 %doc %{_libdir}/X11/doc
 %endif
 
@@ -1402,7 +1433,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{_appnkldir}/Utilities/*.desktop
 %{_appnkldir}/*.desktop
-%{_pixmapsdir}/*
+%{_pixmapsdir}/x*
 
 %{_mandir}/man1/Xmark.1*
 %{_mandir}/man1/lbxproxy.1*
@@ -1586,13 +1617,16 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xauth
 %{_mandir}/man1/xauth.1*
 
-%files libs
+%files libs -f XFree86-libs.lang
 %defattr(644,root,root,755)
 %dir %{_libdir}
 %dir %{_libdir}/X11
 /usr/lib/X11
 %dir %{_bindir}
 /usr/bin/X11
+%dir %{_datadir}/locale
+%dir %{_pixmapsdir}
+%dir %{_pixmapsdir}/mini
 %attr(755,root,root) %{_libdir}/libX*.so.*.*
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
 %attr(755,root,root) %{_libdir}/libP*.so.*.*
