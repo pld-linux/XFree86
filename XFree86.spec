@@ -130,6 +130,7 @@ Patch48:	%{name}-new-s3-nodebug.patch
 Patch49:	%{name}-mandir-fix.patch
 Patch50:	%{name}-xterm-256colors.patch
 Patch51:	%{name}-new-s3-pScreen.patch
+Patch52:	%{name}-kernel_headers.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	%{_bindir}/perl
 %ifarch %{ix86} alpha amd64
@@ -153,6 +154,7 @@ BuildRequires:	tcl-devel
 BuildRequires:	unzip
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
+BuildRequires:	imake
 Requires:	%{name}-libs = %{epoch}:%{version}
 Requires:	xauth
 Requires:	pam >= 0.77.3
@@ -1844,6 +1846,7 @@ tar xfz *.tar.gz
 %patch49 -p1
 %patch50 -p1
 %patch51 -p1
+%patch52 -p1
 
 rm -f xc/config/cf/host.def
 
