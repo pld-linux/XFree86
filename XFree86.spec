@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	4.0
-Release:	1
+Release:	2
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -468,6 +468,7 @@ Summary:	Display PostScript
 Summary(pl):	Display PostScript
 Group:		X11/XFree
 Group(pl):	X11/XFree
+Obsoletes:	dgs
 
 %description DPS
 %description -l pl DPS
@@ -478,6 +479,7 @@ Summary(pl):	Display PostScript
 Group:		X11/XFree
 Group(pl):	X11/XFree
 Requires:	%{name}-DPS = %{version}
+Obsoletes:	dgs-devel
 
 %description DPS-devel
 %description -l pl DPS-devel
@@ -488,6 +490,7 @@ Summary(pl):	Display PostScript
 Group:		X11/XFree
 Group(pl):	X11/XFree
 Requires:	%{name}-DPS-devel = %{version}
+Obsoletes:	dgs-static
 
 %description DPS-static
 %description -l pl DPS-static
@@ -1029,8 +1032,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libP*.so.*.*
 %attr(755,root,root) %{_libdir}/libS*.so.*.*
 %attr(755,root,root) %{_libdir}/libx*.so.*.*
-%attr(755,root,root) %{_libdir}/libf*.so.*.*
-%attr(755,root,root) %{_libdir}/libo*.so.*.*
 
 %files OpenGL
 %defattr(644,root,root,755)
@@ -1039,6 +1040,7 @@ rm -rf $RPM_BUILD_ROOT
 %files OpenGL-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libGL*.so
+%{_mandir}/man3/glX*
 
 %files OpenGL-static
 %defattr(644,root,root,755)
@@ -1046,14 +1048,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libGLU.a
 
 %files devel
-#%attr(755,root,root) %{_libdir}/lib*.so
 %attr(755,root,root) %{_libdir}/libX*.so
 %attr(755,root,root) %{_libdir}/libI*.so
 %attr(755,root,root) %{_libdir}/libP*.so
 %attr(755,root,root) %{_libdir}/libS*.so
 %attr(755,root,root) %{_libdir}/libx*.so
-%attr(755,root,root) %{_libdir}/libf*.so
-%attr(755,root,root) %{_libdir}/libo*.so
 %{_libdir}/libFS.a
 %{_libdir}/libXau.a
 %{_libdir}/libXdmcp.a
@@ -1088,7 +1087,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/imake.1*
 %{_mandir}/man1/makedepend.1*
 %{_mandir}/man1/xmkmf.1*
-%{_mandir}/man3/*
+%{_mandir}/man3/[A..Z]*
 
 /usr/include/X11
 
