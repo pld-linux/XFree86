@@ -1040,6 +1040,7 @@ rm -rf $RPM_BUILD_ROOT
 %docdir /usr/X11R6/lib/X11/doc
 
 %config /usr/X11R6/lib/X11/XF86Config.eg
+%config /usr/X11R6/lib/X11/XF86Config
 %doc /usr/X11R6/lib/X11/Cards
 
 %dir /usr/X11R6/lib
@@ -1489,7 +1490,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/XF86Setup
 %attr(755,root,root) /usr/X11R6/bin/xmseconfig
-%attr(-,root,root,755) /usr/X11R6/lib/X11/XF86Setup
+/usr/X11R6/lib/X11/XF86Setup
 /usr/X11R6/man/man1/XF86Setup.1x.*
 /usr/X11R6/man/man1/xmseconfig.1x.*
 
