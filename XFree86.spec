@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	3.9.18
-Release:	0.1
+Release:	0.2
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -122,8 +122,6 @@ Prereq:		grep
 Prereq:		/sbin/ldconfig
 Obsoletes:	Mesa
 Obsoletes:	Mesa-devel
-Obsoletes:	Mesa-glut
-Obsoletes:	Mesa-glut-devel
 
 %ifarch sparc
 Obsoletes: X11R6.1-libs
@@ -214,7 +212,6 @@ Requires:	%{name}-devel = %{version}
 Obsoletes:	X11R6.1-devel
 %endif
 Obsoletes:	Mesa-static
-Obsoletes:	Mesa-glut-static
 
 %description static
 X11R6 static libraries.
