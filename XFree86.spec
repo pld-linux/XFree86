@@ -791,10 +791,12 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-ATI XFree86-Mach32 XFree86-Mach64
 
 %description driver-ati.2
-ATI video driver (ATI.2).
+ATI video driver (ATI.2) from gatos
+(http://gatos.sourceforge.net/).
 
 %description driver-ati.2 -l pl
-Sterownik do kart ATI (ATI.2).
+Sterownik do kart ATI (ATI.2) projektu gatos
+(http://gatos.sourceforge.net/).
 
 %package driver-r128.2
 Summary:	ATI Rage 128 video driver (ATI.2)
@@ -808,10 +810,12 @@ Conflicts:	XFree86-driver-nvidia
 Obsoletes:	XFree86-Rage128
 
 %description driver-r128.2
-ATI Rage 128 video driver (ATI.2).
+ATI Rage 128 video driver (ATI.2) from gatos
+(http://gatos.sourceforge.net/).
 
 %description driver-r128.2 -l pl
-Sterownik do kart ATI Rage 128 (ATI.2).
+Sterownik do kart ATI Rage 128 (ATI.2) projektu gatos
+(http://gatos.sourceforge.net/).
 
 %package driver-radeon.2
 Summary:	ATI Radeon video driver (ATI.2)
@@ -824,10 +828,12 @@ Requires:	OpenGL
 Conflicts:	XFree86-driver-nvidia
 
 %description driver-radeon.2
-ATI Radeon video driver (ATI.2).
+ATI Radeon video driver (ATI.2) from gatos
+(http://gatos.sourceforge.net/).
 
 %description driver-radeon.2 -l pl
-Sterownik do kart ATI Radeon (ATI.2).
+Sterownik do kart ATI Radeon (ATI.2) projektu gatos
+(http://gatos.sourceforge.net/).
 
 %package driver-chips
 Summary:	Chips and Technologies video driver
