@@ -1,3 +1,15 @@
+diff -urN ati.old.org/ati.c ati.old/ati.c
+--- ati.old.org/ati.c	Wed Mar 13 11:18:18 2002
++++ ati.old/ati.c	Wed Mar 13 21:05:26 2002
+@@ -90,7 +90,7 @@
+ DriverRec ATI =
+ {
+     ATI_VERSION_CURRENT,
+-    "ati",
++    "ati_old",
+     ATIIdentify,
+     ATIProbe,
+     ATIAvailableOptions,
 diff -urN ati.old.org/atimisc.c ati.old/atimisc.c
 --- ati.old.org/atimisc.c	Wed Mar 13 11:18:18 2002
 +++ ati.old/atimisc.c	Wed Mar 13 11:19:27 2002
@@ -77,6 +89,18 @@ diff -urN ati.old.org/r128_probe.c ati.old/r128_probe.c
  		xf86DeleteScreen(pScrn->scrnIndex, 0);
  		continue;
  	    }
+diff -urN ati.old.org/r128_version.h ati.old/r128_version.h
+--- ati.old.org/r128_version.h	Wed Mar 13 11:18:18 2002
++++ ati.old/r128_version.h	Wed Mar 13 21:07:17 2002
+@@ -25,7 +25,7 @@
+ #define _R128_VERSION_H_ 1
+ 
+ #define R128_NAME          "R128"
+-#define R128_DRIVER_NAME   "r128"
++#define R128_DRIVER_NAME   "r128_old"
+ 
+ #define R128_VERSION_NAME  "4.0.1"
+ 
 diff -urN ati.old.org/radeon_misc.c ati.old/radeon_misc.c
 --- ati.old.org/radeon_misc.c	Wed Mar 13 11:18:18 2002
 +++ ati.old/radeon_misc.c	Wed Mar 13 11:20:20 2002
@@ -104,3 +128,15 @@ diff -urN ati.old.org/radeon_probe.c ati.old/radeon_probe.c
  		xf86DeleteScreen(pScrn->scrnIndex, 0);
  		continue;
  	    }
+diff -urN ati.old.org/radeon_version.h ati.old/radeon_version.h
+--- ati.old.org/radeon_version.h	Wed Mar 13 11:18:18 2002
++++ ati.old/radeon_version.h	Wed Mar 13 21:07:52 2002
+@@ -25,7 +25,7 @@
+ #define _RADEON_VERSION_H_ 1
+ 
+ #define RADEON_NAME          "RADEON"
+-#define RADEON_DRIVER_NAME   "radeon"
++#define RADEON_DRIVER_NAME   "radeon_old"
+ 
+ #define RADEON_VERSION_NAME  "4.0.1"
+ 
