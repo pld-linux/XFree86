@@ -7,7 +7,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Name:		XFree86
 Version:	4.1.0
-Release:	10
+Release:	11
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -1880,7 +1880,7 @@ fi
 
 %files -n xdm
 %defattr(644,root,root,755)
-%attr(640,root,root) %config %verify(not md5 size mtime) /etc/pam.d/xdm
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/pam.d/xdm
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.xdm
 %attr(754,root,root) /etc/rc.d/init.d/xdm
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/xdm
