@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	4.0
-Release:	2
+Release:	3
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -607,9 +607,9 @@ rm -f xc/config/cf/host.def
 
 %build
 make -C xc World \
-	"BOOTSTRAPCFLAGS=$RPM_OPT_FLAGS -fno-strict-aliasing" \
-	"CDEBUGFLAGS=" "CCOPTIONS=$RPM_OPT_FLAGS -fno-strict-aliasing" \
-	"CXXDEBUGFLAGS=" "CXXOPTIONS=$RPM_OPT_FLAGS -fno-strict-aliasing" \
+	"BOOTSTRAPCFLAGS=$RPM_OPT_FLAGS" \
+	"CDEBUGFLAGS=" "CCOPTIONS=$RPM_OPT_FLAGS" \
+	"CXXDEBUGFLAGS=" "CXXOPTIONS=$RPM_OPT_FLAGS" \
 	"RAWCPP=/lib/cpp"
 
 #--- %install ------------------------
@@ -618,7 +618,7 @@ make -C xc World \
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
 	$RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console.apps} \
-	$RPM_BUILD_ROOT/var/state/xkb \
+	$RPM_BUILD_ROOT/var/lib/xkb \
 	$RPM_BUILD_ROOT/usr/include \
 	$RPM_BUILD_ROOT/usr/bin \
 	$RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties \
@@ -763,40 +763,49 @@ rm -rf $RPM_BUILD_ROOT
 %doc /%{_docdir}/%{name}-%{version}/*
 %doc %{_libdir}/X11/doc
 
-%dir /usr/X11R6
+%dir %{_prefix}
 %dir %{_libdir}
 %dir %{_libdir}/X11
-%dir %{_libdir}/X11/rstart
-%dir %{_libdir}/X11/rstart/commands
-%dir %{_libdir}/X11/rstart/commands/x11r6
-%dir %{_libdir}/X11/rstart/contexts
 %dir %{_libdir}/X11/etc
-%dir %{_libdir}/X11/fonts
 %dir %{_bindir}
-
 
 %{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XKeysymDB
 %{_libdir}/X11/locale
-%{_libdir}/X11/lbxproxy
-%{_libdir}/X11/proxymngr
-%{_libdir}/X11/app-defaults
-
-%lang(pl) %{_libdir}/X11/pl
-
+%attr(755,root,root) %{_libdir}/X11/app-defaults
+%attr(755,root,root) %{_libdir}/X11/lbxproxy
+%attr(755,root,root) %{_libdir}/X11/proxymngr
+%attr(755,root,root) %{_libdir}/X11/rstart
+%attr(755,root,root) %{_libdir}/X11/xserver
+%attr(755,root,root) %{_libdir}/X11/fonts
 %attr(755,root,root) %{_libdir}/X11/xinit
-
 %attr(755,root,root) %{_libdir}/X11/xsm
 
-%{_libdir}/X11/xserver/SecurityPolicy
+%dir /etc/X11/app-defaults
+%dir /etc/X11/lbxproxy
+%dir /etc/X11/proxymngr
+%dir /etc/X11/rstart
+%dir /etc/X11/rstart/commands
+%dir /etc/X11/rstart/commands/x11r6
+%dir /etc/X11/rstart/contexts
+%dir /etc/X11/xserver
+%dir /etc/X11/xsm
+%dir /etc/X11/xinit
 
-%attr(-,root,root) %{_libdir}/X11/rstart/config
-%attr(-,root,root) %{_libdir}/X11/rstart/rstartd.real
-%attr(-,root,root) %{_libdir}/X11/rstart/commands/x
-%attr(-,root,root) %{_libdir}/X11/rstart/commands/x11
-%attr(-,root,root) %{_libdir}/X11/rstart/commands/*List*
-%attr(-,root,root) %{_libdir}/X11/rstart/commands/x11r6/*
-%attr(-,root,root) %{_libdir}/X11/rstart/contexts/*
+/etc/X11/app-defaults/*
+/etc/X11/lbxproxy/*
+/etc/X11/proxymngr/*
+%attr(-,root,root) /etc/X11/rstart/config
+%attr(-,root,root) /etc/X11/rstart/rstartd.real
+%attr(-,root,root) /etc/X11/rstart/commands/x
+%attr(-,root,root) /etc/X11/rstart/commands/x11
+%attr(-,root,root) /etc/X11/rstart/commands/*List*
+%attr(-,root,root) /etc/X11/rstart/commands/x11r6/*
+%attr(-,root,root) /etc/X11/rstart/contexts/*
+/etc/X11/xserver/SecurityPolicy
+/etc/X11/xsm/*
+
+%lang(pl) %{_libdir}/X11/pl
 
 %attr(755,root,root) %{_libdir}/X11/x11perfcomp/*
 %{_libdir}/X11/*.txt
@@ -806,7 +815,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/X11/etc/xmodmap.std
 
 %attr(755,root,root) %{_bindir}/lbxproxy
-
 %attr(755,root,root) %{_bindir}/proxymngr
 %attr(755,root,root) %{_bindir}/rstartd
 %attr(755,root,root) %{_bindir}/xfindproxy
@@ -969,7 +977,7 @@ rm -rf $RPM_BUILD_ROOT
 %files modules
 %defattr(-,root,root,755)
 %{_libdir}/X11/xkb
-/var/state/xkb
+/var/lib/xkb
 %dir %{_libdir}/modules
 %attr(755,root,root) %{_libdir}/modules/*
 %{_mandir}/man4/*
@@ -987,9 +995,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/security/blacklist.xdm
 %attr(754,root,root) /etc/rc.d/init.d/xdm
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/xdm
-/var/state/xdm
+/var/lib/xdm
 
-%config %{_libdir}/X11/app-defaults/Chooser
+%config /etc/X11/app-defaults/Chooser
 
 %attr(755,root,root) %{_libdir}/X11/xdm
 %attr(755,root,root) %{_bindir}/xdm
@@ -1010,6 +1018,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_datadir}/gnome/wm-properties/twm.desktop
 %attr(755,root,root) %{_bindir}/twm
+%dir /etc/X11/twm
 %config /etc/X11/twm/system.twmrc
 %attr(755,root,root) %{_libdir}/X11/twm
 %{_mandir}/man1/twm.1*
@@ -1146,7 +1155,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/Xserver.1*
 %{_mandir}/man5/XF86Config.5*
 
-%dir %{_libdir}/X11/xserver
 %doc %{_libdir}/X11/XF86Config.eg
 %doc %{_libdir}/X11/XF86Config.98
 %doc %{_libdir}/X11/Cards
@@ -1175,7 +1183,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/Xsun
 %dir %{_libdir}/X11/xkb
 %attr(755,root,root) %{_libdir}/X11/xkb/*
-/var/state/xkb
+/var/lib/xkb
 %endif
 
 %ifarch sparc
@@ -1185,7 +1193,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/XsunMono
 %dir %{_libdir}/X11/xkb
 %attr(755,root,root) %{_libdir}/X11/xkb/*
-/var/state/xkb
+/var/lib/xkb
 %endif
 
 %ifarch sparc
@@ -1195,7 +1203,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/Xsun24
 %dir %{_libdir}/X11/xkb
 %attr(755,root,root) %{_libdir}/X11/xkb/*
-/var/state/xkb
+/var/lib/xkb
 %endif
 
 %files DPS
