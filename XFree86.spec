@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	4.0
-Release:	0.1
+Release:	1
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -30,6 +30,9 @@ Patch3:		XFree86-3.9.18-Xwrapper.patch
 Patch4:		XFree86-3.9.17-PAM.patch
 Patch5:		XFree86-4.0-GLU.patch
 Patch6:		XFree86-4.0-makedepend.patch
+Patch7:		XFree86-tdfx.patch
+Patch8:		XFree86-xfsredhat.patch
+Patch9:		XFree86-xfs-fix.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -503,6 +506,9 @@ the case when using remote logins or granting access to other users).
 %patch4 -p1
 %patch5 -p1
 %patch6 -p0
+%patch7 -p0
+%patch8 -p0
+%patch9 -p0
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
