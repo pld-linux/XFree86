@@ -1228,7 +1228,7 @@ indeksowanych po³o¿eniem w /etc/ttys.
 
 %package -n xdm
 Summary:	xdm - X Display Manager with support for XDMCP, host chooser
-Summary(pl):	XDM - display menad¿er z obs³ug± XDMCP i wybieraniem hostów
+Summary(pl):	XDM - display mened¿er z obs³ug± XDMCP i wybieraniem hostów
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1271,7 +1271,7 @@ user-defined macro functions, click-to-type and pointerdriven keyboard
 focus, and user-specified key and pointer button bindings.
 
 %description -n twm -l pl
-Twm jest menad¿erem okien dla X Window System. Daje belki tytu³owe,
+Twm jest mened¿erem okien dla X Window System. Daje belki tytu³owe,
 ramki okien, parê form zarz±dzania ikonami, definiowalne makra,
 ustawianie focusu klikniêciem lub po³o¿eniem wska¼nika myszy,
 definiowalne przypisania klawiszy i przycisków myszy.
