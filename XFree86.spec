@@ -1451,6 +1451,7 @@ XFree86-xfs.
 Summary:	Modules with X servers extensions
 Summary(pl):	Wspólne dla wszystkich X serwerów modu³y rozszerzeñ
 Group:		X11/Servers
+Obsoletes:	XFree86-module-XIE
 
 %description modules
 Modules with X servers extensions.
