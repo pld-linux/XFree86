@@ -87,9 +87,10 @@ BuildRequires:	Glide3-DRI-devel
 %ifarch %{ix86}
 BuildRequires:	Glide2x_SDK
 %endif
-Requires:	xauth
-Requires:	%{name}-common
 Requires(post):	fileutils
+Requires:	xauth
+Requires:	%{name}-libs = %{version}
+Requires:	%{name}-common = %{version}
 ExclusiveArch:	%{ix86} alpha sparc m68k armv4l noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	xpm-progs
