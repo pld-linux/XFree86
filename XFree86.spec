@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	3.3.3.1
-Release:	51
+Release:	53
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -62,7 +62,7 @@ Patch32:	XFree86-thinkingmouse.patch
 # fix keymap error for dvorak keyboards
 Patch33:	XFree86-dvorak.patch
 # Fix dainbramage where the X server chmods whatever .X11-unix points to
-Patch34:	XFree86-dainbramage.patch
+Patch34:	XFree86-tmpdir.patch
 # link xterm with libncurses instead libtermcap
 Patch35:	XFree86-ncurses.patch
 # Compile X serwers againsty system installed libz.so
@@ -73,6 +73,11 @@ Patch38:	XFree86-voodoo-Rush.patch
 Patch39:	XFree86-voodoo-Banshee.patch
 Patch40:	XFree86-NVIDIA.patch
 Patch41:	XFree86-xf86config-3dfx.patch
+Patch42:	XFree86-G200dga.patch
+Patch43:	XFree86-ffbcrash.patch
+Patch44:	XFree86-fixiso8859-2.patch
+Patch45:	XFree86-ru_sparc.patch
+Patch46:	XFree86-xinitrace.patch
 
 BuildPrereq:	ncurses-devel
 BuildPrereq:	zlib-devel
@@ -1010,7 +1015,12 @@ Summary(pl):	XAuth
 %patch39 -p0 -b .Banshee
 # the following patch is in CVS diff format, needs POSIXLY_CORRECT env var.
 POSIXLY_CORRECT=1 patch -p0 -b -z .NVIDIA -s < %{PATCH40}
-%patch41 -p0 -b .3dfx
+%patch41 -p1 -b .3dfx
+%patch42 -p1 -b .G200dga
+%patch43 -p1 -b .ffbcrash
+%patch44 -p1 -b .fixiso8859-2
+%patch45 -p1 -b .ru_sparc
+%patch46 -p1 -b .xinitrace
 
 ## Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
@@ -1136,7 +1146,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%docdir /usr/share/doc/%{name}-%{version}
+%docdir %{defaultdocdir}/%{name}-%{version}
 
 %config /usr/X11R6/lib/X11/XF86Config.eg
 %doc /usr/X11R6/lib/X11/Cards
@@ -1655,9 +1665,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Thu Jun 17 1999 Jan Rêkorajski <baggins@pld.org.pl>
-  [3.3.3.1-51]
+  [3.3.3.1-53]
 - removed -modules packege, moved to libs
 - added patches for Riva TNT2, voodoo Rush, voodoo3 Banshee
+- added latest patches from RH
 - cleanup
 
 * Tue Apr 20 1999 Artur Frysiak <wiget@pld.org.pl>
