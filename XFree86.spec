@@ -5,13 +5,14 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
 Version:	4.0.1
-Release:	6
+Release:	7
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0/source/X401src-1.tgz
 Source1:	ftp://ftp.mesa3d.org/mesa/MesaLib-3.2.1.tar.bz2
+Source2:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.1.tar.bz2
 Source3:	xdm.pamd
 Source4:	xdm.init
 Source5:	xfs.init
@@ -25,7 +26,7 @@ Source12:	xclipboard.desktop
 Source13:	xconsole.desktop
 Source14:	xterm.desktop
 Source15:	xlogo64.png
-Patch0:		%{name}-4.0-PLD.patch
+Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
 Patch3:		%{name}-Xwrapper.patch
@@ -50,6 +51,10 @@ Patch19:	%{name}-Xaw-unaligned.patch
 Patch20:	%{name}-4.0.1-alpha-pcibus-lemming.patch
 Patch21:	%{name}-xdm-pam.patch
 Patch22:	%{name}-xlib-textmeasure.patch
+Patch23:	%{name}-fhs.patch
+Patch24:	%{name}-xdmsecurity.patch
+Patch25:	%{name}-moresecurity.patch
+Patch26:	%{name}-xman.patch
 
 BuildRequires:	flex
 BuildRequires:	ncurses-devel
@@ -62,6 +67,7 @@ BuildRequires:	Glide2x_SDK
 BuildRequires:	Glide_V3-DRI-devel >= 3.10-7
 %endif
 Requires:	xauth
+Obsoletes:	xpm-progs
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
 Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -149,6 +155,8 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Prereq:		grep
 Prereq:		/sbin/ldconfig
+Obsoletes:	xpm
+Provides:	xpm
 
 %ifarch sparc
 Obsoletes:	X11R6.1-libs
@@ -195,6 +203,7 @@ Group:		X11/Libraries
 Group(de):	X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-libs = %{version}
+Obsoletes:	xpm-devel
 %ifarch sparc
 Obsoletes:	X11R6.1-devel
 %endif
@@ -243,6 +252,7 @@ Requires:	%{name}-devel = %{version}
 %ifarch sparc
 Obsoletes:	X11R6.1-devel
 %endif
+Obsoletes:	xpm-static
 #Obsoletes:	Mesa-static
 
 %description static
@@ -909,13 +919,14 @@ X11R6-contrib in older releases.
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c -a1
+%setup -q -c -a1 -a2
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p0
 %patch5 -p0
+# Not ready yet
 #%patch6 -p0
 %patch7 -p1
 %patch8 -p1
@@ -934,23 +945,24 @@ X11R6-contrib in older releases.
 %patch18 -p1
 %patch19 -p1
 %ifarch alpha
-%patch20 -p0 -b .lemming
+%patch20 -p0
 %endif 
 %patch21 -p1
 %patch22 -p0
+%patch23 -p1
+%patch24 -p1
+%patch25 -p1
+%patch26 -p1
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
 
 %build
-mv -f xc/Makefile ./
-sed 's/^WORLDOPTS.*//g' Makefile > xc/Makefile
 %{__make} -S -C xc World \
 	"BOOTSTRAPCFLAGS=%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
 	"CDEBUGFLAGS=" "CCOPTIONS=%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
 	"CXXDEBUGFLAGS=" "CXXOPTIONS=%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
-	"RAWCPP=/lib/cpp" \
-	"WORLDOPTS=-S"
+	"RAWCPP=/lib/cpp"
 
 cd Mesa*
 
@@ -1028,6 +1040,11 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libGL*.so
 ln -sf libGL.so.1 $RPM_BUILD_ROOT%{_libdir}/libGL.so
 ln -sf libGLU.so.1 $RPM_BUILD_ROOT%{_libdir}/libGLU.so
 
+# set up PLD xdm config
+rm -f $RPM_BUILD_ROOT/etc/X11/xdm/{*Console,Xaccess,Xsession,Xsetup*}
+install xdm-xinitrc-*/pixmaps/* $RPM_BUILD_ROOT/etc/X11/xdm/pixmaps/
+install xdm-xinitrc-*/{*Console,Xaccess,Xsession,Xsetup*} $RPM_BUILD_ROOT/etc/X11/xdm/
+
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/xdm
 install %{SOURCE7} $RPM_BUILD_ROOT/etc/pam.d/xserver
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
@@ -1051,9 +1068,6 @@ touch $RPM_BUILD_ROOT/etc/security/blacklist.xdm
 
 #ln -sf ../..%{_includedir}/X11 $RPM_BUILD_ROOT%{_includedir}/X11 ##change
 ln -sf %{_fontdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
-
-# we have libXpm from xpm package
-rm -f $RPM_BUILD_ROOT/%{_libdir}/libXpm*
 
 # do not duplicate xkbcomp program
 rm -f $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
@@ -1210,6 +1224,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/bdftopcf
 %attr(755,root,root) %{_bindir}/bitmap
 %attr(755,root,root) %{_bindir}/bmtoa
+%attr(755,root,root) %{_bindir}/cxpm
 %attr(755,root,root) %{_bindir}/dga
 %attr(755,root,root) %{_bindir}/editres
 %attr(755,root,root) %{_bindir}/iceauth
@@ -1231,6 +1246,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/showrgb
 %attr(755,root,root) %{_bindir}/smproxy
 %attr(755,root,root) %{_bindir}/startx
+%attr(755,root,root) %{_bindir}/sxpm
 %attr(755,root,root) %{_bindir}/xcmsdb
 %attr(755,root,root) %{_bindir}/xconsole
 %attr(755,root,root) %{_bindir}/xcutsel
@@ -1334,6 +1350,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xon.1*
 %{_mandir}/man1/revpath.1*
 %{_mandir}/man1/xgamma.1*
+%{_mandir}/man1/cxpm.1*
+%{_mandir}/man1/sxpm.1*
 %ifnarch alpha
 %{_mandir}/man1/libxrx.1*
 %endif
@@ -1541,6 +1559,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libXi.a
 %{_libdir}/libXmu.a
 %{_libdir}/libXp.a
+%{_libdir}/libXpm.a
 %{_libdir}/libXt.a
 %{_libdir}/libXtst.a
 
