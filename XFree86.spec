@@ -4,13 +4,12 @@ Summary(fr):	Serveurs du système XFree86 et programmes de base
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
-Version:	3.9.18
-Release:	0.2
+Version:	4.0
+Release:	0.1
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/snapshots/3.9.18/source/X3918src-1.tgz
-Source1:	ftp://ftp.xfree86.org/pub/XFree86/snapshots/3.9.18/source/X3918src-2.tgz
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0/source/X400src-1.tgz
 Source3:	xdm.pamd
 Source4:	xdm.initd
 Source5:	xfs.initd
@@ -24,12 +23,13 @@ Source12:	xclipboard.desktop
 Source13:	xconsole.desktop
 Source14:	xterm.desktop
 Source15:	xlogo64.png
-Patch0:		XFree86-3.9.18-PLD.patch
+Patch0:		XFree86-4.0-PLD.patch
 Patch1:		XFree86-HasZlib.patch
 Patch2:		XFree86-DisableDebug.patch
 Patch3:		XFree86-3.9.18-Xwrapper.patch
 Patch4:		XFree86-3.9.17-PAM.patch
-Patch5:		XFree86-3.9.18-GLU.patch
+Patch5:		XFree86-4.0-GLU.patch
+Patch6:		XFree86-4.0-makedepend.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -492,143 +492,18 @@ used in connecting to the X server. This program is usually used to extract
 authorization records from one machine and merge them in on another (as is
 the case when using remote logins or granting access to other users).
 
-%package fonts
-Summary:	XFree86 Fonts
-Summary(pl):	Fonty dla systemu XFree86 
-Group:		X11/XFree86
-Group(pl):	X11/XFree86
-Requires:	type1inst
-Prereq:		%{_bindir}/mkfontdir
-
-%description fonts
-This package contains the basic fonts. This package is required when you
-have installed X server.
-
-%description -l pl fonts
-Pakiet ten zawiera podstawowe czcionki. Pakiet ten jest koniecznie potrzebny,
-je¶li masz zainstalowany jakikolwiek X serwer.
-
-%package 75dpi-fonts
-Summary:	X11R6 75dpi fonts - only need on server side
-Summary(de):	X11RT 76 dpi-Fonts - nur auf Serverseite erforderlich
-Summary(fr):	Fontes 75 dpi X11R6 - nécessaire uniquement côté serveur
-Summary(pl):	Fonty o rozdzielczo¶ci 75dpi-niebêdne dla serwera.
-Summary(tr):	X11R6 75dpi yazýtipleri - yalnýzca sunucu tarafýnda gerekir
-Group:		X11/XFree86
-Group(pl):	X11/XFree86
-Prereq:		%{_bindir}/mkfontdir
-
-%ifarch sparc
-Obsoletes: X11R6.1-75dpi-fonts
-%endif
-
-%description 75dpi-fonts
-The 75dpi fonts used on most Linux systems. Users with high resolution
-displays may prefer the 100dpi fonts available in a separate package.
-
-%description -l de 75dpi-fonts
-Die 75dpi-Fonts, die auf meisten Linux-Systemen verwendet werden. Für Benutzer
-mit einer hochauflösender Darstellung sind die 100dpi-Fonts eines getrennt
-erhältlichen Pakets besser geeignet.
-
-%description -l fr 75dpi-fonts
-Fontes 75 dpi utilisées sur la plupart des systèmes Linux. Ceux qui ont
-des écrans à haute résolution préfèreront les fontes 100 dpi disponibles
-dans un autre paquetage.
-
-%description -l pl 75dpi-fonts
-Pakiet ten zawiera czcionki rastrowe 75dpi. W wypadku wiêkszej rozdzielczo¶ci
-zalecane s± czcionki 100dpi, które s± dostêpne w osobnym pakiecie.
-
-%description -l tr 75dpi-fonts
-Çoðu Linux sisteminde 75dpi yazýtipi kullanýlýr. Yüksek çözünürlük kullanan
-kullanýcýlar 100dpi yazýtiplerini yeðleyebilirler.
-
-%package 100dpi-fonts
-Summary:	X11R6 100dpi fonts - only need on server side
-Summary(de):	X11R6 100dpi-Fonts - nur auf Server-Seite erforderlich
-Summary(fr):	Fontes 100ppp pour X11R6 - nécessaires seulement coté serveur.
-Summary(pl):	Fonty o rozdzielczosci 100dpi-niezbêdne dla serwera.
-Summary(tr):	X11R6 100dpi yazýtipleri - yalnýzca sunucu tarafýnda gereklidir
-Group:		X11/XFree86
-Group(pl):	X11/XFree86
-Prereq:		%{_bindir}/mkfontdir
-
-%ifarch sparc
-Obsoletes: X11R6.1-100dpi-fonts
-%endif
-
-%description 100dpi-fonts
-The 100dpi fonts used on most Linux systems. Users with high resolution
-displays may prefer the 100dpi fonts available in a separate package.
-
-%description -l de 100dpi-fonts
-Die 100dpi-Schriftarten, die auf den meisten Linux-Systemen zum Einsatz
-kommen. Anwender mit hochauflösenden Monitoren ziehen unter Umständen
-die 100dpi-Schriften vor, die in einem separaten Paket erhältlich sind.
-
-%description -l fr 100dpi-fonts
-Les fontes 100dpi sont utilisées par la plupart des systèmes Linux.
-Les utilisateurs ayant des hautes résolutions peuvent préférer les 
-fontes 100dpi disponibles dans un package séparé.
-
-%description -l pl 100dpi-fonts
-Pakiet ten zawiera czcionki rastrowe 100dpi. Bed± one potrzebne przy pracy z
-du¿± rozdzielczo¶ci±.
-
-%description -l tr 100dpi-fonts
-Yüksek çözünürlük kullanan kullanýcýlar 100dpi yazýtiplerini 75dpi olanlara
-yeðleyebilirler.
-
-%package cyrillic-fonts
-Summary:	Cyrillic fonts - only need on server side
-Summary(pl):	Cyrlica
-Group:		X11/XFree86
-Group(pl):	X11/XFree86
-Prereq:		%{_bindir}/mkfontdir
-
-%description cyrillic-fonts
-Cyrillic raster fonts.
-
-%description -l pl cyrillic-fonts
-Czcionki rastrowe z cyrylic±.
-
-%package latin2-100dpi-fonts
-Summary:	Latin 2 100dpi fonts - only need on server side
-Summary(pl):	Pliterki
-Group:		X11/XFree86
-Group(pl):	X11/XFree86
-Prereq:		%{_bindir}/mkfontdir
-
-%description latin2-100dpi-fonts
-Latin 2 raster fonts.
-
-%description -l pl latin2-100dpi-fonts
-Czcionki rastrowe ISO-8859-2.
-
-%package latin2-75dpi-fonts
-Summary:	Latin 2 75dpi fonts - only need on server side
-Summary(pl):	Pliterki
-Group:		X11/XFree86
-Group(pl):	X11/XFree86
-Prereq:		%{_bindir}/mkfontdir
-
-%description latin2-75dpi-fonts
-Latin 2 raster fonts.
-
-%description -l pl latin2-75dpi-fonts
-Czcionki rastrowe ISO-8859-2.
-
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c -a1
+%setup -q -c
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p0
+rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
 
@@ -681,11 +556,6 @@ ln -s ../..%{_bindir}/XFree86 $RPM_BUILD_ROOT/etc/X11/X
 ln -s ../X11R6/include/X11 $RPM_BUILD_ROOT/usr/include/X11
 ln -s ../X11R6/bin $RPM_BUILD_ROOT/usr/bin/X11
 
-# make TrueType font dir, touch default .dir and .scale files
-install	-d $RPM_BUILD_ROOT%{_fontdir}/TTF
-echo 0 > $RPM_BUILD_ROOT%{_fontdir}/TTF/fonts.dir
-echo 0 > $RPM_BUILD_ROOT%{_fontdir}/TTF/fonts.scale
-
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/xdm
 install %{SOURCE7} $RPM_BUILD_ROOT/etc/pam.d/xserver
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
@@ -720,6 +590,9 @@ ln -sf ../../../bin/xkbcomp $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
 ln -sf ../../../share/doc/%{name}-%{version} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/doc
 
+rm -f $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
+:> $RPM_BUILD_ROOT%{_libdir}/X11/config/host.def
+
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[13457]/* \
 	$RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
 
@@ -748,46 +621,6 @@ if ! grep "^%{_libdir}$" /etc/ld.so.conf > /dev/null; then
 else
 	echo "found"
 fi
-
-%post fonts
-cd %{_fontdir}/misc
-%{_bindir}/mkfontdir
-
-%postun fonts
-cd %{_fontdir}/misc
-umask 022
-%{_bindir}/mkfontdir
-
-%post 75dpi-fonts
-cd %{_fontdir}/75dpi
-umask 022
-%{_bindir}/mkfontdir
-
-%postun 75dpi-fonts
-cd %{_fontdir}/75dpi
-umask 022
-%{_bindir}/mkfontdir
-
-%post 100dpi-fonts
-cd %{_fontdir}/100dpi
-%{_bindir}/mkfontdir
-
-%postun 100dpi-fonts
-cd %{_fontdir}/100dpi
-umask 022
-%{_bindir}/mkfontdir
-
-%post cyrillic-fonts
-cd %{_fontdir}/cyrillic
-%{_bindir}/mkfontdir
-
-%post latin2-100dpi-fonts
-cd %{_fontdir}/latin2/100dpi
-%{_bindir}/mkfontdir
-
-%post latin2-75dpi-fonts
-cd %{_fontdir}/latin2/75dpi
-%{_bindir}/mkfontdir
 
 %post -n xfs
 /sbin/chkconfig --add xfs
@@ -873,7 +706,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/X11/etc/*.sh
 %{_libdir}/X11/etc/*.term*
 %{_libdir}/X11/etc/xmodmap.std
-%{_libdir}/X11/etc/et4000clock.c
 
 %attr(755,root,root) %{_bindir}/lbxproxy
 
@@ -1256,40 +1088,3 @@ rm -rf $RPM_BUILD_ROOT
 #%{_libdir}/X11/XF86Setup
 #%{_mandir}/man1/XF86Setup.1*
 #%{_mandir}/man1/xmseconfig.1*
-
-%files fonts
-%defattr(644,root,root,755)
-%{_fontdir}/PEX
-%{_fontdir}/Speedo
-%{_fontdir}/Type1
-%{_fontdir}/CID
-%{_fontdir}/TTF
-%{_fontdir}/encodings
-%{_fontdir}/local
-%dir %{_fontdir}/misc
-%{_fontdir}/misc/*gz
-%verify(not mtime size md5) %{_fontdir}/misc/fonts.*
-
-%files 75dpi-fonts
-%defattr(644,root,root,755)
-%dir %{_fontdir}/75dpi
-%{_fontdir}/75dpi/*gz
-%verify(not mtime size md5) %{_fontdir}/75dpi/fonts.*
-
-%files 100dpi-fonts
-%defattr(644,root,root,755)
-%dir %{_fontdir}/100dpi
-%{_fontdir}/100dpi/*gz
-%verify(not mtime size md5) %{_fontdir}/100dpi/fonts.*
-
-%files cyrillic-fonts
-%defattr(644,root,root,755)
-%{_fontdir}/cyrillic
-
-%files latin2-100dpi-fonts
-%defattr(644,root,root,755)
-%{_fontdir}/latin2/100dpi
-
-%files latin2-75dpi-fonts
-%defattr(644,root,root,755)
-%{_fontdir}/latin2/75dpi
