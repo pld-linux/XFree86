@@ -2507,7 +2507,6 @@ fi
 %{_includedir}/X11/X10.h
 %{_includedir}/X11/XWDFile.h
 %{_includedir}/X11/ap_keysym.h
-%dir %{_includedir}/X11/extensions
 %{_includedir}/X11/extensions/XKBbells.h
 %{_includedir}/X11/extensions/XKBconfig.h
 %{_includedir}/X11/extensions/XKBfile.h
@@ -2637,6 +2636,7 @@ fi
 %{_includedir}/X11/keysym.h
 %{_includedir}/X11/keysymdef.h
 %{_includedir}/X11/xpm.h
+%dir %{_includedir}/X11/extensions
 %{_includedir}/X11/extensions/MITMisc.h
 %{_includedir}/X11/extensions/Print.h
 %{_includedir}/X11/extensions/Printstr.h
@@ -3074,6 +3074,7 @@ fi
 %lang(zh_TW) %dir %{_appdefsdir}/zh_TW.big5
 %dir %{_includedir}
 %dir %{_includedir}/X11
+/usr/include/X11
 %dir %{_sbindir}
 %dir %{_datadir}/misc
 %dir %{_iconsdir}
@@ -3118,7 +3119,6 @@ fi
 %{_libx11dir}/XErrorDB
 %{_libx11dir}/XKeysymDB
 %{_libx11dir}/locale
-/usr/include/X11
 %endif
 
 %files modules
