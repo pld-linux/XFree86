@@ -133,6 +133,7 @@ BuildRequires:	tcl-devel
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libstdc++-devel
+BuildRequires:	Xft-devel >= 2.1
 %ifarch %{ix86} alpha
 %{!?_without_tdfx:BuildRequires:	Glide3-DRI-devel}
 %endif
@@ -142,6 +143,7 @@ BuildRequires:	libstdc++-devel
 %endif
 Requires:	xauth
 Requires:	%{name}-libs = %{version}
+Requires:	Xft >= 2.1
 ExclusiveArch:	%{ix86} alpha sparc m68k armv4l noarch ppc
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	xpm-progs
@@ -370,42 +372,18 @@ PEX extension static library.
 %description PEX-static -l pl
 Statyczna biblioteka rozszerzenia PEX.
 
-%package xft
+%package xft1
 Summary:	Font rendering library
 Summary(pl):	Biblioteka wy¶wietlaj±ca fonty
 Group:		X11/XFree86
 Requires:	%{name}-libs = %{version}
+Obsoletes:	XFree86-xft
 
-%description xft
+%description xft1
 Font rendering library.
 
-%description xft -l pl
+%description xft1 -l pl
 Biblioteka wy¶wietlaj±ca fonty.
-
-%package xft-devel
-Summary:	Xft font rendering library headers
-Summary(pl):	Pliki nag³ówkowe biblioteki Xft wy¶wietlaj±cej fonty
-Group:		X11/XFree86
-Requires:	%{name}-xft = %{version}
-Requires:	%{name}-devel = %{version}
-
-%description xft-devel
-Xft font rendering library headers.
-
-%description xft-devel -l pl
-Pliki nag³ówkowe biblioteki Xft wy¶wietlaj±cej fonty.
-
-%package xft-static
-Summary:	Xft font rendering static library
-Summary(pl):	Statyczna biblioteka Xft wy¶wietlaj±ca fonty
-Group:		X11/XFree86
-Requires:	%{name}-xft-devel = %{version}
-
-%description xft-static
-Xft font rendering static library.
-
-%description xft-static -l pl
-Statyczna biblioteka Xft wy¶wietlaj±ca fonty.
 
 %package XIE
 Summary:	XIE extension library
@@ -1994,8 +1972,8 @@ rm -rf $RPM_BUILD_ROOT
 %post	XIE -p /sbin/ldconfig
 %postun	XIE -p /sbin/ldconfig
 
-%post	xft -p /sbin/ldconfig
-%postun	xft -p /sbin/ldconfig
+%post	xft1 -p /sbin/ldconfig
+%postun	xft1 -p /sbin/ldconfig
 
 %post	OpenGL-libs -p /sbin/ldconfig
 %postun	OpenGL-libs -p /sbin/ldconfig
@@ -2341,19 +2319,9 @@ fi
 %{_libdir}/libPEX5.a
 %endif
 
-%files xft
+%files xft1
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libXft.so.*.*
-#%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/X11/XftConfig
-
-%files xft-devel
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libXft.so
-%{_includedir}/X11/Xft
-
-%files xft-static
-%defattr(644,root,root,755)
-%{_libdir}/libXft.a
+%attr(755,root,root) %{_libdir}/libXft.so.1.1
 
 %files XIE
 %defattr(644,root,root,755)
