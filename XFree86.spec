@@ -15,7 +15,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.2.1
-Release:	3
+Release:	4
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
@@ -780,7 +780,6 @@ Group:		X11/XFree86
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Obsoletes:	XFree86-ATI XFree86-Mach32 XFree86-Mach64
-Conflicts:	XFree86-driver-ati XFree86-driver-r128 XFree86-driver-radeon
 
 %description driver-ati.2
 ATI video driver (ATI.2).
@@ -796,7 +795,7 @@ Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	OpenGL
 Requires:	XFree86-driver-ati.2
-Conflicts:	XFree86-driver-nvidia XFree86-driver-ati XFree86-driver-r128 XFree86-driver-radeon
+Conflicts:	XFree86-driver-nvidia
 Obsoletes:	XFree86-Rage128
 
 %description driver-r128.2
@@ -813,7 +812,7 @@ Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 Requires:	XFree86-driver-ati.2
 Requires:	OpenGL
-Conflicts:	XFree86-driver-nvidia XFree86-driver-ati XFree86-driver-r128 XFree86-driver-radeon
+Conflicts:	XFree86-driver-nvidia
 
 %description driver-radeon.2
 ATI Radeon video driver (ATI.2).
@@ -1814,9 +1813,9 @@ install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysc
 		install install.man
 
 %ifnarch alpha
-install -d $RPM_BUILD_ROOT%{_libdir}/modules/drivers/ati.2
+install -d $RPM_BUILD_ROOT%{_libdir}/modules.gatos/drivers
 install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_drv.o \
-	$RPM_BUILD_ROOT%{_libdir}/modules/drivers/ati.2/
+	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/drivers
 %endif
 
 # setting default X
@@ -2489,15 +2488,15 @@ fi
 %ifnarch alpha
 %files driver-ati.2
 %defattr(644,root,root,755)
-%dir %{_libdir}/modules/drivers/ati.2
-%attr(755,root,root) %{_libdir}/modules/drivers/ati.2/ati*_drv.o
-%attr(755,root,root) %{_libdir}/modules/drivers/ati.2/[bfmt]*_drv.o
+%dir %{_libdir}/modules.gatos/drivers
+%attr(755,root,root) %{_libdir}/modules.gatos/drivers/ati*_drv.o
+%attr(755,root,root) %{_libdir}/modules.gatos/drivers/[bfmt]*_drv.o
 %endif
 
 %ifnarch alpha
 %files driver-r128.2
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/ati.2/r128*_drv.o
+%attr(755,root,root) %{_libdir}/modules.gatos/drivers/r128*_drv.o
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
 %endif
@@ -2507,8 +2506,8 @@ fi
 %ifnarch alpha
 %files driver-radeon.2
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/ati.2/radeon*_drv.o
-%attr(755,root,root) %{_libdir}/modules/drivers/ati.2/saa7114_drv.o
+%attr(755,root,root) %{_libdir}/modules.gatos/drivers/radeon*_drv.o
+%attr(755,root,root) %{_libdir}/modules.gatos/drivers/saa7114_drv.o
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
 %endif
