@@ -1,0 +1,18 @@
+Index: xftmatch.c
+===================================================================
+RCS file: /cvs/xc/lib/Xft/xftmatch.c,v
+retrieving revision 1.4
+diff -u -r1.4 xftmatch.c
+--- XFree86-4.0.3.orig/xc/lib/Xft/xftmatch.c	2001/01/26 20:51:17	1.4
++++ XFree86-4.0.3/xc/lib/Xft/xftmatch.c	2001/03/06 10:32:01
+@@ -97,9 +97,9 @@
+ static XftMatcher _XftMatchers [] = {
+     { XFT_FOUNDRY,	_XftCompareString, },
+     { XFT_ENCODING,	_XftCompareString, },
+-    { XFT_SPACING,	_XftCompareInteger, },
+     { XFT_ANTIALIAS,	_XftCompareBool, },
+     { XFT_FAMILY,	_XftCompareString, },
++    { XFT_SPACING,	_XftCompareInteger, },
+     { XFT_PIXEL_SIZE,	_XftCompareSize, },
+     { XFT_STYLE,	_XftCompareString, },
+     { XFT_SLANT,	_XftCompareInteger, },

@@ -1,5 +1,5 @@
 diff -urN xc-4.0.2.orig/programs/Xserver/hw/xfree86/drivers/mga/Imakefile xc/programs/Xserver/hw/xfree86/drivers/mga/Imakefile
---- XFree86-4.0.2.orig/xc/programs/Xserver/hw/xfree86/drivers/mga/Imakefile	Sat Dec 16 12:33:00 2000
+--- XFree86-4.0.2/xc/programs/Xserver/hw/xfree86/drivers/mga/Imakefile	Sat Dec 16 12:33:00 2000
 +++ XFree86-4.0.2/xc/programs/Xserver/hw/xfree86/drivers/mga/Imakefile	Thu Feb  8 08:56:41 2001
 @@ -57,10 +57,10 @@
  
@@ -15,7 +15,7 @@ diff -urN xc-4.0.2.orig/programs/Xserver/hw/xfree86/drivers/mga/Imakefile xc/pro
  SRCS = $(MGASRCS) $(MGAHALSRCS)
  OBJS = $(MGAOBJS) $(MGAHALOBJS)
 diff -urN xc-4.0.2.orig/programs/Xserver/hw/xfree86/drivers/mga/mga.h xc/programs/Xserver/hw/xfree86/drivers/mga/mga.h
---- XFree86-4.0.2.orig/xc/programs/Xserver/hw/xfree86/drivers/mga/mga.h	Wed Dec  6 10:35:19 2000
+--- XFree86-4.0.2/xc/programs/Xserver/hw/xfree86/drivers/mga/mga.h	Wed Dec  6 10:35:19 2000
 +++ XFree86-4.0.2/xc/programs/Xserver/hw/xfree86/drivers/mga/mga.h	Thu Feb  8 08:56:41 2001
 @@ -414,4 +414,5 @@
  void MGAInitVideo(ScreenPtr pScreen);
@@ -546,13 +546,3 @@ diff -urN xc-4.0.2.orig/programs/Xserver/hw/xfree86/drivers/mga/mga_g450pll.c xc
 +  
 +   return TRUE;
 +}
-diff -urN xc-4.0.2.orig/programs/Xserver/hw/xfree86/drivers/mga/mga_macros.h xc/programs/Xserver/hw/xfree86/drivers/mga/mga_macros.h
---- XFree86-4.0.2/xc/programs/Xserver/hw/xfree86/drivers/mga/mga_macros.h	Wed Dec  6 10:35:21 2000
-+++ XFree86-4.0.2/xc/programs/Xserver/hw/xfree86/drivers/mga/mga_macros.h	Thu Feb  8 08:56:41 2001
-@@ -107,4 +107,6 @@
- #define MGA_NOT_HAL(x) { x; }
- #endif
- 
-+#define MGAISG450(x) ( ((x)->Chipset == PCI_CHIP_MGAG400) && ((x)->ChipRev >= 0x80) )
-+
- #endif /* _MGA_MACROS_H_ */

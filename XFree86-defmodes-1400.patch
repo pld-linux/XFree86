@@ -1,5 +1,5 @@
---- XFree86-4.0.2.orig/xc/programs/Xserver/hw/xfree86/common/xf86DefModes.c	Thu Nov 18 11:52:06 1999
-+++ XFree86-4.0.2/xc/programs/Xserver/hw/xfree86/common/xf86DefModes.c	Thu Feb  8 22:19:42 2001
+--- XFree86-4.0.3.orig/programs/Xserver/hw/xfree86/common/xf86DefModes.c	Thu Nov 18 11:52:06 1999
++++ XFree86-4.0.3/xc/programs/Xserver/hw/xfree86/common/xf86DefModes.c	Thu Feb  8 22:19:42 2001
 @@ -67,6 +67,14 @@
  	{MODEPREFIX("1280x1024"),135000, 1280,1296,1440,1688,0, 1024,1025,1028,1066,0, V_PHSYNC | V_PVSYNC, MODESUFFIX},
  /* 1280x1024 @ 85Hz (VESA) hsync: 91.1kHz */
