@@ -5,7 +5,7 @@ Summary(pl):    XFree86 Window System wraz z podstawowymi programami
 Summary(tr):    XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:           XFree86
 Version:        3.3.3.1
-Release:        5
+Release:        21
 Copyright:      MIT
 Group:          X11/XFree86
 Group(pl):      X11/XFree86
@@ -767,9 +767,10 @@ make -C xc \
 	    World
 
 %install
-install -d $RPM_BUILD_ROOT/usr/{include,X11R6/{bin,lib/X11,man/{man1,man3,man5}}}
-install -d $RPM_BUILD_ROOT/etc/{pam.d,rc.d/{init.d,rc3.d,rc5.d}}
-install -d $RPM_BUILD_ROOT/usr/include
+rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT/usr/{include,X11R6/{bin,lib/X11,man/{man1,man3,man5}}} \
+	$RPM_BUILD_ROOT/etc/{pam.d,rc.d/{init.d,rc3.d,rc5.d}}
+	$RPM_BUILD_ROOT/usr/include
 
 make -C xc  "DESTDIR=$RPM_BUILD_ROOT" \
 	    "INSTBINFLAGS=-m 755 -s" \
@@ -823,7 +824,7 @@ for n in libX11.so.6.1 libICE.so.6.3 libSM.so.6.0 libXext.so.6.3 libXt.so.6.0 \
 ln -sf $n $RPM_BUILD_ROOT/usr/X11R6/lib/`echo $n | sed "s/\.so.*/\.so/"`
 done
 
-bzip2 -9 $RPM_BUILD_ROOT/usr/X11R6/man/man[135]/*
+gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/man/man[135]/*
 
 %post libs
 grep "^/usr/X11R6/lib$" /etc/ld.so.conf >/dev/null 2>&1
@@ -986,80 +987,80 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/X11R6/include/X11/bitmaps
 /usr/X11R6/include/X11/bitmaps/*
 
-%attr(644,root,man) /usr/X11R6/man/man1/lbxproxy.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/proxymngr.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xfindproxy.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xfwp.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xrx.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/lndir.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/makestrs.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/makeg.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/mkdirhier.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/appres.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/bdftopcf.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/beforelight.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/bitmap.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/bmtoa.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/atobm.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/editres.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/fsinfo.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/fslsfonts.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/fstobdf.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/iceauth.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/mkfontdir.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/showrgb.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/rstart.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/rstartd.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/smproxy.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/twm.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/x11perf.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/x11perfcomp.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xclipboard.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xcutsel.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xclock.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xcmsdb.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xconsole.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/sessreg.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xdpyinfo.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/dga.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xfd.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xhost.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xieperf.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xinit.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/startx.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/setxkbmap.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xkbcomp.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xkbevd.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xkbprint.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xkill.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xlogo.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xlsatoms.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xlsclients.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xlsfonts.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xmag.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xmh.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xmodmap.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xprop.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xrdb.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xrefresh.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xset.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xsetmode.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xsetpointer.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xsetroot.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xsm.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xstdcmap.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xterm.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/resize.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xvidtune.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xwd.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xwininfo.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xwud.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/Xserver.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/XFree86.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/reconfig.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xf86config.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/SuperProbe.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xon.1x.bz2
+/usr/X11R6/man/man1/lbxproxy.1.*
+/usr/X11R6/man/man1/proxymngr.1.*
+/usr/X11R6/man/man1/xfindproxy.1.*
+/usr/X11R6/man/man1/xfwp.1.*
+/usr/X11R6/man/man1/xrx.1.*
+/usr/X11R6/man/man1/lndir.1.*
+/usr/X11R6/man/man1/makestrs.1.*
+/usr/X11R6/man/man1/makeg.1.*
+/usr/X11R6/man/man1/mkdirhier.1.*
+/usr/X11R6/man/man1/appres.1.*
+/usr/X11R6/man/man1/bdftopcf.1.*
+/usr/X11R6/man/man1/beforelight.1.*
+/usr/X11R6/man/man1/bitmap.1.*
+/usr/X11R6/man/man1/bmtoa.1.*
+/usr/X11R6/man/man1/atobm.1.*
+/usr/X11R6/man/man1/editres.1.*
+/usr/X11R6/man/man1/fsinfo.1.*
+/usr/X11R6/man/man1/fslsfonts.1.*
+/usr/X11R6/man/man1/fstobdf.1.*
+/usr/X11R6/man/man1/iceauth.1.*
+/usr/X11R6/man/man1/mkfontdir.1.*
+/usr/X11R6/man/man1/showrgb.1.*
+/usr/X11R6/man/man1/rstart.1.*
+/usr/X11R6/man/man1/rstartd.1.*
+/usr/X11R6/man/man1/smproxy.1.*
+/usr/X11R6/man/man1/twm.1.*
+/usr/X11R6/man/man1/x11perf.1.*
+/usr/X11R6/man/man1/x11perfcomp.1.*
+/usr/X11R6/man/man1/xclipboard.1.*
+/usr/X11R6/man/man1/xcutsel.1.*
+/usr/X11R6/man/man1/xclock.1.*
+/usr/X11R6/man/man1/xcmsdb.1.*
+/usr/X11R6/man/man1/xconsole.1.*
+/usr/X11R6/man/man1/sessreg.1.*
+/usr/X11R6/man/man1/xdpyinfo.1.*
+/usr/X11R6/man/man1/dga.1.*
+/usr/X11R6/man/man1/xfd.1.*
+/usr/X11R6/man/man1/xhost.1.*
+/usr/X11R6/man/man1/xieperf.1.*
+/usr/X11R6/man/man1/xinit.1.*
+/usr/X11R6/man/man1/startx.1.*
+/usr/X11R6/man/man1/setxkbmap.1.*
+/usr/X11R6/man/man1/xkbcomp.1.*
+/usr/X11R6/man/man1/xkbevd.1.*
+/usr/X11R6/man/man1/xkbprint.1.*
+/usr/X11R6/man/man1/xkill.1.*
+/usr/X11R6/man/man1/xlogo.1.*
+/usr/X11R6/man/man1/xlsatoms.1.*
+/usr/X11R6/man/man1/xlsclients.1.*
+/usr/X11R6/man/man1/xlsfonts.1.*
+/usr/X11R6/man/man1/xmag.1.*
+/usr/X11R6/man/man1/xmh.1.*
+/usr/X11R6/man/man1/xmodmap.1.*
+/usr/X11R6/man/man1/xprop.1.*
+/usr/X11R6/man/man1/xrdb.1.*
+/usr/X11R6/man/man1/xrefresh.1.*
+/usr/X11R6/man/man1/xset.1.*
+/usr/X11R6/man/man1/xsetmode.1.*
+/usr/X11R6/man/man1/xsetpointer.1.*
+/usr/X11R6/man/man1/xsetroot.1.*
+/usr/X11R6/man/man1/xsm.1.*
+/usr/X11R6/man/man1/xstdcmap.1.*
+/usr/X11R6/man/man1/xterm.1.*
+/usr/X11R6/man/man1/resize.1.*
+/usr/X11R6/man/man1/xvidtune.1.*
+/usr/X11R6/man/man1/xwd.1.*
+/usr/X11R6/man/man1/xwininfo.1.*
+/usr/X11R6/man/man1/xwud.1.*
+/usr/X11R6/man/man1/Xserver.1.*
+/usr/X11R6/man/man1/XFree86.1.*
+/usr/X11R6/man/man1/reconfig.1.*
+/usr/X11R6/man/man1/xf86config.1.*
+/usr/X11R6/man/man1/SuperProbe.1.*
+/usr/X11R6/man/man1/xon.1.*
 
 %files modules
 %defattr(-,root,root,755)
@@ -1077,18 +1078,18 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/X11R6/lib/X11/xdm
 %attr(755,root,root) /usr/X11R6/bin/xdm
 %attr(755,root,root) /usr/X11R6/bin/sessreg
-%attr(644,root, man) /usr/X11R6/man/man1/xdm.1x.bz2
+/usr/X11R6/man/man1/xdm.1.*
 
 %files -n xfs
 %defattr(644,root,root,755)
 %attr(700,root,root) %config /etc/rc.d/init.d/xfs
 %attr(755,root,root) /usr/X11R6/bin/xfs
-%attr(644,root, man) /usr/X11R6/man/man1/xfs.1x.bz2
+/usr/X11R6/man/man1/xfs.1.*
 
 %files -n xauth
 %defattr(644,root,root,755)
 %attr(711,root,root) /usr/X11R6/bin/xauth
-%attr(644,root, man) /usr/X11R6/man/man1/xauth.1x.bz2
+/usr/X11R6/man/man1/xauth.1.*
 
 %files libs
 %defattr(644,root,root,755)
@@ -1132,10 +1133,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(711,root,root) /usr/X11R6/bin/makedepend
 %attr(755,root,root) /usr/X11R6/bin/xmkmf
 
-%attr(644,root,man) /usr/X11R6/man/man1/imake.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/makedepend.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/xmkmf.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man3/*
+/usr/X11R6/man/man1/imake.1.*
+/usr/X11R6/man/man1/makedepend.1.*
+/usr/X11R6/man/man1/xmkmf.1.*
+/usr/X11R6/man/man3/*
 
 /usr/X11R6/lib/*.a
 
@@ -1144,20 +1145,20 @@ rm -rf $RPM_BUILD_ROOT
 %files Xvfb
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/Xvfb
-%attr(644,root, man) /usr/X11R6/man/man1/Xvfb.1x.bz2
+/usr/X11R6/man/man1/Xvfb.1.*
 
 %files Xnest
 %defattr(644,root,root,755)
 %attr(711,root,root) /usr/X11R6/bin/Xnest
-%attr(644,root, man) /usr/X11R6/man/man1/Xnest.1x.bz2
+/usr/X11R6/man/man1/Xnest.1.*
 
 %ifarch i386 alpha
 
 %files SVGA
 %defattr(644,root,root,755)
 %attr(711,root,root) /usr/X11R6/bin/XF86_SVGA
-%attr(644,root,man) /usr/X11R6/man/man1/XF86_SVGA.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man5/XF86Config.5x.bz2
+/usr/X11R6/man/man1/XF86_SVGA.1.*
+/usr/X11R6/man/man5/XF86Config.5.*
 %endif
 
 %ifarch i386 sparc
@@ -1165,8 +1166,8 @@ rm -rf $RPM_BUILD_ROOT
 %files VGA16
 %defattr(644,root,root,755)
 %attr(711,root,root) /usr/X11R6/bin/XF86_VGA16
-%attr(644,root, man) /usr/X11R6/man/man1/XF86_VGA16.1x.bz2
-%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x.bz2
+/usr/X11R6/man/man1/XF86_VGA16.1.*
+/usr/X11R6/man/man5/XF86Config.5.*
 %endif
 
 %ifarch i386
@@ -1174,9 +1175,9 @@ rm -rf $RPM_BUILD_ROOT
 %files W32
 %defattr(644,root,root,755)
 %attr(711,root,root) /usr/X11R6/bin/XF86_W32
-%attr(644,root, man) /usr/X11R6/man/man1/XF86_W32.1x.bz2
-%attr(644,root, man) /usr/X11R6/man/man1/XF86_Accel.1x.bz2
-%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x.bz2
+/usr/X11R6/man/man1/XF86_W32.1.*
+/usr/X11R6/man/man1/XF86_Accel.1.*
+/usr/X11R6/man/man5/XF86Config.5.*
 %endif
 
 %ifarch i386 alpha
@@ -1184,8 +1185,8 @@ rm -rf $RPM_BUILD_ROOT
 %files Mono
 %defattr(644,root,root,755)
 %attr(711,root,root) /usr/X11R6/bin/XF86_Mono
-%attr(644,root, man) /usr/X11R6/man/man1/XF86_Mono.1x.bz2
-%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x.bz2
+/usr/X11R6/man/man1/XF86_Mono.1.*
+/usr/X11R6/man/man5/XF86Config.5.*
 %endif
 
 %ifarch i386 alpha
@@ -1193,9 +1194,9 @@ rm -rf $RPM_BUILD_ROOT
 %files S3
 %defattr(644,root,root,755)
 %attr(711,root,root) /usr/X11R6/bin/XF86_S3
-%attr(644,root, man) /usr/X11R6/man/man1/XF86_S3.1x.bz2
-%attr(644,root, man) /usr/X11R6/man/man1/XF86_Accel.1x.bz2
-%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x.bz2
+/usr/X11R6/man/man1/XF86_S3.1.*
+/usr/X11R6/man/man1/XF86_Accel.1.*
+/usr/X11R6/man/man5/XF86Config.5.*
 %endif
 
 %ifarch i386 alpha
@@ -1203,9 +1204,9 @@ rm -rf $RPM_BUILD_ROOT
 %files S3V
 %defattr(644,root,root,755)
 %attr(711,root,root) /usr/X11R6/bin/XF86_S3V
-%attr(644,root, man) /usr/X11R6/man/man1/XF86_S3.1x.bz2
-%attr(644,root, man) /usr/X11R6/man/man1/XF86_Accel.1x.bz2
-%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x.bz2
+/usr/X11R6/man/man1/XF86_S3.1.*
+/usr/X11R6/man/man1/XF86_Accel.1.*
+/usr/X11R6/man/man5/XF86Config.5.*
 %endif
 
 %ifarch i386
@@ -1213,9 +1214,9 @@ rm -rf $RPM_BUILD_ROOT
 %files 8514
 %defattr(644,root,root,755)
 %attr(711,root,root) /usr/X11R6/bin/XF86_8514
-%attr(644,root, man) /usr/X11R6/man/man1/XF86_8514.1x.bz2
-%attr(644,root, man) /usr/X11R6/man/man1/XF86_Accel.1x.bz2
-%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x.bz2
+/usr/X11R6/man/man1/XF86_8514.1.*
+/usr/X11R6/man/man1/XF86_Accel.1.*
+/usr/X11R6/man/man5/XF86Config.5.*
 %endif
 
 %ifarch i386
@@ -1223,9 +1224,9 @@ rm -rf $RPM_BUILD_ROOT
 %files Mach8
 %defattr(644,root,root,755)
 %attr(711,root,root) /usr/X11R6/bin/XF86_Mach8
-%attr(644,root,man) /usr/X11R6/man/man1/XF86_Mach8.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/XF86_Accel.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man5/XF86Config.5x.bz2
+/usr/X11R6/man/man1/XF86_Mach8.1.*
+/usr/X11R6/man/man1/XF86_Accel.1.*
+/usr/X11R6/man/man5/XF86Config.5.*
 %endif
 
 %ifarch i386
@@ -1233,26 +1234,26 @@ rm -rf $RPM_BUILD_ROOT
 %files Mach32
 %defattr(644,root,root,755)
 %attr(711,root,root) /usr/X11R6/bin/XF86_Mach32
-%attr(644,root, man) /usr/X11R6/man/man1/XF86_Mach32.1x.bz2
-%attr(644,root, man) /usr/X11R6/man/man1/XF86_Accel.1x.bz2
-%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x.bz2
+/usr/X11R6/man/man1/XF86_Mach32.1.*
+/usr/X11R6/man/man1/XF86_Accel.1.*
+/usr/X11R6/man/man5/XF86Config.5.*
 %endif
 
 %files Mach64
 %defattr(644, root, root, 755)
 %attr(711,root,root) /usr/X11R6/bin/XF86_Mach64
-%attr(644,root,man) /usr/X11R6/man/man1/XF86_Mach64.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/XF86_Accel.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man5/XF86Config.5x.bz2
+/usr/X11R6/man/man1/XF86_Mach64.1.*
+/usr/X11R6/man/man1/XF86_Accel.1.*
+/usr/X11R6/man/man5/XF86Config.5.*
 
 %ifarch i386 alpha
 
 %files P9000
 %defattr(644, root, root, 755)
 %attr(711,root,root) /usr/X11R6/bin/XF86_P9000
-%attr(644,root,man) /usr/X11R6/man/man1/XF86_P9000.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/XF86_Accel.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man5/XF86Config.5x.bz2
+/usr/X11R6/man/man1/XF86_P9000.1.*
+/usr/X11R6/man/man1/XF86_Accel.1.*
+/usr/X11R6/man/man5/XF86Config.5.*
 %endif
 
 %ifarch i386
@@ -1260,9 +1261,9 @@ rm -rf $RPM_BUILD_ROOT
 %files AGX
 %defattr(644, root, root, 755)
 %attr(711,root,root) /usr/X11R6/bin/XF86_AGX
-%attr(644,root,man) /usr/X11R6/man/man1/XF86_AGX.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/XF86_Accel.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man5/XF86Config.5x.bz2
+/usr/X11R6/man/man1/XF86_AGX.1.*
+/usr/X11R6/man/man1/XF86_Accel.1.*
+/usr/X11R6/man/man5/XF86Config.5.*
 %endif
 
 %ifarch i386
@@ -1270,9 +1271,9 @@ rm -rf $RPM_BUILD_ROOT
 %files I128
 %defattr(644, root, root, 755)
 %attr(711,root,root) /usr/X11R6/bin/XF86_I128
-%attr(644,root,man) /usr/X11R6/man/man1/XF86_I128.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man1/XF86_Accel.1x.bz2
-%attr(644,root,man) /usr/X11R6/man/man5/XF86Config.5x.bz2
+/usr/X11R6/man/man1/XF86_I128.1.*
+/usr/X11R6/man/man1/XF86_Accel.1.*
+/usr/X11R6/man/man5/XF86Config.5.*
 %endif
 
 %ifarch alpha
@@ -1280,7 +1281,7 @@ rm -rf $RPM_BUILD_ROOT
 %files TGA
 %defattr(644, root, root, 755)
 %attr(711,root,root) /usr/X11R6/bin/XF86_TGA
-%attr(644,root, man) /usr/X11R6/man/man5/XF86Config.5x.bz2
+/usr/X11R6/man/man5/XF86Config.5.*
 %endif
 
 %ifarch sparc
@@ -1317,7 +1318,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %ifarch m68k 
 %attr(755,root,root) /usr/X11R6/bin/XF68_FBDev
-%attr(644,root, man) /usr/X11R6/man/man1/XF68_FBDev.1x.bz2
+/usr/X11R6/man/man1/XF68_FBDev.1.*
 %else
 %attr(755,root,root) /usr/X11R6/bin/XF86_FBDev
 %endif
@@ -1327,11 +1328,15 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/X11R6/bin/XF86Setup
 %attr(755,root,root) /usr/X11R6/bin/xmseconfig
 %attr(-,root,root,755) /usr/X11R6/lib/X11/XF86Setup
-%attr(644,root, man) /usr/X11R6/man/man1/XF86Setup.1x.bz2
-%attr(644,root, man) /usr/X11R6/man/man1/xmseconfig.1x.bz2
-
+/usr/X11R6/man/man1/XF86Setup.1.*
+/usr/X11R6/man/man1/xmseconfig.1.*
 
 %changelog
+* Thu Mar 11 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
+  [3.3.3.1-21]
+- removed man group from man pages,
+- gzipping man pages instead bzipping2.
+
 * Thu Feb 11 1999 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
   [3.3.3.1-2d]
 - next modifications of the spec file,
