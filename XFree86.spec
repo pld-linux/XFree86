@@ -23,12 +23,12 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
-Version:	4.3.99.10
+Version:	4.3.99.11
 Release:	0.1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
-# Source0-md5:	d840a796e38d9a5fd30bdcd9a4c1383d
+# Source0-md5:	0aa6cbc6ee19d38f3ab916929f283ac7
 #Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-2.tgz
 #Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-3.tgz
 Source3:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
@@ -113,7 +113,6 @@ Patch45:	%{name}-spencode-nowarning.patch
 # Small (maybe buggy) patch to resolve problems with totem 0.97.0
 Patch46:	%{name}-lock.patch
 Patch47:	%{name}-linux-version.patch
-Patch48:	%{name}-XF86_VERSION_SNAP.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	%{_bindir}/perl
 BuildRequires:	bison
@@ -1980,7 +1979,6 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch45 -p1
 %patch46 -p0
 %patch47 -p1
-%patch48 -p0
 
 rm -f xc/config/cf/host.def
 
