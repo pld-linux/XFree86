@@ -1374,7 +1374,7 @@ rm -rf $RPM_BUILD_ROOT
 - added pl translation (Andrzej Nakonieczny <dzemik@tuniv.szczecin.pl>),
 - all builded against system libz (XFree86-HasZlib.patch),
 - added cyrylic-fonts subpacckage with koi-8 fonts,
-- added %attr and %defattr macros in %files (allow build package from
+- added %attr and %defattr macros in %files (allows build package from
   non-root account).
 
 * Thu Jun 04 1998 Prospector System <bugs@redhat.com>
