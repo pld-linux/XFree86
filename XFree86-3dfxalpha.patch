@@ -1,0 +1,11 @@
+--- XFree86-3.3.5/xc/config/cf/xfree86.cf.3dfxalpha	Wed Dec  1 09:57:15 1999
++++ XFree86-3.3.5/xc/config/cf/xfree86.cf	Wed Dec  1 09:58:24 1999
+@@ -121,7 +121,7 @@
+ #endif
+ #endif
+ #ifndef XF86SvgaDrivers
+-#define XF86SvgaDrivers		mga s3v
++#define XF86SvgaDrivers		mga s3v tdfx
+ #endif
+ #ifndef XF86Vga2Drivers
+ #define XF86Vga2Drivers		generic
