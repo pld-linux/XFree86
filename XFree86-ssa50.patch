@@ -1,0 +1,12 @@
+--- XFree86-3.3.5/xc/programs/Xserver/hw/xfree86/xf86config/Cards.ssa50	Tue Aug 31 15:55:47 1999
++++ XFree86-3.3.5/xc/programs/Xserver/hw/xfree86/xf86config/Cards	Tue Aug 31 15:57:44 1999
+@@ -2334,6 +2334,9 @@
+ 
+ NAME Diamond SpeedStar A50
+ SEE SiS 6326
++LINE     Option "sw_cursor"
++LINE     Option "no_imageblt"
++LINE     Option "no_bitblt"
+ 
+ NAME AOpen PA50D
+ SEE SiS 6326

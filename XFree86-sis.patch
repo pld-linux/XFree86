@@ -1,0 +1,11 @@
+--- XFree86-3.3.5/xc/programs/Xserver/hw/xfree86/xf86config/Cards.sis	Mon Sep 13 13:17:05 1999
++++ XFree86-3.3.5/xc/programs/Xserver/hw/xfree86/xf86config/Cards	Mon Sep 13 13:17:27 1999
+@@ -2299,7 +2299,7 @@
+ NAME SiS 6326
+ CHIPSET SiS6326
+ SERVER SVGA
+-LINE     # Option "no_accel" # Use this if acceleration is causing problems
++LINE     Option "no_accel" # Use this if acceleration is causing problems
+ LINE     # Option "fifo_moderate" 
+ LINE     # Option "fifo_conserv" 
+ LINE     # Option "fifo_aggresive" 
