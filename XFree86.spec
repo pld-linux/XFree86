@@ -3091,7 +3091,6 @@ fi
 %attr(755,root,root) %{_libdir}/libXinerama.so.*.*
 %attr(755,root,root) %{_libdir}/libXmuu.so.*.*
 %attr(755,root,root) %{_libdir}/libXp.so.*.*
-%attr(755,root,root) %{_libdir}/libXpm.so.*.*
 %attr(755,root,root) %{_libdir}/libXss.so.*.*
 %attr(755,root,root) %{_libdir}/libXtst.so.*.*
 %attr(755,root,root) %{_libdir}/libXvMC.so.*.*
@@ -3114,6 +3113,7 @@ fi
 %attr(755,root,root) %{_libdir}/libXfont.so.*.*
 %attr(755,root,root) %{_libdir}/libXi.so.*.*
 %attr(755,root,root) %{_libdir}/libXmu.so.*.*
+%attr(755,root,root) %{_libdir}/libXpm.so.*.*
 %attr(755,root,root) %{_libdir}/libXrandr.so.*.*
 %attr(755,root,root) %{_libdir}/libXt.so.*.*
 %attr(755,root,root) %{_libdir}/libXv.so.*.*
