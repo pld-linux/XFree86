@@ -155,9 +155,6 @@ Obsoletes:	X11R6.1
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1 libOSMesa.so.3.3 libglide3.so.3
 
 %description
-If you want to install the X Window System (TM) on your machine,
-you'll need to install XFree86.
-
 The X Window System provides the base technology for developing
 graphical user interfaces. Simply stated, X draws the elements of the
 GUI on the user's screen and builds methods for sending user
@@ -1915,13 +1912,13 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 
 %prep
 %setup -q -c -b1 -b2 -a3
-%patch0 -p0
+%patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p0
+%patch3 -p1
 %patch4 -p1
 %patch5 -p0
-%patch6 -p0
+#%patch6 -p1
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
@@ -1929,13 +1926,13 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #%patch11 -p0	-- obsoleted???
 %patch12 -p1
 %patch13 -p1
-%patch14 -p0
+%patch14 -p1 
 %patch15 -p1
-%patch16 -p0
+%patch16 -p1
 #%patch17 -p1	-- not ready, is it required?
 %patch18 -p1
 #%patch19 -p1	-- maybe should be updated to allow using make -j
-%patch20 -p0
+%patch20 -p1
 %patch21 -p1
 %patch22 -p1
 %patch23 -p1
@@ -1946,9 +1943,9 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %ifarch sparc sparc64
 #%patch28 -p1	-- needs update
 %endif
-%patch29 -p0
+%patch29 -p1
 %patch30 -p1
-%patch31 -p0
+%patch31 -p1
 %patch32 -p1
 %patch33 -p1
 #%patch34 -p1	-- seems not applied (was partially in rc1??? maybe another fix present?)
@@ -1958,7 +1955,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #%patch38 -p0	-- causing problems IIRC (but not really needed)
 %{!?_without_tdfx:%patch39 -p0}
 %patch40 -p1
-%{!?debug:%patch41 -p1}
+#%{!?debug:%patch41 -p1}
 %{?_without_tdfx:%patch42 -p0}
 %patch43 -p0
 %patch44 -p0
@@ -1978,11 +1975,13 @@ rm -f xc/config/cf/host.def
 
 %build
 %{__make} -S -C xc World DEFAULT_OS_CPU_FROB=%{_target_cpu} \
-	"BOOTSTRAPCFLAGS=%{rpmcflags}" \
-	"CCOPTIONS=%{rpmcflags}" \
-	"CXXOPTIONS=%{rpmcflags}" \
-	"CXXDEBUGFLAGS=" "CDEBUGFLAGS=" \
-	"ICONDIR=%{_icondir}"
+	CC="%{__cc}" \
+	BOOTSTRAPCFLAGS="%{rpmcflags}" \
+	CCOPTIONS="%{rpmcflags}" \
+	CXXOPTIONS="%{rpmcflags}" \
+	CXXDEBUGFLAGS="" \
+	CDEBUGFLAGS="" \
+	ICONDIR="%{_icondir}"
 
 %ifnarch alpha
 #%%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" Makefiles
@@ -2006,17 +2005,18 @@ install -d $RPM_BUILD_ROOT/etc/{X11/fs,pam.d,rc.d/init.d,security/console.apps,s
 	$RPM_BUILD_ROOT%{_applnkdir}/{Amusements,Editors,Utilities,Terminals} \
 	$RPM_BUILD_ROOT{%{_pixmapsdir}/mini,%{_wmpropsdir},%{_soundsdir},%{_themesdir}/Default}
 
-%{__make} -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
-		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
-		"INSTBINFLAGS=-m 755" \
-		"INSTPGMFLAGS=-m 755" \
-		"RAWCPP=/lib/cpp" \
-		"BOOTSTRAPCFLAGS=%{rpmcflags}" \
-		"CCOPTIONS=%{rpmcflags}" \
-		"CXXOPTIONS=%{rpmcflags}" \
-		"CXXDEBUGFLAGS=" "CDEBUGFLAGS=" \
-		"ICONDIR=%{_icondir}" \
-		install install.man
+%{__make} -C xc	install	install.man \
+	DESTDIR="$RPM_BUILD_ROOT" \
+	DOCDIR="/usr/share/doc/%{name}-%{version}" \
+	INSTBINFLAGS="-m 755" \
+	INSTPGMFLAGS="-m 755" \
+	RAWCPP="/lib/cpp" \
+	BOOTSTRAPCFLAGS="%{rpmcflags}" \
+	CCOPTIONS="%{rpmcflags}" \
+	CXXOPTIONS="%{rpmcflags}" \
+	CXXDEBUGFLAGS="" \
+	CDEBUGFLAGS="" \
+	ICONDIR="%{_icondir}"
 
 %ifnarch alpha
 #install -d $RPM_BUILD_ROOT%{_libdir}/modules.gatos/{drivers,dri}
