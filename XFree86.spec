@@ -803,8 +803,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_bindir}
 
 %config(noreplace) %verify(not md5 mtime size) /etc/X11/XF86Config
-%config %verify(not md5 mtime size) /etc/pam.d/xserver
-%config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xserver
+%attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xserver
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xserver
 %config(missingok) /etc/security/console.apps/xserver
 %config /etc/X11/twm/system.twmrc
 %config /etc/X11/xsm/system.xsm
