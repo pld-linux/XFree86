@@ -8,7 +8,7 @@
 #
 
 %define		_sver	%(echo %{version} | tr -d .)
-%define		_synaptics_ver	0.11.8
+%define		_synaptics_ver	0.12.0
 
 Summary:	XFree86 Window System servers and basic programs
 Summary(de):	XFree86 Window-System-Server und grundlegende Programme
@@ -24,7 +24,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.99.15
-Release:	0.1
+Release:	0.2
 Epoch:		1
 License:	MIT
 Group:		X11/XFree86
@@ -63,7 +63,7 @@ Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-X
 #Source39:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
 # http://w1.894.telia.com/~u89404340/touchpad/index.html
 Source40:	http://w1.894.telia.com/~u89404340/touchpad/files/synaptics-%{_synaptics_ver}.tar.bz2
-# Source40-md5:	48c6e9abc68672d5167f1b699b89005e
+# Source40-md5:	f89f285c15d39679b9c403f6bbddedef
 Source41:	http://www.linux.org.uk/~alan/S3.zip
 # Source41-md5:	8b754fc6bbded60b683563b945e384b0
 Source42:	twm-xsession.desktop
