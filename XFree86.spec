@@ -90,6 +90,7 @@ Patch21:	%{name}-r128-busmstr2.patch
 Patch22:	%{name}-neomagic_swcursor.patch
 Patch23:	%{name}-mga-busmstr.patch
 Patch24:	%{name}-agpgart-load.patch
+Patch25:	%{name}-symbols.patch
 Patch26:	%{name}-HasFreetype2.patch
 Patch27:	%{name}-config-s3.patch
 Patch28:	%{name}-sparc_pci_domains.patch
@@ -100,7 +101,6 @@ Patch33:	%{name}-clearrts.patch
 Patch34:	%{name}-fix-07-s3trio64v2gx+netfinity.patch
 Patch35:	%{name}-i740-driver-update-cvs-20020617.patch
 Patch36:	%{name}-tdfx-disable-dri-on-16Mb-cards-in-hires.patch
-
 Patch38:	%{name}-tdfx-fix-compiler-warnings.patch
 Patch39:	%{name}-tdfx-fix-vtswitch-font-corruption.patch
 Patch40:	%{name}-Xfont-Type1-large-DoS.patch
@@ -1961,6 +1961,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch22 -p1
 %patch23 -p1
 %patch24 -p1
+%patch25 -p0
 %patch26 -p1
 %patch27 -p1
 %ifarch sparc sparc64
@@ -2146,7 +2147,7 @@ install %{SOURCE20} $RPM_BUILD_ROOT%{_wmpropsdir}/twm.desktop
 install %{SOURCE21} $RPM_BUILD_ROOT%{_applnkdir}/Amusements
 install %{SOURCE22} $RPM_BUILD_ROOT%{_applnkdir}/Editors
 install %{SOURCE23} $RPM_BUILD_ROOT%{_applnkdir}/Terminals
-install %{SOURCE24}  %{SOURCE25} %{SOURCE26} %{SOURCE27} \
+install %{SOURCE24} %{SOURCE25} %{SOURCE26} %{SOURCE27} \
 		$RPM_BUILD_ROOT%{_applnkdir}/Utilities
 install %{SOURCE30} $RPM_BUILD_ROOT%{_pixmapsdir}
 install %{SOURCE31} %{SOURCE32} %{SOURCE33} %{SOURCE34} %{SOURCE35} \
@@ -2206,26 +2207,26 @@ rm -rf $RPM_BUILD_ROOT
 
 #--- %post{un}, %preun, %verifyscript, %trigge ----------
 
-%post	DPS -p /sbin/ldconfig
-%postun	DPS -p /sbin/ldconfig
+%post   DPS -p /sbin/ldconfig
+%postun DPS -p /sbin/ldconfig
 
-%post	xft1 -p /sbin/ldconfig
-%postun	xft1 -p /sbin/ldconfig
+%post   xft1 -p /sbin/ldconfig
+%postun xft1 -p /sbin/ldconfig
 
 %post   xft -p /sbin/ldconfig
 %postun xft -p /sbin/ldconfig
 
-%post	fontconfig
+%post   fontconfig
 /sbin/ldconfig
 HOME=/root %{_bindir}/fc-cache -f 2>/dev/null
 
-%postun	fontconfig -p /sbin/ldconfig
+%postun fontconfig -p /sbin/ldconfig
 
-%post	OpenGL-core -p /sbin/ldconfig
-%postun	OpenGL-core -p /sbin/ldconfig
+%post   OpenGL-core -p /sbin/ldconfig
+%postun OpenGL-core -p /sbin/ldconfig
 
-%post	OpenGL-libs -p /sbin/ldconfig
-%postun	OpenGL-libs -p /sbin/ldconfig
+%post   OpenGL-libs -p /sbin/ldconfig
+%postun OpenGL-libs -p /sbin/ldconfig
 
 %post libs
 umask 022
@@ -2318,11 +2319,11 @@ if [ "$1" = "0" ]; then
 	/usr/sbin/groupdel xfs 2>/dev/null
 fi
 
-%post	xrender -p /sbin/ldconfig
-%postun	xrender -p /sbin/ldconfig
+%post   xrender -p /sbin/ldconfig
+%postun xrender -p /sbin/ldconfig
 
-%post	xcursor -p /sbin/ldconfig
-%postun	xcursor -p /sbin/ldconfig
+%post   xcursor -p /sbin/ldconfig
+%postun xcursor -p /sbin/ldconfig
 
 #--- %files --------------------------
 
