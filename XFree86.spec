@@ -67,7 +67,7 @@ Patch31:	%{name}-alpha_GLX_align_fix.patch
 Patch32:	%{name}-XftConfig_in_correct_place.patch
 Patch33:	%{name}-PEX+XIE.patch
 Patch34:	%{name}-xman-manpaths.patch
-Patch35:	%{name}-no_tdfx.patch
+Patch35:	%{name}-ppc_drivers.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -2355,7 +2355,7 @@ fi
 %{_mandir}/man4/neomagic*
 %endif
 
-%ifnarch sparc sparc64 ppc
+%ifnarch sparc sparc64
 %files driver-nv
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/nv_drv.o
