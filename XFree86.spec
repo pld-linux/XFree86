@@ -51,7 +51,7 @@ BuildRequires:	Glide_V3-DRI-devel
 Requires:	xauth
 Obsoletes:	X11R6-contrib
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
-Buildroot:	/tmp/%{name}-%{version}-root/
+Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %ifarch sparc
 Obsoletes: X11R6.1
