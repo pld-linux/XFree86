@@ -59,6 +59,7 @@ BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
 BuildRequires:	ncurses-devel
 BuildRequires:	pam-devel
+BuildRequires:	perl
 BuildRequires:	tcl-devel
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
