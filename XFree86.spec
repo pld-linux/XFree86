@@ -1166,7 +1166,7 @@ else
 fi
 
 %post -n xfs
-/sbin/chkconfig --add xdm
+/sbin/chkconfig --add xfs
 
 %postun -n xfs
 if [ "$1" = "0" ]; then
