@@ -23,12 +23,12 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
-Version:	4.3.99.12
+Version:	4.3.99.13
 Release:	0.2
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
-# Source0-md5:	12820de14d53c61cc84a0f20109f1743
+# Source0-md5:	908b6c8b7ba2d52e54565c2f728fdfff
 #Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-2.tgz
 #Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-3.tgz
 Source3:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
@@ -123,6 +123,7 @@ Patch45:	%{name}-spencode-nowarning.patch
 Patch46:	%{name}-lock.patch
 Patch47:	%{name}-linux-version.patch
 Patch48:	%{name}-new-s3-nodebug.patch
+Patch49:	%{name}-genauth.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	%{_bindir}/perl
 BuildRequires:	bison
@@ -1766,13 +1767,13 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch22 -p1
 %patch23 -p1
 %patch24 -p1
-%patch25 -p0
+#%patch25 -p0
 %patch26 -p1
 %patch27 -p1
 %ifarch sparc sparc64
 #%patch28 -p1	-- needs update
 %endif
-%patch29 -p0
+#%patch29 -p0   -- needs update
 %patch30 -p1
 %patch32 -p1
 %patch33 -p1
@@ -1791,6 +1792,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch47 -p1
 tar xfz *.tar.gz
 %patch48 -p0
+%patch49 -p0
 
 rm -f xc/config/cf/host.def
 
