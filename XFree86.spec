@@ -98,7 +98,7 @@ Patch21:	%{name}-r128-busmstr2.patch
 Patch22:	%{name}-neomagic_swcursor.patch
 Patch23:	%{name}-mga-busmstr.patch
 Patch24:	%{name}-agpgart-load.patch
-
+Patch25:	%{name}-xterm-fix.patch
 Patch26:	%{name}-HasFreetype2.patch
 Patch27:	%{name}-config-s3.patch
 Patch28:	%{name}-sparc_pci_domains.patch
@@ -1769,7 +1769,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch22 -p1
 %patch23 -p1
 %patch24 -p1
-
+%patch25 -p1
 %patch26 -p1
 %patch27 -p1
 %ifarch sparc sparc64
