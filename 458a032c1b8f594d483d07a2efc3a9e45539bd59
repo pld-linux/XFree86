@@ -1,0 +1,52 @@
+- added using CVS keywords in %changelog (for automating them).
+
+* Sat Jun 19 1999 Jan Rêkorajski <baggins@pld.org.pl>
+  [3.3.3.1-54]
+- removed "-b .*" in %prep, to save _a lot_ of disk space
+- xterm now negotiates xterm-color term type
+- manuals in /usr/X11R6/man (FHS 2.0)
+- added "Requires: pam" in main package (Xwrapper uses pam_console.so)
+- ln -s /usr/X11R6/bin/xkbcomp /usr/X11R6/lib/X11/xkb/xkbcomp
+- added XTerm polish resources
+- added pam_env support to xdm
+- Xservers now read XF86Config from /etc/X11/ (not /etc/)
+- added "Requires: xauth" for man package
+
+* Thu Jun 17 1999 Jan Rêkorajski <baggins@pld.org.pl>
+  [3.3.3.1-53]
+- added patches for Riva TNT2, voodoo Rush, voodoo3 Banshee
+- added latest patches from RH
+- cleanup
+
+* Tue Apr 20 1999 Artur Frysiak <wiget@pld.org.pl>
+  [3.3.3.1-23]
+- compiled on rpm 3.
+
+* Thu Mar 11 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
+  [3.3.3.1-21]
+- removed man group from man pages,
+- added pl translations (by Andrzej Nakonieczny <dzemik@tuniv.szczecin.pl>),
+- added XFree86-HasZlib.patch for linking all X servers with shared libz
+  (istead static linking with this library),
+- don't buid modules subpackage on sparc,
+- "Requires: pam" moved to xdm subpackage,
+- gzipping man pages instead bzipping2.
+
+* Thu Feb 11 1999 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
+  [3.3.3.1-2d]
+- next modifications of the spec file,
+- fixed xf86config,
+
+  by Maciek Ró¿ycki <macro@ds2.amg.gda.pl>
+
+- added some patches,
+- spec still not finished ...
+
+* Thu Dec 17 1998 Wojtek ¦lusarczyk <wojtek@shadow.eu.org>
+- major changes
+-- Teriblle sorry -- but now it's not it ..;(
+- emergency build for PLD Tornado.
+
+* Tue Dec 08 1998 Wojciech "Sas" Ciêciwa <cieciwa@alpha.zarz.agh.edu.pl>
+- separating binaries,
+- building rpm.
