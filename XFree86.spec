@@ -1894,7 +1894,7 @@ install -d $RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,security/console.apps,sysconfi
 	$RPM_BUILD_ROOT%{_sbindir} \
 	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
 	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
-	$RPM_BUILD_ROOT{%{_desktopdir},%{_iconsdir}/mini,%{_pixmapsdir}/mini} \
+	$RPM_BUILD_ROOT{%{_desktopdir},%{_iconsdir},%{_pixmapsdir}/mini} \
 	$RPM_BUILD_ROOT{%{_wmpropsdir},%{_soundsdir},%{_themesdir}/{Default,ThinIce}} \
 	$RPM_BUILD_ROOT%{_xsessdir} \
 	$RPM_BUILD_ROOT%{_pkgconfigdir}
@@ -2929,7 +2929,6 @@ fi
 %dir %{_datadir}/locale
 %dir %{_datadir}/misc
 %dir %{_iconsdir}
-%dir %{_iconsdir}/mini
 %dir %{_pixmapsdir}
 %dir %{_pixmapsdir}/mini
 %dir %{_soundsdir}
