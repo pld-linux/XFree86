@@ -7,19 +7,21 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(wa):	Sierveus di håynaedje XFree86 eyèt maisses programes
 Name: 		XFree86
 Version:	3.3.5
-Release:	16
+Release:	17
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/3.3.5/source/X335src-1.tgz
 Source1:	ftp://ftp.xfree86.org/pub/XFree86/3.3.5/source/X335src-2.tgz
-Source2:	xdm.pamd
-Source3:	xdm.initd
-Source4:	xfs.initd
-Source5:	xfs.config
-Source6:	xserver.pamd
-Source7:	XTerm.ad-pl
-Source8:	xfsft-1.1.6.tar.gz
+Source2:	ftp://ftp.dcs.ed.ac.uk/pub/jec/programs/xfsft/xfsft-1.1.6.tar.gz
+Source3:	xdm.pamd
+Source4:	xdm.initd
+Source5:	xfs.initd
+Source6:	xfs.config
+Source7:	xserver.pamd
+Source8:	XTerm.ad-pl
+Source9:	twm.desktop
+
 Patch0:		XFree86-rh.patch
 Patch1:		XFree86-rhxdm.patch
 Patch2:		XFree86-fsstnd.patch
@@ -88,6 +90,7 @@ Patch49:	XFree86-ffbfixes.patch
 Patch50:	XFree86-sparcpckbd.patch
 Patch51:	XFree86-raptor.patch
 Patch52:	XFree86-ffb3.patch
+Patch53:	ftp://ftp.dcs.ed.ac.uk/pub/jec/programs/xfsft/xfsft-1.1.6-1.1.7.patch
 
 BuildRequires:	ncurses-devel >= 5.0
 BuildRequires:	zlib-devel
@@ -105,7 +108,7 @@ Obsoletes: X11R6.1
 
 %define		_fontdir	/usr/share/fonts
 %define		_prefix		/usr/X11R6
-%define		_mandir		/usr/X11R6/man
+%define		_mandir		%{_prefix}/man
 
 %description
 If you want to install the X Window System (TM) on your machine, you'll
@@ -1022,6 +1025,22 @@ X Display Manager.
 
 %description -l pl -n xdm
 
+%package -n twm
+Summary:	Tab Window Manager for the X Window System
+Summary(pl):	Twm - podstawowy zarz±dca okien dla X Window System
+Group:		X11/Window Managers/Tools
+Group(es):	X11/Administraadores De Ventanas
+Group(fr):	X11/Gestionnaires De Fenêtres
+Group(pl):	X11/Zarz±dcy Okien/Narzêdzi
+
+%description -n twm
+Twm is a window manager for the X Window System. It provides titlebars,
+shaped windows, several forms of icon management, user-defined macro
+functions, click-to-type and pointerdriven keyboard focus, and
+user-specified key and pointer button bindings.
+
+%description -l pl -n twm
+
 %package -n xfs
 Summary:	Font server for XFree86
 Summary(de):	Font-Server für XFree86
@@ -1179,7 +1198,7 @@ Fonty rastrowe czcionkami w cyrylicy.
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c -a1 -a 8
+%setup -q -c -a1 -a 2
 tar x -C xc/lib -f xfsft-1.1.6/libfont.tar
 patch -p0 -s -d xc/lib < xfsft-1.1.6/libfont.patch
 
@@ -1241,6 +1260,8 @@ install xfsft-1.1.6/fonts.scale.Type1 xc/fonts/scaled/Type1/fonts.scale
 %patch49 -p1
 %patch50 -p1
 %patch51 -p1
+%patch52 -p1
+%patch53 -p0
 
 ## Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
@@ -1262,7 +1283,8 @@ install -d $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
 	$RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps} \
 	$RPM_BUILD_ROOT/var/state/xkb \
 	$RPM_BUILD_ROOT/usr/include \
-	$RPM_BUILD_ROOT/usr/bin
+	$RPM_BUILD_ROOT/usr/bin \
+	$RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties
 
 make -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -1309,12 +1331,13 @@ install	-d $RPM_BUILD_ROOT%{_fontdir}/TrueType
 echo 0 > $RPM_BUILD_ROOT%{_fontdir}/TrueType/fonts.dir
 echo 0 > $RPM_BUILD_ROOT%{_fontdir}/TrueType/fonts.scale
 
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/xdm
-install %{SOURCE6} $RPM_BUILD_ROOT/etc/pam.d/xserver
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
-install %{SOURCE5} $RPM_BUILD_ROOT/etc/X11/fs/config
-install %{SOURCE7} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/XTerm
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/xdm
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
+install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
+install %{SOURCE6} $RPM_BUILD_ROOT/etc/X11/fs/config
+install %{SOURCE7} $RPM_BUILD_ROOT/etc/pam.d/xserver
+install %{SOURCE8} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/XTerm
+install %{SOURCE9} $RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties/twm.desktop
 
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
@@ -1352,6 +1375,16 @@ gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[135]/* \
 gzip -dnf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
 
 #--- %post{un}, %preun, %verifyscript -
+
+%pre
+if [ -d /usr/X11R6/lib/X11/fonts ]; then
+	if [ -d /usr/share/fonts ]; then
+		mkdir /usr/share/fonts
+	fi
+
+	mv -a /usr/X11R6/lib/X11/fonts/* /usr/share/fonts
+	ln -sf /usr/share/fonts /usr/X11R6/lib/X11/fonts
+fi
 
 %post libs
 grep "^%{_libdir}$" /etc/ld.so.conf >/dev/null 2>&1
@@ -1452,7 +1485,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %docdir %{_docdir}/%{name}-%{version}
 %doc /%{_docdir}/%{name}-%{version}/*
-%doc %{_libdir}/X11/doc
+%doc %{_libdir}/X11/doc/*
 
 %doc %{_libdir}/X11/XF86Config.eg
 %doc %{_libdir}/X11/Cards
@@ -1461,7 +1494,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_libdir}/X11/Cards
 %endif
 
-%dir /usr/X11R6
 %dir %{_libdir}
 %dir %{_libdir}/X11
 %dir %{_libdir}/X11/rstart
@@ -1481,7 +1513,6 @@ rm -rf $RPM_BUILD_ROOT
 %config %verify(not md5 mtime size) /etc/pam.d/xserver
 %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xserver
 %config(missingok) /etc/security/console.apps/xserver
-%config /etc/X11/twm/system.twmrc
 %config /etc/X11/xsm/system.xsm
 %ghost /etc/X11/X
 
@@ -1496,8 +1527,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %attr(755,root,root) %{_libdir}/X11/xinit
 
-%attr(755,root,root) %{_libdir}/X11/twm
-%attr(755,root,root) %{_libdir}/X11/fs
 %attr(755,root,root) %{_libdir}/X11/xsm
 
 %{_libdir}/X11/xserver/SecurityPolicy
@@ -1528,7 +1557,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xrx
 %attr(755,root,root) %{_bindir}/lndir
 %attr(755,root,root) %{_bindir}/mkdirhier
-%attr(755,root,root) %{_bindir}/gccmakedep
 %attr(755,root,root) %{_bindir}/mergelib
 %attr(755,root,root) %{_bindir}/makeg
 %attr(755,root,root) %{_bindir}/appres
@@ -1546,7 +1574,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/showrgb
 %attr(755,root,root) %{_bindir}/rstart
 %attr(755,root,root) %{_bindir}/smproxy
-%attr(755,root,root) %{_bindir}/twm
 %attr(755,root,root) %{_bindir}/x11perf
 %attr(755,root,root) %{_bindir}/x11perfcomp
 %attr(755,root,root) %{_bindir}/Xmark
@@ -1595,9 +1622,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xwininfo
 %attr(755,root,root) %{_bindir}/xwud
 %attr(755,root,root) %{_bindir}/reconfig
-%attr(755,root,root) %{_bindir}/xf86config
-%attr(755,root,root) %{_bindir}/scanpci
-%attr(755,root,root) %{_bindir}/SuperProbe
 %attr(755,root,root) %{_bindir}/xon
 
 %{_includedir}/X11/bitmaps
@@ -1627,7 +1651,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/rstart.1*
 %{_mandir}/man1/rstartd.1*
 %{_mandir}/man1/smproxy.1*
-%{_mandir}/man1/twm.1*
 %{_mandir}/man1/x11perf.1*
 %{_mandir}/man1/x11perfcomp.1*
 %{_mandir}/man1/xclipboard.1*
@@ -1673,8 +1696,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/Xserver.1*
 %{_mandir}/man1/XFree86.1*
 %{_mandir}/man1/reconfig.1*
-%{_mandir}/man1/xf86config.1*
-%{_mandir}/man1/SuperProbe.1*
 %{_mandir}/man1/xon.1*
 
 /usr/bin/X11
@@ -1703,7 +1724,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/sessreg
 %{_mandir}/man1/xdm.1*
 
-%dir	/etc/X11/xdm
+%dir /etc/X11/xdm
 %config /etc/X11/xdm/xdm-config
 %config /etc/X11/xdm/chooser
 %config /etc/X11/xdm/Xsetup_0
@@ -1713,6 +1734,14 @@ rm -rf $RPM_BUILD_ROOT
 %config /etc/X11/xdm/Xaccess
 %config /etc/X11/xdm/TakeConsole
 %config /etc/X11/xdm/GiveConsole
+
+%files -n twm
+%defattr(644,root,root,755)
+%{_datadir}/gnome/wm-properties/twm.desktop
+%attr(755,root,root) %{_bindir}/twm
+%config /etc/X11/twm/system.twmrc
+%attr(755,root,root) %{_libdir}/X11/twm
+%{_mandir}/man1/twm.1*
 
 %files -n xfs
 %defattr(644,root,root,755)
@@ -1724,6 +1753,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/fsinfo
 %attr(755,root,root) %{_bindir}/fslsfonts
 %attr(755,root,root) %{_bindir}/fstobdf
+%attr(755,root,root) %{_libdir}/X11/fs
 
 %{_mandir}/man1/xfs.1*
 %{_mandir}/man1/fsinfo.1*
@@ -1741,6 +1771,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/gccmakedep
 %attr(755,root,root) %{_libdir}/lib*.so
 %{_libdir}/libFS.a
 %{_libdir}/libXau.a
@@ -1983,9 +2014,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/XF86Setup
 %attr(755,root,root) %{_bindir}/xmseconfig
+%attr(755,root,root) %{_bindir}/xf86config
+%attr(755,root,root) %{_bindir}/scanpci
+%attr(755,root,root) %{_bindir}/SuperProbe
 %{_libdir}/X11/XF86Setup
 %{_mandir}/man1/XF86Setup.1*
 %{_mandir}/man1/xmseconfig.1*
+%{_mandir}/man1/xf86config.1*
+%{_mandir}/man1/SuperProbe.1*
 
 %files fonts
 %defattr(644,root,root,755)
