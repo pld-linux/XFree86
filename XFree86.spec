@@ -2014,7 +2014,7 @@ rm -rf xc/fonts
 %endif
 
 %{__make} -S -C synaptics clean all \
-	TOP=$(pwd)/xc \
+	TOP=$(pwd)/../xc \
         CC="%{__cc}" \
         BOOTSTRAPCFLAGS="%{rpmcflags}" \
         CCOPTIONS="%{rpmcflags}" \
