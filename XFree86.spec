@@ -473,6 +473,17 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 %description driver-apm
 Alliance Promotion driver for XFree86 4.0+.
 
+%package driver-ark
+Summary:	Ark Logic video driver
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-ark
+Ark Logic driver for XFree86 4.0+.
+
 %package driver-ati
 Summary:	ATI video driver
 Group:		X11/XFree86
@@ -562,6 +573,17 @@ Requires:	OpenGL
 %description driver-glint
 GLINT/Permedia video driver.
 
+%package driver-i128
+Summary:	Number 9 I128 video driver
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-i128
+Number 9 I128 video driver.
+
 %package driver-i740
 Summary:	Intel i740 video driver
 Group:		X11/XFree86
@@ -631,6 +653,17 @@ Requires:	OpenGL
 %description driver-r128
 ATI Rage 128 video driver.
 
+%package driver-radeon
+Summary:	ATI Radeon video driver
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-radeon
+ATI Radeon video driver.
+
 %package driver-rendition
 Summary:	Rendition video driver
 Group:		X11/XFree86
@@ -652,6 +685,28 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-s3virge
 S3 ViRGE video driver.
+
+%package driver-savage
+Summary:	S3 Savage video driver
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-savage
+S3 Savage video driver.
+
+%package driver-siliconmotion
+Summary:	Silicon Motion video driver
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-siliconmotion
+Silicon Motion video driver.
 
 %package driver-sis
 Summary:	SiS video driver
@@ -1001,8 +1056,8 @@ touch $RPM_BUILD_ROOT/etc/security/blacklist.xdm
 ln -sf %{_fontdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
 
 # do not duplicate xkbcomp program
-rm -f $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
-ln -sf ../../../bin/xkbcomp $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
+#rm -f $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
+#ln -sf %{_bindir}/xkbcomp $RPM_BUILD_ROOT/etc/X11/xkb/xkbcomp
 
 ln -sf ../../../share/doc/%{name}-%{version} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/doc
@@ -1171,15 +1226,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/mergelib
 %attr(755,root,root) %{_bindir}/mkdirhier
 %attr(755,root,root) %{_bindir}/mkfontdir
-%ifnarch sparc sparc64
-%attr(755,root,root) %{_bindir}/pcitweak
-%endif
 %attr(755,root,root) %{_bindir}/proxymngr
 %attr(755,root,root) %{_bindir}/resize
 %attr(755,root,root) %{_bindir}/revpath
 %attr(755,root,root) %{_bindir}/rstart
 %attr(755,root,root) %{_bindir}/rstartd
 %ifnarch sparc sparc64
+%attr(755,root,root) %{_bindir}/pcitweak
 %attr(755,root,root) %{_bindir}/scanpci
 %endif
 %attr(755,root,root) %{_bindir}/setxkbmap
@@ -1220,10 +1273,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xstdcmap
 %attr(755,root,root) %{_bindir}/xterm
 %attr(755,root,root) %{_bindir}/xvidtune
+%attr(755,root,root) %{_bindir}/xvinfo
 %attr(755,root,root) %{_bindir}/xwd
 %attr(755,root,root) %{_bindir}/xwud
 
-%dir %{_includedir}/bitmaps
 %dir %{_includedir}/X11/bitmaps
 %dir %{_includedir}/X11/pixmaps
 
@@ -1234,6 +1287,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_appnkldir}/*.desktop
 %{_datadir}/pixmaps/*
 
+%{_mandir}/man1/Xmark.1*
 %{_mandir}/man1/lbxproxy.1*
 %{_mandir}/man1/proxymngr.1*
 %{_mandir}/man1/xfindproxy.1*
@@ -1282,12 +1336,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xterm.1*
 %{_mandir}/man1/resize.1*
 %{_mandir}/man1/xvidtune.1*
+%{_mandir}/man1/xvinfo.1*
 %{_mandir}/man1/xwd.1*
 %{_mandir}/man1/xwud.1*
 %{_mandir}/man1/xf86cfg.1*
 %{_mandir}/man1/xf86config.1*
 %ifnarch sparc sparc64
 %{_mandir}/man1/SuperProbe.1*
+%{_mandir}/man1/scanpci.1*
+%{_mandir}/man1/pcitweak.1*
 %endif
 %{_mandir}/man1/xon.1*
 %{_mandir}/man1/revpath.1*
@@ -1306,6 +1363,7 @@ rm -rf $RPM_BUILD_ROOT
 %files modules
 %defattr(-,root,root,755)
 %{_libdir}/X11/xkb
+/etc/X11/xkb
 /var/lib/xkb
 %dir %{_libdir}/modules
 %ifnarch alpha
@@ -1317,6 +1375,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/modules/codeconv
 %attr(755,root,root) %{_libdir}/modules/drivers/linux
 %attr(755,root,root) %{_libdir}/modules/drivers/vga_drv.o
+%attr(755,root,root) %{_libdir}/modules/drivers/vesa_drv.o
 %dir %{_libdir}/modules/extensions
 %attr(755,root,root) %{_libdir}/modules/extensions/libdbe.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libdri.a
@@ -1327,12 +1386,14 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/modules/fonts
 %attr(755,root,root) %{_libdir}/modules/input
 %attr(755,root,root) %{_libdir}/modules/linux
+%{_mandir}/man4/citron*
 %{_mandir}/man4/dynapro*
 %{_mandir}/man4/keyboard*
 %{_mandir}/man4/microtouch*
 %{_mandir}/man4/mouse*
 %{_mandir}/man4/v4l*
 %{_mandir}/man4/vga*
+%{_mandir}/man4/vesa*
 %{_mandir}/man4/void*
 %{_mandir}/man4/wacom*
 %{_mandir}/man4/elographics*
@@ -1421,11 +1482,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files OpenGL-core
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/glxinfo
 %attr(755,root,root) %{_libdir}/libGL.so.*.*
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/extensions/libglx.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libGLcore.a
 %endif
+%{_mandir}/man1/glxinfo.1*
 
 %files OpenGL-libs
 %defattr(644,root,root,755)
@@ -1436,7 +1499,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files OpenGL-devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libGLU.la
 %attr(755,root,root) %{_libdir}/libGL*.so
+%attr(755,root,root) %{_libdir}/libGLw.a
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/libOSMesa*.so
 %endif
@@ -1481,6 +1546,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/X11/PM
 %{_includedir}/X11/SM
 %{_includedir}/X11/Xaw
+%{_includedir}/X11/Xft
 %{_includedir}/X11/Xmu
 %{_includedir}/X11/extensions
 %{_includedir}/X11/fonts
@@ -1506,16 +1572,18 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libX11.a
 %{_libdir}/libXIE.a
 %{_libdir}/libXaw.a
+%{_libdir}/libXft.a
 %{_libdir}/libXext.a
 %{_libdir}/libXfont.a
 %{_libdir}/libXi.a
 %{_libdir}/libXmu.a
 %{_libdir}/libXp.a
 %{_libdir}/libXpm.a
+%{_libdir}/libXrender.a
 %{_libdir}/libXt.a
 %{_libdir}/libXtst.a
 
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files Xvfb
 %defattr(644,root,root,755)
@@ -1554,7 +1622,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xserver
 %config(missingok) /etc/security/console.apps/xserver
 
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files driver-apm
 %defattr(644,root,root,755)
@@ -1562,15 +1630,22 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/apm*
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
+
+%files driver-ark
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/ark_drv.o
+
+%endif
+%ifnarch sparc sparc64
 
 %files driver-ati
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/ati_drv.o
-%{_mandir}/man4/ati*
+%attr(755,root,root) %{_libdir}/modules/drivers/ati*_drv.o
+#%{_mandir}/man4/ati*
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files driver-chips
 %defattr(644,root,root,755)
@@ -1578,7 +1653,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/chips*
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files driver-cirrus
 %defattr(644,root,root,755)
@@ -1586,7 +1661,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/cirrus*
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files driver-cyrix
 %defattr(644,root,root,755)
@@ -1594,7 +1669,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/cyrix*
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files driver-fbdev
 %defattr(644,root,root,755)
@@ -1610,7 +1685,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/sunffb.4*
 
 %endif
-%ifarch %{x86} alpha
+%ifnarch sparc sparc64
 
 %files driver-glide
 %defattr(644,root,root,755)
@@ -1618,18 +1693,24 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/glide*
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files driver-glint
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/glint_drv.o
-%ifnarch alpha
 %attr(755,root,root) %{_libdir}/modules/dri/gamma_dri.so
 %{_mandir}/man4/glint*
-%endif
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
+
+%files driver-i128
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/i128_drv.o
+%{_mandir}/man4/i128*
+
+%endif
+%ifnarch sparc sparc64
 
 %files driver-i740
 %defattr(644,root,root,755)
@@ -1637,7 +1718,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/i740*
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files driver-i810
 %defattr(644,root,root,755)
@@ -1646,18 +1727,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/i810*
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files driver-mga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/mga_drv.o
-%ifnarch alpha
 %attr(755,root,root) %{_libdir}/modules/dri/mga_dri.so
 %{_mandir}/man4/mga*
-%endif
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files driver-neomagic
 %defattr(644,root,root,755)
@@ -1665,7 +1744,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/neomagic*
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files driver-nv
 %defattr(644,root,root,755)
@@ -1673,18 +1752,23 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/nv*
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files driver-r128
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/r128_drv.o
-%ifnarch alpha
 %attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
 %{_mandir}/man4/r128*
-%endif
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
+
+%files driver-radeon
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/radeon_drv.o
+
+%endif
+%ifnarch sparc sparc64
 
 %files driver-rendition
 %defattr(644,root,root,755)
@@ -1692,7 +1776,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/rendition*
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files driver-s3virge
 %defattr(644,root,root,755)
@@ -1700,33 +1784,48 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/s3virge*
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
+
+%files driver-savage
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/savage_drv.o
+%{_mandir}/man4/savage*
+
+%endif
+%ifnarch sparc sparc64
+
+%files driver-siliconmotion
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/siliconmotion_drv.o
+%{_mandir}/man4/siliconmotion*
+
+%endif
+%ifnarch sparc sparc64
 
 %files driver-sis
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
+%attr(755,root,root) %{_libdir}/modules/dri/sis_dri.so
 %{_mandir}/man4/sis*
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files driver-tdfx
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tdfx_drv.o
-%ifnarch alpha
 %attr(755,root,root) %{_libdir}/modules/dri/tdfx_dri.so
-%endif
 %{_mandir}/man4/tdfx*
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files driver-tga
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tga_drv.o
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files driver-trident
 %defattr(644,root,root,755)
@@ -1734,7 +1833,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/trident*
 
 %endif
-%ifarch %{x86}
+%ifnarch sparc sparc64
 
 %files driver-tseng
 %defattr(644,root,root,755)
@@ -1844,7 +1943,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/X11/app-defaults/XFontSel
 %{_libdir}/X11/app-defaults/Xditview
 %{_libdir}/X11/app-defaults/Xditview-chrtr
-%{_includedir}/bitmaps/*
 
 #%files XF86Setup
 #%defattr(644,root,root,755)
