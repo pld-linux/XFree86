@@ -485,6 +485,7 @@ Summary:	Display PostScript
 Summary(pl):	Display PostScript
 Group:		X11/XFree
 Group(pl):	X11/XFree
+Requires:	%{name}-DPS = %{version}
 
 %description DPS-devel
 %description -l pl DPS-devel
@@ -494,6 +495,7 @@ Summary:	Display PostScript
 Summary(pl):	Display PostScript
 Group:		X11/XFree
 Group(pl):	X11/XFree
+Requires:	%{name}-DPS-devel = %{version}
 
 %description DPS-static
 %description -l pl DPS-static
@@ -1032,6 +1034,8 @@ rm -rf $RPM_BUILD_ROOT
 %files libs
 %defattr(644,root,root,755)
 ### remove libdps*.so.1.0
+### remove libGL*.so.*.*
+### remove libpsres.so.*.*
 %attr(755,root,root) %{_libdir}/lib*.so.*.*
 
 %files OpenGL
@@ -1045,6 +1049,7 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 ## usunac libdps*.so
 ## usunac libGL*.so
+## usunac libpsres.so
 %attr(755,root,root) %{_libdir}/lib*.so
 %{_libdir}/libFS.a
 %{_libdir}/libXau.a
@@ -1188,6 +1193,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libdps.so.1.0
 %attr(755,root,root) %{_libdir}/libdpstk.so.1.0
+%attr(755,root,root) %{_libdir}/libpsres.so.1.0
 
 %files DPS-devel
 %defattr(644,root,root,755)
@@ -1197,6 +1203,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/libdps.a
 %{_libdir}/libdpstk.a
+%{_libdir}/libdpsres.a
 
 #%files XF86Setup
 #%defattr(644,root,root,755)
