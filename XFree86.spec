@@ -84,7 +84,7 @@ Patch45:	XFree86-pfillbug.patch
 Patch46:	XFree86-linebug.patch
 Patch47:	XFree86-mach64_3.patch
 Patch48:	XFree86-multiffb.patch
-Patch59:	XFree86-ffbfixes.patch
+Patch49:	XFree86-ffbfixes.patch
 Patch50:	XFree86-sparcpckbd.patch
 Patch51:	XFree86-raptor.patch
 Patch52:	XFree86-ffb3.patch
