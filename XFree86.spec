@@ -1750,7 +1750,7 @@ fi
 
 %attr(640,root,root) %ghost /var/log/XFree86.0.log
 
-%{_applnkdir}/Utilities/*
+%{_applnkdir}/Utilities/xconsole.desktop
 %{_applnkdir}/Terminals/*
 %{_libdir}/X11/app-defaults/Xvidtune
 %{_pixmapsdir}/x*
@@ -2421,6 +2421,8 @@ fi
 %{_libdir}/X11/app-defaults/XFontSel
 %{_libdir}/X11/app-defaults/Xditview
 %{_libdir}/X11/app-defaults/Xditview-chrtr
+
+%{_applnkdir}/Utilities/xclipboard.desktop
 
 %files -n sessreg
 %defattr(644,root,root,755)
