@@ -1266,7 +1266,9 @@ Summary(pt_BR):	Bibliotecas compartilhadas X11R6
 Summary(ru):	Разделяемые библиотеки для X Window System (X11R6.4)
 Summary(uk):	Б╕бл╕отеки сп╕льного використання для X Window System (X11R6.4)
 Group:		X11/XFree86
-PreReq:		grep
+Requires(post,postun):	/sbin/ldconfig
+Requires(post,postun):	grep
+Requires(postun):	fileutils
 Requires:	%{name}-common = %{version}
 Obsoletes:	xpm
 Provides:	xpm
