@@ -4,13 +4,13 @@ Summary(fr):	Serveurs du système XFree86 et programmes de base
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
-Version:	4.0.3
-Release:	5
+Version:	4.1.0
+Release:	1
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0.2/source/X402src-1.tgz
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.1.0/source/X410src-1.tgz
 Source1:	ftp://download.sourceforge.net/pub/sourceforge/mesa3d/MesaLib-3.4.tar.bz2
 Source2:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source3:	xdm.pamd
