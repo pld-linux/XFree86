@@ -115,6 +115,7 @@ Patch45:	%{name}-spencode-nowarning.patch
 # Small (maybe buggy) patch to resolve problems with totem 0.97.0
 Patch46:	%{name}-lock.patch
 Patch47:	%{name}-linux-version.patch
+Patch48:	%{name}-new-s3-nodebug.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	%{_bindir}/perl
 BuildRequires:	bison
@@ -1981,6 +1982,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch45 -p1
 %patch46 -p0
 %patch47 -p1
+%patch48 -p0
 
 rm -f xc/config/cf/host.def
 
@@ -2988,7 +2990,8 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/savage_drv.o
 %dir %{_libdir}/modules.s3
-%attr(755,root,root) %{_libdir}/modules.s3/savage_drv.o
+%dir %{_libdir}/modules.s3/drivers
+%attr(755,root,root) %{_libdir}/modules.s3/drivers/savage_drv.o
 %{_mandir}/man4/savage*
 %endif
 
