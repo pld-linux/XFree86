@@ -1,17 +1,11 @@
 
 # TODO:
 # - separate XFS to be standalone - is it possible without duplicated files?
-# - there should be imake and XFree86-devel BuildRequires but it's a little 
-#   strange idea. It's waiting for the right way execution (c) wrobell ;)
 
 #
 # Conditional build:
-# _without_tdfx		- disables tdfx drivers building
+%bcond_without	tdfx	# disables tdfx drivers building
 #
-
-%define		_sver	%(echo %{version} | tr -d .)
-%define		_synaptics_ver	0.12.1
-
 Summary:	XFree86 Window System servers and basic programs
 Summary(de):	XFree86 Window-System-Server und grundlegende Programme
 Summary(es):	Programas bАsicos y servidores para el sistema de ventanas XFree86
@@ -26,7 +20,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.99.902
-Release:	0.1
+Release:	0.2
 Epoch:		1
 License:	MIT
 Group:		X11/XFree86
@@ -63,11 +57,8 @@ Source37:	xconsole.png
 Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
 # Source38-md5:	a184106bb83cb27c6963944d9243ac3f
 #Source39:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
-# http://w1.894.telia.com/~u89404340/touchpad/index.html
-Source40:	http://w1.894.telia.com/~u89404340/touchpad/files/synaptics-%{_synaptics_ver}.tar.bz2
-# Source40-md5:	7106431c76d363f11c3cc29d66c19b85
-Source41:	http://www.linux.org.uk/~alan/S3.zip
-# Source41-md5:	8b754fc6bbded60b683563b945e384b0
+Source40:	%{name}-Xserver-headers
+Source41:	%{name}-Xserver-headers-links
 Source42:	twm-xsession.desktop
 Source43:	xcalc.desktop
 Source44:	xload.desktop
@@ -126,21 +117,20 @@ Patch45:	%{name}-spencode-nowarning.patch
 # Small (maybe buggy) patch to resolve problems with totem 0.97.0
 Patch46:	%{name}-lock.patch
 Patch47:	%{name}-linux-version.patch
-Patch48:	%{name}-new-s3-nodebug.patch
+
 Patch49:	%{name}-mandir-fix.patch
 Patch50:	%{name}-xterm-256colors.patch
-Patch51:	%{name}-new-s3-pScreen.patch
+
 Patch52:	%{name}-kernel_headers.patch
 Patch53:	%{name}-stdint.patch
-Patch54:	%{name}-new-s3-headers.patch
 URL:		http://www.xfree86.org/
-BuildRequires:	%{_bindir}/perl
+BuildRequires:	/usr/bin/perl
 %ifarch %{ix86} alpha amd64
-%{!?_without_tdfx:BuildRequires:	Glide3-DRI-devel}
+%{?with_tdfx:BuildRequires:	Glide3-DRI-devel}
 %endif
 # Required by xc/programs/Xserver/hw/xfree86/drivers/glide/glide_driver.c
 %ifarch %{ix86} amd64
-%{!?_without_tdfx:BuildRequires:	Glide2x_SDK}
+%{?with_tdfx:BuildRequires:	Glide2x_SDK}
 %endif
 BuildRequires:	bison
 BuildRequires:	ed
@@ -153,11 +143,8 @@ BuildRequires:	ncurses-devel
 BuildRequires:	pam-devel
 BuildRequires:	rpmbuild(macros) >= 1.122
 BuildRequires:	tcl-devel
-BuildRequires:	unzip
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
-BuildRequires:	imake
-BuildRequires:	XFree86-devel
 Requires:	%{name}-libs = %{epoch}:%{version}
 Requires:	xauth
 Requires:	pam >= 0.77.3
@@ -1797,7 +1784,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c -b3 -a40 -a41
+%setup -q -c -b3
 #-b1 -b2 -a3
 %patch0 -p0
 %patch1 -p1
@@ -1835,25 +1822,22 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch33 -p1
 #%patch34 -p1	-- seems not applied (was partially in rc1??? maybe another fix present?)
 #%patch35 -p1	-- obsoleted? (but doesn't look to be applied)
-%{!?_without_tdfx:%patch36 -p0}
+%{?with_tdfx:%patch36 -p0}
 #%patch38 -p0	-- causing problems IIRC (but not really needed)
-%{!?_without_tdfx:%patch39 -p0}
+%{?with_tdfx:%patch39 -p0}
 %patch40 -p1
 %{!?debug:%patch41 -p1}
-%{?_without_tdfx:%patch42 -p0}
+%{!?with_tdfx:%patch42 -p0}
 %patch43 -p0
 %patch44 -p0
 %patch45 -p1
 %patch46 -p0
 %patch47 -p1
 tar xfz *.tar.gz
-%patch48 -p0
 %patch49 -p1
 %patch50 -p0
-%patch51 -p1
 %patch52 -p1
 %patch53 -p0
-%patch54 -p1
 
 rm -f xc/config/cf/host.def
 
@@ -1889,42 +1873,6 @@ rm -rf xc/fonts
 #	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 %endif
 
-%ifarch %{ix86} mips ppc arm
-olddir=$(pwd)
-cd LinuxDriver/2D
-chmod u+w Imakefile
-echo -e ',s#$(XF86OSSRC)/vbe#$(XF86SRC)/vbe#g\n,w' | ed Imakefile
-xmkmf $olddir/xc .
-%{__make} -S savage_drv.o \
-	DEFAULT_OS_CPU_FROB=%{_target_cpu} \
-	CC="%{__cc}" \
-	BOOTSTRAPCFLAGS="%{rpmcflags}" \
-	CCOPTIONS="%{rpmcflags}" \
-	CXXOPTIONS="%{rpmcflags}" \
-	CXXDEBUGFLAGS="" \
-	CDEBUGFLAGS="" \
-	ICONDIR="%{_iconsdir}"
-cd $olddir
-%endif
-
-%ifnarch sparc sparc64
-TOPDIR=$(pwd)/xc
-%{__make} -S -C synaptics clean all \
-	TOP="$TOPDIR" \
-	CC="%{__cc}" \
-	BOOTSTRAPCFLAGS="%{rpmcflags}" \
-	CCOPTIONS="%{rpmcflags}" \
-	CXXOPTIONS="%{rpmcflags}" \
-	CXXDEBUGFLAGS="" \
-	CDEBUGFLAGS="" \
-	ICONDIR="%{_iconsdir}"
-
-cd synaptics
-for f in COMPATIBILITY INSTALL NEWS README README.alps TODO; do
-	cp -f ${f} ${f}.synaptics
-done
-%endif
-
 #--- %install ------------------------
 
 %install
@@ -1955,21 +1903,12 @@ install -d $RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,security/console.apps,sysconfi
 	ICONDIR="%{_iconsdir}" \
 	LINUXDIR="/dev/null"
 
-%ifnarch sparc sparc64
-install synaptics/synaptics_drv.o $RPM_BUILD_ROOT%{_libdir}/modules/input
-%endif
-
 %ifnarch alpha
 #install -d $RPM_BUILD_ROOT%{_libdir}/modules.gatos/{drivers,dri}
 #install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_drv.o \
 #	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/drivers
 #install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_dri.o \
 #	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/dri
-%endif
-
-%ifarch %{ix86} mips ppc arm
-install -d $RPM_BUILD_ROOT%{_libdir}/modules.s3/drivers
-install LinuxDriver/2D/savage_drv.o $RPM_BUILD_ROOT%{_libdir}/modules.s3/drivers
 %endif
 
 # fix pkgconfig path
@@ -1998,12 +1937,12 @@ ln -sf libGLU.so.1 $RPM_BUILD_ROOT%{_libdir}/libGLU.so
 rm -f $RPM_BUILD_ROOT%{_includedir}/GL/glext.h
 cp %{SOURCE49} $RPM_BUILD_ROOT%{_includedir}/GL/glext.h
 
-# collect Xserver headers
-install -d $RPM_BUILD_ROOT%{_includedir}/X11/Xserver
-cd xc/programs/Xserver
-# don't change to single install - there are symlinked "duplicates"
-install include/*.h $RPM_BUILD_ROOT%{_includedir}/X11/Xserver
-install hw/xfree86/{common,os-support}/*.h $RPM_BUILD_ROOT%{_includedir}/X11/Xserver
+# collect Xserver headers and make symlinks
+for f in `cat %{SOURCE40}`; do
+	install -D xc/${f} $RPM_BUILD_ROOT%{_includedir}/X11/Xserver/${f}
+done
+cd $RPM_BUILD_ROOT%{_includedir}/X11/Xserver
+sh %{SOURCE41}
 cd -
 
 # set up PLD xdm config
@@ -2065,11 +2004,6 @@ for lang in af az bg bg_BG.cp1251 br ca cs da de el en_GB eo es et eu fi \
 	install -d $RPM_BUILD_ROOT%{_datadir}/locale/${lang}/LC_MESSAGES
 	echo "%lang(${lang}) %{_datadir}/locale/${lang}" >> XFree86-libs.lang
 done
-
-%ifnarch sparc sparc64
-install synaptics/synclient   $RPM_BUILD_ROOT%{_bindir}
-install synaptics/*.synaptics $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}
-%endif
 
 %ifnarch sparc sparc64
 gzip -9nf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
@@ -2645,10 +2579,12 @@ fi
 %endif
 
 %ifarch %{ix86} amd64
-%{!?_without_tdfx:%files driver-glide}
-%{!?_without_tdfx:%defattr(644,root,root,755)}
-%{!?_without_tdfx:%attr(755,root,root) %{_libdir}/modules/drivers/glide_drv.o}
-%{!?_without_tdfx:%{_mandir}/man4/glide*}
+%if %{with tdfx}
+%files driver-glide
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/glide_drv.o
+%{_mandir}/man4/glide*
+%endif
 %endif
 
 %files driver-glint
@@ -2812,11 +2748,6 @@ fi
 %files driver-savage
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/savage_drv.o
-%ifarch %{ix86} mips ppc arm amd64
-%dir %{_libdir}/modules.s3
-%dir %{_libdir}/modules.s3/drivers
-%attr(755,root,root) %{_libdir}/modules.s3/drivers/savage_drv.o
-%endif
 %{_mandir}/man4/savage*
 %endif
 
@@ -2889,13 +2820,15 @@ fi
 %endif
 
 %ifarch %{ix86} sparc sparc64 mips alpha arm ppc amd64
-%{!?_without_tdfx:%files driver-tdfx}
-%{!?_without_tdfx:%defattr(644,root,root,755)}
-%{!?_without_tdfx:%attr(755,root,root) %{_libdir}/modules/drivers/tdfx_drv.o}
+%if %{with tdfx}
+%files driver-tdfx
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/tdfx_drv.o
 %ifarch %{ix86} alpha arm ppc amd64
-%{!?_without_tdfx:%attr(755,root,root) %{_libdir}/modules/dri/tdfx_dri.so}
+%attr(755,root,root) %{_libdir}/modules/dri/tdfx_dri.so
 %endif
-%{!?_without_tdfx:%{_mandir}/man4/tdfx*}
+%{_mandir}/man4/tdfx*
+%endif
 %endif
 
 # Devel: sparc sparc64
