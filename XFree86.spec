@@ -124,6 +124,7 @@ Patch45:	%{name}-spencode-nowarning.patch
 Patch46:	%{name}-lock.patch
 Patch47:	%{name}-linux-version.patch
 Patch48:	%{name}-new-s3-nodebug.patch
+Patch49:	%{name}-mandir-fix.patch
 Patch50:	%{name}-xterm-256colors.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	%{_bindir}/perl
@@ -1794,6 +1795,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch47 -p1
 tar xfz *.tar.gz
 %patch48 -p0
+%patch49 -p1
 %patch50 -p1
 
 rm -f xc/config/cf/host.def
@@ -2503,10 +2505,7 @@ fi
 %{_includedir}/X11/Xaw
 %{_includedir}/X11/Xmu
 %dir %{_includedir}/X11/extensions
-%{_includedir}/X11/extensions/[^X]*.h
-%{_includedir}/X11/extensions/X[^I]*.h
-%{_includedir}/X11/extensions/XI.h
-%{_includedir}/X11/extensions/XI[^E]*.h
+%{_includedir}/X11/extensions/*.h
 %{_includedir}/X11/fonts
 %{_includedir}/xf86*.h
 %{_libdir}/X11/config
@@ -2514,8 +2513,6 @@ fi
 %exclude %{_includedir}/X11/extensions/Xrender.h
 %exclude %{_includedir}/X11/extensions/render.h
 %exclude %{_includedir}/X11/extensions/renderproto.h
-%exclude %{_libdir}/libXrender.so
-%exclude %{_libdir}/libXcursor.so
 
 %{_mandir}/man3/[A-EH-Z]*
 %exclude %{_mandir}/man3/Xft.3*
