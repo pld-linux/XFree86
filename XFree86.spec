@@ -7,7 +7,7 @@ Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Summary(es):	Programas básicos y servidores para el sistema de ventanas XFree86
 Name:		XFree86
 Version:	4.1.0
-Release:	3
+Release:	4
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -80,7 +80,7 @@ BuildRequires:	Glide_V3-DRI-devel >= 1:3.10.0-0.20010309
 BuildRequires:	Glide2x_SDK
 %endif
 Requires:	xauth
-Requires:	XFree86-fonts-ISO8859 = %{version}
+Requires:	XFree86-fonts-ISO88590-1 = %{version}
 Prereq:		XFree86-libs
 Obsoletes:	xpm-progs
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
