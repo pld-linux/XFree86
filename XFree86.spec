@@ -810,7 +810,7 @@ Driver do kart na uk³adach S3 ViRGE i Trio3D.
 
 %package driver-s3
 Summary:        S3 Trio video driver
-Summary(pl):    Driver do kart na uk³adach S3 ViRGE i Trio3D
+Summary(pl):    Driver do kart na uk³adach S3 Trio
 Group:          X11/XFree86
 Group(de):      X11/XFree86
 Group(pl):      X11/XFree86
@@ -822,7 +822,6 @@ S3 Trio video driver.
 
 %description -l pl driver-s3
 Driver do kart na uk³adach S3 Trio.
-
 
 %package driver-savage
 Summary:	S3 Savage video driver
