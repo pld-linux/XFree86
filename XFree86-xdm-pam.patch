@@ -1,0 +1,70 @@
+diff -urN XFree86-4.0.1.orig/xc/programs/xdm/greeter/greet.c XFree86-4.0.1/xc/programs/xdm/greeter/greet.c
+--- XFree86-4.0.1.orig/xc/programs/xdm/greeter/greet.c	Wed Jun 14 21:43:33 2000
++++ XFree86-4.0.1/xc/programs/xdm/greeter/greet.c	Sat Oct 21 02:00:56 2000
+@@ -180,7 +180,7 @@
+     int opcode, evbase, errbase, majret, minret;
+     unsigned int value = XkbPCF_GrabsUseXKBStateMask;
+     if (XkbQueryExtension (dpy, &opcode, &evbase, &errbase, &majret, &minret)) {
+-	if (XkbSetPerClientControls (dpy, XkbPCF_GrabsUseXKBStateMask, &value))
++	if (!XkbSetPerClientControls (dpy, XkbPCF_GrabsUseXKBStateMask, &value))
+ 	    LogError ("%s\n", "SetPerClientControls failed");
+     }
+     }
+diff -urN XFree86-4.0.1.orig/xc/programs/xdm/greeter/verify.c XFree86-4.0.1/xc/programs/xdm/greeter/verify.c
+--- XFree86-4.0.1.orig/xc/programs/xdm/greeter/verify.c	Wed Jun 14 21:43:33 2000
++++ XFree86-4.0.1/xc/programs/xdm/greeter/verify.c	Sat Oct 21 02:00:56 2000
+@@ -114,6 +114,7 @@
+ 
+ #ifdef USE_PAM
+ static char *PAM_password;
++pam_handle_t *pamh;
+ static int pam_error;
+ 
+ static int PAM_conv (int num_msg,
+@@ -162,12 +163,8 @@
+ Verify (struct display *d, struct greet_info *greet, struct verify_info *verify)
+ {
+ 	struct passwd	*p;
+-#ifdef USE_PAM
+-	pam_handle_t *pamh = thepamh();
+-#else
+ #ifdef USESHADOW
+ 	struct spwd	*sp;
+-#endif
+ #endif
+ #ifdef __OpenBSD__
+ 	char            *s;
+diff -urN XFree86-4.0.1.orig/xc/programs/xdm/session.c XFree86-4.0.1/xc/programs/xdm/session.c
+--- XFree86-4.0.1.orig/xc/programs/xdm/session.c	Sat Jun 17 20:48:23 2000
++++ XFree86-4.0.1/xc/programs/xdm/session.c	Sat Oct 21 02:02:15 2000
+@@ -97,9 +97,9 @@
+ extern	char	*crypt(CRYPT_ARGS);
+ #endif
+ #ifdef USE_PAM
++extern pam_handle_t *pamh;
+ pam_handle_t *thepamh()
+ {
+-	static pam_handle_t *pamh = NULL;
+ 	return pamh;
+ }
+ #endif
+@@ -467,9 +467,6 @@
+ 	ResetServer (d);
+     if (removeAuth)
+     {
+-#ifdef USE_PAM
+-	pam_handle_t *pamh = thepamh();
+-#endif
+ 	setgid (verify.gid);
+ 	setuid (verify.uid);
+ 	RemoveUserAuthorization (d, &verify);
+@@ -523,9 +520,6 @@
+     int	pid;
+ #ifdef HAS_SETUSERCONTEXT
+     struct passwd* pwd;
+-#endif
+-#ifdef USE_PAM 
+-    pam_handle_t *pamh = thepamh();
+ #endif
+ 
+     if (verify->argv) {
