@@ -89,13 +89,12 @@ BuildRequires:	Glide3-DRI-devel
 %ifarch %{ix86}
 BuildRequires:	Glide2x_SDK
 %endif
-Requires:	xauth
 Requires:	XFree86-fonts-ISO8859-1 = %{version}
 Requires:	XFree86-libs = %{version}
+Requires:	xauth
 Requires(post):	fileutils
-Prereq:		XFree86-libs
-Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
-Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+ExclusiveArch:	%{ix86} alpha sparc m68k armv4l noarch
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	xpm-progs
 Obsoletes:	xterm
 
@@ -189,174 +188,52 @@ Este pacote contém as fontes básicas, programas e documentação para
 uma estação de trabalho X. Ele não fornece um servidor X que acessa
 seu hardware de vídeo -- estes são disponibilizados em outro pacote.
 
-%package modules
-Summary:	Modules with X servers extensions
-Summary(pl):	Wspólne dla wszystkich X serwerów modu³y rozszerzeñ
+%package DPS
+Summary:	Display PostScript
+Summary(pl):	Display PostScript
 Group:		X11/XFree86
 Group(de):	X11/XFree86
-Group(es):	X11/XFree86
-Group(fr):	X11/XFree86
 Group(pl):	X11/XFree86
-Group(pt_BR):	X11/XFree86
+Provides:	DPS
+Obsoletes:	dgs
 
-%description modules
-Modules with X servers extensions.
+%description DPS
+X-Window Display PostScript is device-independent imaging model for
+displaying information on a screen.
 
-%description modules -l pl
-Wspólne dla wszystkich X serwerów modu³y rozszerzeñ.
+%description DPS -l pl
+X-Window Display PostScript to niezale¿ny od urz±dzenia model
+wy¶wietlania informacji na ekranie.
 
-%package libs
-Summary:	X11R6 shared libraries
-Summary(de):	X11R6 shared Libraries
-Summary(es):	Bibliotecas compartidas X11R6
-Summary(pl):	Biblioteki dzielone dla X11R6
-Summary(fr):	Bibliothèques partagées X11R6
-Summary(pt_BR):	Bibliotecas compartilhadas X11R6
+%package DPS-devel
+Summary:	Display PostScript
+Summary(pl):	Display PostScript
 Group:		X11/XFree86
 Group(de):	X11/XFree86
-Group(es):	X11/XFree86
-Group(fr):	X11/XFree86
 Group(pl):	X11/XFree86
-Group(pt_BR):	X11/XFree86
-Prereq:		/sbin/ldconfig
-Prereq:		grep
-Obsoletes:	xpm
-Provides:	xpm
+Requires:	%{name}-DPS = %{version}
+Obsoletes:	dgs-devel
 
-%ifarch sparc sparc64
-Obsoletes:	X11R6.1-libs
-%endif
+%description DPS-devel
+Header files for develop X-Window Display Postscript.
 
-%description libs
-XFree86-libs contains the shared libraries that most X programs need
-to run properly. These shared libraries are in a separate package in
-order to reduce the disk space needed to run X applications on a
-machine without an X server (i.e, over a network).
+%description DPS-devel -l pl
+Pliki nag³ówkowe biblioteki X-Window Display PostScript.
 
-If you are installing the X Window System on your machine, you will
-need to install XFree86-libs. You will also need to install the
-XFree86 package, the XFree86-75dpi-fonts package or the
-XFree86-100dpi-fonts package (depending upon your monitor's
-resolution), the Xconfigurator package and the X11R6-contrib package.
-And, finally, if you are going to be developing applications that run
-as X clients, you will also need to install XFree86-devel.
+%package DPS-static
+Summary:	Display PostScript
+Summary(pl):	Display PostScript
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-DPS-devel = %{version}
+Obsoletes:	dgs-static
 
-%description libs -l de
-Dieses Paket enthält die zur gemeinsamen Nutzung vorgesehenen
-Libraries, die die meisten X-Programme für den einwandfreien Betrieb
-benötigen. Sie wurden in einem separaten Paket untergebracht, um den
-Festplattenspeicherplatz auf Computern zu reduzieren, die ohne einen
-X- Server (über ein Netz) arbeiten.
+%description DPS-static
+X-Window Display PostScript static libraries.
 
-%description libs -l es
-Este paquete contiene bibliotecas compartidas que la mayoría de los
-programas X necesitan para ejecutarse correctamente. Están en un
-paquete a parte, para reducir el espacio en disco necesario para
-ejecutar aplicaciones X en una máquina sin un servidor X (a través de
-la red).
-
-%description libs -l fr
-Ce paquetage contient les bibliothèques partagées nécessaires à de
-nombreux programmes X. Elles se trouvent dans un paquetage séparé afin
-de réduire l'espace disque nécessaire à l'exécution des applications X
-sur une machine sans serveur X (en réseau).
-
-%description libs -l pl
-Pakiet zawieraj±cy podstawowe biblioteki potrzebne wiêkszo¶ci
-programów korzystaj±cych z systemu X Window. Wydzielony w celu
-oszczêdno¶ci miejsca potrzebnego do uruchamiania aplikacji X Window na
-komputerach bez X serwera (np. przez sieæ).
-
-%description libs -l tr
-Bu paket X programlarýnýn düzgün çalýþabilmeleri için gereken
-kitaplýklarý içerir. Bunlar, X programlarýný (sunucu olsun olmasýn)
-çalýþtýrmak için gerekli disk alanýný azaltmak için ayrý bir paket
-olarak sunulmuþtur.
-
-%description libs -l pt_BR
-Este pacote contém bibliotecas compartilhadas que a maioria dos
-programas X precisam para rodar corretamente. Eles estão em um pacote
-separado para reduzir o espaço em disco necessário para rodar
-aplicações X em uma máquina sem um servidor X (através da rede).
-
-%package devel
-Summary:	X11R6 headers and programming man pages
-Summary(de):	X11R6 Headers und man pages für Programmierer
-Summary(fr):	Pages man de programmation
-Summary(pl):	Pliki nag³ówkowe X11R6
-Summary(tr):	X11R6 ile geliþtirme için gerekli dosyalar
-Group:		X11/Libraries
-Group(de):	X11/Libraries
-Group(es):	X11/Bibliotecas
-Group(fr):	X11/Librairies
-Group(pl):	X11/Biblioteki
-Group(pt_BR):	X11/Bibliotecas
-Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
-Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
-Requires:	%{name}-libs = %{version}
-Obsoletes:	xpm-devel
-Provides:	xpm-devel
-%ifarch sparc sparc64
-Obsoletes:	X11R6.1-devel
-%endif
-
-%description devel
-Libraries, header files, and documentation for developing programs
-that run as X clients. It includes the base Xlib library as well as
-the Xt and Xaw widget sets. For information on programming with these
-libraries, PLD recommends the series of books on X Programming
-produced by O'Reilly and Associates.
-
-%description devel -l de
-Libraries, Header-Dateien und Dokumentation zum Entwickeln von
-Programmen, die als X-Clients laufen. Enthält die Xlib-Library und die
-Widget-Sätze Xt und Xaw. Information zum Programmieren mit diesen
-Libraries finden Sie in der Buchreihe zur X-Programmierung von
-O'Reilly and Associates.
-
-%description devel -l fr
-Bibliothéques, fichiers d'en-tête, et documentation pour développer
-des programmes s'exécutant en clients X. Cela comprend la Bibliothéque
-Xlib de base aussi bien que les ensembles de widgets Xt et Xaw. Pour
-des informations sur la programmation avec ces Bibliothéques, Red Hat
-recommande la série d'ouvrages sur la programmation X editée par
-O'Reilly and Associates.
-
-%description devel -l pl
-Pliki nag³ówkowe, dokumentcja dla programistów rozwijaj±cych aplikacje
-klienckie pod X Window. Zawiera podstawow± bibliotekê Xlib a tak¿e Xt
-i Xaw. Wiêcej informacji nt. pisania programów przy u¿yciu tych
-bibliotek mo¿esz znale¼æ w ksi±¿kach wydawnictwa O'Reilly and
-Associates (X Programming) polecanych przez Red Hata.
-
-%description devel -l tr
-X istemcisi olarak çalýþacak programlar geliþtirmek için gereken
-statik kitaplýklar, baþlýk dosyalarý ve belgeler. Xlib kitaplýðýnýn
-yanýsýra Xt ve Xaw arayüz kitaplýklarýný da içerir.
-
-%package static
-Summary:	X11R6 static libraries
-Summary(pl):	Biblioteki statyczne X11R6
-Group:		X11/Libraries
-Group(de):	X11/Libraries
-Group(es):	X11/Bibliotecas
-Group(fr):	X11/Librairies
-Group(pl):	X11/Biblioteki
-Group(pt_BR):	X11/Bibliotecas
-Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
-Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
-Requires:	%{name}-devel = %{version}
-%ifarch sparc sparc64
-Obsoletes:	X11R6.1-devel
-%endif
-Obsoletes:	xpm-static
-#Obsoletes:	Mesa-static
-
-%description static
-X11R6 static libraries.
-
-%description static -l pl
-Biblioteki statyczne X11R6.
+%description DPS-static -l pl
+Statyczne biblioteki X-Window Display PostScript.
 
 %package OpenGL-core
 Summary:	OpenGL support for X11R6
@@ -377,6 +254,28 @@ OpenGL support for X11R6 system.
 
 %description OpenGL-core -l pl
 Wsparcie OpenGL dla systemu X11R6.
+
+%package OpenGL-devel
+Summary:	OpenGL for X11R6 development
+Summary(pl):	Pliki nag³ówkowe OpenGL dla systemu X11R6
+Group:		X11/Libraries
+Group(de):	X11/Libraries
+Group(es):	X11/Bibliotecas
+Group(fr):	X11/Librairies
+Group(pl):	X11/Biblioteki
+Group(pt_BR):	X11/Bibliotecas
+Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
+Requires:	%{name}-OpenGL-libs = %{version}
+Requires:	%{name}-devel
+Provides:	OpenGL-devel
+Obsoletes:	Mesa-devel glxMesa-devel
+
+%description OpenGL-devel
+Headers and man pages for OpenGL for X11R6.
+
+%description OpenGL-devel -l pl
+Pliki nag³ówkowe i manuale do OpenGL dla systemu X11R6.
 
 %package OpenGL-libs
 Summary:	OpenGL libraries for X11R6
@@ -401,28 +300,6 @@ OpenGL libraries for X11R6 system.
 %description OpenGL-libs -l pl
 Biblioteki OpenGL dla systemu X11R6.
 
-%package OpenGL-devel
-Summary:	OpenGL for X11R6 development
-Summary(pl):	Pliki nag³ówkowe OpenGL dla systemu X11R6
-Group:		X11/Libraries
-Group(de):	X11/Libraries
-Group(es):	X11/Bibliotecas
-Group(fr):	X11/Librairies
-Group(pl):	X11/Biblioteki
-Group(pt_BR):	X11/Bibliotecas
-Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
-Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
-Requires:	%{name}-OpenGL-libs = %{version}
-Requires:	%{name}-devel
-Provides:	OpenGL-devel
-Obsoletes:	Mesa-devel glxMesa-devel
-
-%description OpenGL-devel
-Headers and man pages for OpenGL for X11R6.
-
-%description OpenGL-devel -l pl
-Pliki nag³ówkowe i manuale do OpenGL dla systemu X11R6.
-
 %package OpenGL-static
 Summary:	X11R6 static libraries with OpenGL
 Summary(pl):	Biblioteki statyczne do X11R6 ze wsparciem dla OpenGL
@@ -443,62 +320,6 @@ X11R6 static libraries with OpenGL.
 
 %description OpenGL-static -l pl
 Biblioteki statyczne zawieraj±ce wsparcie dla OpenGL do X11R6.
-
-%package setup
-Summary:	Graphical configuration tool for XFree86
-Summary(pl):	Graficzny konfigurator dla XFree86
-Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
-Requires:	%{name}-Xserver = %{version}
-Obsoletes:	XFree86-xf86cfg
-
-%description setup
-Setup containst a configuration tool for the XFree86 family of
-servers. It allows you to configure video settings, keyboard layouts,
-mouse type, and other miscellaneous options. It is slow however, and
-requires the generic VGA 16 color server be available.
-
-%description setup -l pl
-Pakiet setup zawiera narzêdzia do konfiguracji XFree86. Pozwala na
-skonfigurowanie ustawieñ obrazu, klawiatury, typu myszki i innych
-ró¿nych rzeczy. Jednak¿e jest wolny i wymaga dostêpno¶ci serwera do
-standardowej 16-kolorowej VGA.
-
-%package Xvfb
-Summary:	XFree86 Xvfb server
-Summary(pl):	Serwer XFree86 Xvfb
-Group:		X11/XFree86/Servers
-Group(de):	X11/XFree86/Server
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts >= 4.0.2
-
-%description Xvfb
-Xvfb (X Virtual Frame Buffer) is an X Window System server that is
-capable of running on machines with no display hardware and no
-physical input devices. Xvfb emulates a dumb framebuffer using virtual
-memory. Xvfb doesn't open any devices, but behaves otherwise as an X
-display. Xvfb is normally used for testing servers. Using Xvfb, the
-mfb or cfb code for any depth can be exercised without using real
-hardware that supports the desired depths. Xvfb has also been used to
-test X clients against unusual depths and screen configurations, to do
-batch processing with Xvfb as a background rendering engine, to do
-load testing, to help with porting an X server to a new platform, and
-to provide an unobtrusive way of running applications which really
-don't need an X server but insist on having one.
-
-If you need to test your X server or your X clients, you may want to
-install Xvfb for that purpose.
-
-%description Xvfb -l pl
-Xvfb (X Virtual Frame Buffer) jest X serwerem, który mo¿na uruchamiaæ
-na maszynach bez urz±dzeñ wy¶wietlaj±cych ani fizycznych urz±dzeñ
-wej¶ciowych. Xvfb emuluje prosty framebuffer w pamiêci. Zwykle jest
-u¿ywany do testowania X serwerów, mo¿e te¿ byæ u¿ywany do testowania X
-klientów w rzadko u¿ywanych konfiguracjach ekranu. Mo¿na te¿ u¿yæ Xvfb
-do uruchomienia aplikacji, które w rzeczywisto¶ci nie wymagaj± X
-serwera, ale odmawiaj± uruchomienia bez niego.
 
 %package Xnest
 Summary:	XFree86 Xnest server
@@ -605,6 +426,96 @@ Ayný zamanda Diamond Speedstar, Orchid Kelvins, STB Nitros / Horizons,
 Genoa 8500VL, çoðu Actix kartlarý, Spider VLB Plus gibi kartlar ve
 birçok diðer kart ile de çalýþýr. Herhangi bir sorun yaþarsanýz bu
 sunucuyu deneyin.
+
+%package Xvfb
+Summary:	XFree86 Xvfb server
+Summary(pl):	Serwer XFree86 Xvfb
+Group:		X11/XFree86/Servers
+Group(de):	X11/XFree86/Server
+Group(pl):	X11/XFree86/Serwery
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-fonts >= 4.0.2
+
+%description Xvfb
+Xvfb (X Virtual Frame Buffer) is an X Window System server that is
+capable of running on machines with no display hardware and no
+physical input devices. Xvfb emulates a dumb framebuffer using virtual
+memory. Xvfb doesn't open any devices, but behaves otherwise as an X
+display. Xvfb is normally used for testing servers. Using Xvfb, the
+mfb or cfb code for any depth can be exercised without using real
+hardware that supports the desired depths. Xvfb has also been used to
+test X clients against unusual depths and screen configurations, to do
+batch processing with Xvfb as a background rendering engine, to do
+load testing, to help with porting an X server to a new platform, and
+to provide an unobtrusive way of running applications which really
+don't need an X server but insist on having one.
+
+If you need to test your X server or your X clients, you may want to
+install Xvfb for that purpose.
+
+%description Xvfb -l pl
+Xvfb (X Virtual Frame Buffer) jest X serwerem, który mo¿na uruchamiaæ
+na maszynach bez urz±dzeñ wy¶wietlaj±cych ani fizycznych urz±dzeñ
+wej¶ciowych. Xvfb emuluje prosty framebuffer w pamiêci. Zwykle jest
+u¿ywany do testowania X serwerów, mo¿e te¿ byæ u¿ywany do testowania X
+klientów w rzadko u¿ywanych konfiguracjach ekranu. Mo¿na te¿ u¿yæ Xvfb
+do uruchomienia aplikacji, które w rzeczywisto¶ci nie wymagaj± X
+serwera, ale odmawiaj± uruchomienia bez niego.
+
+%package devel
+Summary:	X11R6 headers and programming man pages
+Summary(de):	X11R6 Headers und man pages für Programmierer
+Summary(fr):	Pages man de programmation
+Summary(pl):	Pliki nag³ówkowe X11R6
+Summary(tr):	X11R6 ile geliþtirme için gerekli dosyalar
+Group:		X11/Libraries
+Group(de):	X11/Libraries
+Group(es):	X11/Bibliotecas
+Group(fr):	X11/Librairies
+Group(pl):	X11/Biblioteki
+Group(pt_BR):	X11/Bibliotecas
+Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
+Requires:	%{name}-libs = %{version}
+Obsoletes:	xpm-devel
+Provides:	xpm-devel
+%ifarch sparc sparc64
+Obsoletes:	X11R6.1-devel
+%endif
+
+%description devel
+Libraries, header files, and documentation for developing programs
+that run as X clients. It includes the base Xlib library as well as
+the Xt and Xaw widget sets. For information on programming with these
+libraries, PLD recommends the series of books on X Programming
+produced by O'Reilly and Associates.
+
+%description devel -l de
+Libraries, Header-Dateien und Dokumentation zum Entwickeln von
+Programmen, die als X-Clients laufen. Enthält die Xlib-Library und die
+Widget-Sätze Xt und Xaw. Information zum Programmieren mit diesen
+Libraries finden Sie in der Buchreihe zur X-Programmierung von
+O'Reilly and Associates.
+
+%description devel -l fr
+Bibliothéques, fichiers d'en-tête, et documentation pour développer
+des programmes s'exécutant en clients X. Cela comprend la Bibliothéque
+Xlib de base aussi bien que les ensembles de widgets Xt et Xaw. Pour
+des informations sur la programmation avec ces Bibliothéques, Red Hat
+recommande la série d'ouvrages sur la programmation X editée par
+O'Reilly and Associates.
+
+%description devel -l pl
+Pliki nag³ówkowe, dokumentcja dla programistów rozwijaj±cych aplikacje
+klienckie pod X Window. Zawiera podstawow± bibliotekê Xlib a tak¿e Xt
+i Xaw. Wiêcej informacji nt. pisania programów przy u¿yciu tych
+bibliotek mo¿esz znale¼æ w ksi±¿kach wydawnictwa O'Reilly and
+Associates (X Programming) polecanych przez Red Hata.
+
+%description devel -l tr
+X istemcisi olarak çalýþacak programlar geliþtirmek için gereken
+statik kitaplýklar, baþlýk dosyalarý ve belgeler. Xlib kitaplýðýnýn
+yanýsýra Xt ve Xaw arayüz kitaplýklarýný da içerir.
 
 %package driver-apm
 Summary:	Alliance Promotion video driver
@@ -1157,52 +1068,181 @@ VMware SVGA video driver.
 %description driver-vmware -l pl
 Sterownik do emulowanych kart SVGA pod VMware.
 
-%package DPS
-Summary:	Display PostScript
-Summary(pl):	Display PostScript
+%package libs
+Summary:	X11R6 shared libraries
+Summary(de):	X11R6 shared Libraries
+Summary(es):	Bibliotecas compartidas X11R6
+Summary(pl):	Biblioteki dzielone dla X11R6
+Summary(fr):	Bibliothèques partagées X11R6
+Summary(pt_BR):	Bibliotecas compartilhadas X11R6
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(es):	X11/XFree86
+Group(fr):	X11/XFree86
+Group(pl):	X11/XFree86
+Group(pt_BR):	X11/XFree86
+PreReq:		/sbin/ldconfig
+PreReq:		grep
+Obsoletes:	xpm
+Provides:	xpm
+
+%ifarch sparc sparc64
+Obsoletes:	X11R6.1-libs
+%endif
+
+%description libs
+XFree86-libs contains the shared libraries that most X programs need
+to run properly. These shared libraries are in a separate package in
+order to reduce the disk space needed to run X applications on a
+machine without an X server (i.e, over a network).
+
+If you are installing the X Window System on your machine, you will
+need to install XFree86-libs. You will also need to install the
+XFree86 package, XFree86-Xserver, one of the XFree86-driver-*,
+XFree86-fonts, XFree86-fonts-ISO8859-1, optionally some of the other
+fonts (choose 75dpi or 100dpi depending upon your monitor's
+resolution), the XFree86-setup and the XFree86-tools. And, finally, if
+you are going to be developing applications that run as X clients, you
+will also need to install XFree86-devel.
+
+%description libs -l de
+Dieses Paket enthält die zur gemeinsamen Nutzung vorgesehenen
+Libraries, die die meisten X-Programme für den einwandfreien Betrieb
+benötigen. Sie wurden in einem separaten Paket untergebracht, um den
+Festplattenspeicherplatz auf Computern zu reduzieren, die ohne einen
+X- Server (über ein Netz) arbeiten.
+
+%description libs -l es
+Este paquete contiene bibliotecas compartidas que la mayoría de los
+programas X necesitan para ejecutarse correctamente. Están en un
+paquete a parte, para reducir el espacio en disco necesario para
+ejecutar aplicaciones X en una máquina sin un servidor X (a través de
+la red).
+
+%description libs -l fr
+Ce paquetage contient les bibliothèques partagées nécessaires à de
+nombreux programmes X. Elles se trouvent dans un paquetage séparé afin
+de réduire l'espace disque nécessaire à l'exécution des applications X
+sur une machine sans serveur X (en réseau).
+
+%description libs -l pl
+Pakiet zawieraj±cy podstawowe biblioteki potrzebne wiêkszo¶ci
+programów korzystaj±cych z systemu X Window. Wydzielony w celu
+oszczêdno¶ci miejsca potrzebnego do uruchamiania aplikacji X Window na
+komputerach bez X serwera (np. przez sieæ).
+
+%description libs -l tr
+Bu paket X programlarýnýn düzgün çalýþabilmeleri için gereken
+kitaplýklarý içerir. Bunlar, X programlarýný (sunucu olsun olmasýn)
+çalýþtýrmak için gerekli disk alanýný azaltmak için ayrý bir paket
+olarak sunulmuþtur.
+
+%description libs -l pt_BR
+Este pacote contém bibliotecas compartilhadas que a maioria dos
+programas X precisam para rodar corretamente. Eles estão em um pacote
+separado para reduzir o espaço em disco necessário para rodar
+aplicações X em uma máquina sem um servidor X (através da rede).
+
+%package modules
+Summary:	Modules with X servers extensions
+Summary(pl):	Wspólne dla wszystkich X serwerów modu³y rozszerzeñ
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(es):	X11/XFree86
+Group(fr):	X11/XFree86
+Group(pl):	X11/XFree86
+Group(pt_BR):	X11/XFree86
+
+%description modules
+Modules with X servers extensions.
+
+%description modules -l pl
+Wspólne dla wszystkich X serwerów modu³y rozszerzeñ.
+
+%package setup
+Summary:	Graphical configuration tool for XFree86
+Summary(pl):	Graficzny konfigurator dla XFree86
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
-Provides:	DPS
-Obsoletes:	dgs
+Requires:	%{name}-Xserver = %{version}
+Obsoletes:	XFree86-xf86cfg
 
-%description DPS
-X-Window Display PostScript is device-independent imaging model for
-displaying information on a screen.
+%description setup
+Setup containst a configuration tool for the XFree86 family of
+servers. It allows you to configure video settings, keyboard layouts,
+mouse type, and other miscellaneous options. It is slow however, and
+requires the generic VGA 16 color server be available.
 
-%description DPS -l pl
-X-Window Display PostScript to niezale¿ny od urz±dzenia model
-wy¶wietlania informacji na ekranie.
+%description setup -l pl
+Pakiet setup zawiera narzêdzia do konfiguracji XFree86. Pozwala na
+skonfigurowanie ustawieñ obrazu, klawiatury, typu myszki i innych
+ró¿nych rzeczy. Jednak¿e jest wolny i wymaga dostêpno¶ci serwera do
+standardowej 16-kolorowej VGA.
 
-%package DPS-devel
-Summary:	Display PostScript
-Summary(pl):	Display PostScript
+%package static
+Summary:	X11R6 static libraries
+Summary(pl):	Biblioteki statyczne X11R6
+Group:		X11/Libraries
+Group(de):	X11/Libraries
+Group(es):	X11/Bibliotecas
+Group(fr):	X11/Librairies
+Group(pl):	X11/Biblioteki
+Group(pt_BR):	X11/Bibliotecas
+Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
+Requires:	%{name}-devel = %{version}
+%ifarch sparc sparc64
+Obsoletes:	X11R6.1-devel
+%endif
+Obsoletes:	xpm-static
+#Obsoletes:	Mesa-static
+
+%description static
+X11R6 static libraries.
+
+%description static -l pl
+Biblioteki statyczne X11R6.
+
+%package tools
+Summary:	Various tools for XFree86
+Summary(pl):	Ró¿ne narzêdzia dla XFree86
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
-Requires:	%{name}-DPS = %{version}
-Obsoletes:	dgs-devel
+Requires:	%{name} >= %{version}
+Requires:	XFree86-libs = %{version}
+Obsoletes:	X11R6-contrib
 
-%description DPS-devel
-Header files for develop X-Window Display Postscript.
+%description tools
+Various tools for X, including listres, xbiff, xedit, xeyes, xcalc,
+xload and xman, among others.
 
-%description DPS-devel -l pl
-Pliki nag³ówkowe biblioteki X-Window Display PostScript.
+If you're using X, you should install XFree86-tools. You will also
+need to install the XFree86 package, the XFree86 package which
+corresponds to your video card, some of the XFree86 fonts packages,
+the XFree86-setup package and the XFree86-libs package.
 
-%package DPS-static
-Summary:	Display PostScript
-Summary(pl):	Display PostScript
-Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
-Requires:	%{name}-DPS-devel = %{version}
-Obsoletes:	dgs-static
+Finally, if you are going to develop applications that run as X
+clients, you will also need to install XFree86-devel.
 
-%description DPS-static
-X-Window Display PostScript static libraries.
+This package contains all applications that used to be in
+X11R6-contrib in older releases.
 
-%description DPS-static -l pl
-Statyczne biblioteki X-Window Display PostScript.
+%description tools -l pl
+Ró¿ne narzêdzia dla X, w tym listres, xbiff, xedit, xeyes, xcalc,
+xload, xman i inne.
+
+Je¶li u¿ywasz Xów powiniene¶ zainstalowaæ XFree86-tools. Bêdziesz
+równie¿ musia³ zainstalowaæ pakiet XFree86, pakiet odpowiadaj±cy
+Twojej karcie graficznej, jeden z pakietów z fontami, pakiet
+Xconfigurator oraz XFree86-libs.
+
+Wreszcie, je¶li zamierzasz tworzyæ aplikacje, które dzia³aj± jako
+klienci X, bêdziesz musia³ zainstalowaæ równie¿ XFree86-devel.
+
+Ten pakiet zawiera aplikacje, które by³y w X11R6-contrib w starszych
+wersjach X.
 
 %package -n sessreg
 Summary:	sessreg - manage utmp/wtmp entries for non-init clients
@@ -1228,34 +1268,6 @@ System V ma lepszy ni¿ BSD interfejs do /var/run/utmp; dynamicznie
 alokuje wpisy w pliku, zamiast zapisywania ich na ustalonych pozycjach
 indeksowanych po³o¿eniem w /etc/ttys.
 
-%package -n xdm
-Summary:	xdm - X Display Manager with support for XDMCP, host chooser
-Summary(pl):	XDM - display mened¿er z obs³ug± XDMCP i wybieraniem hostów
-Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
-Requires:	%{name} = %{version}
-Requires:	pam >= 0.71
-Requires:	%{name}-libs = %{version}
-Requires:	sessreg = %{version}
-Requires:	/usr/X11R6/bin/sessreg
-Provides:	XDM
-Prereq:		chkconfig
-Obsoletes:	XFree86-xdm
-Obsoletes:	gdm
-Obsoletes:	kdm
-
-%description -n xdm
-Xdm manages a collection of X displays, which may be on the local host
-or remote servers. The design of xdm was guided by the needs of X
-terminals as well as the X Consortium standard XDMCP, the X Display
-Manager Control Protocol.
-
-%description -n xdm -l pl
-Xdm zarz±dza zestawem ekranów X, które mog± byæ lokalne lub na
-zdalnych serwerach. Zosta³ zaprojektowany zgodnie z potrzebami X
-terminali oraz standardem X Consortium XDMCP.
-
 %package -n twm
 Summary:	Tab Window Manager for the X Window System
 Summary(pl):	Twm - podstawowy zarz±dca okien dla X Window System
@@ -1277,32 +1289,6 @@ Twm jest mened¿erem okien dla X Window System. Daje belki tytu³owe,
 ramki okien, parê form zarz±dzania ikonami, definiowalne makra,
 ustawianie focusu klikniêciem lub po³o¿eniem wska¼nika myszy,
 definiowalne przypisania klawiszy i przycisków myszy.
-
-%package -n xfs
-Summary:	Font server for XFree86
-Summary(pl):	Serwer fontów dla XFree86
-Group:		X11/XFree86
-Group(de):	X11/XFree86
-Group(pl):	X11/XFree86
-Requires:	%{name}-libs = %{version}
-Prereq:		chkconfig
-Prereq:		/usr/sbin/useradd
-Prereq:		/usr/sbin/groupadd
-Prereq:		/usr/sbin/userdel
-Prereq:		/usr/sbin/groupdel
-Prereq:		/usr/bin/getgid
-Prereq:		/bin/id
-Obsoletes:	xfsft XFree86-xfs
-
-%description -n xfs
-This is a font server for XFree86. You can serve fonts to other X
-servers remotely with this package, and the remote system will be able
-to use all fonts installed on the font server, even if they are not
-installed on the remote computer.
-
-%description -n xfs -l pl
-Pakiet zawiera serwer fontów dla XFree86. Mo¿e udostêpniaæ fonty dla X
-serwerów lokalnych lub zdalnych.
 
 %package -n xauth
 Summary:	xauth - X authority file utility
@@ -1326,45 +1312,59 @@ przewa¿nie jest u¿ywany do wyci±gania rekordów autoryzacji z jednej
 maszyny i do³±czania ich na innej (w celu umo¿liwienia zdalnego
 logowania lub udostêpnienia innym u¿ytkownikom).
 
-%package tools
-Summary:	Various tools for XFree86
-Summary(pl):	Ró¿ne narzêdzia dla XFree86
+%package -n xdm
+Summary:	xdm - X Display Manager with support for XDMCP, host chooser
+Summary(pl):	XDM - display mened¿er z obs³ug± XDMCP i wybieraniem hostów
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
-Requires:	%{name} >= %{version}
-Requires:	XFree86-libs = %{version}
-Obsoletes:	X11R6-contrib
+Requires:	%{name} = %{version}
+Requires:	pam >= 0.71
+Requires:	%{name}-libs = %{version}
+Requires:	sessreg = %{version}
+Requires:	/usr/X11R6/bin/sessreg
+Provides:	XDM
+PreReq:		chkconfig
+Obsoletes:	XFree86-xdm
+Obsoletes:	gdm
+Obsoletes:	kdm
 
-%description tools
-Various tools for X, including listres, xbiff, xedit, xeyes, xcalc,
-xload and xman, among others.
+%description -n xdm
+Xdm manages a collection of X displays, which may be on the local host
+or remote servers. The design of xdm was guided by the needs of X
+terminals as well as the X Consortium standard XDMCP, the X Display
+Manager Control Protocol.
 
-If you're using X, you should install XFree86-tools. You will also
-need to install the XFree86 package, the XFree86 package which
-corresponds to your video card, one of the XFree86 fonts packages, the
-Xconfigurator package and the XFree86-libs package.
+%description -n xdm -l pl
+Xdm zarz±dza zestawem ekranów X, które mog± byæ lokalne lub na
+zdalnych serwerach. Zosta³ zaprojektowany zgodnie z potrzebami X
+terminali oraz standardem X Consortium XDMCP.
 
-Finally, if you are going to develop applications that run as X
-clients, you will also need to install XFree86-devel.
+%package -n xfs
+Summary:	Font server for XFree86
+Summary(pl):	Serwer fontów dla XFree86
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-libs = %{version}
+PreReq:		chkconfig
+PreReq:		/usr/sbin/useradd
+PreReq:		/usr/sbin/groupadd
+PreReq:		/usr/sbin/userdel
+PreReq:		/usr/sbin/groupdel
+PreReq:		/usr/bin/getgid
+PreReq:		/bin/id
+Obsoletes:	xfsft XFree86-xfs
 
-This package contains all applications that used to be in
-X11R6-contrib in older releases.
+%description -n xfs
+This is a font server for XFree86. You can serve fonts to other X
+servers remotely with this package, and the remote system will be able
+to use all fonts installed on the font server, even if they are not
+installed on the remote computer.
 
-%description tools -l pl
-Ró¿ne narzêdzia dla X, w tym listres, xbiff, xedit, xeyes, xcalc,
-xload, xman i inne.
-
-Je¶li u¿ywasz Xów powiniene¶ zainstalowaæ XFree86-tools. Bêdziesz
-równie¿ musia³ zainstalowaæ pakiet XFree86, pakiet odpowiadaj±cy
-Twojej karcie graficznej, jeden z pakietów z fontami, pakiet
-Xconfigurator oraz XFree86-libs.
-
-Wreszcie, je¶li zamierzasz tworzyæ aplikacje, które dzia³aj± jako
-klienci X, bêdziesz musia³ zainstalowaæ równie¿ XFree86-devel.
-
-Ten pakiet zawiera aplikacje, które by³y w X11R6-contrib w starszych
-wersjach X.
+%description -n xfs -l pl
+Pakiet zawiera serwer fontów dla XFree86. Mo¿e udostêpniaæ fonty dla X
+serwerów lokalnych lub zdalnych.
 
 #--- %prep ---------------------------
 
@@ -1521,7 +1521,6 @@ gzip -9nf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
 
 # don't gzip README.* files, they are needed by XF86Setup
 gunzip $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
-
 %endif
 
 %clean
@@ -1529,17 +1528,17 @@ rm -rf $RPM_BUILD_ROOT
 
 #--- %post{un}, %preun, %verifyscript, %trigge ----------
 
-%triggerpostun modules -- XFree86-modules < 4.0.2
-if [ -d /usr/X11R6/lib/X11/xkb ]; then
-	rm -rf /usr/X11R6/lib/X11/xkb
-	ln -sf ../../../../etc/X11/xkb /usr/X11R6/lib/X11/xkb
-fi
-
 %post
 touch /var/log/XFree86.0.log
 chmod 000 /var/log/XFree86.0.log
 chown root.root /var/log/XFree86.0.log
 chmod 640 /var/log/XFree86.0.log
+
+%post DPS -p /sbin/ldconfig
+%postun DPS -p /sbin/ldconfig
+
+%post OpenGL-libs -p /sbin/ldconfig
+%postun	OpenGL-libs -p /sbin/ldconfig
 
 %post libs
 grep "^%{_libdir}$" /etc/ld.so.conf >/dev/null 2>&1
@@ -1560,6 +1559,28 @@ if ! grep "^%{_libdir}$" /etc/ld.so.conf > /dev/null; then
 	echo "%{_libdir} missing from /etc/ld.so.conf" >&2
 else
 	echo "found"
+fi
+
+%triggerpostun modules -- XFree86-modules < 4.0.2
+if [ -d /usr/X11R6/lib/X11/xkb ]; then
+	rm -rf /usr/X11R6/lib/X11/xkb
+	ln -sf ../../../../etc/X11/xkb /usr/X11R6/lib/X11/xkb
+fi
+
+%post -n xdm
+/sbin/chkconfig --add xdm
+if [ -f /var/lock/subsys/xdm ]; then
+	/etc/rc.d/init.d/xdm restart >&2
+else
+	echo "Run \"/etc/rc.d/init.d/xdm start\" to start xdm." >&2
+fi
+
+%preun -n xdm
+if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/xdm ]; then
+		/etc/rc.d/init.d/xdm stop >&2
+	fi
+	/sbin/chkconfig --del xdm
 fi
 
 %pre -n xfs
@@ -1601,28 +1622,6 @@ if [ $1 = 0 ]; then
 	/usr/sbin/userdel xfs 2>/dev/null
 	/usr/sbin/groupdel xfs 2>/dev/null
 fi
-
-%post -n xdm
-/sbin/chkconfig --add xdm
-if [ -f /var/lock/subsys/xdm ]; then
-	/etc/rc.d/init.d/xdm restart >&2
-else
-	echo "Run \"/etc/rc.d/init.d/xdm start\" to start xdm." >&2
-fi
-
-%preun -n xdm
-if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/xdm ]; then
-		/etc/rc.d/init.d/xdm stop >&2
-	fi
-	/sbin/chkconfig --del xdm
-fi
-
-%post	DPS -p /sbin/ldconfig
-%postun DPS -p /sbin/ldconfig
-
-%post	OpenGL-libs -p /sbin/ldconfig
-%postun	OpenGL-libs -p /sbin/ldconfig
 
 #--- %files --------------------------
 
@@ -1831,158 +1830,32 @@ fi
 %lang(pl) %{_mandir}/pl/man1/xinit.1*
 %lang(pl) %{_mandir}/pl/man1/xwd.1*
 
-%files modules
+%files DPS
 %defattr(644,root,root,755)
-%{_libdir}/X11/xkb
-%{_sysconfdir}/X11/xkb
-/var/lib/xkb
-%dir %{_libdir}/modules
-%ifnarch alpha
-%dir %{_libdir}/modules/dri
-%endif
-%dir %{_libdir}/modules/drivers
-%ifnarch sparc sparc64
-%{_libdir}/modules/*.uc
-%endif
-%attr(755,root,root) %{_libdir}/modules/*.a
-%attr(755,root,root) %{_libdir}/modules/codeconv
-%attr(755,root,root) %{_libdir}/modules/drivers/linux
-%ifnarch sparc sparc64
-%attr(755,root,root) %{_libdir}/modules/drivers/vga_drv.o
-%ifnarch alpha
-%attr(755,root,root) %{_libdir}/modules/drivers/vesa_drv.o
-%endif
-%endif
-%dir %{_libdir}/modules/extensions
-%attr(755,root,root) %{_libdir}/modules/extensions/libdbe.a
-%attr(755,root,root) %{_libdir}/modules/extensions/libdri.a
-%attr(755,root,root) %{_libdir}/modules/extensions/libextmod.a
-%ifnarch alpha
-%attr(755,root,root) %{_libdir}/modules/extensions/libpex5.a
-%endif
-%attr(755,root,root) %{_libdir}/modules/extensions/librecord.a
-%attr(755,root,root) %{_libdir}/modules/extensions/libxie.a
-%attr(755,root,root) %{_libdir}/modules/fonts
-%attr(755,root,root) %{_libdir}/modules/input
-%attr(755,root,root) %{_libdir}/modules/linux
-%{_mandir}/man4/citron*
-%{_mandir}/man4/dynapro*
-%{_mandir}/man4/keyboard*
-%{_mandir}/man4/microtouch*
-%{_mandir}/man4/mouse*
-%{_mandir}/man4/v4l*
-%ifnarch sparc sparc64
-%{_mandir}/man4/vga*
-%ifnarch alpha
-%{_mandir}/man4/vesa*
-%endif
-%endif
-%{_mandir}/man4/void*
-%{_mandir}/man4/wacom*
-%{_mandir}/man4/elographics*
-%{_mandir}/man4/mutouch*
+%attr(755,root,root) %{_bindir}/makepsres
+%attr(755,root,root) %{_bindir}/pswrap
+%attr(755,root,root) %{_bindir}/dpsinfo
+%attr(755,root,root) %{_bindir}/dpsexec
+%attr(755,root,root) %{_libdir}/libdps.so.*.*
+%attr(755,root,root) %{_libdir}/libdpstk.so.*.*
+%attr(755,root,root) %{_libdir}/libpsres.so.*.*
+%{_mandir}/man1/makepsres*
+%{_mandir}/man1/pswrap*
+%{_mandir}/man1/dpsexec*
+%{_mandir}/man1/dpsinfo*
 
-%files -n sessreg
+%files DPS-devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/sessreg
-%{_mandir}/man1/sessreg.1*
+%attr(755,root,root) %{_libdir}/libdps.so
+%attr(755,root,root) %{_libdir}/libdpstk.so
+%attr(755,root,root) %{_libdir}/libpsres.so
+%{_includedir}/DPS
 
-%files -n xdm
+%files DPS-static
 %defattr(644,root,root,755)
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/pam.d/xdm
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.xdm
-%attr(754,root,root) /etc/rc.d/init.d/xdm
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/xdm
-/var/lib/xdm
-
-%{_libdir}/X11/app-defaults/Chooser
-
-%attr(755,root,root) %{_libdir}/X11/xdm
-%attr(755,root,root) %{_bindir}/xdm
-%attr(755,root,root) %{_bindir}/chooser
-%ifarch alpha
-%attr(755,root,root) %{_libdir}/libXdmGreet.so*
-%endif
-%{_mandir}/man1/xdm.1*
-
-%dir /etc/X11/xdm
-%attr(755,root,root) %config /etc/X11/xdm/GiveConsole
-%attr(755,root,root) %config /etc/X11/xdm/TakeConsole
-%attr(755,root,root) %config /etc/X11/xdm/Xsession
-%attr(755,root,root) %config /etc/X11/xdm/Xsetup_0
-%attr(755,root,root) %config /etc/X11/xdm/Xwilling
-%config /etc/X11/xdm/Xaccess
-%config /etc/X11/xdm/Xresources
-%config /etc/X11/xdm/Xservers
-%config /etc/X11/xdm/xdm-config
-/etc/X11/xdm/pixmaps
-/etc/X11/xdm/authdir
-
-%files -n twm
-%defattr(644,root,root,755)
-%{_wmpropsdir}/twm.desktop
-%attr(755,root,root) %{_bindir}/twm
-%dir %{_sysconfdir}/X11/twm
-%config %{_sysconfdir}/X11/twm/system.twmrc
-%attr(755,root,root) %{_libdir}/X11/twm
-%{_mandir}/man1/twm.1*
-
-%files -n xfs
-%defattr(644,root,root,755)
-%attr(754,root,root) /etc/rc.d/init.d/xfs
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/xfs
-%dir %{_sysconfdir}/X11/fs
-%attr(755,root,root) %{_libdir}/X11/fs
-%config(noreplace) %{_sysconfdir}/X11/fs/config
-%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/X11/XftConfig
-
-%attr(755,root,root) %{_bindir}/xfs
-%attr(755,root,root) %{_bindir}/fslsfonts
-%attr(755,root,root) %{_bindir}/fstobdf
-%attr(755,root,root) %{_bindir}/mkcfm
-%attr(755,root,root) %{_bindir}/xfsinfo
-%attr(755,root,root) %{_bindir}/xftcache
-
-%{_mandir}/man1/xfs.1*
-%{_mandir}/man1/fslsfonts.1*
-%{_mandir}/man1/fstobdf.1*
-%{_mandir}/man1/mkcfm.1*
-%{_mandir}/man1/xfsinfo.1*
-%{_mandir}/man1/xftcache.1*
-
-%files -n xauth
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/xauth
-%{_mandir}/man1/xauth.1*
-
-%files libs -f XFree86-libs.lang
-%defattr(644,root,root,755)
-%dir %{_libdir}
-%dir %{_libdir}/X11
-%{_libdir}/X11/XErrorDB
-%{_libdir}/X11/XKeysymDB
-%{_libdir}/X11/locale
-%dir %{_includedir}
-%dir %{_includedir}/X11
-%dir %{_bindir}
-/usr/bin/X11
-/usr/lib/X11
-/usr/include/X11
-%dir %{_datadir}/locale
-%dir %{_datadir}/misc
-%dir %{_datadir}/sounds
-%dir %{_pixmapsdir}
-%dir %{_pixmapsdir}/mini
-%dir %{_wmpropsdir}
-%attr(755,root,root) %{_libdir}/libX*.so.*.*
-%attr(755,root,root) %{_libdir}/libI*.so.*.*
-%ifnarch alpha
-%attr(755,root,root) %{_libdir}/libP*.so.*.*
-%endif
-%attr(755,root,root) %{_libdir}/libS*.so.*.*
-%ifnarch alpha
-%attr(755,root,root) %{_libdir}/libx*.so.*.*
-%endif
+%{_libdir}/libdps.a
+%{_libdir}/libdpstk.a
+%{_libdir}/libpsres.a
 
 %files OpenGL-core
 %defattr(644,root,root,755)
@@ -1991,15 +1864,6 @@ fi
 %attr(755,root,root) %{_libdir}/modules/extensions/libglx.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libGLcore.a
 %endif
-
-%files OpenGL-libs
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/glxinfo
-%attr(755,root,root) %{_libdir}/libGLU.so.*.*
-%ifnarch alpha
-%attr(755,root,root) %{_libdir}/libOSMesa.so.*.*
-%endif
-%{_mandir}/man1/glxinfo.1*
 
 %files OpenGL-devel
 %defattr(644,root,root,755)
@@ -2014,6 +1878,15 @@ fi
 %{_mandir}/man3/glu*
 %{_mandir}/man3/GLw*
 
+%files OpenGL-libs
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/glxinfo
+%attr(755,root,root) %{_libdir}/libGLU.so.*.*
+%ifnarch alpha
+%attr(755,root,root) %{_libdir}/libOSMesa.so.*.*
+%endif
+%{_mandir}/man1/glxinfo.1*
+
 %files OpenGL-static
 %defattr(644,root,root,755)
 %{_libdir}/libGL.a
@@ -2021,6 +1894,38 @@ fi
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/libOSMesa*.a
 %endif
+
+%files Xnest
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/Xnest
+%{_mandir}/man1/Xnest.1*
+
+%files Xprt
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/Xprt
+
+%files Xserver
+%defattr(644,root,root,755)
+%attr(4755,root,root) %{_bindir}/Xwrapper
+%attr(755,root,root) %{_bindir}/XFree86
+%attr(755,root,root) %{_sysconfdir}/X11/X
+%attr(755,root,root) %{_bindir}/X
+%{_mandir}/man1/XFree86.1*
+%{_mandir}/man1/Xserver.1*
+%{_mandir}/man5/XF86Config.5*
+
+%{_libdir}/X11/Cards
+%{_libdir}/X11/Options
+
+%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/X11/XF86Config
+%attr(640,root,root) %config %verify(not md5 size mtime) /etc/pam.d/xserver
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.xserver
+%config(missingok) /etc/security/console.apps/xserver
+
+%files Xvfb
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/Xvfb
+%{_mandir}/man1/Xvfb.1*
 
 %files devel
 %defattr(644,root,root,755)
@@ -2075,6 +1980,357 @@ fi
 %{_mandir}/man1/xmkmf.1*
 %{_mandir}/man3/[A-EH-Z]*
 
+%ifnarch sparc sparc64 alpha
+%files driver-apm
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/apm_drv.o
+%{_mandir}/man4/apm*
+%endif
+
+%ifnarch sparc sparc64 alpha
+%files driver-ark
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/ark_drv.o
+%endif
+
+%ifnarch alpha
+%files driver-ati
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/ati*_drv.o
+#%{_mandir}/man4/ati*
+%endif
+
+%ifnarch sparc sparc64 alpha
+%files driver-chips
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/chips_drv.o
+%{_mandir}/man4/chips*
+%endif
+
+%ifnarch sparc sparc64 alpha
+%files driver-cirrus
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/cirrus_*.o
+%{_mandir}/man4/cirrus*
+%endif
+
+%ifnarch sparc sparc64 alpha
+%files driver-cyrix
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/cyrix_drv.o
+%{_mandir}/man4/cyrix*
+%endif
+
+%ifnarch alpha
+%files driver-fbdev
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/fbdev_drv.o
+%{_mandir}/man4/fbdev*
+%endif
+
+%ifnarch sparc sparc64 alpha
+%files driver-glide
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/glide_drv.o
+%{_mandir}/man4/glide*
+%endif
+
+%files driver-glint
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/glint_drv.o
+%ifnarch sparc sparc64
+%attr(755,root,root) %{_libdir}/modules/dri/gamma_dri.so
+%endif
+%{_mandir}/man4/glint*
+
+%ifnarch sparc sparc64 alpha
+%files driver-i128
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/i128_drv.o
+%{_mandir}/man4/i128*
+%endif
+
+%ifnarch sparc sparc64 alpha
+%files driver-i740
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/i740_drv.o
+%{_mandir}/man4/i740*
+%endif
+
+%ifnarch sparc sparc64 alpha
+%files driver-i810
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/i810_drv.o
+%attr(755,root,root) %{_libdir}/modules/dri/i810_dri.so
+%{_mandir}/man4/i810*
+%endif
+
+%ifnarch sparc sparc64
+%files driver-mga
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/mga_drv.o
+%attr(755,root,root) %{_libdir}/modules/dri/mga_dri.so
+%{_mandir}/man4/mga*
+%endif
+
+%ifnarch sparc sparc64 alpha
+%files driver-neomagic
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/neomagic_drv.o
+%{_mandir}/man4/neomagic*
+%endif
+
+%ifnarch sparc sparc64
+%files driver-nv
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/nv_drv.o
+%{_mandir}/man4/nv*
+%endif
+
+%ifnarch sparc sparc64
+%files driver-r128
+%defattr(644,root,root,755)
+%ifnarch alpha
+%attr(755,root,root) %{_libdir}/modules/drivers/r128_drv.o
+%endif
+%ifnarch sparc sparc64
+%attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
+%endif
+%ifnarch alpha
+%{_mandir}/man4/r128*
+%endif
+%endif
+
+%files driver-radeon
+%defattr(644,root,root,755)
+%ifnarch alpha
+%attr(755,root,root) %{_libdir}/modules/drivers/radeon_drv.o
+%endif
+%ifnarch sparc sparc64
+%attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
+%endif
+
+%ifnarch sparc sparc64
+%files driver-rendition
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/rendition_drv.o
+%{_mandir}/man4/rendition*
+%endif
+
+%ifnarch sparc sparc64
+%files driver-s3virge
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/s3virge_drv.o
+%{_mandir}/man4/s3virge*
+%endif
+
+%ifnarch sparc sparc64
+%files driver-s3
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/s3_drv.o
+#%{_mandir}/man4/s3*
+%endif
+
+%ifnarch sparc sparc64 alpha
+%files driver-savage
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/savage_drv.o
+%{_mandir}/man4/savage*
+%endif
+
+%ifnarch sparc sparc64 alpha
+%files driver-siliconmotion
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/siliconmotion_drv.o
+%{_mandir}/man4/siliconmotion*
+%endif
+
+%ifnarch sparc sparc64 alpha
+%files driver-sis
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
+%attr(755,root,root) %{_libdir}/modules/dri/sis_dri.so
+%{_mandir}/man4/sis*
+%endif
+
+%ifarch sparc sparc64
+%files driver-sunbw2
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/sunbw2_drv.o
+%{_mandir}/man4/sunbw2*
+%endif
+
+%ifarch sparc sparc64
+%files driver-suncg14
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/suncg14_drv.o
+%{_mandir}/man4/suncg14*
+%endif
+
+%ifarch sparc sparc64
+%files driver-suncg3
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/suncg3_drv.o
+%{_mandir}/man4/suncg3*
+%endif
+
+%ifarch sparc sparc64
+%files driver-suncg6
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/suncg6_drv.o
+%{_mandir}/man4/suncg6*
+%endif
+
+%ifarch sparc sparc64
+%files driver-sunffb
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/sunffb_drv.o
+%attr(755,root,root) %{_libdir}/modules/dri/ffb_dri.so
+%{_mandir}/man4/sunffb*
+%endif
+
+%ifarch sparc sparc64
+%files driver-sunleo
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/sunleo_drv.o
+%{_mandir}/man4/sunleo*
+%endif
+
+%ifarch sparc sparc64
+%files driver-suntcx
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/suntcx_drv.o
+%{_mandir}/man4/suntcx*
+%endif
+
+%ifnarch sparc sparc64
+%files driver-tdfx
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/tdfx_drv.o
+%attr(755,root,root) %{_libdir}/modules/dri/tdfx_dri.so
+%{_mandir}/man4/tdfx*
+%endif
+
+%ifnarch sparc sparc64
+%files driver-tga
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/tga_drv.o
+%endif
+
+%ifnarch sparc sparc64 alpha
+%files driver-trident
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/trident_drv.o
+%{_mandir}/man4/trident*
+%endif
+
+%ifnarch sparc sparc64 alpha
+%files driver-tseng
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/tseng_drv.o
+%{_mandir}/man4/tseng*
+%endif
+
+%ifarch %{ix86}
+%files driver-vmware
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/vmware_drv.o
+%{_mandir}/man4/vmware*
+%endif
+
+%files libs -f XFree86-libs.lang
+%defattr(644,root,root,755)
+%dir %{_libdir}
+%dir %{_libdir}/X11
+%{_libdir}/X11/XErrorDB
+%{_libdir}/X11/XKeysymDB
+%{_libdir}/X11/locale
+%dir %{_includedir}
+%dir %{_includedir}/X11
+%dir %{_bindir}
+/usr/bin/X11
+/usr/lib/X11
+/usr/include/X11
+%dir %{_datadir}/locale
+%dir %{_datadir}/misc
+%dir %{_datadir}/sounds
+%dir %{_pixmapsdir}
+%dir %{_pixmapsdir}/mini
+%dir %{_wmpropsdir}
+%attr(755,root,root) %{_libdir}/libX*.so.*.*
+%attr(755,root,root) %{_libdir}/libI*.so.*.*
+%ifnarch alpha
+%attr(755,root,root) %{_libdir}/libP*.so.*.*
+%endif
+%attr(755,root,root) %{_libdir}/libS*.so.*.*
+%ifnarch alpha
+%attr(755,root,root) %{_libdir}/libx*.so.*.*
+%endif
+
+%files modules
+%defattr(644,root,root,755)
+%{_libdir}/X11/xkb
+%{_sysconfdir}/X11/xkb
+/var/lib/xkb
+%dir %{_libdir}/modules
+%ifnarch alpha
+%dir %{_libdir}/modules/dri
+%endif
+%dir %{_libdir}/modules/drivers
+%ifnarch sparc sparc64
+%{_libdir}/modules/*.uc
+%endif
+%attr(755,root,root) %{_libdir}/modules/*.a
+%attr(755,root,root) %{_libdir}/modules/codeconv
+%attr(755,root,root) %{_libdir}/modules/drivers/linux
+%ifnarch sparc sparc64
+%attr(755,root,root) %{_libdir}/modules/drivers/vga_drv.o
+%ifnarch alpha
+%attr(755,root,root) %{_libdir}/modules/drivers/vesa_drv.o
+%endif
+%endif
+%dir %{_libdir}/modules/extensions
+%attr(755,root,root) %{_libdir}/modules/extensions/libdbe.a
+%attr(755,root,root) %{_libdir}/modules/extensions/libdri.a
+%attr(755,root,root) %{_libdir}/modules/extensions/libextmod.a
+%ifnarch alpha
+%attr(755,root,root) %{_libdir}/modules/extensions/libpex5.a
+%endif
+%attr(755,root,root) %{_libdir}/modules/extensions/librecord.a
+%attr(755,root,root) %{_libdir}/modules/extensions/libxie.a
+%attr(755,root,root) %{_libdir}/modules/fonts
+%attr(755,root,root) %{_libdir}/modules/input
+%attr(755,root,root) %{_libdir}/modules/linux
+%{_mandir}/man4/citron*
+%{_mandir}/man4/dynapro*
+%{_mandir}/man4/keyboard*
+%{_mandir}/man4/microtouch*
+%{_mandir}/man4/mouse*
+%{_mandir}/man4/v4l*
+%ifnarch sparc sparc64
+%{_mandir}/man4/vga*
+%ifnarch alpha
+%{_mandir}/man4/vesa*
+%endif
+%endif
+%{_mandir}/man4/void*
+%{_mandir}/man4/wacom*
+%{_mandir}/man4/elographics*
+%{_mandir}/man4/mutouch*
+
+%files setup
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/SuperProbe
+%attr(755,root,root) %{_bindir}/pcitweak
+%attr(755,root,root) %{_bindir}/scanpci
+%attr(755,root,root) %{_bindir}/xf86cfg
+%attr(755,root,root) %{_bindir}/xf86config
+%{_mandir}/man1/SuperProbe.1*
+%{_mandir}/man1/scanpci.1*
+%{_mandir}/man1/pcitweak.1*
+%{_mandir}/man1/xf86cfg.1*
+%{_mandir}/man1/xf86config.1*
+
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libICE.a
@@ -2096,363 +2352,6 @@ fi
 %{_libdir}/libXrender.a
 %{_libdir}/libXt.a
 %{_libdir}/libXtst.a
-
-%files Xvfb
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/Xvfb
-%{_mandir}/man1/Xvfb.1*
-
-%files Xnest
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/Xnest
-%{_mandir}/man1/Xnest.1*
-
-%files Xprt
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/Xprt
-
-%files Xserver
-%defattr(644,root,root,755)
-%attr(4755,root,root) %{_bindir}/Xwrapper
-%attr(755,root,root) %{_bindir}/XFree86
-%attr(755,root,root) %{_sysconfdir}/X11/X
-%attr(755,root,root) %{_bindir}/X
-%{_mandir}/man1/XFree86.1*
-%{_mandir}/man1/Xserver.1*
-%{_mandir}/man5/XF86Config.5*
-
-%{_libdir}/X11/Cards
-%{_libdir}/X11/Options
-
-%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/X11/XF86Config
-%attr(640,root,root) %config %verify(not md5 size mtime) /etc/pam.d/xserver
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.xserver
-%config(missingok) /etc/security/console.apps/xserver
-
-%ifnarch sparc sparc64 alpha
-
-%files driver-apm
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/apm_drv.o
-%{_mandir}/man4/apm*
-
-%endif
-%ifnarch sparc sparc64 alpha
-
-%files driver-ark
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/ark_drv.o
-
-%endif
-
-%ifnarch alpha
-
-%files driver-ati
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/ati*_drv.o
-#%{_mandir}/man4/ati*
-%endif
-
-%ifnarch sparc sparc64 alpha
-
-%files driver-chips
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/chips_drv.o
-%{_mandir}/man4/chips*
-
-%endif
-%ifnarch sparc sparc64 alpha
-
-%files driver-cirrus
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/cirrus_*.o
-%{_mandir}/man4/cirrus*
-
-%endif
-%ifnarch sparc sparc64 alpha
-
-%files driver-cyrix
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/cyrix_drv.o
-%{_mandir}/man4/cyrix*
-
-%endif
-
-%ifnarch alpha
-
-%files driver-fbdev
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/fbdev_drv.o
-%{_mandir}/man4/fbdev*
-
-%endif
-
-%ifnarch sparc sparc64 alpha
-
-%files driver-glide
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/glide_drv.o
-%{_mandir}/man4/glide*
-
-%endif
-
-%files driver-glint
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/glint_drv.o
-%ifnarch sparc sparc64
-%attr(755,root,root) %{_libdir}/modules/dri/gamma_dri.so
-%endif
-%{_mandir}/man4/glint*
-
-%ifnarch sparc sparc64 alpha
-
-%files driver-i128
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/i128_drv.o
-%{_mandir}/man4/i128*
-
-%endif
-%ifnarch sparc sparc64 alpha
-
-%files driver-i740
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/i740_drv.o
-%{_mandir}/man4/i740*
-
-%endif
-%ifnarch sparc sparc64 alpha
-
-%files driver-i810
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/i810_drv.o
-%attr(755,root,root) %{_libdir}/modules/dri/i810_dri.so
-%{_mandir}/man4/i810*
-
-%endif
-%ifnarch sparc sparc64
-
-%files driver-mga
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/mga_drv.o
-%attr(755,root,root) %{_libdir}/modules/dri/mga_dri.so
-%{_mandir}/man4/mga*
-
-%endif
-%ifnarch sparc sparc64 alpha
-
-%files driver-neomagic
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/neomagic_drv.o
-%{_mandir}/man4/neomagic*
-
-%endif
-%ifnarch sparc sparc64
-
-%files driver-nv
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/nv_drv.o
-%{_mandir}/man4/nv*
-
-%endif
-%ifnarch sparc sparc64
-
-%files driver-r128
-%defattr(644,root,root,755)
-%ifnarch alpha
-%attr(755,root,root) %{_libdir}/modules/drivers/r128_drv.o
-%endif
-%ifnarch sparc sparc64
-%attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
-%endif
-%ifnarch alpha
-%{_mandir}/man4/r128*
-%endif
-
-%endif
-
-%files driver-radeon
-%defattr(644,root,root,755)
-%ifnarch alpha
-%attr(755,root,root) %{_libdir}/modules/drivers/radeon_drv.o
-%endif
-%ifnarch sparc sparc64
-%attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
-%endif
-
-%ifnarch sparc sparc64
-
-%files driver-rendition
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/rendition_drv.o
-%{_mandir}/man4/rendition*
-
-%endif
-%ifnarch sparc sparc64
-
-%files driver-s3virge
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/s3virge_drv.o
-%{_mandir}/man4/s3virge*
-
-%endif
-%ifnarch sparc sparc64
-
-%files driver-s3
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/s3_drv.o
-#%{_mandir}/man4/s3*
-
-%endif
-%ifnarch sparc sparc64 alpha
-
-%files driver-savage
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/savage_drv.o
-%{_mandir}/man4/savage*
-
-%endif
-%ifnarch sparc sparc64 alpha
-
-%files driver-siliconmotion
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/siliconmotion_drv.o
-%{_mandir}/man4/siliconmotion*
-
-%endif
-%ifnarch sparc sparc64 alpha
-
-%files driver-sis
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
-%attr(755,root,root) %{_libdir}/modules/dri/sis_dri.so
-%{_mandir}/man4/sis*
-
-%endif
-%ifarch sparc sparc64
-
-%files driver-sunbw2
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/sunbw2_drv.o
-%{_mandir}/man4/sunbw2*
-
-%endif
-%ifarch sparc sparc64
-
-%files driver-suncg14
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/suncg14_drv.o
-%{_mandir}/man4/suncg14*
-
-%endif
-%ifarch sparc sparc64
-
-%files driver-suncg3
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/suncg3_drv.o
-%{_mandir}/man4/suncg3*
-
-%endif
-%ifarch sparc sparc64
-
-%files driver-suncg6
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/suncg6_drv.o
-%{_mandir}/man4/suncg6*
-
-%endif
-%ifarch sparc sparc64
-
-%files driver-sunffb
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/sunffb_drv.o
-%attr(755,root,root) %{_libdir}/modules/dri/ffb_dri.so
-%{_mandir}/man4/sunffb*
-
-%endif
-%ifarch sparc sparc64
-
-%files driver-sunleo
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/sunleo_drv.o
-%{_mandir}/man4/sunleo*
-
-%endif
-%ifarch sparc sparc64
-
-%files driver-suntcx
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/suntcx_drv.o
-%{_mandir}/man4/suntcx*
-
-%endif
-%ifnarch sparc sparc64
-
-%files driver-tdfx
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/tdfx_drv.o
-%attr(755,root,root) %{_libdir}/modules/dri/tdfx_dri.so
-%{_mandir}/man4/tdfx*
-
-%endif
-%ifnarch sparc sparc64
-
-%files driver-tga
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/tga_drv.o
-
-%endif
-%ifnarch sparc sparc64 alpha
-
-%files driver-trident
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/trident_drv.o
-%{_mandir}/man4/trident*
-
-%endif
-%ifnarch sparc sparc64 alpha
-
-%files driver-tseng
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/tseng_drv.o
-%{_mandir}/man4/tseng*
-
-%endif
-
-%ifarch %{ix86}
-
-%files driver-vmware
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/vmware_drv.o
-%{_mandir}/man4/vmware*
-
-%endif
-
-%files DPS
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/makepsres
-%attr(755,root,root) %{_bindir}/pswrap
-%attr(755,root,root) %{_bindir}/dpsinfo
-%attr(755,root,root) %{_bindir}/dpsexec
-%attr(755,root,root) %{_libdir}/libdps.so.*.*
-%attr(755,root,root) %{_libdir}/libdpstk.so.*.*
-%attr(755,root,root) %{_libdir}/libpsres.so.*.*
-%{_mandir}/man1/makepsres*
-%{_mandir}/man1/pswrap*
-%{_mandir}/man1/dpsexec*
-%{_mandir}/man1/dpsinfo*
-
-%files DPS-devel
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libdps.so
-%attr(755,root,root) %{_libdir}/libdpstk.so
-%attr(755,root,root) %{_libdir}/libpsres.so
-%{_includedir}/DPS
-
-%files DPS-static
-%defattr(644,root,root,755)
-%{_libdir}/libdps.a
-%{_libdir}/libdpstk.a
-%{_libdir}/libpsres.a
 
 %files tools
 %defattr(644,root,root,755)
@@ -2540,15 +2439,75 @@ fi
 %{_libdir}/X11/app-defaults/Xditview
 %{_libdir}/X11/app-defaults/Xditview-chrtr
 
-%files setup
+%files -n sessreg
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/SuperProbe
-%attr(755,root,root) %{_bindir}/pcitweak
-%attr(755,root,root) %{_bindir}/scanpci
-%attr(755,root,root) %{_bindir}/xf86cfg
-%attr(755,root,root) %{_bindir}/xf86config
-%{_mandir}/man1/SuperProbe.1*
-%{_mandir}/man1/scanpci.1*
-%{_mandir}/man1/pcitweak.1*
-%{_mandir}/man1/xf86cfg.1*
-%{_mandir}/man1/xf86config.1*
+%attr(755,root,root) %{_bindir}/sessreg
+%{_mandir}/man1/sessreg.1*
+
+%files -n twm
+%defattr(644,root,root,755)
+%{_wmpropsdir}/twm.desktop
+%attr(755,root,root) %{_bindir}/twm
+%dir %{_sysconfdir}/X11/twm
+%config %{_sysconfdir}/X11/twm/system.twmrc
+%attr(755,root,root) %{_libdir}/X11/twm
+%{_mandir}/man1/twm.1*
+
+%files -n xauth
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/xauth
+%{_mandir}/man1/xauth.1*
+
+%files -n xdm
+%defattr(644,root,root,755)
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/pam.d/xdm
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.xdm
+%attr(754,root,root) /etc/rc.d/init.d/xdm
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/xdm
+/var/lib/xdm
+
+%{_libdir}/X11/app-defaults/Chooser
+
+%attr(755,root,root) %{_libdir}/X11/xdm
+%attr(755,root,root) %{_bindir}/xdm
+%attr(755,root,root) %{_bindir}/chooser
+%ifarch alpha
+%attr(755,root,root) %{_libdir}/libXdmGreet.so*
+%endif
+%{_mandir}/man1/xdm.1*
+
+%dir /etc/X11/xdm
+%attr(755,root,root) %config /etc/X11/xdm/GiveConsole
+%attr(755,root,root) %config /etc/X11/xdm/TakeConsole
+%attr(755,root,root) %config /etc/X11/xdm/Xsession
+%attr(755,root,root) %config /etc/X11/xdm/Xsetup_0
+%attr(755,root,root) %config /etc/X11/xdm/Xwilling
+%config /etc/X11/xdm/Xaccess
+%config /etc/X11/xdm/Xresources
+%config /etc/X11/xdm/Xservers
+%config /etc/X11/xdm/xdm-config
+/etc/X11/xdm/pixmaps
+/etc/X11/xdm/authdir
+
+%files -n xfs
+%defattr(644,root,root,755)
+%attr(754,root,root) /etc/rc.d/init.d/xfs
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/xfs
+%dir %{_sysconfdir}/X11/fs
+%attr(755,root,root) %{_libdir}/X11/fs
+%config(noreplace) %{_sysconfdir}/X11/fs/config
+%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/X11/XftConfig
+
+%attr(755,root,root) %{_bindir}/xfs
+%attr(755,root,root) %{_bindir}/fslsfonts
+%attr(755,root,root) %{_bindir}/fstobdf
+%attr(755,root,root) %{_bindir}/mkcfm
+%attr(755,root,root) %{_bindir}/xfsinfo
+%attr(755,root,root) %{_bindir}/xftcache
+
+%{_mandir}/man1/xfs.1*
+%{_mandir}/man1/fslsfonts.1*
+%{_mandir}/man1/fstobdf.1*
+%{_mandir}/man1/mkcfm.1*
+%{_mandir}/man1/xfsinfo.1*
+%{_mandir}/man1/xftcache.1*
