@@ -8,6 +8,7 @@
 #
 
 %define		_sver	%(echo %{version} | tr -d .)
+%define		_synaptics_ver	0.11.3p2
 
 Summary:	XFree86 Window System servers and basic programs
 Summary(de):	Xfree86 Window-System-Server und grundlegende Programme
@@ -60,6 +61,9 @@ Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-X
 # Source38-md5:	a184106bb83cb27c6963944d9243ac3f
 #Source39:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
 # Source39-md5: 8d43c01d364576c195a5294279f92566
+# http://w1.894.telia.com/~u89404340/touchpad/index.html
+Source40:	http://w1.894.telia.com/~u89404340/touchpad/synaptics-%{_synaptics_ver}.tar.bz2
+# Source40-md5:	2898f128f1e40dd29f3af38ce7550aae
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -1923,7 +1927,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c -b3
+%setup -q -c -b3 -a40
 #-b1 -b2 -a3
 %patch0 -p0
 %patch1 -p1
@@ -2009,6 +2013,22 @@ rm -rf xc/fonts
 #	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 %endif
 
+cd synaptics
+%{__make} \
+	TOP=$(pwd)/xc \
+        CC="%{__cc}" \
+        BOOTSTRAPCFLAGS="%{rpmcflags}" \
+        CCOPTIONS="%{rpmcflags}" \
+        CXXOPTIONS="%{rpmcflags}" \
+        CXXDEBUGFLAGS="" \
+        CDEBUGFLAGS="" \
+        ICONDIR="%{_icondir}" \
+        LINUXDIR="%{_kernelsrcdir}"
+
+for f in COMPATIBILITY FEATURES INSTALL NEWS PARAMETER; do
+	cp -f ${f} ${f}.synaptics
+done
+
 #--- %install ------------------------
 
 %install
@@ -2035,6 +2055,8 @@ install -d $RPM_BUILD_ROOT/etc/{X11/fs,pam.d,rc.d/init.d,security/console.apps,s
 	CDEBUGFLAGS="" \
 	ICONDIR="%{_icondir}" \
 	LINUXDIR="%{_kernelsrcdir}"
+
+install synaptics/synaptics_drv.o $RPM_BUILD_ROOT%{_libdir}/modules/input/
 
 %ifnarch alpha
 #install -d $RPM_BUILD_ROOT%{_libdir}/modules.gatos/{drivers,dri}
@@ -2258,6 +2280,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
+%doc synaptics/*.synaptics
 %ifnarch sparc sparc64
 %doc %{_docdir}/%{name}-%{version}
 %doc %{_libdir}/X11/doc
