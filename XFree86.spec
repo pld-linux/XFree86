@@ -7,13 +7,13 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(wa):	Sierveus di håynaedje XFree86 eyèt maisses programes
 Name:		XFree86
-Version:	3.3.5
-Release:	21
+Version:	3.3.6
+Release:	1
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/3.3.5/source/X335src-1.tgz
-Source1:	ftp://ftp.xfree86.org/pub/XFree86/3.3.5/source/X335src-2.tgz
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/3.3.6/source/X336src-1.tgz
+Source1:	ftp://ftp.xfree86.org/pub/XFree86/3.3.6/source/X336src-2.tgz
 Source2:	ftp://ftp.dcs.ed.ac.uk/pub/jec/programs/xfsft/xfsft-1.1.6.tar.gz
 Source3:	xdm.pamd
 Source4:	xdm.init
@@ -68,37 +68,26 @@ Patch31:	XFree86-fixiso8859-2.patch
 Patch32:	XFree86-ssa50.patch
 # turn off accel for sis6326 cards
 Patch33:	XFree86-sis.patch
-# fix trident cards
-Patch34:	XFree86-tridentfix.patch
-# SECURITY: fix symlink attack on xkbcomp file
-Patch35:	XFree86-xkm.patch
-# fix banshee cards
-Patch36:	XFree86-TDFX.patch
-Patch37:	XFree86-kbdrate.patch
-Patch38:	XFree86-xfsftfontdir.patch
-Patch39:	XFree86-cyrix.patch
-Patch40:	XFree86-creator3.patch
-Patch41:	XFree86-sparcmhead.patch
+Patch34:	XFree86-xfsftfontdir.patch
+Patch35:	XFree86-cyrix.patch
+Patch36:	XFree86-creator3.patch
+Patch37:	XFree86-sparcmhead.patch
 # patch for elite3d cards on SPARC
-patch42:	XFree86-elite3d.patch
+patch38:	XFree86-elite3d.patch
 # fix xkb on sparc
-Patch43:	XFree86-sunxkb.patch
+Patch39:	XFree86-sunxkb.patch
 # fbdev on sparc
-Patch44:	XFree86-sparcfbdev.patch
-Patch45:	XFree86-pfillbug.patch
-Patch46:	XFree86-linebug.patch
-Patch47:	XFree86-mach64_3.patch
-Patch48:	XFree86-multiffb.patch
-Patch49:	XFree86-ffbfixes.patch
-Patch50:	XFree86-sparcpckbd.patch
-Patch51:	XFree86-raptor.patch
-Patch52:	XFree86-ffb3.patch
-Patch53:	ftp://ftp.dcs.ed.ac.uk/pub/jec/programs/xfsft/xfsft-1.1.6-1.1.7.patch
-Patch54:	XFree86-3dfxalpha.patch
-Patch55:	http://www.s2.org/~jpaana/nv/geforce-3.3-patch
-# Patch for tablets maked using latest source avalaible at:	
-# http://www.lepied.com/xfree86/
-Patch56:	XFree86-f86Wacom.patch
+Patch40:	XFree86-sparcfbdev.patch
+Patch41:	XFree86-pfillbug.patch
+Patch42:	XFree86-linebug.patch
+Patch43:	XFree86-mach64_3.patch
+Patch44:	XFree86-multiffb.patch
+Patch45:	XFree86-ffbfixes.patch
+Patch46:	XFree86-sparcpckbd.patch
+Patch47:	XFree86-raptor.patch
+Patch48:	XFree86-ffb3.patch
+Patch49:	ftp://ftp.dcs.ed.ac.uk/pub/jec/programs/xfsft/xfsft-1.1.6-1.1.7.patch
+Patch50:	XFree86-3dfxalpha.patch
 
 BuildRequires:	ncurses-devel >= 5.0
 BuildRequires:	zlib-devel
@@ -1257,16 +1246,8 @@ install xfsft-1.1.6/fonts.scale.Type1 xc/fonts/scaled/Type1/fonts.scale
 %patch46 -p1
 %patch47 -p1
 %patch48 -p1
-%patch49 -p1
+%patch49 -p0
 %patch50 -p1
-%patch51 -p1
-%patch52 -p1
-%patch53 -p0
-%patch54 -p1
-(cd xc/programs
-%patch55 -p1
-)
-%patch56 -p1
 
 ## Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
