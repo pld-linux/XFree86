@@ -1,0 +1,177 @@
+--- XFree86-3.3.3/xc/config/cf/xf86site.def.rh	Sun Nov  8 06:19:11 1998
++++ XFree86-3.3.3/xc/config/cf/xf86site.def	Mon Nov 30 13:48:39 1998
+@@ -66,9 +66,9 @@
+  *
+  * This should automatically get set correctly by imake.
+  *
+-#define LinuxCLibMajorVersion	5
+-#define LinuxClibMinorVersion	4
+  */
++#define LinuxCLibMajorVersion	6
++#define LinuxClibMinorVersion	0
+ 
+ /*
+  * If you want to use the GNU malloc library, uncomment this
+@@ -101,8 +101,8 @@
+  * Note: version 4.0 or 4.1 is required, and XF86Setup links it statically by
+  * default.
+  *
+-#define HasTk			YES
+  */
++#define HasTk			YES
+ 
+ /*
+  * Set the paths and names for your Tk library if they don't match the
+@@ -115,25 +115,26 @@
+  *
+  * Some Linux releases need TkLibDir set to /usr/X11R6/lib
+  *
+-#define TkLibDir		/usr/local/lib
+-#define TkIncDir		/usr/local/include
+-#define TkLibName		tk
+  */
++#define TkLibDir		/usr/lib
++#define TkIncDir		/usr/include
++#define TkLibName		tk
+ 
+ /*
+  * By default, XF86Setup is linked with a static Tk library.  To change
+  * that, uncomment the following line.
+  *
+-#define XF86SetupUsesStaticTk	NO
+  */
++#define XF86SetupUsesStaticTk	NO
++
+ 
+ /*
+  * If you have Tcl (which is required to build XF86Setup), uncomment this
+  * Note: version 7.4 or 7.5 is required, and XF86Setup links it statically by
+  * default.
+  *
+-#define HasTcl			YES
+  */
++#define HasTcl			YES
+ 
+ /*
+  * Set the paths and names for your Tcl library if they don't match the
+@@ -143,17 +144,17 @@
+  *
+  * Some Linux releases need TclIncDir set to /usr/include/tcl.
+  *
+-#define TclLibDir		/usr/local/lib
+-#define TclIncDir		/usr/local/include
+-#define TclLibName		tcl
+  */
++#define TclLibDir		/usr/lib
++#define TclIncDir		/usr/include
++#define TclLibName		tcl
+ 
+ /*
+  * By default, XF86Setup is linked with a static Tcl library.  To change
+  * that, uncomment the following line.
+  *
+-#define XF86SetupUsesStaticTcl	NO
+  */
++#define XF86SetupUsesStaticTcl	NO
+ 
+ /*
+  * Which servers do you wish to build, you can save a lot of disk space
+@@ -339,8 +340,8 @@
+  * fonts once, if this is a first time install you will want to build the
+  * fonts)
+  *
+-#define BuildFonts		NO
+  */
++#define BuildFonts		YES
+ 
+ /*
+  * To not build/install the 75dpi fonts, uncomment the following
+@@ -369,8 +370,8 @@
+ /*
+  * To not build/install the Cyrillic fonts, uncomment the following
+  *
+-#define BuildCyrillicFonts	NO
+  */
++#define BuildCyrillicFonts	YES
+ 
+ /*
+  * To not install the local font directory, uncomment the following
+@@ -400,7 +401,7 @@
+  * will need to be built with the Joystick driver in order to be able to
+  * use this.
+  *
+-#define JoystickSupport		NO
++#define JoystickSupport		YES
+ #define WacomSupport		YES
+ #define MicroTouchSupport	YES 
+ #define ElographicsSupport	YES 
+@@ -536,8 +537,8 @@
+  * To forceably build static libraries in addition to shared libraries,
+  * uncomment this.
+  *
+-#define ForceNormalLib		YES
+  */
++#define ForceNormalLib		YES
+ 
+ /*
+  * Uncomment this if your default tools (eg, gcc, ld, as, etc) are
+--- XFree86-3.3.3/xc/config/cf/site.def.rh	Sun Jun 22 06:32:21 1997
++++ XFree86-3.3.3/xc/config/cf/site.def	Mon Nov 30 13:43:48 1998
+@@ -106,10 +111,11 @@
+ */
+ 
+ /*
+-#undef DefaultUserPath
+-#define DefaultUserPath /bin:/usr/bin:$(BINDIR):/usr/ucb:/usr/local/bin
+ */
+-
++#undef DefaultUserPath
++#define DefaultUserPath /usr/local/bin:/bin:/usr/bin
++#undef DefaultSystemPath
++#define DefaultSystemPath /sbin:/usr/sbin:/bin:/usr/bin
+ 
+ /* You do NOT need SetUID if you only run the server under xdm */
+ /* You MAY need SetUID if users run the server by hand or under xinit */
+--- XFree86-3.3.3/xc/config/cf/linux.cf.rh	Sun Nov  8 06:34:50 1998
++++ XFree86-3.3.3/xc/config/cf/linux.cf	Mon Nov 30 13:43:53 1998
+@@ -92,13 +92,13 @@
+ 				-D_POSIX_SOURCE -D_XOPEN_SOURCE=500L \
+ 				-D_BSD_SOURCE -D_SVID_SOURCE
+ #define XawI18nDefines		-DHAS_WCHAR_H -DHAS_WCTYPE_H -DNO_WIDEC_H
+-#if !defined(AlphaArchitecture)
++/*#if !defined(AlphaArchitecture)*/
+ #define HasPosixThreads		YES
+ #define ThreadedX		YES
+ #define HasThreadSafeAPI	YES
+ #define ThreadsLibraries	-lpthread
+ #define SystemMTDefines		-D_REENTRANT
+-#endif
++/*#endif*/
+ #ifndef HasLibCrypt
+ #define HasLibCrypt		YES
+ #endif
+@@ -318,1 +318,5 @@
+ #include <xfree86.cf>
++
++#ifndef XtermWithI18N
++#define XtermWithI18N YES
++#endif
+--- XFree86-3.3.3/xc/programs/xinit/Imakefile.rh	Thu Nov  5 14:28:39 1998
++++ XFree86-3.3.3/xc/programs/xinit/Imakefile	Mon Nov 30 13:43:47 1998
+@@ -35,9 +35,11 @@
+ InstallNamedProg(startx,startx,$(BINDIR))
+ InstallManPage(startx,$(MANDIR))
+ 
+-#if InstallXinitConfig
+-InstallNonExecFile($(SAMPLECONFIG),$(XINITDIR))
+-#else
+-InstallNonExecFileNoClobber($(SAMPLECONFIG),$(XINITDIR))
+-#endif
++XCOMM Red Hat gets this from a different package
++XCOMM #if InstallXinitConfig
++XCOMM InstallNonExecFile($(SAMPLECONFIG),$(XINITDIR))
++XCOMM #else
++XCOMM InstallNonExecFileNoClobber($(SAMPLECONFIG),$(XINITDIR))
++XCOMM #endif
++
+ #endif
