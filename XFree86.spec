@@ -74,7 +74,9 @@ BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
 %ifarch %{ix86} alpha
 BuildRequires:	Glide_V3-DRI-devel >= 3.10-7
+%endif
 # Required by xc/programs/Xserver/hw/xfree86/drivers/glide/glide_driver.c
+%ifarch %{ix86}
 BuildRequires:	Glide2x_SDK
 %endif
 Requires:	xauth
