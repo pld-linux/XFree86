@@ -2,12 +2,13 @@ Summary:	XFree86 Window System servers and basic programs
 Summary(de):	Xfree86 Window-System-Server und grundlegende Programme
 Summary(es):	Servidores XFree86 y programas de base
 Summary(fr):	Serveurs du système XFree86 et programmes de base
+Summary(ja):	XFree86 window system ¤Î¥µ¡¼¥Ð¤È´ðËÜÅª¤Ê¥×¥í¥°¥é¥à
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(wa):	Sierveus di håynaedje XFree86 eyèt maisses programes
 Name: 		XFree86
 Version:	3.3.5
-Release:	18
+Release:	19
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -21,6 +22,8 @@ Source6:	xfs.config
 Source7:	xserver.pamd
 Source8:	XTerm.ad-pl
 Source9:	twm.desktop
+Source10:	xdm.sysconfig
+Source11:	xfs.sysconfig
 
 Patch0:		XFree86-rh.patch
 Patch1:		XFree86-rhxdm.patch
@@ -92,6 +95,10 @@ Patch51:	XFree86-raptor.patch
 Patch52:	XFree86-ffb3.patch
 Patch53:	ftp://ftp.dcs.ed.ac.uk/pub/jec/programs/xfsft/xfsft-1.1.6-1.1.7.patch
 Patch54:	XFree86-3dfxalpha.patch
+Patch55:	http://www.s2.org/~jpaana/nv/geforce-3.3-patch
+# Patch for tablets maked using latest source avalaible at:
+# http://www.lepied.com/xfree86/
+Patch56:	XFree86-f86Wacom.patch
 
 BuildRequires:	ncurses-devel >= 5.0
 BuildRequires:	zlib-devel
@@ -197,9 +204,10 @@ Modules with X servers extensions.
 Wspólne modu³y rozszerzeñ dla wszystkich X serwerów.
 
 %package libs
-Summary:	X Window System shared libraries
+Summary:	X Window System shared libraries
 Summary(de):	X11R6 shared Libraries
 Summary(es):	Bibliotecas dinámicas de funciones X11R6
+Summary(ja):	X11R6 ¶¦Í­¥é¥¤¥Ö¥é¥ê (Xaw È´¤­)
 Summary(pl):	Biblioteki wspó³dzielone X Window System
 Summary(fr):	Bibliothèques partagées X11R6
 Summary(wa):	Pårteyes lîvreyes di foncsions di X11R6
@@ -246,6 +254,7 @@ Summary:	X11R6 headers and programming man pages
 Summary(de):	X11R6 Headers und man pages für Programmierer
 Summary(es):	Biblietecas estáticas, archivos de declaraciones y páginas de manual
 Summary(fr):	Pages man de programmation
+Summary(ja):	X11R6 ¥¹¥¿¥Æ¥£¥Ã¥¯¡¦¥é¥¤¥Ö¥é¥ê¡¢¥Ø¥Ã¥À¡¼¤È´ØÏ¢¤¹¤ë man ¥Ú¡¼¥¸
 Summary(pl):	Pliki nag³ówkowe dla X11R6
 Summary(tr):	X11R6 ile geliþtirme için gerekli dosyalar
 Summary(wa):	Lîvreyes statikes, fitchîs *.h eyèt pådjes di man pol programåcion
@@ -331,6 +340,7 @@ Summary:	The XFree86 server for video cards based on the S3 chip
 Summary(de):	XFree86 S3 Server
 Summary(es):	Servidor de XFree86 para tarjetas video S3
 Summary(fr):	Serveur XFree86 pour S3
+Summary(ja):	XFree86 S3 ¥µ¡¼¥Ð
 Summary(pl):	XFree86 serwer dla kart S3
 Summary(tr):	XFree86 S3 sunucularý
 Summary(wa):	Sierveu di XFree86 po les cåtes videyo avou des chips S3
@@ -375,6 +385,7 @@ hýzlandýrýcýlar bu gruba girer. S3 Virge sunucusu ayrý bir pakette yer alýr.
 Summary:	The XFree86 server for #9 Imagine 128 video cards
 Summary(de):	XFree86 #9 Imagine 128 Server
 Summary(es):	Servidor Number9 Imagine 128 de XFree86
+Summary(ja):	XFree86 #9 Imagine 128 ¥µ¡¼¥Ð
 Summary(fr):	Serveur Xfree86 pour #9 Imagine 128
 Summary(pl):	XFree86 serwer dla kart Number Nine Imagine 128
 Summary(tr):	XFree86 #9 Imagine 128 sunucusu
@@ -404,6 +415,7 @@ Summary:	The XFree86 server for video cards based on the S3 Virge chip
 Summary(de):	Xfree86 S3 Virge-Server
 Summary(es):	Servidor de XFree86 para tarjetas video a base de S3 Virge
 Summary(fr):	Serveur XFree86 pour S3 Virge
+Summary(ja):	XFree86 S3 Virge ¥µ¡¼¥Ð
 Summary(pl):	XFree86 serwer dla kart S3 Virge
 Summary(tr):	XFree86 S3 Virge sunucusu
 Summary(wa):	Sierveu di XFree86 po les cåtes videyo avou des S3 Virge
@@ -431,6 +443,7 @@ XFree86 S3 Virge sunucusu.
 Summary:	The XFree86 server for Mach64 based video cards
 Summary(de):	Xfree86 Mach64-Server
 Summary(fr):	Serveur Mach64 de XFree86
+Summary(ja):	XFree86 Mach64 ¥µ¡¼¥Ð
 Summary(pl):	XFree86 serwer dla kart Mach64
 Summary(tr):	XFree86 Mach64 sunucusu
 Group:		X11/XFree86/Servers
@@ -549,6 +562,7 @@ Summary:	A virtual framebuffer X Windows System server for XFree86
 Summary(de):	X-Server für virtuelle Framebuffer
 Summary(es):	Servidor de XFree86 para framebuffers virtuales
 Summary(fr):	Serveur X virtuel
+Summary(ja):	XFree86 Xvfb ¥µ¡¼¥Ð
 Summary(pl):	Serwer XFree86 Xvfb
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
@@ -637,6 +651,7 @@ implementation.
 Summary:	The XFree86 server program for older IBM 8514 or compatible video cards
 Summary(de):	XFree86 8514 Server
 Summary(fr):	serveur 8514 pour XFree86.
+Summary(ja):	XFree86 8514 ¥µ¡¼¥Ð
 Summary(pl):	XFree86 serwer dla kart 8514
 Summary(tr):	XFree86 8514 sunucusu
 Group:		X11/XFree86/Servers
@@ -665,6 +680,7 @@ Summary:	The XFree86 server for AGX-based video cards
 Summary(de):	XFree86 AGX Server
 Summary(es):	Servidor de XFree86 para tarjetas AGX
 Summary(fr):	serveur AGX pour XFree86.
+Summary(ja):	XFree86 AGX ¥µ¡¼¥Ð
 Summary(pl):	XFree86 serwer dla kart AGX
 Summary(tr):	XFree86 AGX sunucusu
 Summary(wa):	Sierveu di XFree86 po les cåtes videyo avou des chips AGX
@@ -723,6 +739,7 @@ Wsparcie dla platform Intel i Alpha jest w j±drze systemu.
 Summary:	The XFree86 server for Mach32 based video cards
 Summary(de):	Xfree86 Mach32-Server
 Summary(fr):	Serveur XFree86 pour Mach32
+Summary(ja):	XFree86 Mach32 ¥µ¡¼¥Ð
 Summary(pl):	XFree86 serwer dla kart Mach32
 Summary(tr):	XFree86 Mach32 sunucusu
 Group:		X11/XFree86/Servers
@@ -755,6 +772,7 @@ Summary:	The XFree86 server for Mach8 video cards
 Summary(de):	XFree86 Mach8 Server
 Summary(es):	Servidor Mach8 de XFree86
 Summary(fr):	Serveur Mach8 pour XFree86
+Summary(ja):	XFree86 Mach8 ¥µ¡¼¥Ð
 Summary(pl):	XFree86 serwer dla kart Mach8
 Summary(tr):	XFree86 Mach8 sunucusu
 Summary(wa):	Sierveu Mach8 di XFree86
@@ -788,6 +806,7 @@ Summary:	A generic XFree86 monochrome server for VGA cards
 Summary(de):	Xfree86 Mono-Server
 Summary(es):	Servidor genérico para tarjetas monocromes o VGA
 Summary(fr):	Serveur Monochrome de XFree86
+Summary(ja):	XFree86 ¥â¥Î¥¯¥í¡¦¥µ¡¼¥Ð
 Summary(pl):	XFree86 serwer dla kart Monochromatycznych
 Summary(tr):	XFree86 Mono sunucusu
 Summary(wa):	Sierveu ki chine bén tot po cåtes monocrome ou VGA
@@ -824,6 +843,7 @@ Summary:	The XFree86 server for P9000 cards
 Summary(de):	XFree86 P9000 Server
 Summary(es):	Servidor XFree86 para tarjetas a base de P9000
 Summary(fr):	Serveur XFree86 pour P9000
+Summary(ja):	XFree86 P9000 ¥µ¡¼¥Ð
 Summary(pl):	XFree86 serwer dla kart P9000
 Summary(tr):	XFree86 P9000 sunucusu
 Summary(wa):	Sierveu di XFree86 po les cåtes avou des chips P9000
@@ -857,6 +877,7 @@ Summary:	An XFree86 server for most simple framebuffer SVGA devices
 Summary(de):	XFree86 SVGA-Server
 Summary(es):	Servidor de XFree86 para tarjetas SVGA simples
 Summary(fr):	Serveur XFree86 pour SVGA
+Summary(ja):	XFree86 SVGA ¥µ¡¼¥Ð
 Summary(pl):	XFree86 serwer dla kart SVGA
 Summary(tr):	XFree86 SVGA sunucusu
 Summary(wa):	Sierveu di XFree86 po simpes cåtes SVGA
@@ -912,6 +933,7 @@ Summary:	A generic XFree86 server for VGA16 boards
 Summary(de):	XFree86 VGA16-Server
 Summary(es):	Servidor de XFree86 para tarjetas en modo VGA 16 colores
 Summary(fr):	Serveur XFree86 pour VGA16
+Summary(ja):	XFree86 VGA16 ¥µ¡¼¥Ð
 Summary(pl):	XFree86 serwer dla kart CGA16
 Summary(tr):	XFree86 VGA16 sunucusu
 Summary(wa):	Sierveu di XFree86 po cåtes è môde VGA è 16 coleurs
@@ -1084,6 +1106,7 @@ Summary:	A set of 75 dpi resolution fonts for the X Window System
 Summary(de):	X11RT 76 dpi-Fonts - nur auf Serverseite erforderlich
 Summary(es):	Fuentes para X11 a 75 dpi - solo necesarias para el servidor X11
 Summary(fr):	Fontes 75 dpi X11R6 - nécessaire uniquement côté serveur
+Summary(ja):	X11R6 75dpi ¥Õ¥©¥ó¥È (¥µ¡¼¥ÐÂ¦¤Î¤ß¤ËÉ¬Í×¤Ç¤¹)
 Summary(pl):	Fonty o rozdzielczo¶ci 75dpi-niebêdne dla serwera
 Summary(tr):	X11R6 75dpi yazýtipleri - yalnýzca sunucu tarafýnda gerekir
 Summary(wa):	Fontes po X11 di fintè 75 dpi - ahessåve seulmint pol sierveu X11
@@ -1127,6 +1150,7 @@ Summary:	X11R6 100dpi fonts - only need on server side
 Summary(de):	X11R6 100dpi-Fonts - nur auf Server-Seite erforderlich
 Summary(es):	Fuentes para X11 a 100 dpi - solo necesarias para el servidor X11
 Summary(fr):	Fontes 100ppp pour X11R6 - nécessaires seulement coté serveur
+Summary(ja):	X11R6 100dpi ¥Õ¥©¥ó¥È (¥µ¡¼¥ÐÂ¦¤Î¤ß¤ËÉ¬Í×¤Ç¤¹)
 Summary(pl):	Fonty o rozdzielczosci 100dpi-niezbêdne dla serwera.
 Summary(tr):	X11R6 100dpi yazýtipleri - yalnýzca sunucu tarafýnda gereklidir
 Summary(wa):	Fontes po X11 di fintè 100 dpi - ahessåve seulmint pol sierveu X11
@@ -1252,6 +1276,10 @@ install xfsft-1.1.6/fonts.scale.Type1 xc/fonts/scaled/Type1/fonts.scale
 %patch52 -p1
 %patch53 -p0
 %patch54 -p1
+(cd xc/programs
+%patch55 -p1
+)
+%patch56 -p1
 
 ## Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
@@ -1270,7 +1298,7 @@ make -C xc World \
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
-	$RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps} \
+	$RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,sysconfig,security/console.apps} \
 	$RPM_BUILD_ROOT/var/state/xkb \
 	$RPM_BUILD_ROOT/usr/include \
 	$RPM_BUILD_ROOT/usr/bin \
@@ -1328,6 +1356,9 @@ install %{SOURCE7} $RPM_BUILD_ROOT/etc/pam.d/xserver
 install %{SOURCE8} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/XTerm
 install %{SOURCE9} $RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties/twm.desktop
 
+install %{SOURCE10} $RPM_BUILD_ROOT/etc/sysconfig/xdm
+install %{SOURCE11} $RPM_BUILD_ROOT/etc/sysconfig/xfs
+
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xdm
@@ -1359,9 +1390,10 @@ gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[135]/*
 #--- %post{un}, %preun, %verifyscript -
 
 %pre
-if [ -d /usr/X11R6/lib/X11/fonts ]; then
+if [ ! -L /usr/X11R6/lib/X11/fonts ]; then
 	mkdir -p /usr/share/fonts
-	mv -a /usr/X11R6/lib/X11/fonts/* /usr/share/fonts
+	cp -ar /usr/X11R6/lib/X11/fonts/* /usr/share/fonts
+	rm -rf /usr/X11R6/lib/X11/fonts
 	ln -sf /usr/share/fonts /usr/X11R6/lib/X11/fonts
 fi
 
@@ -1373,7 +1405,7 @@ grep "^%{_libdir}$" /etc/ld.so.conf >/dev/null 2>&1
 %postun libs
 if [ "$1" = "0" ]; then
 	grep -v "%{_libdir}" /etc/ld.so.conf > /etc/ld.so.conf.new
-	mv -f /etc/ld.so.conf.new /etc/ld.so.conf
+	mv l-f /etc/ld.so.conf.new /etc/ld.so.conf
 fi
 /sbin/ldconfig
 
@@ -1445,13 +1477,17 @@ fi
 		
 %preun -n xfs
 if [ "$1" = "0" ]; then
-	/etc/rc.d/init.d/xfs stop >&2
+	if [ -f /var/lock/subsys/xfs ]; then
+		/etc/rc.d/init.d/xfs stop >&2
+	fi
 	/sbin/chkconfig --del xfs
 fi
 
 %preun -n xdm
 if [ "$1" = "0" ]; then
-	/etc/rc.d/init.d/xdm stop >&2
+	if [ -f /var/lock/subsys/xdm ]; then
+		/etc/rc.d/init.d/xdm stop >&2
+	fi
 	/sbin/chkconfig --del xdm
 fi
 
@@ -1476,7 +1512,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/X11/rstart/commands
 %dir %{_libdir}/X11/rstart/commands/x11r6
 %dir %{_libdir}/X11/rstart/contexts
-%dir %{_libdir}/X11/etc
 %dir %{_libdir}/X11/fonts
 %dir %{_libdir}/X11/xserver
 %dir %{_bindir}
@@ -1691,6 +1726,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xdm
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/security/blacklist.xdm
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/xdm
 %attr(754,root,root) /etc/rc.d/init.d/xdm
 
 %config %{_libdir}/X11/app-defaults/Chooser
@@ -1723,7 +1759,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(754,root,root) /etc/rc.d/init.d/xfs
 %dir /etc/X11/fs
-%config(noreplace) /etc/X11/fs/config
+%config(noreplace) %verify(not size mtime md5) /etc/X11/fs/config
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/xfs
 
 %attr(755,root,root) %{_bindir}/xfs
 %attr(755,root,root) %{_bindir}/fsinfo
@@ -1749,17 +1786,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/gccmakedep
 %attr(755,root,root) %{_libdir}/lib*.so
-%{_libdir}/libFS.a
-%{_libdir}/libXau.a
-%{_libdir}/libXdmcp.a
-%{_libdir}/libXdpms.a
-%{_libdir}/libXss.a
-%{_libdir}/libXxf86dga.a
-%{_libdir}/libXxf86misc.a
-%{_libdir}/libXxf86vm.a
-%{_libdir}/liboldX.a
-%{_libdir}/libxkbfile.a
-%{_libdir}/libxkbui.a
 
 %{_includedir}/X11/*.h
 %{_includedir}/X11/ICE
@@ -1784,20 +1810,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/include/X11
 
 %files static
-%defattr(644,root,root,755)
-%{_libdir}/libICE.a
-%{_libdir}/libPEX5.a
-%{_libdir}/libSM.a
-%{_libdir}/libX11.a
-%{_libdir}/libXIE.a
-%{_libdir}/libXaw.a
-%{_libdir}/libXext.a
-%{_libdir}/libXi.a
-%{_libdir}/libXmu.a
-%{_libdir}/libXp.a
-%{_libdir}/libXt.a
-%{_libdir}/libXtst.a
-%{_libdir}/libXxf86rush.a
+%attr(644,root,root) %{_libdir}/lib*.a
 
 %files Xvfb
 %defattr(644,root,root,755)
