@@ -604,8 +604,12 @@ the case when using remote logins or granting access to other users).
 %patch7 -p0
 %patch8 -p0
 %patch9 -p0
-%patch10 -p0
+#%patch10 -p0
 %patch11 -p1
+
+%patch12 -p1
+%patch13 -p0
+%patch14 -p1
 
 rm -f xc/config/cf/host.def
 
