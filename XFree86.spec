@@ -1439,12 +1439,15 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/share/man/man1/SuperProbe.1*
 /usr/X11R6/share/man/man1/xon.1*
 
+%ifnarch sparc
+
 %files modules
 %defattr(-,root,root,755)
 /usr/X11R6/lib/X11/xkb
 /var/state/xkb
 %attr(755,root,root) /usr/X11R6/lib/modules/*
 
+%endif
 
 %files -n xdm
 %defattr(644,root,root,755)
