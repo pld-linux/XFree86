@@ -1733,8 +1733,6 @@ fi
 %attr(755,root,root) %{_bindir}/xwd
 %attr(755,root,root) %{_bindir}/xwud
 
-%dir %{_includedir}
-%dir %{_includedir}/X11
 %{_includedir}/X11/bitmaps
 %{_includedir}/X11/pixmaps
 
@@ -1950,9 +1948,12 @@ fi
 %{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XKeysymDB
 %{_libdir}/X11/locale
+%dir %{_includedir}
+%dir %{_includedir}/X11
 %dir %{_bindir}
 /usr/bin/X11
 /usr/lib/X11
+/usr/include/X11
 %dir %{_datadir}/locale
 %dir %{_datadir}/sounds
 %dir %{_pixmapsdir}
@@ -2058,8 +2059,6 @@ fi
 %{_mandir}/man1/makedepend.1*
 %{_mandir}/man1/xmkmf.1*
 %{_mandir}/man3/[A-EH-Z]*
-
-/usr/include/X11
 
 %files static
 %defattr(644,root,root,755)
