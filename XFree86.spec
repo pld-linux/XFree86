@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	3.9.17
-Release:	3
+Release:	4
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -69,7 +69,6 @@ die Ausführung der Applikationen direkt auf lokalen Rechnern oder über ein
 Netz und bietet große Flexibilität bei Client-Server-Implementierungen.
 
 %description -l pl
-
 X Window System jest graficznym interfejsem u¿ytkownika, cechuje siê
 mo¿liwo¶ci± pracy w wielu oknach, z wieloma klientami i do tego w ró¿nych
 wystrojach okien. :) Jest u¿ywany na wiêkszo¶ci platform sytemów Unix, a
@@ -254,8 +253,6 @@ really don't need an X server but insist on having one.
 If you need to test your X server or your X clients, you may want to install
 Xvfb for that purpose.
 
-%description -l pl Xvfb
-
 %package Xnest
 Summary:	XFree86 Xnest server
 Summary(pl):	Serwer XFree86 Xnest
@@ -273,7 +270,7 @@ windows and graphics requests for its own clients.
 You will need to install Xnest if you require an X server which will run as
 a client of your real X server (perhaps for testing purposes).
 
-%package Xptr
+%package Xprt
 Summary:	X print server
 Summary(pl):	X print server
 Group:		X11/XFree86/Servers
@@ -281,7 +278,7 @@ Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-fonts = %{version}
 
-%description Xptr
+%description Xprt
 Xprt provides an X server with the print extension and special DDX
 implementation.
 
@@ -806,14 +803,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc /%{_docdir}/%{name}-%{version}/*
 %doc %{_libdir}/X11/doc
 
-%doc %{_libdir}/X11/XF86Config.eg
-%doc %{_libdir}/X11/XF86Config.98
-%doc %{_libdir}/X11/Cards
-
-%ifarch ix86 alpha sparc
-%doc %{_libdir}/X11/Cards
-%endif
-
 %dir /usr/X11R6
 %dir %{_libdir}
 %dir %{_libdir}/X11
@@ -823,13 +812,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/X11/rstart/contexts
 %dir %{_libdir}/X11/etc
 %dir %{_libdir}/X11/fonts
-%dir %{_libdir}/X11/xserver
 %dir %{_bindir}
 
-%config(noreplace) %verify(not md5 mtime size) /etc/X11/XF86Config
-%attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xserver
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xserver
-%config(missingok) /etc/security/console.apps/xserver
 
 %{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XKeysymDB
@@ -862,8 +846,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/X11/etc/xmodmap.std
 %{_libdir}/X11/etc/et4000clock.c
 
-%attr(755,root,root) %{_bindir}/X
-%attr(755,root,root) %{_bindir}/Xprt
 %attr(755,root,root) %{_bindir}/lbxproxy
 
 %attr(755,root,root) %{_bindir}/proxymngr
@@ -1163,13 +1145,32 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/Xnest
 %{_mandir}/man1/Xnest.1*
 
+%files Xprt
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/Xprt
+
 %files Xserver
 %defattr(644,root,root,755)
 %attr(4755,root,root) %{_bindir}/XFree86
-%ghost /etc/X11/X
+%attr(755,root,root) /etc/X11/X
+%attr(755,root,root) %{_bindir}/X
 %{_mandir}/man1/XFree86.1*
 %{_mandir}/man1/Xserver.1*
 %{_mandir}/man5/XF86Config.5*
+
+%dir %{_libdir}/X11/xserver
+%doc %{_libdir}/X11/XF86Config.eg
+%doc %{_libdir}/X11/XF86Config.98
+%doc %{_libdir}/X11/Cards
+
+%ifarch ix86 alpha sparc
+%{_libdir}/X11/Cards
+%endif
+
+%config(noreplace) %verify(not md5 mtime size) /etc/X11/XF86Config
+%attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xserver
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xserver
+%config(missingok) /etc/security/console.apps/xserver
 
 %ifarch alpha
 
