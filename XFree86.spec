@@ -36,7 +36,7 @@ Patch9:		XFree86-xfs-logger.patch
 Patch10:	XFree86-xterm-utempter.patch
 Patch11:	XFree86-app_defaults_dir.patch
 # From DRI CVS
-Patch12:	XFree86-DRI-20000613.patch.gz
+Patch12:	XFree86-DRI-20000616.patch.gz
 # from rawhide
 Patch13:	XFree86-startx_xauth.patch
 Patch14:	XFree86-alpha.patch
@@ -59,7 +59,7 @@ BuildRequires:	tcl-devel
 BuildRequires:	pam-devel
 %ifnarch sparc
 BuildRequires:	Glide2x_SDK
-BuildRequires:	Glide_V3-DRI-devel
+BuildRequires:	Glide_V3-DRI-devel >= 3.10-7
 %endif
 Requires:	xauth
 Obsoletes:	X11R6-contrib
