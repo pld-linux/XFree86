@@ -73,7 +73,7 @@ BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
 BuildRequires:	gcc-c++
 %ifarch %{ix86} alpha
-BuildRequires:	Glide_V3-DRI-devel >= 1:3.10.0-0.20010309
+BuildRequires:	Glide3-DRI-devel >= 1:3.10.0-0.20010309
 %endif
 # Required by xc/programs/Xserver/hw/xfree86/drivers/glide/glide_driver.c
 %ifarch %{ix86}
@@ -96,6 +96,9 @@ Obsoletes:	X11R6.1
 
 # avoid Mesa dependency in XFree86-OpenGL-libs
 %define		_noautoreqdep	libGL.so.1 libGLU.so.1
+
+# Glide3 (libglide3.so.3) can be provided by Glide_V3-DRI or Glide_V5-DRI
+%define		_noautoreqdep	libglide3.so.3
 
 %description
 If you want to install the X Window System (TM) on your machine,
