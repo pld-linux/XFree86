@@ -5,6 +5,7 @@
 # - man4/mouse from modules conflicts with man4/mouse from man-pages
 # - add missing files
 # - separate XFS to be standalone - is it possible without duplicated files?
+# - imstt and nsc video drivers
 
 # _without_tdfx		disables tdfx build
 
@@ -2721,7 +2722,7 @@ fi
 %attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
 %attr(755,root,root) %{_libdir}/modules/dri/r200_dri.so
 %endif
-
+%{_mandir}/man4/radeon*
 
 %ifnarch alpha
 #%%files driver-ati.2
