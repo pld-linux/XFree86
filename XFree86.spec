@@ -29,7 +29,7 @@ Source15:	xlogo64.png
 Patch0:		%{name}-%{version}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
-Patch3:		%{name}-Xwrapper.patch
+Patch3:		%{name}-%{version}-Xwrapper.patch
 Patch4:		%{name}-xfsredhat.patch
 Patch5:		%{name}-xfs-fix.patch
 Patch6:		%{name}-xfs-logger.patch
@@ -877,7 +877,7 @@ X11R6-contrib in older releases.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-#%patch3 -p1
+%patch3 -p1
 #%patch4 -p0
 #%patch5 -p0
 # Not ready yet
