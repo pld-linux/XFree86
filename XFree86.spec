@@ -1538,7 +1538,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_libdir}/X11/doc
 %endif
 
-%{_sysconfdir}/XftConfig
+%{_sysconfdir}/X11/XftConfig
 
 %dir %{_libdir}/X11/app-defaults
 %{_libdir}/X11/app-defaults/XCalc
