@@ -378,19 +378,6 @@ diff -urN xc.org/extras/Mesa/src/imports.h xc/extras/Mesa/src/imports.h
  _mesa_memcpy( void *dest, const void *src, size_t n );
  
  extern void
-diff -urN xc.org/extras/Mesa/src/mtypes.h xc/extras/Mesa/src/mtypes.h
---- xc.org/extras/Mesa/src/mtypes.h	2004-06-07 22:45:05.956322600 +0200
-+++ xc/extras/Mesa/src/mtypes.h	2004-06-07 23:05:35.023475992 +0200
-@@ -31,7 +31,8 @@
- #ifndef TYPES_H
- #define TYPES_H
- 
--
-+#include <unistd.h>
-+#include <sys/mman.h>
- #include "glheader.h"
- #include "config.h"		/* Hardwired parameters */
- #include "glapitable.h"
 diff -urN xc.org/extras/Mesa/src/tnl/t_vtx_exec.c xc/extras/Mesa/src/tnl/t_vtx_exec.c
 --- xc.org/extras/Mesa/src/tnl/t_vtx_exec.c	2004-06-07 22:45:06.597225168 +0200
 +++ xc/extras/Mesa/src/tnl/t_vtx_exec.c	2004-06-07 23:17:12.494444288 +0200
