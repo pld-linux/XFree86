@@ -881,7 +881,7 @@ make -S -C xc World \
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console.apps} \
-	$RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
+	$RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/pl \
 	$RPM_BUILD_ROOT/var/lib/xkb \
 	$RPM_BUILD_ROOT/usr/include \
 	$RPM_BUILD_ROOT/usr/bin \
@@ -919,7 +919,7 @@ install %{SOURCE7} $RPM_BUILD_ROOT/etc/pam.d/xserver
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
 install %{SOURCE6} $RPM_BUILD_ROOT/etc/X11/fs/config
-install %{SOURCE8} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/XTerm
+install %{SOURCE8} $RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/pl/XTerm
 
 install %{SOURCE9} $RPM_BUILD_ROOT/etc/sysconfig/xdm
 install %{SOURCE10} $RPM_BUILD_ROOT/etc/sysconfig/xfs
