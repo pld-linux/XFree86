@@ -10,7 +10,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Name:		XFree86
 Version:	4.2.0
-Release:	2.3
+Release:	2.4
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/%{version}/source/X%{_sver}src-1.tgz
@@ -1199,6 +1199,7 @@ Summary(pl):	Ró¿ne narzêdzia dla XFree86
 Group:		X11/XFree86
 Requires:	%{name} >= %{version}
 Requires:	XFree86-libs = %{version}
+Requires:	man-config
 Obsoletes:	X11R6-contrib
 
 %description tools
