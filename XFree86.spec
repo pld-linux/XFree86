@@ -17,26 +17,37 @@ Summary(uk):	âÁÚÏ×¦ ÛÒÉÆÔÉ, ÐÒÏÇÒÁÍÉ ÔÁ ÄÏËÕÍÅÎÔÁÃ¦Ñ ÄÌÑ ÒÏÂÏÞÏ§ ÓÔÁÎÃ¦§ Ð¦Ä X
 Summary(zh_CN):	XFree86 ´°¿ÚÏµÍ³·þÎñÆ÷ºÍ»ù±¾³ÌÐò
 Name:		XFree86
 Version:	4.2.1
-Release:	5.1
+Release:	5.2
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
 Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
-Source2:	xdm.pamd
-Source3:	xserver.pamd
-Source4:	xdm.init
-Source5:	xfs.init
-Source6:	xfs.config
-Source7:	XTerm.ad-pl
-Source8:	xdm.sysconfig
-Source9:	xfs.sysconfig
-Source10:	twm.desktop
-Source11:	xclipboard.desktop
-Source12:	xconsole.desktop
-Source13:	xterm.desktop
-Source14:	xlogo64.png
-Source15:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
-Source16:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
+Source2:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
+Source3:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
+Source4:	xdm.pamd
+Source5:	xserver.pamd
+Source6:	xdm.init
+Source7:	xfs.init
+Source8:	xfs.config
+Source9:	XTerm.ad-pl
+Source10:	xdm.sysconfig
+Source11:	xfs.sysconfig
+Source20:	twm.desktop
+Source21:	xeyes.desktop
+Source22:	xedit.desktop
+Source23:	xterm.desktop
+Source24:	xclipboard.desktop
+Source25:	xclock.desktop
+Source26:	oclock.desktop
+Source27:	xconsole.desktop
+Source30:	xlogo64.png
+Source31:	xeyes.png
+Source32:	xedit.png
+Source33:	xterm.png
+Source34:	xclipboard.png
+Source35:	xclock.png
+Source36:	oclock.png
+Source37:	xconsole.png
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -1769,7 +1780,7 @@ rm -f xc/config/cf/host.def
 
 # New ATI drivers
 cd xc/programs/Xserver/hw/xfree86/drivers
-bzcat %{SOURCE16} | tar x
+bzcat %{SOURCE2} | tar x
 # ati.2 directory
 
 #--- %build --------------------------
@@ -1800,8 +1811,8 @@ install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysc
 	$RPM_BUILD_ROOT%{_sbindir} \
 	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
 	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
-	$RPM_BUILD_ROOT{%{_applnkdir}/{Utilities,Terminals},%{_pixmapsdir}/mini} \
-	$RPM_BUILD_ROOT%{_wmpropsdir}
+	$RPM_BUILD_ROOT%{_applnkdir}/{Amusements,Editors,Utilities,Terminals} \
+	$RPM_BUILD_ROOT{%{_pixmapsdir}/mini,%{_wmpropsdir}}
 
 %{__make} -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -1845,24 +1856,28 @@ rm -f $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/{*Console,Xaccess,Xsession,Xsetup*}
 install xdm-xinitrc-*/pixmaps/* $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/pixmaps
 install xdm-xinitrc-*/{*Console,Xaccess,Xsession,Xsetup*} $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm
 
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/xdm
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/xserver
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
-install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
-install %{SOURCE6} $RPM_BUILD_ROOT%{_sysconfdir}/X11/fs/config
-install %{SOURCE7} $RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/pl/XTerm
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/pam.d/xdm
+install %{SOURCE5} $RPM_BUILD_ROOT/etc/pam.d/xserver
+install %{SOURCE6} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
+install %{SOURCE7} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
+install %{SOURCE8} $RPM_BUILD_ROOT%{_sysconfdir}/X11/fs/config
+install %{SOURCE9} $RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/pl/XTerm
 
-install %{SOURCE8} $RPM_BUILD_ROOT/etc/sysconfig/xdm
-install %{SOURCE9} $RPM_BUILD_ROOT/etc/sysconfig/xfs
+install %{SOURCE10} $RPM_BUILD_ROOT/etc/sysconfig/xdm
+install %{SOURCE11} $RPM_BUILD_ROOT/etc/sysconfig/xfs
 
-install %{SOURCE10} $RPM_BUILD_ROOT%{_wmpropsdir}/twm.desktop
-install %{SOURCE11} $RPM_BUILD_ROOT%{_applnkdir}/Utilities
-install %{SOURCE12} $RPM_BUILD_ROOT%{_applnkdir}/Utilities
-install %{SOURCE13} $RPM_BUILD_ROOT%{_applnkdir}/Terminals
+install %{SOURCE20} $RPM_BUILD_ROOT%{_wmpropsdir}/twm.desktop
+install %{SOURCE21} $RPM_BUILD_ROOT%{_applnkdir}/Amusements
+install %{SOURCE22} $RPM_BUILD_ROOT%{_applnkdir}/Editors
+install %{SOURCE23} $RPM_BUILD_ROOT%{_applnkdir}/Terminals
+install %{SOURCE24}  %{SOURCE25} %{SOURCE26} %{SOURCE27} \
+		$RPM_BUILD_ROOT%{_applnkdir}/Utilities
+install %{SOURCE30} $RPM_BUILD_ROOT%{_datadir}/pixmaps
+install %{SOURCE31} %{SOURCE32} %{SOURCE33} %{SOURCE34} %{SOURCE35} \
+	%{SOURCE36} \
+	$RPM_BUILD_ROOT%{_pixmapsdir}
 
-install %{SOURCE14} $RPM_BUILD_ROOT%{_datadir}/pixmaps
-
-bzip2 -dc %{SOURCE15} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
+bzip2 -dc %{SOURCE3} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 
 > $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 > $RPM_BUILD_ROOT/etc/security/blacklist.xserver
@@ -2871,6 +2886,8 @@ fi
 %{_libdir}/X11/app-defaults/Xditview-chrtr
 
 %{_applnkdir}/Utilities/xclipboard.desktop
+%{_applnkdir}/Utilities/xclock.desktop
+%{_applnkdir}/Editors/xedit.desktop
 
 %files -n imake
 %defattr(644,root,root,755)
