@@ -1739,8 +1739,8 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch45 -p1
 %patch46 -p1
 %patch47 -p0
-%patch48 -p0
-# Causes build error:
+# Causes build error - FIXME:
+#%patch48 -p0
 #%patch49 -p0
 %patch50 -p0
 %patch51 -p0
