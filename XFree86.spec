@@ -325,6 +325,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-Xserver = %{version}
+Obsoletes:	XFree86-xf86cfg
 
 %description setup
 Setup containst a configuration tool for the XFree86 family of
@@ -1287,9 +1288,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/X11/x11perfcomp/*
 %{_libdir}/X11/*.txt
 
-%ifnarch sparc sparc64
-%attr(755,root,root) %{_bindir}/SuperProbe
-%endif
 %attr(755,root,root) %{_bindir}/Xmark
 %attr(755,root,root) %{_bindir}/appres
 %attr(755,root,root) %{_bindir}/atobm
@@ -1312,10 +1310,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/revpath
 %attr(755,root,root) %{_bindir}/rstart
 %attr(755,root,root) %{_bindir}/rstartd
-%ifnarch sparc sparc64
-%attr(755,root,root) %{_bindir}/pcitweak
-%attr(755,root,root) %{_bindir}/scanpci
-%endif
 %attr(755,root,root) %{_bindir}/setxkbmap
 %attr(755,root,root) %{_bindir}/showrgb
 %attr(755,root,root) %{_bindir}/smproxy
@@ -1415,11 +1409,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xvinfo.1*
 %{_mandir}/man1/xwd.1*
 %{_mandir}/man1/xwud.1*
-%ifnarch sparc sparc64
-%{_mandir}/man1/SuperProbe.1*
-%{_mandir}/man1/scanpci.1*
-%{_mandir}/man1/pcitweak.1*
-%endif
 %{_mandir}/man1/xon.1*
 %{_mandir}/man1/revpath.1*
 %{_mandir}/man1/xgamma.1*
@@ -2058,7 +2047,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files setup
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/SuperProbe
+%attr(755,root,root) %{_bindir}/pcitweak
+%attr(755,root,root) %{_bindir}/scanpci
 %attr(755,root,root) %{_bindir}/xf86cfg
 %attr(755,root,root) %{_bindir}/xf86config
+%{_mandir}/man1/SuperProbe.1*
+%{_mandir}/man1/scanpci.1*
+%{_mandir}/man1/pcitweak.1*
 %{_mandir}/man1/xf86cfg.1*
 %{_mandir}/man1/xf86config.1*
