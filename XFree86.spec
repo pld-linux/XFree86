@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	4.0
-Release:	3
+Release:	4
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -34,6 +34,7 @@ Patch7:		XFree86-tdfx.patch
 Patch8:		XFree86-xfsredhat.patch
 Patch9:		XFree86-xfs-fix.patch
 Patch10:	XFree86-xfs-logger.patch
+Patch11:	XFree86-xterm-utempter.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -600,6 +601,7 @@ the case when using remote logins or granting access to other users).
 %patch8 -p0
 %patch9 -p0
 %patch10 -p0
+%patch11 -p1
 
 rm -f xc/config/cf/host.def
 
@@ -853,6 +855,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %attr(755,root,root) %{_bindir}/startx
 
+%attr(755,root,root) %{_bindir}/xterm
+
 %attr(755,root,root) %{_bindir}/setxkbmap
 %attr(755,root,root) %{_bindir}/xkbcomp
 %attr(755,root,root) %{_bindir}/xkbevd
@@ -876,7 +880,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xsetroot
 %attr(755,root,root) %{_bindir}/xsm
 %attr(755,root,root) %{_bindir}/xstdcmap
-%attr(755,root,root) %{_bindir}/xterm
 %attr(755,root,root) %{_bindir}/resize
 %attr(755,root,root) %{_bindir}/xvidtune
 %attr(755,root,root) %{_bindir}/xwd
