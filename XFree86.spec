@@ -87,9 +87,8 @@ BuildRequires:	Glide3-DRI-devel
 %ifarch %{ix86}
 BuildRequires:	Glide2x_SDK
 %endif
-Requires:	XFree86-fonts-ISO8859-1 = %{version}
-Requires:	XFree86-libs = %{version}
 Requires:	xauth
+Requires:	%{name}-common
 Requires(post):	fileutils
 ExclusiveArch:	%{ix86} alpha sparc m68k armv4l noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -183,6 +182,19 @@ flexibilidade em implementações cliente/servidor.
 Este pacote contém as fontes básicas, programas e documentação para
 uma estação de trabalho X. Ele não fornece um servidor X que acessa
 seu hardware de vídeo -- estes são disponibilizados em outro pacote.
+
+%package common
+Summary:	XFree86 files required both on server and client side
+Summary(pl):	Pliki XFree86 wymagane zarówno po stronie serwera jak i klienta
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+
+%description common
+XFree86 files required both on server and client side.
+
+%description common -l pl
+Pliki XFree86 wymagane zarówno po stronie serwera jak i klienta.
 
 %package DPS
 Summary:	Display PostScript
@@ -413,7 +425,8 @@ Group:		X11/XFree86/Servers
 Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts >= 4.0.2
+Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
+Requires:	XFree86-fonts-base
 
 %description Xnest
 Xnest is an X Window System server which runs in an X window. Xnest is
@@ -436,7 +449,8 @@ Group:		X11/XFree86/Servers
 Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts >= 4.0.2
+Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
+Requires:	XFree86-fonts-base
 
 %description Xprt
 Xprt provides an X server with the print extension and special DDX
@@ -456,7 +470,8 @@ Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	pam
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	/usr/X11R6/lib/X11/rgb.txt
+Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
+Requires:	XFree86-fonts-base
 Obsoletes:	XFree86-VGA16 XFree86-SVGA XFree86-Mono
 # obsoleted by many drivers: suncg3,suncg6,suncg14,sunffb,sunleo,suntcx
 Obsoletes:	XFree86-Sun XFree86-Sun24
@@ -511,7 +526,8 @@ Group:		X11/XFree86/Servers
 Group(de):	X11/XFree86/Server
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts >= 4.0.2
+Requires:	%{name}-common /usr/X11R6/lib/X11/rgb.txt
+Requires:	XFree86-fonts-base
 
 %description Xvfb
 Xvfb (X Virtual Frame Buffer) is an X Window System server that is
@@ -1478,6 +1494,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-libs = %{version}
+Requires:	XFree86-fonts-base
 PreReq:		chkconfig
 PreReq:		/usr/sbin/useradd
 PreReq:		/usr/sbin/groupadd
@@ -1823,7 +1840,6 @@ fi
 
 %dir %{_libdir}/X11/x11perfcomp
 %attr(755,root,root) %{_libdir}/X11/x11perfcomp/*
-%{_libdir}/X11/*.txt
 
 %attr(755,root,root) %{_bindir}/Xmark
 %attr(755,root,root) %{_bindir}/appres
@@ -1969,6 +1985,10 @@ fi
 %lang(pl) %{_mandir}/pl/man1/startx.1*
 %lang(pl) %{_mandir}/pl/man1/xinit.1*
 %lang(pl) %{_mandir}/pl/man1/xwd.1*
+
+%files common
+%defattr(644,root,root,755)
+%{_libdir}/X11/rgb.txt
 
 %files DPS
 %defattr(644,root,root,755)
