@@ -2214,9 +2214,6 @@ fi
 %attr(755,root,root) %{_bindir}/smproxy
 %attr(755,root,root) %{_bindir}/startx
 %attr(755,root,root) %{_bindir}/sxpm
-%ifnarch sparc sparc64 amd64
-%attr(755,root,root) %{_bindir}/synclient
-%endif
 %attr(755,root,root) %{_bindir}/uxterm
 %attr(755,root,root) %{_bindir}/xcmsdb
 %attr(755,root,root) %{_bindir}/xconsole
