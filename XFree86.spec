@@ -2013,8 +2013,8 @@ rm -rf xc/fonts
 #	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 %endif
 
-cd synaptics
-%{__make} clean all \
+#cd synaptics
+%{__make} -S -C synaptics clean all \
 	TOP=$(pwd)/xc \
         CC="%{__cc}" \
         BOOTSTRAPCFLAGS="%{rpmcflags}" \
