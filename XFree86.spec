@@ -6,7 +6,7 @@ Summary(ja):	XFree86 window system ¤Î¥µ¡¼¥Ð¤È´ðËÜÅª¤Ê¥×¥í¥°¥é¥à
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(wa):	Sierveus di håynaedje XFree86 eyèt maisses programes
-Name: 		XFree86
+Name:		XFree86
 Version:	3.3.5
 Release:	20
 Copyright:	MIT
@@ -70,7 +70,7 @@ Patch32:	XFree86-ssa50.patch
 Patch33:	XFree86-sis.patch
 # fix trident cards
 Patch34:	XFree86-tridentfix.patch
-# SECURITY: fix symlink attack on xkbcomp file
+# SECURITY:	fix symlink attack on xkbcomp file
 Patch35:	XFree86-xkm.patch
 # fix banshee cards
 Patch36:	XFree86-TDFX.patch
@@ -96,7 +96,7 @@ Patch52:	XFree86-ffb3.patch
 Patch53:	ftp://ftp.dcs.ed.ac.uk/pub/jec/programs/xfsft/xfsft-1.1.6-1.1.7.patch
 Patch54:	XFree86-3dfxalpha.patch
 Patch55:	http://www.s2.org/~jpaana/nv/geforce-3.3-patch
-# Patch for tablets maked using latest source avalaible at:
+# Patch for tablets maked using latest source avalaible at:	
 # http://www.lepied.com/xfree86/
 Patch56:	XFree86-f86Wacom.patch
 
@@ -106,13 +106,13 @@ BuildRequires:	utempter-devel
 BuildRequires:	tcl-devel
 Requires:	pam
 Requires:	xauth
-Requires: 	util-linux
+Requires:	util-linux
 Requires:	cpp
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l
-Buildroot:	/tmp/%{name}-%{version}-root/
+Buildroot:	/tmp/%{name}-%{version}-root
 
 %ifarch sparc
-Obsoletes: X11R6.1
+Obsoletes:	X11R6.1
 %endif
 
 %define		_fontdir	/usr/share/fonts
@@ -120,24 +120,20 @@ Obsoletes: X11R6.1
 %define		_mandir		%{_prefix}/man
 
 %description
-If you want to install the X Window System (TM) on your machine, you'll
-need to install XFree86.
-
-The X Window System provides the base technology for developing graphical
-user interfaces. Simply stated, X draws the elements of the GUI on the
-user's screen and builds methods for sending user interactions back to the
-application. X also supports remote application deployment--running an
-application on another computer while viewing the input/output on your
-machine. X is a powerful environment which supports many different
-applications, such as games, programming tools, graphics programs, text
-editors, etc. XFree86 is the version of X which runs on Linux, as well as
-other platforms.
-
-This package contains the basic fonts, programs and documentation for an X
-workstation. However, this package doesn't provide the program which you
-will need to drive your video hardware. To control your video card, you'll
-need the particular X server package which corresponds to your computer's
-video card.
+If you want to install the X Window System (TM) on your machine, you'll need
+to install XFree86. The X Window System provides the base technology for
+developing graphical user interfaces. Simply stated, X draws the elements of
+the GUI on the user's screen and builds methods for sending user
+interactions back to the application. X also supports remote application
+deployment--running an application on another computer while viewing the
+input/output on your machine. X is a powerful environment which supports
+many different applications, such as games, programming tools, graphics
+programs, text editors, etc. XFree86 is the version of X which runs on
+Linux, as well as other platforms.  This package contains the basic fonts,
+programs and documentation for an X workstation. However, this package
+doesn't provide the program which you will need to drive your video
+hardware. To control your video card, you'll need the particular X server
+package which corresponds to your computer's video card.
 
 %description -l de
 X-Windows ist eine voll funktionsfähige grafische Benutzeroberfläche mit
@@ -148,38 +144,32 @@ die Ausführung der Applikationen direkt auf lokalen Rechnern oder über ein
 Netz und bietet große Flexibilität bei Client-Server-Implementierungen.
 
 %description -l fr
-XFree86 est nécessaire pour installer le système X Window.
-
-Ce dernier est l'interface graphique standarde sous Unix. X Window fournit
-les primitives graphiques pour dessiner les éléments du GUI (Graphical User
-Interface : Interface Utilisateur Graphique) ainsi que le protocole X
-permettant aux applicatifs d'utiliser un serveur X distant (exécution à
-distance d'une application graphique s'affichant sur l'écran local). X
-Window est un environnement puissant supportant différentes applications
-(jeux, outils de programmation, programmes graphiques, éditeurs de texte,
-...). XFree86 est la version libre du système X Window pour Linux ainsi que
-pour d'autres systèmes Unix libres (FreeBSD, NetBSD, OpenBSD, Hurd, ...)
-
-Ce package comprend les polices de base, les programmes et la documention
-pour l'usage en tant que station de travail. Ce package ne contient PAS le
-pilote graphique (le serveur X) nécessaire pour utiliser votre carte vidéo.
-Pour celà, il faudra installer un serveur X correspondant à votre carte.
-
-En plus du serveur X correspondant, il sera nécessaire d'installer les
-packages X11R6-contrib, Xconfigurator, XFree86-libs, ainsi qu'éventuellement
-un package de polices.
+XFree86 est nécessaire pour installer le système X Window.  Ce dernier est
+l'interface graphique standarde sous Unix. X Window fournit les primitives
+graphiques pour dessiner les éléments du GUI (Graphical User Interface :
+Interface Utilisateur Graphique) ainsi que le protocole X permettant aux
+applicatifs d'utiliser un serveur X distant (exécution à distance d'une
+application graphique s'affichant sur l'écran local). X Window est un
+environnement puissant supportant différentes applications (jeux, outils de
+programmation, programmes graphiques, éditeurs de texte, ...). XFree86 est
+la version libre du système X Window pour Linux ainsi que pour d'autres
+systèmes Unix libres (FreeBSD, NetBSD, OpenBSD, Hurd, ...) Ce package
+comprend les polices de base, les programmes et la documention pour l'usage
+en tant que station de travail. Ce package ne contient PAS le pilote
+graphique (le serveur X) nécessaire pour utiliser votre carte vidéo. Pour
+celà, il faudra installer un serveur X correspondant à votre carte.  En plus
+du serveur X correspondant, il sera nécessaire d'installer les packages
+X11R6-contrib, Xconfigurator, XFree86-libs, ainsi qu'éventuellement un
+package de polices.
 
 %decription -l pl
 X Window System jest graficznym interfejsem u¿ytkownika, cechuje siê
 mo¿liwo¶ci± pracy w wielu oknach, z wieloma klientami i do tego w ró¿nych
-wystrojach okien. :) Jest u¿ywany na wiêkszo¶ci platform sytemów Unix, a
+wystrojach okien.:) Jest u¿ywany na wiêkszo¶ci platform sytemów Unix, a
 klienci mog± byæ uruchamiani tak¿e pod innymi popularnymi systemami
 okienkowymi. Protokó³ X pozwala na uruchamianie aplikacji zarówno z lokalnej
 maszyny jak i poprzez sieæ - daj±c przez to elastyczn± implementacjê
 architektury klient/serwer.
-
-Pakiet ten nie zawiera X serwera który jest po¶rednikiem z Twoj± kart±
-graficzn± (jest on w innym pakiecie).
 
 %description -l tr
 X Window sistemi, çoklu pencere, çoklu istemci ve çeþitli pencere
@@ -217,20 +207,21 @@ Prereq:		grep
 Prereq:		/sbin/ldconfig
 
 %ifarch sparc
-Obsoletes: X11R6.1-libs
+Obsoletes:	X11R6.1-libs
 %endif
 
 %description libs
 XFree86-libs contains the shared libraries that most X programs need to run
 properly. These shared libraries are in a separate package in order to
-reduce the disk space needed to run X applications on a machine without an X
-server (i.e, over a network).
+reduce the disk space needed to run X applications on a machine without an
+X server (i.e, over a network).
 
 %description -l de libs
-Dieses Paket enthält die zur gemeinsamen Nutzung vorgesehenen Libraries, die
-die meisten X-Programme für den einwandfreien Betrieb benötigen. Sie wurden
-in einem separaten Paket untergebracht, um den Festplattenspeicherplatz auf
-Computern zu reduzieren, die ohne einen X- Server (über ein Netz) arbeiten.
+Dieses Paket enthält die zur gemeinsamen Nutzung vorgesehenen Libraries,
+die die meisten X-Programme für den einwandfreien Betrieb benötigen. Sie
+wurden in einem separaten Paket untergebracht, um den
+Festplattenspeicherplatz auf Computern zu reduzieren, die ohne einen X-
+Server (über ein Netz) arbeiten.
 
 %description -l fr libs
 XFree86-libs contient les bibliothèques dynamiques utilisées par la plupart
@@ -279,7 +270,8 @@ der Buchreihe zur X-Programmierung von O'Reilly and Associates.
 %description -l fr devel
 XFree86-devel comprends les bibliothèques, les fichiers d'en-tête et la
 documentation nécessaire pour programmer des clients X Window. XFree86
-comprend les bibliothèque xlib et Xt (intrinsics) ainsi que les widgets Xaw.
+comprend les bibliothèque xlib et Xt (intrinsics) ainsi que les widgets
+Xaw.
 
 %description -l pl devel
 Pliki nag³ówkowe, dokumentcja dla programistów rozwijaj±cych aplikacje
@@ -299,6 +291,7 @@ Summary(pl):	Biblioteki sytatyczne do X11R6
 Group:		X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-devel = %{version}
+
 %ifarch sparc
 Obsoletes:	X11R6.1-devel
 %endif
@@ -328,9 +321,9 @@ compatible video cards, with fixed-frequency monitors, or with OS/2.
 
 %description -l fr XF86Setup
 XF86Setup est une interface graphique permettant de configurer XFree86 :
-paramètres vidéo, clavier, type de souri, ... XF86Setup ne peut être utilisé
-avec une carte non compatible VGA, ou utilisant des fréquences vidéos fixes,
-ou avec OS/2.
+paramètres vidéo, clavier, type de souri, ... XF86Setup ne peut être
+utilisé avec une carte non compatible VGA, ou utilisant des fréquences
+vidéos fixes, ou avec OS/2.
 
 %description -l pl XF86Setup
 Graficzny konfigurator dla XFree86
@@ -350,11 +343,11 @@ Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-fonts = %{version}
 
 %description S3
-XFree86-S3 is the X server for video cards based on S3 chips, including most
-#9 cards, many Diamond Stealth cards, Orchid Farenheits, Mirco Crystal 8S,
-most STB cards, and some motherboards with built-in graphics accelerators
-(such as the IBM ValuePoint line). Note that if you have an S3 ViRGE based
-video card, you'll need XFree86-S3V instead of XFree86-S3.
+XFree86-S3 is the X server for video cards based on S3 chips, including
+most #9 cards, many Diamond Stealth cards, Orchid Farenheits, Mirco Crystal
+8S, most STB cards, and some motherboards with built-in graphics
+accelerators (such as the IBM ValuePoint line). Note that if you have an S3
+ViRGE based video card, you'll need XFree86-S3V instead of XFree86-S3.
 
 %description -l de S3
 X-Server für Steckkarten mit dem S3-Chipsatz (inkl. den meisten #9-Karten),
@@ -367,8 +360,8 @@ XFree86-S3 est le serveur X capable de piloter les cartes à base de puces
 S3: la majorité des cartes #9, beaucoup de cartes Diamond Stealth, Orchid
 Farenheits, Mirco Crystal 8S, la plupart des cartes STB et certaines cartes
 mères comprenant un accélérateur graphique intégré. Note : si votre carte
-est à base de S3 ViRGE, le serveur XFree86-S3V doit être installé à la place
-de XFree86-S3.
+est à base de S3 ViRGE, le serveur XFree86-S3V doit être installé à la
+place de XFree86-S3.
 
 %description -l pl S3
 X serwer dla kart opartych na uk³adzie S3 - s± ta m.in. #9, wiele kart
@@ -379,7 +372,8 @@ ValuePoint IBM'a).
 %description -l tr S3
 S3 tabanlý ekran kartlarý için sunucular. Çoðu #9, Diamond Stealth, Orchid
 Fahrenheit, Mirco Crystal 8S, çoðu STB ve bazý anakarta tümleþik grafik
-hýzlandýrýcýlar bu gruba girer. S3 Virge sunucusu ayrý bir pakette yer alýr.
+hýzlandýrýcýlar bu gruba girer. S3 Virge sunucusu ayrý bir pakette yer
+alýr.
 
 %package I128
 Summary:	The XFree86 server for #9 Imagine 128 video cards
@@ -426,6 +420,7 @@ Requires:	%{name}-fonts = %{version}
 
 %description S3V
 XFree86-S3V is the X server for video cards based on the S3 ViRGE chipset.
+
 
 %description -l de S3V
 X-Server für Grafikkarten mit dem S3 Virge-Chipsatz.
@@ -474,8 +469,8 @@ niektórymi kartami Mach64, które jednak mog± byæ ju¿ poprawione w nowszej
 wersji XFree86 (osi±galna wy³±cznie jako wersja BETA).
 
 %description -l tr Mach64
-ATI Mach64 tabanlý kartlar için X sunucusu. Graphics Xpression, GUP Turbo ve
-WinTurbo gibi kartlarý destekler. Bazý Mach64 kartlarýn yeni XFree86 ile
+ATI Mach64 tabanlý kartlar için X sunucusu. Graphics Xpression, GUP Turbo
+ve WinTurbo gibi kartlarý destekler. Bazý Mach64 kartlarýn yeni XFree86 ile
 sorun yaþadýklarý bilinmektedir.
 
 %package Sun
@@ -496,8 +491,8 @@ This package includes the X server for Sun computers with monochrome and
 8-bit color SBUS framebuffers.
 
 %description -l fr Sun
-Il s'agit du serveur X pour les machines Sun supportant le SBUS framebuffers
-monochrome et 256 couleurs, comme les CG3 et CGSIX.
+Il s'agit du serveur X pour les machines Sun supportant le SBUS
+framebuffers monochrome et 256 couleurs, comme les CG3 et CGSIX.
 
 %description -l pl Sun
 Aby uruchomiæ X Window System potrzebujesz X serwera dostosowanego do
@@ -519,8 +514,8 @@ Obsoletes:	X11R6.1-SunMono
 
 %description SunMono
 To run X Windows programs requires an X server for your specific hardware.
-This package includes the X server for Sun computers with monochrome
-SBUS framebuffers only.
+This package includes the X server for Sun computers with monochrome SBUS
+framebuffers only.
 
 %description -l fr SunMono
 Il s'agit du serveur X pour les machines Sun utilisant un SBUS framebuffers
@@ -572,24 +567,25 @@ Requires:	%{name}-fonts = %{version}
 %description Xvfb
 Xvfb (X Virtual Frame Buffer) is an X Windows System server that is capable
 of running on machines with no display hardware and no physical input
-devices. Xvfb emulates a dumb framebuffer using virtual memory. Xvfb doesn't
-open any devices, but behaves otherwise as an X display. Xvfb is normally
-used for testing servers. Using Xvfb, the mfb or cfb code for any depth can
-be exercised without using real hardware that supports the desired depths.
-Xvfb has also been used to test X clients against unusual depths and screen
-configurations, to do batch processing with Xvfb as a background rendering
-engine, to do load testing, to help with porting an X server to a new
-platform, and to provide an unobtrusive way of running applications which
-really don't need an X server but insist on having one.
+devices. Xvfb emulates a dumb framebuffer using virtual memory. Xvfb
+doesn't open any devices, but behaves otherwise as an X display. Xvfb is
+normally used for testing servers. Using Xvfb, the mfb or cfb code for any
+depth can be exercised without using real hardware that supports the
+desired depths. Xvfb has also been used to test X clients against unusual
+depths and screen configurations, to do batch processing with Xvfb as a
+background rendering engine, to do load testing, to help with porting an X
+server to a new platform, and to provide an unobtrusive way of running
+applications which really don't need an X server but insist on having one.
+
 
 %description -l fr Xvfb
-Xvfb (X Virtual Frame Buffer) est un serveur X générique exploitant un frame
-buffer virtuel pour les machines sans dispositif d'affichage. Il n'utilise
-aucun périphérique mais agit comme un affichage X. Il ne doit être utilisé
-qu'à des fins de test (nombre de couleurs ou résolutions "étranges",
-traitement en tâche de fonds, test de montée en charge, aide au portage d'un
-serveur X sur une nouvelle plate-forme, utilisation d'applications ne
-nécessitant pas réellement X mais l'utilisant, ...).
+Xvfb (X Virtual Frame Buffer) est un serveur X générique exploitant un
+frame buffer virtuel pour les machines sans dispositif d'affichage. Il
+n'utilise aucun périphérique mais agit comme un affichage X. Il ne doit
+être utilisé qu'à des fins de test (nombre de couleurs ou résolutions
+"étranges", traitement en tâche de fonds, test de montée en charge, aide au
+portage d'un serveur X sur une nouvelle plate-forme, utilisation
+d'applications ne nécessitant pas réellement X mais l'utilisant, ...).
 
 %package 3DLabs
 Summary:	XFree86 3DLabs server
@@ -632,8 +628,6 @@ windows and graphics requests for its own clients.
 %description -l fr Xnest
 Il s'agit d'un serveur X tournant par dessus un autre serveur. Seuls les
 testeurs devraient l'installer.
-
-%description -l pl Xnest
 
 %package Xptr
 Summary:	X print server
@@ -701,11 +695,9 @@ Spider Black Widow und Hercules Graphite.
 Il s'agit du serveur X pour les cartes à base d'AGX comme les Boca Vortex,
 Orchid Celsius, Spider Black Widow et Hercules Graphite.
 
-%description -l pl AGX
-
 %description -l tr AGX
-Boca Vortex, Orchid Celsius, Spider Black Widow ve Hercules Graphite gibi AGX
-tabanlý kartlar için X sunucusu.
+Boca Vortex, Orchid Celsius, Spider Black Widow ve Hercules Graphite gibi
+AGX tabanlý kartlar için X sunucusu.
 
 %package FBDev
 Summary:	The X server for the generic frame buffer device on some machines
@@ -720,16 +712,14 @@ Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-fonts = %{version}
 
 %description FBDev
-X server for the generic frame buffer device used on the Amiga, Atari
-and Macintosh/m68k machines. Support for Intel and Alpha architectures
-is now included in the Linux 2.2 kernel as well.
+X server for the generic frame buffer device used on the Amiga, Atari and
+Macintosh/m68k machines. Support for Intel and Alpha architectures is now
+included in the Linux 2.2 kernel as well.
 
 %description -l fr FBDev
 FBDev est le serveur générique utilisant les frame buffer, utilisé sur
-Amiga, Atari et les anciens Macintosh à base de m68k.
-
-Le support pour les machines à base d'Alpha et de ix86 a été inclus dans le
-noyau 2.2
+Amiga, Atari et les anciens Macintosh à base de m68k.  Le support pour les
+machines à base d'Alpha et de ix86 a été inclus dans le noyau 2.2
 
 %description -l pl FBDev
 X serwer wspieraj±cy frame buffera dla Amigi, Atari i Macintosha /m68k.
@@ -752,12 +742,12 @@ XFree86-Mach32 is the X server package for video cards built around ATI's
 Mach32 chip, including the ATI Graphics Ultra Pro and Ultra Plus.
 
 %description -l de Mach32
-X-Server für Karten auf der Basis des ATI Mach32-Chip, einschließlich
-ATI Graphics Ultra Pro und Ultra Plus.
+X-Server für Karten auf der Basis des ATI Mach32-Chip, einschließlich ATI
+Graphics Ultra Pro und Ultra Plus.
 
 %description -l fr Mach32
-Serveur X pour les cartes utilisant le circuit ATI Mach32, dont les
-cartes ATI Graphics Ultra Pro et Ultra Plus.
+Serveur X pour les cartes utilisant le circuit ATI Mach32, dont les cartes
+ATI Graphics Ultra Pro et Ultra Plus.
 
 %description -l pl Mach32
 X serwer dla kart zbudowanych na uk³adzie ATI Mach32 w³±czaj±c w to ATI
@@ -786,8 +776,8 @@ XFree86-Mach 8 is the X server for video cards built around ATI's Mach8
 chip, including the ATI 8514 Ultra and Graphics Ultra.
 
 %description -l de Mach8
-X-Server für Karten auf der Basis des ATI Mach8-Chips, einschließlich
-des ATI 8514 Ultra und des Graphics Ultra.
+X-Server für Karten auf der Basis des ATI Mach8-Chips, einschließlich des
+ATI 8514 Ultra und des Graphics Ultra.
 
 %description -l fr Mach8
 Serveur X pour les cartes basées sur les chips ATI Mach8, dont les cartes
@@ -821,9 +811,8 @@ XFree86-Mono will work for nearly all VGA compatible cards, but will only
 support a monochrome display.
 
 %description -l de Mono
-Generischer monochromer (Schwarzweiß-) Server für VGA-Karten, der
-praktisch mit allen VGA-ähnlichen Karten mit beschränkter Auflösung
-funktioniert.
+Generischer monochromer (Schwarzweiß-) Server für VGA-Karten, der praktisch
+mit allen VGA-ähnlichen Karten mit beschränkter Auflösung funktioniert.
 
 %description -l fr Mono
 XFree86-Mono est un serveur générique monochrome (2 couleurs) pour les
@@ -890,18 +879,18 @@ Requires:	%{name}-fonts = %{version}
 X server for most simple framebuffer SVGA devices, including cards built
 from ET4000 chips, Cirrus Logic chips, Chips and Technologies laptop chips,
 Trident 8900 and 9000 chips, and Matrox chips. It works for Diamond
-Speedstar, Orchid Kelvins, STB Nitros and Horizons, Genoa 8500VL, most Actix
-boards, the Spider VLB Plus, etc. It also works for many other chips and
-cards, so try this server if you are having problems.
+Speedstar, Orchid Kelvins, STB Nitros and Horizons, Genoa 8500VL, most
+Actix boards, the Spider VLB Plus, etc. It also works for many other chips
+and cards, so try this server if you are having problems.
 
 %description -l de SVGA
 X-Server für die elementarsten Framebuffer-SVGA-Geräte, einschließlich
 Karten, die aus ET4000-Chips, Cirrus Logic-Chips, Chips and Technologies
-Laptop-Chips sowie Trident 8900 und 9000 Chips gebaut sind. Funktioniert mit
-Diamond Speedstar, Orchid Kelvins, STB Nitros und Horizons, Genoa 8500VL,
-den meisten Actix-Karten sowie Spider VLB Plus und außerdem mit vielen
-anderen Chips und Karten. Es lohnt sich, diesen Server auszuprobieren, wenn
-Sie Probleme haben.
+Laptop-Chips sowie Trident 8900 und 9000 Chips gebaut sind. Funktioniert
+mit Diamond Speedstar, Orchid Kelvins, STB Nitros und Horizons, Genoa
+8500VL, den meisten Actix-Karten sowie Spider VLB Plus und außerdem mit
+vielen anderen Chips und Karten. Es lohnt sich, diesen Server
+auszuprobieren, wenn Sie Probleme haben.
 
 %description -l fr SVGA
 Il s'agit du serveur X pour la plupart des cartes SVGA disposant d'un
@@ -910,16 +899,16 @@ quasiment toutes les cartes construites depuis 1994): cartes à base de
 ET4000, Cirrus Logic, Chips and Technologies, Trident 8900 et 9000, et
 Matrox. Il fonctionne également avec les cartes Diamond Speedstar, Orchid
 Kelvins, STB Nitros et Horizons, Genoa 8500VL, la plupart des cartes Actix,
-laSpider VLB Plus, ... Il fonctionne aussi pour de nombreuses autres cartes,
-aussi essayez ce pilotes si vous rencontrez des difficultés.
+laSpider VLB Plus, ... Il fonctionne aussi pour de nombreuses autres
+cartes, aussi essayez ce pilotes si vous rencontrez des difficultés.
 
 %description -l pl SVGA
 X serwer dla wiêkszo¶ci prostych kart SVGA, w³±czaj±c karty zbudowane na
 uk³adach ET4000, Cirrus Logic, Trident 8900 i 9000, oraz uk³ady wystêpuj±ce
 w laptopach. Dzia³a tak¿e z kartami Diamnod Speedstar, Orchid Kelvins, STB
 Nitros i Horizons, Genoa 8500VL, wiêkszo¶æ Actix, Spider VLB Plus. Dzia³a
-równie¿ na wielu innych kartach opartych na innych uk³adach wiêc spróbuj ten
-serwer je¶li masz jakie¶ problemy.
+równie¿ na wielu innych kartach opartych na innych uk³adach wiêc spróbuj
+ten serwer je¶li masz jakie¶ problemy.
 
 %description -l tr SVGA
 ET4000, Cirrus Logic, Chips and Technologies dizüstü, Trident 8900 ve 9000
@@ -948,8 +937,9 @@ will work on nearly all VGA style graphics boards, but will only support a
 low resolution, 16 color display.
 
 %description -l de VGA16
-Generischer 16-Farben-Server für VGA-Karten. Funktioniert auf fast allen VGA-
-Grafikkarten, allerdings nur bei geringer Auflösung und wenigen Farben.
+Generischer 16-Farben-Server für VGA-Karten. Funktioniert auf fast allen
+VGA- Grafikkarten, allerdings nur bei geringer Auflösung und wenigen
+Farben.
 
 %description -l fr VGA16
 XFree86-VGA16 est un serveur générique en 16 couleurs pour les cartes VGA.
@@ -985,25 +975,24 @@ WinFast S200, the Sigma Concorde, the STB LightSpeed, the TechWorks
 Thunderbolt, and the ViewTop PCI.
 
 %description -l de W32
-Genoa 8900 Phantom 32I, Hercules Dynamite, LeaTek WinFast S200,
-Sigma Concorde, STB LightSpeed, TechWorks Thunderbolt und ViewTop PCI.
+Genoa 8900 Phantom 32I, Hercules Dynamite, LeaTek WinFast S200, Sigma
+Concorde, STB LightSpeed, TechWorks Thunderbolt und ViewTop PCI.
 
 %description -l fr W32
 XFree86-W32 est le serveur X pour les cartes construites avec une puce
-ET4000/W32 : Genoa 8900 Phantom 32i,Hercules Dynamite, LeadTek WinFast S200,
-Sigma Concorde, STB LightSpeed, TechWorksThunderbolt et la ViewTop PCI.
-
+ET4000/W32 : Genoa 8900 Phantom 32i,Hercules Dynamite, LeadTek WinFast
+S200, Sigma Concorde, STB LightSpeed, TechWorksThunderbolt et la ViewTop
+PCI.
 
 %description -l pl W32
 X serwer dla kart zbudowanych na uk³adzie ET4000/W32, w³±czaj±c w to karty
-Genoa 8900 Phantom 32i, Hercules Dynamite, LeadTek WinFast S200,
-Sigma Concorde, STB LightSpeed, TechWorks Thunderbolt oraz karty ViewTop
-(PCI).
+Genoa 8900 Phantom 32i, Hercules Dynamite, LeadTek WinFast S200, Sigma
+Concorde, STB LightSpeed, TechWorks Thunderbolt oraz karty ViewTop (PCI).
 
 %description -l tr W32
 Genoa 8900 Phantom 32i, Hercules Dynamite kartlarý, LeadTek WinFast S200,
-Sigma Concorde, STB LightSpeed, TechWorks Thunderbolt, ve ViewTop PCI
-gibi kartlarýn kullandýðý ET4000/W32 tabanlý kartlar için X sunucusu.
+Sigma Concorde, STB LightSpeed, TechWorks Thunderbolt, ve ViewTop PCI gibi
+kartlarýn kullandýðý ET4000/W32 tabanlý kartlar için X sunucusu.
 
 %package TGA
 Summary:	XFree86 TGA server
@@ -1115,27 +1104,27 @@ Group(pl):	X11/XFree86
 Prereq:		%{_bindir}/mkfontdir
 
 %ifarch sparc
-Obsoletes: X11R6.1-75dpi-fonts
+Obsoletes:	X11R6.1-75dpi-fonts
 %endif
 
 %description 75dpi-fonts
-XFree86-75dpi-fonts contains the 75 dpi fonts used on most X Window Systems.
-If you're going to use the X Window System, you should install this package,
-unless you have a monitor which can support 100 dpi resolution. In that
-case, you may prefer the 100dpi fonts available in the XFree86-100dpi-fonts
-package.
+XFree86-75dpi-fonts contains the 75 dpi fonts used on most X Window
+Systems. If you're going to use the X Window System, you should install
+this package, unless you have a monitor which can support 100 dpi
+resolution. In that case, you may prefer the 100dpi fonts available in the
+XFree86-100dpi-fonts package.
 
 %description -l de 75dpi-fonts
-Die 75dpi-Fonts, die auf meisten Linux-Systemen verwendet werden. Für Benutzer
-mit einer hochauflösender Darstellung sind die 100dpi-Fonts eines getrennt
-erhältlichen Pakets besser geeignet.
+Die 75dpi-Fonts, die auf meisten Linux-Systemen verwendet werden. Für
+Benutzer mit einer hochauflösender Darstellung sind die 100dpi-Fonts eines
+getrennt erhältlichen Pakets besser geeignet.
 
 %description -l fr 75dpi-fonts
 XFree86-75dpi-fonts contient les polices taille 75 dpi utilisées sur la
-plupart des systèmes X Window. Si vous vous voulez utiliser X Window, il est
-vivement conseillé d'installer ce package à moins que votre moniteur
-supporte de grandes résolutions auquel cas vous préferrez les polices 100dpi
-contenues dans le package XFree86-100dpi-fonts.
+plupart des systèmes X Window. Si vous vous voulez utiliser X Window, il
+est vivement conseillé d'installer ce package à moins que votre moniteur
+supporte de grandes résolutions auquel cas vous préferrez les polices
+100dpi contenues dans le package XFree86-100dpi-fonts.
 
 %description -l pl 75dpi-fonts
 Pakiet ten zawiera fonty rastrowe 75dpi. W wypadku wiêkszej rozdzielczo¶ci
@@ -1159,7 +1148,7 @@ Group(pl):	X11/XFree86
 Prereq:		%{_bindir}/mkfontdir
 
 %ifarch sparc
-Obsoletes: X11R6.1-100dpi-fonts
+Obsoletes:	X11R6.1-100dpi-fonts
 %endif
 
 %description 100dpi-fonts
@@ -1169,8 +1158,8 @@ package contains a set of 100 dpi fonts used on most Linux systems.
 
 %description -l de 100dpi-fonts
 Die 100dpi-Schriftarten, die auf den meisten Linux-Systemen zum Einsatz
-kommen. Anwender mit hochauflösenden Monitoren ziehen unter Umständen
-die 100dpi-Schriften vor, die in einem separaten Paket erhältlich sind.
+kommen. Anwender mit hochauflösenden Monitoren ziehen unter Umständen die
+100dpi-Schriften vor, die in einem separaten Paket erhältlich sind.
 
 %description -l fr 100dpi-fonts
 Pour utiliser X Window sur des moniteurs haute résolution, ce package
@@ -1208,15 +1197,13 @@ devraient installer ce package.
 %description -l pl cyrillic-fonts
 Fonty rastrowe czcionkami w cyrylicy.
 
-#--- %prep ---------------------------
-
 %prep
 %setup -q -c -a1 -a 2
 tar x -C xc/lib -f xfsft-1.1.6/libfont.tar
 patch -p0 -s -d xc/lib < xfsft-1.1.6/libfont.patch
 
 # these replacement fonts.scale files have extra encodings
-install xfsft-1.1.6/fonts.scale.Speedo xc/fonts/scaled/Speedo/fonts.scale                                                                    
+install xfsft-1.1.6/fonts.scale.Speedo xc/fonts/scaled/Speedo/fonts.scale
 install xfsft-1.1.6/fonts.scale.Type1 xc/fonts/scaled/Type1/fonts.scale
 
 %patch0  -p1
