@@ -1833,7 +1833,6 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch45 -p1
 %patch46 -p0
 %patch47 -p1
-tar xfz *.tar.gz
 %patch49 -p1
 %patch50 -p0
 %patch52 -p1
