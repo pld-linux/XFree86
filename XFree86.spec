@@ -766,10 +766,10 @@ Requires:	XFree86-driver-ati.2
 Conflicts:	XFree86-driver-nvidia XFree86-driver-ati XFree86-driver-r128 XFree86-driver-radeon
 Obsoletes:	XFree86-Rage128
 
-%description driver-r128
+%description driver-r128.2
 ATI Rage 128 video driver (ATI.2).
 
-%description driver-r128 -l pl
+%description driver-r128.2 -l pl
 Sterownik do kart ATI Rage 128 (ATI.2).
 
 %package driver-radeon.2
@@ -782,10 +782,10 @@ Requires:	XFree86-driver-ati.2
 Requires:	OpenGL
 Conflicts:	XFree86-driver-nvidia XFree86-driver-ati XFree86-driver-r128 XFree86-driver-radeon
 
-%description driver-radeon
+%description driver-radeon.2
 ATI Radeon video driver (ATI.2).
 
-%description driver-radeon -l pl
+%description driver-radeon.2 -l pl
 Sterownik do kart ATI Radeon (ATI.2).
 
 %package driver-chips
