@@ -317,7 +317,7 @@ X11R6 static libraries with OpenGL.
 %description -l pl OpenGL-static
 Biblioteki sytatyczne zawieraj±ce wsparcie dla OpenGL do X11R6.
 
-%package XF86Setup
+%package setup
 Summary:	Graphical configuration tool for XFree86
 Summary(pl):	Graficzny konfigurator dla XFree86
 Group:		X11/XFree86
@@ -325,14 +325,14 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-VGA16 = %{version}
 
-%description XF86Setup
-XF86Setup is a graphical configuration tool for the XFree86 family of
+%description setup
+Setup containst a configuration tool for the XFree86 family of
 servers. It allows you to configure video settings, keyboard layouts,
 mouse type, and other miscellaneous options. It is slow however, and
 requires the generic VGA 16 color server be available.
 
-%description -l pl XF86Setup
-Graficzny konfigurator dla XFree86.
+%description -l pl setup
+Pakiet setup zawiera narzêdzia do konfiguracji Xfree86.
 
 %package Xvfb
 Summary:	XFree86 Xvfb server
@@ -717,6 +717,83 @@ Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-sis
 SiS video driver.
+
+%package driver-sunbw2
+Summary:	sunbw2 - Sun BW2 video driver
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-sunbw2
+sunbw2 - Sun BW2 video driver.
+
+%package driver-suncg14
+Summary:	suncg14 - Sun CG14 video driver
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-suncg14
+suncg14 - Sun CG14 video driver.
+
+%package driver-suncg3
+Summary:	suncg3 - Sun CG3 video cards driver
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-suncg3
+suncg3 - Sun CG3 video cards driver.
+
+%package driver-suncg6
+Summary:	suncg6 - Sun GX and Turbo GX video driver
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-suncg6
+suncg6 - Sun GX and Turbo GX video driver.
+
+%package driver-sunffb
+Summary:	sunffb - Sun Creator, Creator 3D and Elite 3D video cards driver
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-sunffb
+sunffb - Sun Creator, Creator 3D and Elite 3D video cards driver.
+
+%package driver-sunleo
+Summary:	sunleo - Sun Leo (ZX) video cards driver
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-sunleo
+sunleo - Sun Leo (ZX) video cards driver.
+
+%package driver-suntcx
+Summary:	suntcx - Sun TCX video cards driver
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-suntcx
+suntcx - Sun TCX video cards driver.
 
 %package driver-tdfx
 Summary:	3Dfx video driver
@@ -1240,8 +1317,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xconsole
 %attr(755,root,root) %{_bindir}/xcutsel
 %attr(755,root,root) %{_bindir}/xdpyinfo
-%attr(755,root,root) %{_bindir}/xf86cfg
-%attr(755,root,root) %{_bindir}/xf86config
 %attr(755,root,root) %{_bindir}/xfindproxy
 %attr(755,root,root) %{_bindir}/xfwp
 %attr(755,root,root) %{_bindir}/xgamma
@@ -1273,11 +1348,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xwd
 %attr(755,root,root) %{_bindir}/xwud
 
-%dir %{_includedir}/X11/bitmaps
-%dir %{_includedir}/X11/pixmaps
-
-%{_includedir}/X11/bitmaps/*
-%{_includedir}/X11/pixmaps/*
+%{_includedir}/X11/bitmaps
+%{_includedir}/X11/pixmaps
 
 %{_appnkldir}/Utilities/*.desktop
 %{_appnkldir}/*.desktop
@@ -1335,8 +1407,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xvinfo.1*
 %{_mandir}/man1/xwd.1*
 %{_mandir}/man1/xwud.1*
-%{_mandir}/man1/xf86cfg.1*
-%{_mandir}/man1/xf86config.1*
 %ifnarch sparc sparc64
 %{_mandir}/man1/SuperProbe.1*
 %{_mandir}/man1/scanpci.1*
@@ -1353,8 +1423,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man7/*
 
 /usr/bin/X11
-
-%ifnarch sparc
 
 %files modules
 %defattr(-,root,root,755)
@@ -1394,8 +1462,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/wacom*
 %{_mandir}/man4/elographics*
 %{_mandir}/man4/mutouch*
-
-%endif
 
 %files -n sessreg
 %defattr(644,root,root,755)
@@ -1579,14 +1645,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libXt.a
 %{_libdir}/libXtst.a
 
-%ifnarch sparc sparc64
-
 %files Xvfb
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/Xvfb
 %{_mandir}/man1/Xvfb.1*
-
-%endif
 
 %files Xnest
 %defattr(644,root,root,755)
@@ -1599,9 +1661,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files Xserver
 %defattr(644,root,root,755)
-%ifnarch sparc sparc64
 %attr(4755,root,root) %{_bindir}/Xwrapper
-%endif
 %attr(755,root,root) %{_bindir}/XFree86
 %attr(755,root,root) /etc/X11/X
 %attr(755,root,root) %{_bindir}/X
@@ -1609,9 +1669,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/Xserver.1*
 %{_mandir}/man5/XF86Config.5*
 
-%ifnarch sparc sparc64
 %{_libdir}/X11/Cards
-%endif
 
 %config(noreplace) %verify(not md5 mtime size) /etc/X11/XF86Config
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xserver
@@ -1633,14 +1691,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/modules/drivers/ark_drv.o
 
 %endif
-%ifnarch sparc sparc64
 
 %files driver-ati
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/ati*_drv.o
 #%{_mandir}/man4/ati*
 
-%endif
 %ifnarch sparc sparc64
 
 %files driver-chips
@@ -1665,22 +1721,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/cyrix*
 
 %endif
-%ifnarch sparc sparc64
 
 %files driver-fbdev
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/fbdev_drv.o
 %{_mandir}/man4/fbdev*
-
-%endif
-%ifarch sparc sparc64
-
-%files driver-ffb
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/dri/ffb_dri.so
-%{_mandir}/man4/sunffb.4*
-
-%endif
 %ifnarch sparc sparc64
 
 %files driver-glide
@@ -1689,15 +1734,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/glide*
 
 %endif
-%ifnarch sparc sparc64
 
 %files driver-glint
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/glint_drv.o
+%ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/dri/gamma_dri.so
+%endif
 %{_mandir}/man4/glint*
 
-%endif
 %ifnarch sparc sparc64
 
 %files driver-i128
@@ -1753,17 +1798,17 @@ rm -rf $RPM_BUILD_ROOT
 %files driver-r128
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/r128_drv.o
+%ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
+%endif
 %{_mandir}/man4/r128*
 
 %endif
-%ifnarch sparc sparc64
 
 %files driver-radeon
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/radeon_drv.o
 
-%endif
 %ifnarch sparc sparc64
 
 %files driver-rendition
@@ -1803,6 +1848,63 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
 %attr(755,root,root) %{_libdir}/modules/dri/sis_dri.so
 %{_mandir}/man4/sis*
+
+%endif
+%ifarch sparc sparc64
+
+%files driver-sunbw2
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/sunbw2.a
+%{_mandir}/man4/sunbw2*
+
+%endif
+%ifarch sparc sparc64
+
+%files driver-suncg14
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/suncg14.a
+%{_mandir}/man4/suncg14*
+
+%endif
+%ifarch sparc sparc64
+
+%files driver-suncg3
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/suncg3.a
+%{_mandir}/man4/suncg3*
+
+%endif
+%ifarch sparc sparc64
+
+%files driver-suncg6
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/suncg6.a
+%{_mandir}/man4/suncg6*
+
+%endif
+%ifarch sparc sparc64
+
+%files driver-sunffb
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/sunffb.a
+%attr(755,root,root) %{_libdir}/modules/dri/ffb_dri.so
+%{_mandir}/man4/sunffb*
+
+%endif
+%ifarch sparc sparc64
+
+%files driver-sunleo
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/sunleo.a
+%{_mandir}/man4/sunleo*
+
+%endif
+%ifarch sparc sparc64
+
+%files driver-suntcx
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/suntcx.a
+%{_mandir}/man4/suntcx*
 
 %endif
 %ifnarch sparc sparc64
@@ -1853,7 +1955,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libdps.so
 %attr(755,root,root) %{_libdir}/libdpstk.so
 %attr(755,root,root) %{_libdir}/libpsres.so
-%{_includedir}/DPS/*.h
+%{_includedir}/DPS
 
 %files DPS-static
 %defattr(644,root,root,755)
@@ -1940,10 +2042,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/X11/app-defaults/Xditview
 %{_libdir}/X11/app-defaults/Xditview-chrtr
 
-#%files XF86Setup
-#%defattr(644,root,root,755)
-#%attr(755,root,root) %{_bindir}/XF86Setup
-#%attr(755,root,root) %{_bindir}/xmseconfig
-#%{_libdir}/X11/XF86Setup
-#%{_mandir}/man1/XF86Setup.1*
-#%{_mandir}/man1/xmseconfig.1*
+%files setup
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/xf86cfg
+%attr(755,root,root) %{_bindir}/xf86config
+%{_mandir}/man1/xf86cfg.1*
+%{_mandir}/man1/xf86config.1*
