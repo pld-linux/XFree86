@@ -22,13 +22,17 @@ Summary(ru):	‚¡⁄œ◊Ÿ≈ €“…∆‘Ÿ, –“œ«“¡ÕÕŸ … ƒœÀ’Õ≈Œ‘¡√…— ƒÃ— “¡¬œﬁ≈  ”‘¡Œ√…… –œƒ X
 Summary(uk):	‚¡⁄œ◊¶ €“…∆‘…, –“œ«“¡Õ… ‘¡ ƒœÀ’Õ≈Œ‘¡√¶— ƒÃ— “œ¬œﬁœß ”‘¡Œ√¶ß –¶ƒ X
 Summary(zh_CN):	XFree86 ¥∞ø⁄œµÕ≥∑˛ŒÒ∆˜∫Õª˘±æ≥Ã–Ú
 Name:		XFree86
-Version:	4.3.99.3
-Release:	0.1
+Version:	4.3.0
+Release:	1.4
 License:	MIT
 Group:		X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
-#Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-2.tgz
-#Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-3.tgz
+# Source0-md5:	4f241a4f867363f40efa2b00dca292af
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-1.tgz
+# Source1-md5:	844c2ee908d21dbf8911fd13115bf8b4
+Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-2.tgz
+# Source2-md5:	b82a0443e1b7bf860e4343e6b6766cb6
+Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-3.tgz
+# Source3-md5:	0a15b1c374256b5cad7961807baa3896
 Source3:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source4:	xdm.pamd
 Source5:	xserver.pamd
@@ -54,8 +58,10 @@ Source34:	xclipboard.png
 Source35:	xclock.png
 Source36:	oclock.png
 Source37:	xconsole.png
+# Source38-md5: a184106bb83cb27c6963944d9243ac3f
 Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
-Source39:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
+# Source39-md5:	8d43c01d364576c195a5294279f92566
+Source39:	http://ep09.kernel.pl/~djrzulf/ati.2-20021001.tar.bz2
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -87,6 +93,7 @@ Patch27:	%{name}-config-s3.patch
 Patch28:	%{name}-sparc_pci_domains.patch
 Patch29:	%{name}-XTerm.ad.patch
 Patch30:	%{name}-alpha_GLX_align_fix.patch
+Patch31:	%{name}-PEX+XIE.patch
 Patch32:	%{name}-xman-manpaths.patch
 Patch33:	%{name}-clearrts.patch
 Patch34:	%{name}-fix-07-s3trio64v2gx+netfinity.patch
@@ -324,6 +331,44 @@ X-Window Display PostScript static libraries.
 %description DPS-static -l pl
 Statyczne biblioteki X-Window Display PostScript.
 
+%package PEX
+Summary:	PEX extension library
+Summary(pl):	Biblioteka rozszerzenia PEX
+Group:		X11/XFree86
+Requires:	%{name}-libs = %{version}
+
+%description PEX
+PEX extension library. Since XFree86 4.2.0 it's no longer included by
+default.
+
+%description PEX -l pl
+Biblioteka rozszerzenia PEX. Od wersji XFree86 4.2.0 nie jest juø
+do≥±czane domy∂lnie.
+
+%package PEX-devel
+Summary:	PEX extension headers
+Summary(pl):	Pliki nag≥Ûwkowe rozszerzenia PEX
+Group:		X11/XFree86
+Requires:	%{name}-PEX = %{version}
+
+%description PEX-devel
+PEX extension headers.
+
+%description PEX-devel -l pl
+Pliki nag≥Ûwkowe rozszerzenia PEX.
+
+%package PEX-static
+Summary:	PEX extension static library
+Summary(pl):	Statyczna biblioteka rozszerzenia PEX
+Group:		X11/XFree86
+Requires:	%{name}-PEX-devel = %{version}
+
+%description PEX-static
+PEX extension static library.
+
+%description PEX-static -l pl
+Statyczna biblioteka rozszerzenia PEX.
+
 %package xft1
 Summary:	Old version of font rendering library
 Summary(pl):	Stara wersja biblioteki wy∂wietlaj±cej fonty
@@ -455,6 +500,44 @@ Fontconfig jest biblioteka przeznaczon± do lokalizowania fontÛw w
 systemie i wybierania ich w zaleøno∂ci od potrzeb aplikacji.
 
 Ten pakiet zawiera biblioteki statyczne.
+
+%package XIE
+Summary:	XIE extension library
+Summary(pl):	Biblioteka rozszerzenia XIE
+Group:		X11/XFree86
+Requires:	%{name}-libs = %{version}
+
+%description XIE
+XIE (X Image Extension) extension library. Since XFree86 4.2.0 it's no
+longer included by default.
+
+%description XIE -l pl
+Biblioteka rozszerzenia XIE (X Image Extension). Od wersji XFree86
+4.2.0 nie jest juø do≥±czane domy∂lnie
+
+%package XIE-devel
+Summary:	XIE extension headers
+Summary(pl):	Pliki nag≥Ûwkowe rozszerzenia XIE
+Group:		X11/XFree86
+Requires:	%{name}-XIE = %{version}
+
+%description XIE-devel
+XIE extension headers.
+
+%description XIE-devel -l pl
+Pliki nag≥Ûwkowe rozszerzenia XIE.
+
+%package XIE-static
+Summary:	XIE extension static library
+Summary(pl):	Statyczna biblioteka rozszerzenia XIE
+Group:		X11/XFree86
+Requires:	%{name}-XIE-devel = %{version}
+
+%description XIE-static
+XIE extension static library.
+
+%description XIE-static -l pl
+Statyczna biblioteka rozszerzenia XIE.
 
 %package OpenGL-core
 Summary:	OpenGL support for X11R6
@@ -1382,19 +1465,6 @@ Tseng Labs video driver.
 %description driver-tseng -l pl
 Sterownik do kart firmy Tseng Labs.
 
-%package driver-via
-Summary:	VIA CLE266 driver
-Summary(pl):	Sterownik do kart VIA CLE266
-Group:		X11/XFree86
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-Xserver = %{version}-%{release}
-
-%description driver-via
-VIA CLE266 driver.
-
-%description driver-via -l pl
-Sterownik do kart VIA CLE266.
-
 %package driver-vmware
 Summary:	VMWare SVGA emulated video driver
 Summary(pl):	Sterownik do emulacji karty SVGA dostÍpnej pod VMware
@@ -1523,6 +1593,34 @@ Modules with X servers extensions.
 
 %description modules -l pl
 WspÛlne dla wszystkich X serwerÛw modu≥y rozszerzeÒ.
+
+%package module-PEX
+Summary:	PEX extension module
+Summary(pl):	Modu≥ rozszerzenia PEX
+Group:		X11/XFree86
+Requires:	%{name}-modules = %{version}
+
+%description module-PEX
+PEX extension module for X server. Since XFree86 4.2.0 it's no longer
+included by default.
+
+%description module-PEX -l pl
+Modu≥ rozszerzenia PEX dla X serwera. Od wersji XFree86 4.2.0 nie jest
+juø do≥±czane domy∂lnie.
+
+%package module-XIE
+Summary:	XIE extension module
+Summary(pl):	Modu≥ rozszerzenia XIE
+Group:		X11/XFree86
+Requires:	%{name}-modules = %{version}
+
+%description module-XIE
+XIE (X Image Extension) extension module for X server. Since XFree86
+4.2.0 it's no longer included by default.
+
+%description module-XIE -l pl
+Modu≥ rozszerzenia XIE (X Image Extension) dla X serwera. Od wersji
+XFree86 4.2.0 nie jest juø do≥±czane domy∂lnie.
 
 %package setup
 Summary:	Graphical configuration tool for XFree86
@@ -1822,8 +1920,7 @@ System. Ù¡Àœ÷ ◊¡Õ –“… ƒ≈‘ÿ”— ◊”‘¡Œœ◊…‘… Œ¡”‘’–Œ¶ –¡À≈‘…: XFree86,
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c -b3
-#-b1 -b2 -a3
+%setup -q -c -b1 -b2 -a3
 %patch0 -p0
 %patch1 -p1
 %patch2 -p1
@@ -1857,6 +1954,7 @@ System. Ù¡Àœ÷ ◊¡Õ –“… ƒ≈‘ÿ”— ◊”‘¡Œœ◊…‘… Œ¡”‘’–Œ¶ –¡À≈‘…: XFree86,
 %endif
 %patch29 -p0
 %patch30 -p1
+%patch31 -p0
 %patch32 -p1
 %patch33 -p1
 #%patch34 -p1	-- seems not applied (was partially in rc1??? maybe another fix present?)
@@ -2025,6 +2123,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %post	DPS -p /sbin/ldconfig
 %postun	DPS -p /sbin/ldconfig
+
+%post	PEX -p /sbin/ldconfig
+%postun	PEX -p /sbin/ldconfig
+
+%post	XIE -p /sbin/ldconfig
+%postun	XIE -p /sbin/ldconfig
 
 %post	xft1 -p /sbin/ldconfig
 %postun	xft1 -p /sbin/ldconfig
@@ -2372,6 +2476,21 @@ fi
 %{_libdir}/libdpstk.a
 %{_libdir}/libpsres.a
 
+%ifnarch alpha sparc64 ia64 s390x
+%files PEX
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libPEX5.so.*.*
+
+%files PEX-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libPEX5.so
+%{_includedir}/X11/PEX5
+
+%files PEX-static
+%defattr(644,root,root,755)
+%{_libdir}/libPEX5.a
+%endif
+
 %files xft1
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libXft.so.1.1
@@ -2412,6 +2531,21 @@ fi
 %files fontconfig-static
 %defattr(644,root,root,755)
 %{_libdir}/libfontconfig.a
+
+%files XIE
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXIE.so.*.*
+%attr(755,root,root) %{_bindir}/xieperf
+%{_mandir}/man1/xieperf.1*
+
+%files XIE-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libXIE.so
+%{_includedir}/X11/extensions/XIE*
+
+%files XIE-static
+%defattr(644,root,root,755)
+%{_libdir}/libXIE.a
 
 %files OpenGL-core
 %defattr(644,root,root,755)
@@ -2854,12 +2988,6 @@ fi
 %{_mandir}/man4/tseng*
 %endif
 
-%ifarch %{ix86}
-%files driver-via
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/via_drv.o
-%endif
-
 # Devel: sparc sparc64
 %ifarch %{ix86}
 %files driver-vmware
@@ -2965,6 +3093,16 @@ fi
 %{_mandir}/man4/wacom*
 %{_mandir}/man4/elographics*
 %{_mandir}/man4/mutouch*
+
+%ifnarch alpha sparc64 ia64 s390x
+%files module-PEX
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/extensions/libpex5.a
+%endif
+
+%files module-XIE
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/extensions/libxie.a
 
 %files setup
 %defattr(644,root,root,755)
