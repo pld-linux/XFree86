@@ -1860,7 +1860,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files driver-sunbw2
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/sunbw2.a
+%attr(755,root,root) %{_libdir}/modules/drivers/sunbw2_drv.a
 %{_mandir}/man4/sunbw2*
 
 %endif
@@ -1868,7 +1868,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files driver-suncg14
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/suncg14.a
+%attr(755,root,root) %{_libdir}/modules/drivers/suncg14_drv.a
 %{_mandir}/man4/suncg14*
 
 %endif
@@ -1876,7 +1876,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files driver-suncg3
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/suncg3.a
+%attr(755,root,root) %{_libdir}/modules/drivers/suncg3_drv.a
 %{_mandir}/man4/suncg3*
 
 %endif
@@ -1884,7 +1884,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files driver-suncg6
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/suncg6.a
+%attr(755,root,root) %{_libdir}/modules/drivers/suncg6_drv.a
 %{_mandir}/man4/suncg6*
 
 %endif
@@ -1892,7 +1892,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files driver-sunffb
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/sunffb.a
+%attr(755,root,root) %{_libdir}/modules/drivers/sunffb_drv.a
 %attr(755,root,root) %{_libdir}/modules/dri/ffb_dri.so
 %{_mandir}/man4/sunffb*
 
@@ -1901,7 +1901,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files driver-sunleo
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/sunleo.a
+%attr(755,root,root) %{_libdir}/modules/drivers/sunleo_drv.a
 %{_mandir}/man4/sunleo*
 
 %endif
@@ -1909,7 +1909,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files driver-suntcx
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/suntcx.a
+%attr(755,root,root) %{_libdir}/modules/drivers/suntcx_drv.a
 %{_mandir}/man4/suntcx*
 
 %endif
