@@ -1,5 +1,5 @@
 
-%define         _sver %(echo %{version} | tr -d .)
+%define		_sver	%(echo %{version} | tr -d .)
 
 Summary:	XFree86 Window System servers and basic programs
 Summary(de):	Xfree86 Window-System-Server und grundlegende Programme
@@ -132,7 +132,7 @@ Obsoletes:	X11R6.1
 
 # avoid Mesa dependency in XFree86-OpenGL-libs
 # Glide3 (libglide3.so.3) can be provided by Glide_V3-DRI or Glide_V5-DRI
-%define		_noautoreqdep	libGL.so.1 libGLU.so.1 libOSMesa.so.3.3   libglide3.so.3
+%define		_noautoreqdep	libGL.so.1 libGLU.so.1 libOSMesa.so.3.3 libglide3.so.3
 
 # gcc 3.2 is still broken
 %ifarch athlon
@@ -1959,7 +1959,7 @@ fi
 %pre -n xfs
 if [ -n "`/usr/bin/getgid xfs`" ]; then
 	if [ "`/usr/bin/getgid xfs`" != "56" ]; then
-		echo "Error: group xfs doesn't have gid=56. Correct this before installing xfs." 1>&2
+		echo "Error: group xfs doesn't have GID=56. Correct this before installing xfs." 1>&2
 		exit 1
 	fi
 else
@@ -1967,7 +1967,7 @@ else
 fi
 if [ -n "`/bin/id -u xfs 2>/dev/null`" ]; then
 	if [ "`/bin/id -u xfs`" != "56" ]; then
-		echo "Error: user xfs doesn't have uid=56. Corrent this before installing xfs." 1>&2
+		echo "Error: user xfs doesn't have UID=56. Correct this before installing xfs." 1>&2
 		exit 1
 	fi
 else
@@ -2339,9 +2339,9 @@ fi
 %{_libdir}/libxkbui.a
 %{_libdir}/libXrandr.a
 %{_libdir}/libXss.a
-%{_libdir}/libXTrap.a   
+%{_libdir}/libXTrap.a
 %{_libdir}/libXv.a
-%{_libdir}/libXvMC.a  
+%{_libdir}/libXvMC.a
 %{_libdir}/libXxf86dga.a
 %{_libdir}/libXxf86misc.a
 %{_libdir}/libXxf86rush.a
