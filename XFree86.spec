@@ -7,7 +7,7 @@ Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Summary(es):	Programas básicos y servidores para el sistema de ventanas XFree86
 Name:		XFree86
 Version:	4.1.0
-Release:	4
+Release:	5
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -62,6 +62,14 @@ Patch26:	%{name}-mkfontdir-chmod_644.patch
 Patch27:	%{name}-HasFreetype2.patch
 Patch28:	%{name}-libXfont-put-eof.patch
 Patch29:	%{name}-config-s3.patch
+Patch30:	%{name}-stolen_from_HEAD.patch
+Patch31:	%{name}-sparc_pci_domains.patch
+Patch32:	%{name}-s3virge_mx_console_corruption_fix.patch
+Patch33:	%{name}-cirrus_driver_fix.patch
+Patch34:	%{name}-dri_directory_mode_fix.patch
+Patch35:	%{name}-alpha_GLX_align_fix.patch
+Patch36:	%{name}-manpage_link_fixes.patch
+Patch37:	%{name}-XftConfig_in_correct_place.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1307,6 +1315,14 @@ X11R6-contrib in older releases.
 %patch27 -p1
 %patch28 -p1
 %patch29 -p1
+%patch30 -p1
+%patch31 -p1
+%patch32 -p1
+%patch33 -p1
+%patch34 -p1
+%patch35 -p1
+%patch36 -p1
+%patch37 -p1
 rm -f xc/config/cf/host.def
 tar zx -f %{SOURCE15} -C xc/programs/Xserver/hw/xfree86/drivers/
 
@@ -1522,7 +1538,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_libdir}/X11/doc
 %endif
 
-%{_libdir}/X11/XftConfig
+%{_sysconfdir}/XftConfig
 
 %dir %{_libdir}/X11/app-defaults
 %{_libdir}/X11/app-defaults/XCalc
