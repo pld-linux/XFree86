@@ -7,7 +7,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Name:		XFree86
 Version:	4.1.0
-Release:	11
+Release:	12
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -31,7 +31,7 @@ Source11:	xclipboard.desktop
 Source12:	xconsole.desktop
 Source13:	xterm.desktop
 Source14:	xlogo64.png
-Source15:	s3-0.3.21.tgz
+Source15:	http://papico.crl.go.jp/pub/linux/linyxppc/users/ajoshi/s3/s3-0.3.52.tgz
 Source16:	%{name}-non-english-Xman-pages.tar.bz2
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
