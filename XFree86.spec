@@ -60,8 +60,7 @@ BuildRequires:	zlib-devel
 BuildRequires:	utempter-devel
 BuildRequires:	tcl-devel
 BuildRequires:	pam-devel
-%ifarch %{ix86}
-BuildRequires:	Glide2x_SDK
+%ifarch %{ix86} alpha
 BuildRequires:	Glide_V3-DRI-devel >= 3.10-7
 %endif
 Requires:	xauth
