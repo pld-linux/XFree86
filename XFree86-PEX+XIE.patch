@@ -1,15 +1,16 @@
---- XFree86-4.2.0/xc/config/cf/xfree86.cf.orig	Sat Feb  2 22:43:40 2002
-+++ XFree86-4.2.0/xc/config/cf/xfree86.cf	Sun Feb  3 01:19:18 2002
-@@ -815,7 +815,7 @@
-  */
- #if !defined(BuildPexExt)
- # if XF86Server && !defined(AlphaArchitecture) && !defined(ia64Architecture) && !defined(s390xArchitecture)
+diff -urN xc.orig/config/cf/xfree86.cf xc/config/cf/xfree86.cf
+--- xc.orig/config/cf/xfree86.cf	Mon Dec 30 15:52:31 2002
++++ xc/config/cf/xfree86.cf	Mon Dec 30 20:44:34 2002
+@@ -1122,7 +1122,7 @@
+   && !defined(ia64Architecture) \
+   && !defined(s390xArchitecture) \
+   && !defined (x86_64Architecture)
 -#  define BuildPexExt		NO	/* But we turn off PEX anyway now */
 +#  define BuildPexExt		YES	/* But we turn off PEX anyway now */
  # else
  #  define BuildPexExt		NO
  # endif
-@@ -1021,7 +1021,7 @@
+@@ -1363,7 +1363,7 @@
   */
  #ifndef BuildXIE
  # if XF86Server
@@ -18,8 +19,9 @@
  # else
  #  define BuildXIE		NO
  # endif
---- XFree86-4.2.0/xc/programs/xdpyinfo/Imakefile.orig	Thu Dec 27 21:02:34 2001
-+++ XFree86-4.2.0/xc/programs/xdpyinfo/Imakefile	Sun Feb  3 10:56:30 2002
+diff -urN xc.orig/programs/xdpyinfo/Imakefile xc/programs/xdpyinfo/Imakefile
+--- xc.orig/programs/xdpyinfo/Imakefile	Mon Dec 30 15:54:07 2002
++++ xc/programs/xdpyinfo/Imakefile	Mon Dec 30 20:40:08 2002
 @@ -10,11 +10,6 @@
          SHMDEFINES = -DMITSHM
  #endif
