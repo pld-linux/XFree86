@@ -1117,9 +1117,9 @@ find . -size 0 -print | xargs rm -f
 
 %build
 make -C xc World \
-	"BOOTSTRAPCFLAGS=$RPM_OPT_FLAGS" \
-	"CDEBUGFLAGS=" "CCOPTIONS=$RPM_OPT_FLAGS" \
-	"CXXDEBUGFLAGS=" "CXXOPTIONS=$RPM_OPT_FLAGS"
+	"BOOTSTRAPCFLAGS=$RPM_OPT_FLAGS -fno-strict-aliasing" \
+	"CDEBUGFLAGS=" "CCOPTIONS=$RPM_OPT_FLAGS -fno-strict-aliasing" \
+	"CXXDEBUGFLAGS=" "CXXOPTIONS=$RPM_OPT_FLAGS -fno-strict-aliasing"
 
 #--- %install ------------------------
 
