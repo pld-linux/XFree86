@@ -1348,12 +1348,12 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-libs = %{version}
 PreReq:		chkconfig
-PreReq:		/usr/sbin/useradd
-PreReq:		/usr/sbin/groupadd
-PreReq:		/usr/sbin/userdel
-PreReq:		/usr/sbin/groupdel
-PreReq:		/usr/bin/getgid
-PreReq:		/bin/id
+Requires(pre):	/bin/id
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/usr/sbin/useradd
+Requires(pre):	/usr/sbin/groupadd
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
 Obsoletes:	xfsft XFree86-xfs
 
 %description -n xfs
