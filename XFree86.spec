@@ -1571,6 +1571,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{_applnkdir}/Utilities/*.desktop
 %{_applnkdir}/*.desktop
+%{_libdir}/X11/app-defaults/Xvidtune
 %{_pixmapsdir}/x*
 
 %{_mandir}/man1/Xmark.1*
@@ -2292,7 +2293,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/X11/app-defaults/Editres
 %{_libdir}/X11/app-defaults/Editres-color
 %{_libdir}/X11/app-defaults/Viewres
-%{_libdir}/X11/app-defaults/Xvidtune
 %{_libdir}/X11/app-defaults/XConsole
 %{_libdir}/X11/app-defaults/Xedit
 %{_libdir}/X11/app-defaults/Xedit-color
