@@ -1860,7 +1860,7 @@ done
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/{X11/fs,pam.d,rc.d/init.d,security/console.apps,sysconfig} \
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/{X11/fs,pam.d,rc.d/init.d,security/console.apps,sysconfig,xdg} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/{cs,da,de,es,fr,hu,it,ja,ko,nl,pl,pt,ru,sk,zh_CN.gb2312,zh_TW.big5} \
 	$RPM_BUILD_ROOT%{_datadir}/{misc,xsessions} \
 	$RPM_BUILD_ROOT%{_sbindir} \
@@ -2834,6 +2834,7 @@ fi
 
 %files libs -f XFree86-libs.lang
 %defattr(644,root,root,755)
+%dir %{_sysconfdir}/xdg
 %dir %{_themesdir}
 %dir %{_themesdir}/Default
 %dir %{_themesdir}/ThinIce
