@@ -59,7 +59,7 @@ Patch25:	%{name}-mkfontdir-chmod_644.patch
 Patch26:	%{name}-HasFreetype2.patch
 Patch27:	%{name}-config-s3.patch
 Patch28:	%{name}-sparc_pci_domains.patch
-Patch29:	%{name}-s3virge_mx_console_corruption_fix.patch
+
 Patch30:	%{name}-dri_directory_mode_fix.patch
 Patch31:	%{name}-alpha_GLX_align_fix.patch
 Patch32:	%{name}-XftConfig_in_correct_place.patch
@@ -1383,9 +1383,6 @@ serwerów lokalnych lub zdalnych.
 # needs updating (14 rejects)
 #%patch28 -p1
 %endif
-# don't see what exatly it is doing, is it needed now?
-# could someone else look at it (rejects)
-#%patch29 -p1
 %patch30 -p1
 %patch31 -p1
 %patch32 -p1
