@@ -1988,7 +1988,7 @@ rm -f xc/config/cf/host.def
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysconfig} \
+install -d $RPM_BUILD_ROOT/etc/{X11/fs,pam.d,rc.d/init.d,security/console.apps,sysconfig} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/{cs,da,de,es,fr,hu,it,ja,ko,nl,pl,pt,ru,sk,zh_CN.gb2312,zh_TW.big5} \
 	$RPM_BUILD_ROOT%{_datadir}/misc \
 	$RPM_BUILD_ROOT%{_sbindir} \
@@ -2063,9 +2063,9 @@ install %{SOURCE31} %{SOURCE32} %{SOURCE33} %{SOURCE34} %{SOURCE35} \
 
 bzip2 -dc %{SOURCE38} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 
-> $RPM_BUILD_ROOT/etc/security/console.apps/xserver
-> $RPM_BUILD_ROOT/etc/security/blacklist.xserver
-> $RPM_BUILD_ROOT/etc/security/blacklist.xdm
+:> $RPM_BUILD_ROOT/etc/security/console.apps/xserver
+:> $RPM_BUILD_ROOT/etc/security/blacklist.xserver
+:> $RPM_BUILD_ROOT/etc/security/blacklist.xdm
 
 ln -sf %{_fontsdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
 
