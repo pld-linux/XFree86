@@ -53,6 +53,7 @@ Patch24:	%{name}-mga-busmstr.patch
 Patch25:	%{name}-agpgart-load.patch
 Patch26:	%{name}-mkfontdir-chmod_644.patch
 Patch27:	%{name}-DEC.patch
+Patch28:	%{name}-HasFreetype2.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1015,6 +1016,21 @@ Tseng Labs video driver.
 %description -l pl driver-tseng
 Driver do kart firmy Tseng Labs.
 
+%package driver-vmware
+Summary:	VMWare SVGA video driver
+Summary(pl):	Driver do emulowanych kart SVGA pod VMware.
+Group:		X11/XFree86
+Group(de):	X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	%{name}-Xserver = %{version}-%{release}
+
+%description driver-vmware
+VMware SVGA video driver.
+
+%description -l pl driver-vmware
+Driver do emulowanych kart SVGA pod VMware.
+
 %package DPS
 Summary:	Display PostScript
 Summary(pl):	Display PostScript
@@ -1217,6 +1233,7 @@ X11R6-contrib in older releases.
 %ifarch alpha
 %patch27 -p0
 %endif
+%patch28 -p1
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
@@ -1703,6 +1720,7 @@ rm -rf $RPM_BUILD_ROOT
 %config /etc/X11/xdm/Xservers
 %config /etc/X11/xdm/xdm-config
 /etc/X11/xdm/pixmaps
+/etc/X11/xdm/authdir
 
 %files -n twm
 %defattr(644,root,root,755)
@@ -1720,16 +1738,21 @@ rm -rf $RPM_BUILD_ROOT
 %dir /etc/X11/fs
 %attr(755,root,root) %{_libdir}/X11/fs
 %config(noreplace) /etc/X11/fs/config
+%config(noreplace) %verify(not md5 mtime size) /etc/X11/XftConfig
 
 %attr(755,root,root) %{_bindir}/xfs
 %attr(755,root,root) %{_bindir}/fslsfonts
 %attr(755,root,root) %{_bindir}/fstobdf
 %attr(755,root,root) %{_bindir}/mkcfm
+%attr(755,root,root) %{_bindir}/xfsinfo
+%attr(755,root,root) %{_bindir}/xftcache
 
 %{_mandir}/man1/xfs.1*
 %{_mandir}/man1/fslsfonts.1*
 %{_mandir}/man1/fstobdf.1*
 %{_mandir}/man1/mkcfm.1*
+%{_mandir}/man1/xfsinfo.1*
+%{_mandir}/man1/xftcache.1*
 
 %files -n xauth
 %defattr(644,root,root,755)
@@ -1782,12 +1805,16 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_includedir}/GL
 %attr(644,root,root) %{_includedir}/GL/*
 %{_mandir}/man3/glX*
+%{_mandir}/man3/glu*
 %{_mandir}/man3/GLw*
 
 %files OpenGL-static
 %defattr(644,root,root,755)
 %{_libdir}/libGL.a
 %{_libdir}/libGLU.a
+%ifnarch alpha
+%attr(755,root,root) %{_libdir}/libOSMesa*.a
+%endif
 
 %files devel
 %defattr(644,root,root,755)
@@ -1854,6 +1881,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libXfont.a
 %{_libdir}/libXi.a
 %{_libdir}/libXmu.a
+%{_libdir}/libXmuu.a
 %{_libdir}/libXp.a
 %{_libdir}/libXpm.a
 %{_libdir}/libXrender.a
@@ -1885,6 +1913,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man5/XF86Config.5*
 
 %{_libdir}/X11/Cards
+%{_libdir}/X11/Options
 
 %config(noreplace) %verify(not md5 mtime size) /etc/X11/XF86Config
 %attr(640,root,root) %config %verify(not size mtime md5) /etc/pam.d/xserver
@@ -2024,6 +2053,9 @@ rm -rf $RPM_BUILD_ROOT
 %files driver-radeon
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/radeon_drv.o
+%ifnarch sparc sparc64
+%attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
+%endif
 
 %ifnarch sparc sparc64
 
@@ -2156,15 +2188,28 @@ rm -rf $RPM_BUILD_ROOT
 
 %endif
 
+%ifarch %{ix86}
+
+%files driver-vmware
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/vmware_drv.o
+%{_mandir}/man4/vmware*
+
+%endif
+
 %files DPS
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/makepsres
 %attr(755,root,root) %{_bindir}/pswrap
+%attr(755,root,root) %{_bindir}/dpsinfo
+%attr(755,root,root) %{_bindir}/dpsexec
 %attr(755,root,root) %{_libdir}/libdps.so.*.*
 %attr(755,root,root) %{_libdir}/libdpstk.so.*.*
 %attr(755,root,root) %{_libdir}/libpsres.so.*.*
 %{_mandir}/man1/makepsres*
 %{_mandir}/man1/pswrap*
+%{_mandir}/man1/dpsexec*
+%{_mandir}/man1/dpsinfo*
 
 %files DPS-devel
 %defattr(644,root,root,755)
@@ -2204,6 +2249,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xmag
 %attr(755,root,root) %{_bindir}/xman
 %attr(755,root,root) %{_bindir}/xmessage
+%attr(755,root,root) %{_bindir}/xmh
 %attr(755,root,root) %{_bindir}/xwininfo
 %attr(755,root,root) %{_bindir}/oclock
 %attr(755,root,root) %{_bindir}/xlogo
@@ -2233,6 +2279,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xmag.1*
 %{_mandir}/man1/xman.1*
 %{_mandir}/man1/xmessage.1*
+%{_mandir}/man1/xmh.1*
 %{_mandir}/man1/xwininfo.1*
 %{_mandir}/man1/xkill.1*
 %{_mandir}/man1/xlogo.1*
@@ -2254,6 +2301,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/X11/app-defaults/Xmag
 %{_libdir}/X11/app-defaults/Xman
 %{_libdir}/X11/app-defaults/Xmessage
+%{_libdir}/X11/app-defaults/Xmh
 %{_libdir}/X11/app-defaults/XFontSel
 %{_libdir}/X11/app-defaults/Xditview
 %{_libdir}/X11/app-defaults/Xditview-chrtr
