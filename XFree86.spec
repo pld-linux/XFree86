@@ -2556,9 +2556,7 @@ fi
 %{_libdir}/libXTrap.so
 %{_libdir}/libXfontcache.so
 %{_libdir}/libXinerama.so
-%{_libdir}/libXmuu.so
 %{_libdir}/libXp.so
-%{_libdir}/libXpm.so
 %{_libdir}/libXss.so
 %{_libdir}/libXtst.so
 %{_libdir}/libXvMC.so
@@ -2709,6 +2707,9 @@ fi
 %{_libdir}/libXrandr.so
 %{_libdir}/libXt.so
 %{_libdir}/libXv.so
+# TODO (higher soname)
+%{_libdir}/libXmuu.so
+%{_libdir}/libXpm.so
 %endif
 
 %files Xserver-devel
