@@ -20,7 +20,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.99.902
-Release:	0.2
+Release:	0.3
 Epoch:		1
 License:	MIT
 Group:		X11/XFree86
@@ -2402,10 +2402,16 @@ fi
 %{_libdir}/libGLw.a
 %dir %{_includedir}/GL
 %dir /usr/include/GL
-%attr(644,root,root) %{_includedir}/GL/*
-%exclude %{_includedir}/GL/gl.h
-%exclude %{_includedir}/GL/glx.h
-%exclude %{_includedir}/GL/glxtokens.h
+%{_includedir}/GL/GLwDrawA.h
+%{_includedir}/GL/GLwDrawAP.h
+%{_includedir}/GL/GLwMDrawA.h
+%{_includedir}/GL/GLwMDrawAP.h
+%{_includedir}/GL/glu.h
+%{_includedir}/GL/glxext.h
+%{_includedir}/GL/glxint.h
+%{_includedir}/GL/glxmd.h
+%{_includedir}/GL/glxproto.h
+%{_includedir}/GL/osmesa.h
 %{_mandir}/man3/gl[A-Z]*
 %{_mandir}/man3/glu*
 %{_mandir}/man3/GLw*
@@ -2414,6 +2420,7 @@ fi
 %defattr(644,root,root,755)
 %{_includedir}/GL/gl.h
 %{_includedir}/GL/glx.h
+%{_includedir}/GL/glext.h
 %{_includedir}/GL/glxtokens.h
 
 %files OpenGL-libs
