@@ -895,9 +895,9 @@ rm -f xc/config/cf/host.def
 
 %build
 %{__make} -S -C xc World \
-	"BOOTSTRAPCFLAGS=%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
-	"CCOPTIONS=%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
-	"CXXOPTIONS=%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" \
+	"BOOTSTRAPCFLAGS=%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}" \
+	"CCOPTIONS=%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}" \
+	"CXXOPTIONS=%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}" \
 	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
 
 cd Mesa*
