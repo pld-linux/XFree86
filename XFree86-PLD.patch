@@ -1,10 +1,9 @@
-diff -Nur XFree86-4.0.2.org/xc/Makefile XFree86-4.0.2/xc/Makefile
---- XFree86-4.0.2.org/xc/Makefile	Wed Mar 22 22:23:30 2000
-+++ XFree86-4.0.2/xc/Makefile	Wed Dec 20 13:41:02 2000
-@@ -5,10 +5,10 @@
+--- XFree86-4.1.0.org/xc/Makefile	Wed Mar 22 22:23:30 2000
++++ XFree86-4.1.0/xc/Makefile	Wed Dec 20 13:41:02 2000
+@@ -8,10 +8,10 @@
  # or add "MAKE = make" to this file.
  
- RELEASE = "Release 6.4"
+ RELEASE = "Release 6.5"
 -SHELL = /bin/sh
 +SHELL = /bin/sh -e
  RM = rm -f
