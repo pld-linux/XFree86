@@ -41,7 +41,7 @@ BuildRequires:	tcl-devel
 BuildRequires:	pam-devel
 Requires:	xauth
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
-Buildroot:	/tmp/%{name}-%{version}-root/
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %ifarch sparc
 Obsoletes: X11R6.1
@@ -681,7 +681,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/X11/etc
 %dir %{_libdir}/X11/fonts
 %dir %{_bindir}
-
 
 %{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XKeysymDB
