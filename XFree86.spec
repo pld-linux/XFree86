@@ -23,7 +23,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.0
-Release:	1.2
+Release:	1.3
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-1.tgz
@@ -106,6 +106,8 @@ Patch44:	%{name}-pkgconfig.patch
 Patch45:	%{name}-VidMode-nocrashafterfailure.patch
 # spencode.o in libspeedo.a is empty - patch like for libGLcore.a
 Patch46:	%{name}-spencode-nowarning.patch
+# Small (maybe buggy) patch to resolve problems with totem 0.97.0
+Patch47:	%{name}-lock.patch
 BuildRequires:	bison
 BuildRequires:	expat-devel
 BuildRequires:	flex
@@ -1961,6 +1963,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch44 -p0
 %patch45 -p1
 %patch46 -p1
+%patch47 -p0
 
 rm -f xc/config/cf/host.def
 
