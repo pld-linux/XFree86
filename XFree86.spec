@@ -1127,7 +1127,7 @@ for i in xdm twm fs xsm xinit; do
 done
 
 # add X11 links in /usr/bin and /usr/include
-ln -s ../X11R6/include $RPM_BUILD_ROOT/usr/include/X11
+ln -s ../X11R6/include/X11 $RPM_BUILD_ROOT/usr/include/X11
 ln -s ../X11R6/bin $RPM_BUILD_ROOT/usr/bin/X11
 
 # make TrueType font dir, touch default .dir and .scale files
