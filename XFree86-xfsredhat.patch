@@ -1,6 +1,6 @@
---- XFree86-3.3.3.1/xc/programs/xfs/difs/fonts.c.xfsredhat	Fri Jan  5 08:21:27 1996
-+++ XFree86-3.3.3.1/xc/programs/xfs/difs/fonts.c	Wed Feb 17 12:03:19 1999
-@@ -118,6 +118,113 @@
+--- xc/programs/xfs/difs/fonts.c.xfsredhat	Sun Aug 22 15:29:55 1999
++++ xc/programs/xfs/difs/fonts.c	Tue Mar 14 12:10:39 2000
+@@ -108,6 +108,113 @@
  }
  
  /*
@@ -114,7 +114,7 @@
   * note that the font wakeup queue is not refcounted.  this is because
   * an fpe needs to be added when it's inited, and removed when it's finally
   * freed, in order to handle any data that isn't requested, like FS events.
-@@ -753,8 +860,12 @@
+@@ -734,8 +841,12 @@
                 *end,
                 *p;
      int         err;
@@ -128,7 +128,7 @@
      paths = p = (char *) ALLOCATE_LOCAL(len);
      npaths = 0;
  
-@@ -774,6 +885,7 @@
+@@ -755,6 +866,7 @@
  
      err = set_font_path_elements(npaths, paths, badpath);
  
@@ -136,22 +136,177 @@
      DEALLOCATE_LOCAL(paths);
  
      return err;
---- XFree86-3.3.3.1/xc/programs/xfs/difs/main.c.xfsredhat	Thu Nov  5 14:28:29 1998
-+++ XFree86-3.3.3.1/xc/programs/xfs/difs/main.c	Wed Feb 17 17:08:27 1999
-@@ -58,6 +58,7 @@
- #include	"servermd.h"
- #include	"cache.h"
- #include	"site.h"
+--- xc/programs/xfs/difs/main.c.xfsredhat	Sun Mar  7 15:50:25 1999
++++ xc/programs/xfs/difs/main.c	Tue Mar 14 12:10:39 2000
+@@ -56,12 +56,18 @@
+ #include	"dispatch.h"
+ #include	"extentst.h"
+ #include	"difs.h"
 +#include <unistd.h>
++#include <pwd.h>
++#include <sys/types.h>
  
  char       *ConnectionInfo;
  int         ConnInfoLen;
-@@ -107,6 +108,8 @@
+ 
+ Cache       serverCache;
+ 
++int         droppriv;  /* whether or not to drop root privileges at startup */
++int         becomeDaemon; /* whether or not to become a daemon */
++
+ #ifndef DEFAULT_CONFIG_FILE
+ #define DEFAULT_CONFIG_FILE "/usr/lib/X11/fs/config"
+ #endif
+@@ -80,15 +86,43 @@
+ main(int argc, char *argv[])
+ {
+     int         i;
++    struct passwd *pwent;
+ 
+     argcGlobal = argc;
+     argvGlobal = argv;
++    droppriv = 0;
++    becomeDaemon = 0;
+ 
+     configfilename = DEFAULT_CONFIG_FILE;
+ 
+     /* init stuff */
+     ProcessCmdLine(argc, argv);
+     InitErrors();
++
++    /* become xfs user, if possible */
++    if ((geteuid() == 0) && droppriv) {
++      pwent = getpwnam("xfs");
++      if (pwent) {
++	if (setgid(pwent->pw_gid)) {
++	  ErrorF("fatal: couldn't set groupid to xfs user's group\n");
++	  exit(1);
++	}
++
++	if (setgroups(0, 0)) {
++	  ErrorF("fatal: couldn't drop supplementary groups\n");
++	  exit(1);
++	}
++
++	if (setuid(pwent->pw_uid)) {
++	  ErrorF("fatal: couldn't set userid to xfs user\n");
++	  exit(1);
++	}
++      }
++    } else if (droppriv) {
++      ErrorF("fatal: droppriv flag specified, but xfs not run as root\n");
++      exit(1);
++    }
++
+     /*
+      * do this first thing, to get any options that only take effect at
+      * startup time.  it is erad again each time the server resets
+@@ -97,6 +131,10 @@
  	ErrorF("fatal: couldn't read config file\n");
  	exit(1);
      }
 +
-+    daemon(0, 0);
++    /* become a daemon if explicitly requested to do so. */
++    if (becomeDaemon)
++      daemon(0, 0);
  
      while (1) {
  	serverGeneration++;
+--- xc/programs/xfs/os/utils.c.xfsredhat	Sun Mar  7 15:50:30 1999
++++ xc/programs/xfs/os/utils.c	Tue Mar 14 12:10:39 2000
+@@ -91,6 +91,8 @@
+ #endif
+ 
+ extern char *configfilename;
++extern int  droppriv; /* whether or not to drop root privileges */
++extern int  becomeDaemon; /* whether to become a daemon or not */
+ char       *progname;
+ Bool        CloneSelf;
+ 
+@@ -189,7 +191,7 @@
+ static void
+ usage(void)
+ {
+-    fprintf(stderr, "usage: %s [-config config_file] [-port tcp_port]\n",
++    fprintf(stderr, "usage: %s [-config config_file] [-port tcp_port] [-droppriv] [-daemon]\n",
+ 	    progname);
+     exit(1);
+ }
+@@ -293,6 +295,10 @@
+ 		ProcessLSoption (argv[++i]);
+ 	    else
+ 		usage();
++	} else if (!strcmp(argv[i], "-droppriv")) {
++	        droppriv = 1;
++	} else if (!strcmp(argv[i], "-daemon")) {
++	        becomeDaemon = 1;
+ 	} else if (!strcmp(argv[i], "-cf") || !strcmp(argv[i], "-config")) {
+ 	    if (argv[i + 1])
+ 		configfilename = argv[++i];
+--- xc/programs/xfs/os/Imakefile.xfsredhat	Sun Feb 13 08:54:42 2000
++++ xc/programs/xfs/os/Imakefile	Tue Mar 14 12:10:39 2000
+@@ -23,7 +23,7 @@
+ SOCK_DEFINES = -DBSD44SOCKETS
+ #endif
+ 
+-/* ERROR_DEFINES = -DUSE_SYSLOG */
++ERROR_DEFINES = -DUSE_SYSLOG
+ 
+ OS_DEFINES = ServerOSDefines
+ 
+--- xc/programs/xfs/os/error.c.xfsredhat	Sun Oct 25 14:59:57 1998
++++ xc/programs/xfs/os/error.c	Tue Mar 14 13:29:26 2000
+@@ -76,6 +76,7 @@
+ 
+ Bool        UseSyslog;
+ char        ErrorFile[PATH_MAX];
++int         log_open = 0;
+ 
+ static void
+ abort_server(void)
+@@ -142,17 +143,21 @@
+ 
+ #ifdef USE_SYSLOG
+     if (UseSyslog) {
+-	syslog(LOG_NOTICE, f, s0, s1, s2, s3, s4, s5, s6, s7, s8, s9);
++        va_list args;
++        va_start(args, f);
++	syslog(LOG_NOTICE, f, args);
++	va_end(args);
+ 	return;
+     }
+ #endif
+-
++    {
+     /* XXX should Notices just be ignored if not using syslog? */
+     va_list args;
+     va_start(args, f);
+     fprintf(stderr, "%s notice: ", progname);
+     vfprintf(stderr, f, args);
+     va_end(args);
++    }
+ }
+ 
+ /*
+@@ -164,15 +169,20 @@
+ {
+ #ifdef USE_SYSLOG
+     if (UseSyslog) {
+-	syslog(LOG_ERR, f, s0, s1, s2, s3, s4, s5, s6, s7, s8, s9);
++        va_list args;
++        va_start(args, f);
++	syslog(LOG_ERR, f, args);
++	va_end(args);
+ 	return;
+     }
+ #endif
++    {
+     va_list args;
+     va_start(args, f);
+     fprintf(stderr, "%s error: ", progname);
+     vfprintf(stderr, f, args);
+     va_end(args);
++    }
+ }
+ 
+ /* VARARGS1 */
