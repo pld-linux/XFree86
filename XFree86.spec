@@ -4,85 +4,73 @@ Summary(fr):	Serveurs du système XFree86 et programmes de base
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
-Version:	3.3.3.1
-Release:	56
+Version:	3.3.4
+Release:	1
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/3.3.3/source/X333src-1.tgz
-Source1:	xdm.pamd
-Source2:	xdm.initd
-Source3:	xfs.initd
-Source4:	xfs.config
-Source5:	xserver.pamd
-Source6:	XTerm.ad-pl
-Patch0:		ftp://ftp.xfree86.org/pub/XFree86/3.3.3/fixes/3.3.3-3.3.3.1.diff.gz
-Patch1:		XFree86-rh.patch
-Patch2:		XFree86-rhxdm.patch
-Patch3:		XFree86-fsstnd.patch
-Patch4:		XFree86-nopam.patch
-Patch5:		XFree86-pamconsole.patch
-Patch6:		XFree86-alpha-sockets.patch
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/3.3.3/source/X334src-1.tgz
+Source1:	ftp://ftp.xfree86.org/pub/XFree86/3.3.3/source/X334src-2.tgz
+Source2:	xdm.pamd
+Source3:	xdm.initd
+Source4:	xfs.initd
+Source5:	xfs.config
+Source6:	xserver.pamd
+Source7:	XTerm.ad-pl
+Patch0:		XFree86-rh.patch
+Patch1:		XFree86-rhxdm.patch
+Patch2:		XFree86-fsstnd.patch
+Patch3:		XFree86-nopam.patch
+Patch4:		XFree86-pamconsole.patch
+Patch5:		XFree86-alpha-sockets.patch
 # sparc patches from ultrapenguin
-Patch7:		XFree86-sparc.patch
-Patch8:		XFree86-ffb.patch.gz
+Patch6:		XFree86-sparc.patch
+Patch7:		XFree86-ffb.patch.gz
 # enable FBDev device on alpha / intel
-Patch9:		XFree86-fbdev.patch
+Patch8:		XFree86-fbdev.patch
 # fix xinput problems with threads / GTK+ -- Owen Taylor's fix
-Patch10:	XFree86-xinput.patch
+Patch9:		XFree86-xinput.patch
 # more sun patches from ultrapenguin
-Patch11:	XFree86-suncards.patch
-Patch12:	XFree86-sparc2.patch
-Patch13:	XFree86-creator2.patch.gz
-Patch14:	XFree86-newcreator.patch
-Patch15:	XFree86-sparc3.patch.gz
+Patch10:	XFree86-suncards.patch
+Patch11:	XFree86-sparc2.patch
+Patch12:	XFree86-creator2.patch.gz
+Patch13:	XFree86-newcreator.patch
+Patch14:	XFree86-sparc3.patch.gz
 # the following was causing problems with RagePRO based ATI
 # chipsets, but this has been fixed
-Patch16:	XFree86-mach64.patch.gz
-Patch17:	XFree86-creator4.patch.gz
-Patch18:	XFree86-jay.patch
-Patch19:	XFree86-86setup.patch
-Patch20:	XFree86-czskkbd.patch
-Patch21:	XFree86-is_keyboard.patch
+Patch15:	XFree86-mach64.patch.gz
+Patch16:	XFree86-creator4.patch.gz
+Patch17:	XFree86-jay.patch
+Patch18:	XFree86-86setup.patch
+Patch19:	XFree86-czskkbd.patch
+Patch20:	XFree86-is_keyboard.patch
 # use glibc 2.1 routines for utmp, doesn't require xterm to be setuid
-Patch22:	XFree86-nosuidxterm.patch
-Patch23:	XFree86-joy.patch
-Patch24:	XFree86-arm.patch
-Patch25:	XFree86-xfsft.patch
-Patch26:	XFree86-ru_SU.patch
-Patch27:	XFree86-startx_xauth.patch
-Patch28:	XFree86-xfsredhat.patch
-Patch29:	XFree86-mgafix.patch
+Patch21:	XFree86-nosuidxterm.patch
+Patch22:	XFree86-joy.patch
+Patch23:	XFree86-arm.patch
+Patch24:	XFree86-xfsft.patch
+Patch25:	XFree86-ru_SU.patch
+Patch26:	XFree86-startx_xauth.patch
+Patch27:	XFree86-xfsredhat.patch
+Patch28:	XFree86-mgafix.patch
 # the following patch is incomplete..broken..and thus commented out.
-Patch30:	XFree86-alphadga.patch
-# work by VMWare, inc. to provide hardware accelerated DGA "XFree86 3.4"
-Patch31:	XFree86-dga1.1.patch
-# Patch from Ian Reid Remmler <ian@marmoset.resnet.tamu.edu> to fix mouse
-# movement with Kensington ExpertMouse / ThinkingMouse
-Patch32:	XFree86-thinkingmouse.patch
-# fix keymap error for dvorak keyboards
-Patch33:	XFree86-dvorak.patch
-# Fix dainbramage where the X server chmods whatever .X11-unix points to
-Patch34:	XFree86-tmpdir.patch
+Patch29:	XFree86-alphadga.patch
 # link xterm with libncurses instead libtermcap
-Patch35:	XFree86-ncurses.patch
+Patch30:	XFree86-ncurses.patch
 # Compile X serwers againsty system installed libz.so
-Patch36:	XFree86-HasZlib.patch
+Patch31:	XFree86-HasZlib.patch
 # Man dir in /usr/X11R6/man or %{_mandir}
-Patch37:	XFree86-fhs.patch
-Patch38:	XFree86-voodoo-Rush.patch
-Patch39:	XFree86-voodoo-Banshee.patch
-Patch40:	XFree86-NVIDIA.patch
-Patch41:	XFree86-xf86config-3dfx.patch
-Patch42:	XFree86-G200dga.patch
-Patch43:	XFree86-ffbcrash.patch
-Patch44:	XFree86-ru_sparc.patch
-Patch45:	XFree86-xinitrace.patch
-Patch46:	XFree86-xterm-color.patch
-Patch47:	XFree86-xdm+pam_env.patch
-Patch48:	XFree86-XF86Config-path.patch
-Patch49:	XFree86-XF86Setup-fonts.patch
-Patch50:	XFree86-polish_kbd.patch
+Patch32:	XFree86-fhs.patch
+Patch33:	XFree86-voodoo-Rush.patch
+Patch34:	XFree86-G200dga.patch
+Patch35:	XFree86-ffbcrash.patch
+Patch36:	XFree86-ru_sparc.patch
+Patch37:	XFree86-xinitrace.patch
+Patch38:	XFree86-xterm-color.patch
+Patch39:	XFree86-xdm+pam_env.patch
+Patch40:	XFree86-XF86Config-path.patch
+Patch41:	XFree86-XF86Setup-fonts.patch
+Patch42:	XFree86-polish_kbd.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -917,6 +905,7 @@ Requires:	pam >= 0.66
 Obsoletes:	xdm
 
 %description -n xdm
+X Display Manager.
 
 %description -l pl -n xdm
 
@@ -945,20 +934,123 @@ Summary(pl):	XAuth
 
 %description -l pl -n xauth
 
+%package 	fonts
+Summary:	XFree86 Fonts
+Summary(pl):	Fonty dla systemu XFree86 
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+
+%description fonts
+This package contains the basic fonts, programs and documentation for an X
+workstation. It does not provide the X server which drives your video
+hardware -- those are available in other package.
+
+%description -l pl fonts
+
+%package 	75dpi-fonts
+Summary:	X11R6 75dpi fonts - only need on server side
+Summary(de):	X11RT 76 dpi-Fonts - nur auf Serverseite erforderlich
+Summary(fr):	Fontes 75 dpi X11R6 - nécessaire uniquement côté serveur
+Summary(pl):	Fonty o rozdzielczo¶ci 75dpi-niebêdne dla serwera.
+Summary(tr):	X11R6 75dpi yazýtipleri - yalnýzca sunucu tarafýnda gerekir
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+
+%ifarch sparc
+Obsoletes: X11R6.1-75dpi-fonts
+%endif
+
+%description 75dpi-fonts
+The 75dpi fonts used on most Linux systems. Users with high resolution
+displays may prefer the 100dpi fonts available in a separate package.
+
+%description -l de 75dpi-fonts
+Die 75dpi-Fonts, die auf meisten Linux-Systemen verwendet werden. Für Benutzer
+mit einer hochauflösender Darstellung sind die 100dpi-Fonts eines getrennt
+erhältlichen Pakets besser geeignet.
+
+%description -l fr 75dpi-fonts
+Fontes 75 dpi utilisées sur la plupart des systèmes Linux. Ceux qui ont
+des écrans à haute résolution préfèreront les fontes 100 dpi disponibles
+dans un autre paquetage.
+
+%description -l tr 75dpi-fonts
+Çoðu Linux sisteminde 75dpi yazýtipi kullanýlýr. Yüksek çözünürlük kullanan
+kullanýcýlar 100dpi yazýtiplerini yeðleyebilirler.
+
+%description -l pl 75dpi-fonts
+75dpi - Podstawowe czcionki dla wielu maszyn Linuxowych.
+W wypadku wiêkszej rozdzielczo¶ci zalecane czcionki 100dpi s± dostêpne 
+w osobnym sk³adzie.
+ 
+%package 	100dpi-fonts
+Summary:	X11R6 100dpi fonts - only need on server side
+Summary(de):	X11R6 100dpi-Fonts - nur auf Server-Seite erforderlich
+Summary(fr):	Fontes 100ppp pour X11R6 - nécessaires seulement coté serveur.
+Summary(pl):	Fonty o rozdzielczosci 100dpi-niezbêdne dla serwera.
+Summary(tr):	X11R6 100dpi yazýtipleri - yalnýzca sunucu tarafýnda gereklidir
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+
+%ifarch sparc
+Obsoletes: X11R6.1-100dpi-fonts
+%endif
+
+%description 100dpi-fonts
+The 100dpi fonts used on most Linux systems. Users with high resolution
+displays may prefer the 100dpi fonts available in a separate package.
+
+%description -l de 100dpi-fonts
+Die 100dpi-Schriftarten, die auf den meisten Linux-Systemen zum Einsatz
+kommen. Anwender mit hochauflösenden Monitoren ziehen unter Umständen
+die 100dpi-Schriften vor, die in einem separaten Paket erhältlich sind.
+
+%description -l fr 100dpi-fonts
+Les fontes 100dpi sont utilisées par la plupart des systèmes Linux.
+Les utilisateurs ayant des hautes résolutions peuvent préférer les 
+fontes 100dpi disponibles dans un package séparé.
+
+%description -l tr 100dpi-fonts
+Yüksek çözünürlük kullanan kullanýcýlar 100dpi yazýtiplerini 75dpi olanlara
+yeðleyebilirler.
+
+%description -l pl 100dpi-fonts
+100dpi - Podstawowe czcionki dla maszyn Linuxowych pracuj±cych z wysok±
+rozdzielczo¶ci± obrazu.
+
+%package 	cyrillic-fonts
+Summary:	Cyrillic fonts - only need on server side
+Summary(pl):	Cyrlica
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+
+%description cyrillic-fonts
+The 75dpi fonts used on most Linux systems. Users with high resolution
+displays may prefer the 100dpi fonts available in a separate package.
+
+%description -l de cyrillic-fonts
+
+%description -l fr cyrillic-fonts
+
+%description -l tr cyrillic-fonts
+
+%description -l pl cyrillic-fonts
+Cyrlica.
+
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c
-%patch0  -p0
+%setup -q -c -a1
+%patch0  -p1
 %patch1  -p1
 %patch2  -p1
 %patch3  -p1
 %patch4  -p1
-%patch5  -p1
 # the following patch is in CVS diff format, needs POSIXLY_CORRECT env var.
 #export POSIXLY_CORRECT=1
-#%patch6 -p1 -b .alpha-sockets
+#%patch5 -p1 -b .alpha-sockets
 #unset POSIXLY_CORRECT
+%patch6  -p1
 %patch7  -p1
 %patch8  -p1
 %patch9  -p1
@@ -970,7 +1062,8 @@ Summary(pl):	XAuth
 %patch15 -p1
 %patch16 -p1
 %patch17 -p1
-%patch18 -p1
+#%patch18 -p1
+%patch19 -p1
 %patch20 -p1
 %patch21 -p1
 %patch22 -p1
@@ -979,33 +1072,21 @@ Summary(pl):	XAuth
 %patch25 -p1
 %patch26 -p1
 %patch27 -p1
-%patch28 -p1
-%patch29 -p1
-#%patch30 -p1 -b .alphadga
-%patch31 -p0
+%patch28 -p0
+#%patch29 -p1 -b .alphadga
+%patch30 -p1
+%patch31 -p1
 %patch32 -p1
 %patch33 -p0
 %patch34 -p1
 %patch35 -p1
 %patch36 -p1
 %patch37 -p1
-%patch38 -p0
-%patch39 -p0
-# the following patch is in CVS diff format, needs POSIXLY_CORRECT env var.
-export POSIXLY_CORRECT=1
-%patch40 -p0
-unset POSIXLY_CORRECT
-# XFree make system is realy brain damaged
-#%patch41 -p1 -b .3dfx
+%patch38 -p1
+%patch39 -p1
+%patch40 -p1
+%patch41 -p1
 %patch42 -p1
-%patch43 -p1
-%patch44 -p1
-%patch45 -p1
-%patch46 -p1
-%patch47 -p1
-%patch48 -p1
-%patch49 -p1
-%patch50 -p1
 
 ## Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
@@ -1070,12 +1151,12 @@ install	-d $RPM_BUILD_ROOT%{_fontdir}/TrueType
 echo 0 > $RPM_BUILD_ROOT%{_fontdir}/TrueType/fonts.dir
 echo 0 > $RPM_BUILD_ROOT%{_fontdir}/TrueType/fonts.scale
 
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/xdm
-install %{SOURCE5} $RPM_BUILD_ROOT/etc/pam.d/xserver
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/X11/fs/config
-install %{SOURCE6} $RPM_BUILD_ROOT/usr/X11R6/lib/X11/pl/app-defaults/XTerm
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/xdm
+install %{SOURCE6} $RPM_BUILD_ROOT/etc/pam.d/xserver
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
+install %{SOURCE5} $RPM_BUILD_ROOT/etc/X11/fs/config
+install %{SOURCE7} $RPM_BUILD_ROOT/usr/X11R6/lib/X11/pl/app-defaults/XTerm
 
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
@@ -1731,3 +1812,23 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/lib/X11/XF86Setup
 /usr/X11R6/man/man1/XF86Setup.1*
 /usr/X11R6/man/man1/xmseconfig.1*
+
+%files fonts
+%defattr(644,root,root,755)
+%{_fontdir}/PEX
+%{_fontdir}/Speedo
+%{_fontdir}/Type1
+%{_fontdir}/misc
+/usr/X11R6/include/X11/fonts
+
+%files 75dpi-fonts
+%defattr(644,root,root,755)
+%{_fontdir}/75dpi
+
+%files 100dpi-fonts
+%defattr(644,root,root,755)
+%{_fontdir}/100dpi
+
+%files cyrillic-fonts
+%defattr(644,root,root,755)
+%{_fontdir}/cyrillic
