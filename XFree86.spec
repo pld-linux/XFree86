@@ -1810,7 +1810,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 ####%patch45 -p1
 ####%patch46 -p1
 %{!?_without_tdfx:%patch47 -p0}
-%{!?_without_tdfx:%patch48 -p0}
+#%{!?_without_tdfx:%patch48 -p0}
 %{!?_without_tdfx:%patch49 -p1}
 #%patch50 -p0
 %{!?_without_tdfx:%patch51 -p0}
@@ -2101,7 +2101,6 @@ fi
 %attr(755,root,root) %{_libdir}/X11/xsm
 
 %dir /etc/X11/xinit
-%config(noreplace) /etc/X11/xinit/xinitrc
 %dir /etc/X11/lbxproxy
 /etc/X11/lbxproxy/*
 %dir /etc/X11/proxymngr
