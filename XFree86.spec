@@ -1371,7 +1371,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/X11R6/bin/xieperf
 %attr(755,root,root) /usr/X11R6/bin/xinit
 
-%attr(755,root,root) %config /usr/X11R6/bin/startx
+%attr(755,root,root) /usr/X11R6/bin/startx
 
 %attr(755,root,root) /usr/X11R6/bin/setxkbmap
 %attr(755,root,root) /usr/X11R6/bin/xkbcomp
