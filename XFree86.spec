@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
 Version:	4.0.1
-Release:	8
+Release:	9
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -57,6 +57,9 @@ Patch25:	%{name}-moresecurity.patch
 Patch26:	%{name}-xman.patch
 Patch27:	%{name}-glide3.patch
 Patch28:	%{name}-tdfxdrmfixes.patch
+Patch29:	%{name}-HasXdmAuth.patch
+Patch30:	%{name}-Xserver_observe_XAUTHORITY.patch
+Patch31:	%{name}-xdm-fixes.patch
 
 BuildRequires:	flex
 BuildRequires:	ncurses-devel
@@ -957,6 +960,9 @@ X11R6-contrib in older releases.
 %patch26 -p1
 %patch27 -p0
 %patch28 -p1
+%patch29 -p1
+%patch30 -p0
+%patch31 -p0
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
@@ -1417,6 +1423,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %attr(755,root,root) %{_libdir}/X11/xdm
 %attr(755,root,root) %{_bindir}/xdm
+%attr(755,root,root) %{_bindir}/chooser
+%ifarch alpha
+%attr(755,root,root) %{_libdir}/libXdmGreet.so*
+%endif
 %{_mandir}/man1/xdm.1*
 
 %dir /etc/X11/xdm
@@ -1425,12 +1435,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %config /etc/X11/xdm/Xsession
 %attr(755,root,root) %config /etc/X11/xdm/Xsetup_0
 %attr(755,root,root) %config /etc/X11/xdm/Xwilling
-%attr(755,root,root) %config /etc/X11/xdm/chooser
 %config /etc/X11/xdm/Xaccess
 %config /etc/X11/xdm/Xresources
 %config /etc/X11/xdm/Xservers
 %config /etc/X11/xdm/xdm-config
-/etc/X11/xdm/authdir
 /etc/X11/xdm/pixmaps
 
 %files -n twm
