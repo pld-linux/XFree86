@@ -907,6 +907,8 @@ Summary(pl):	Sterownik do kart 3Dfx Voodoo1 i Voodoo2
 Group:		X11/XFree86
 Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
+# dlopens libglide2x.so
+Requires:	Glide_VG
 
 %description driver-glide
 Voodoo1 and Voodoo2 video driver.
@@ -1240,10 +1242,11 @@ Sterownik do kart Sun TCX.
 Summary:	3Dfx video driver
 Summary(pl):	Sterownik do kart 3Dfx
 Group:		X11/XFree86
-Requires:	Glide3-DRI
-Requires:	OpenGL
 Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
+# dlopens libglide3x.so
+Requires:	Glide3-DRI
+Requires:	OpenGL
 Conflicts:	XFree86-driver-nvidia
 Obsoletes:	XFree86-3dfx
 
