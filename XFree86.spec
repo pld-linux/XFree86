@@ -82,13 +82,12 @@ Patch43:	XFree86-sunxkb.patch
 Patch44:	XFree86-sparcfbdev.patch
 Patch45:	XFree86-pfillbug.patch
 Patch46:	XFree86-linebug.patch
-Patch47:	XFree86-mach64_2.patch
-Patch48:	XFree86-mach64_3.patch
-Patch49:	XFree86-multiffb.patch
-Patch50:	XFree86-ffbfixes.patch
-Patch51:	XFree86-sparcpckbd.patch
-Patch52:	XFree86-raptor.patch
-Patch53:	XFree86-ffb3.patch
+Patch47:	XFree86-mach64_3.patch
+Patch48:	XFree86-multiffb.patch
+Patch59:	XFree86-ffbfixes.patch
+Patch50:	XFree86-sparcpckbd.patch
+Patch51:	XFree86-raptor.patch
+Patch52:	XFree86-ffb3.patch
 
 BuildRequires:	ncurses-devel >= 5.0
 BuildRequires:	zlib-devel
@@ -1242,7 +1241,6 @@ install xfsft-1.1.6/fonts.scale.Type1 xc/fonts/scaled/Type1/fonts.scale
 %patch49 -p1
 %patch50 -p1
 %patch51 -p1
-%patch52 -p1
 
 ## Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
