@@ -876,7 +876,7 @@ X11R6-contrib in older releases.
 #%setup -q -c -a1 -a2
 %patch0 -p1
 %patch1 -p1
-#%patch2 -p1
+%patch2 -p1
 #%patch3 -p1
 #%patch4 -p0
 #%patch5 -p0
