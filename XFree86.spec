@@ -1817,13 +1817,13 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 rm -f xc/config/cf/host.def
 
 # New ATI drivers
-#%cd xc/programs/Xserver/hw/xfree86/drivers
+cd xc/programs/Xserver/hw/xfree86/drivers
 #%bzcat %{SOURCE2} | tar x
 # ati.2 directory
 
 # New SiS drivers
-#%cd sis
-#%zcat %{SOURCE38} | tar x
+cd sis
+zcat %{SOURCE38} | tar x
 
 #--- %build --------------------------
 
@@ -2642,13 +2642,13 @@ fi
 %endif
 
 %ifnarch sparc sparc64 alpha
-#%files driver-sis
-#%defattr(644,root,root,755)
-#%attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
-#%ifnarch ppc
+%files driver-sis
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
+%ifnarch ppc
 #%attr(755,root,root) %{_libdir}/modules/dri/sis_dri.so
-#%endif
-#%{_mandir}/man4/sis*
+%endif
+%{_mandir}/man4/sis*
 %endif
 
 %ifarch sparc sparc64
