@@ -1,0 +1,35 @@
+--- XFree86-3.3.3.1/xc/programs/xdm/session.c~	Sat Jun 19 02:25:32 1999
++++ XFree86-3.3.3.1/xc/programs/xdm/session.c	Sat Jun 19 04:30:43 1999
+@@ -699,6 +699,32 @@
+ #endif /* K5AUTH */
+ 	bzero(passwd, strlen(passwd));
+ 	SetUserAuthorization (d, verify);
++#ifdef USE_PAM
++{
++	int i, j;
++	const char *const *pam_env;
++	char *tmp_pam_env;
++
++	pam_env = (const char *const *) pam_getenvlist((pam_handle_t *) pamh);
++
++	if (pam_env != NULL) {
++		tmp_pam_env = malloc(4096);
++		if (tmp_pam_env != NULL) {
++			for (i = 0; pam_env[i]; i++) {
++				Debug("env[%d] = %s\n", i, pam_env[i]);
++				strncpy(tmp_pam_env, pam_env[i], 4095);
++				tmp_pam_env[4095] = 0;
++				j = 0;
++				while (tmp_pam_env[j] != '=')
++					j++;
++				tmp_pam_env[j] = 0;
++				verify->userEnviron = setEnv(verify->userEnviron, tmp_pam_env, &tmp_pam_env[j + 1]);
++			}
++		}
++		free(tmp_pam_env);
++	}
++}
++#endif
+ 	home = getEnv (verify->userEnviron, "HOME");
+ 	if (home)
+ 	    if (chdir (home) == -1) {
