@@ -93,7 +93,7 @@ BuildRequires:	Glide2x_SDK
 Requires:	XFree86-fonts-ISO8859-1 = %{version}
 Requires:	XFree86-libs = %{version}
 Requires:	xauth
-ExclusiveArch:	%{ix86} alpha sparc m68k armv4l noarch
+ExclusiveArch:	%{ix86} alpha sparc64 sparc m68k armv4l noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	xpm-progs
 Obsoletes:	xterm
@@ -107,10 +107,8 @@ Obsoletes:	X11R6.1
 %define		_wmpropsdir	%{_datadir}/wm-properties
 
 # avoid Mesa dependency in XFree86-OpenGL-libs
-%define		_noautoreqdep	libGL.so.1 libGLU.so.1
-
 # Glide3 (libglide3.so.3) can be provided by Glide_V3-DRI or Glide_V5-DRI
-%define		_noautoreqdep	libglide3.so.3
+%define		_noautoreqdep	libGL.so.1 libGLU.so.1 libglade3.so.3
 
 %description
 If you want to install the X Window System (TM) on your machine,
