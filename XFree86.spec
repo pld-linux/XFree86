@@ -1790,8 +1790,6 @@ fi
 %doc %{_libdir}/X11/doc
 %endif
 
-%{_sysconfdir}/X11/XftConfig
-
 %dir %{_libdir}/X11/app-defaults
 %{_libdir}/X11/app-defaults/XCalc
 %{_libdir}/X11/app-defaults/XCalc-color
@@ -1815,26 +1813,25 @@ fi
 %attr(755,root,root) %{_libdir}/X11/xinit
 %attr(755,root,root) %{_libdir}/X11/xsm
 
-%dir /etc/X11/lbxproxy
-%dir /etc/X11/proxymngr
-%dir /etc/X11/rstart
-%dir /etc/X11/rstart/commands
-%dir /etc/X11/rstart/commands/x11r6
-%dir /etc/X11/rstart/contexts
-%dir /etc/X11/xserver
-%dir /etc/X11/xsm
 %dir /etc/X11/xinit
-
+%dir /etc/X11/lbxproxy
 /etc/X11/lbxproxy/*
+%dir /etc/X11/proxymngr
 /etc/X11/proxymngr/*
-%attr(-,root,root) /etc/X11/rstart/config
-%attr(-,root,root) /etc/X11/rstart/rstartd.real
-%attr(-,root,root) /etc/X11/rstart/commands/x
-%attr(-,root,root) /etc/X11/rstart/commands/x11
-%attr(-,root,root) /etc/X11/rstart/commands/*List*
-%attr(-,root,root) /etc/X11/rstart/commands/x11r6/*
-%attr(-,root,root) /etc/X11/rstart/contexts/*
+%dir /etc/X11/rstart
+/etc/X11/rstart/config
+%attr(755,root,root) /etc/X11/rstart/rstartd.real
+%dir /etc/X11/rstart/commands
+/etc/X11/rstart/commands/x
+/etc/X11/rstart/commands/x11
+%attr(755,root,root) /etc/X11/rstart/commands/*List*
+%dir /etc/X11/rstart/commands/x11r6
+%attr(755,root,root) /etc/X11/rstart/commands/x11r6/*
+%dir /etc/X11/rstart/contexts
+/etc/X11/rstart/contexts/*
+%dir /etc/X11/xserver
 /etc/X11/xserver/SecurityPolicy
+%dir /etc/X11/xsm
 /etc/X11/xsm/*
 
 %lang(pl) %{_libdir}/X11/app-defaults/pl
@@ -2450,6 +2447,7 @@ fi
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/libx*.so.*.*
 %endif
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/X11/XftConfig
 
 %files modules
 %defattr(644,root,root,755)
@@ -2685,7 +2683,6 @@ fi
 %dir %{_sysconfdir}/X11/fs
 %attr(755,root,root) %{_libdir}/X11/fs
 %config(noreplace) %{_sysconfdir}/X11/fs/config
-%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/X11/XftConfig
 
 %attr(755,root,root) %{_bindir}/xfs
 %attr(755,root,root) %{_bindir}/fslsfonts
