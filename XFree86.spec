@@ -2222,6 +2222,11 @@ else
 	echo "found"
 fi
 
+%pre modules
+if [ -d /etc/X11/xkb/geometry/hp ]; then
+	rm -rf /etc/X11/xkb/geometry/hp
+fi
+
 %triggerpostun modules -- XFree86-modules < 4.0.2
 if [ -d /usr/X11R6/lib/X11/xkb ]; then
 	rm -rf /usr/X11R6/lib/X11/xkb
