@@ -1,0 +1,35 @@
+X server used to crash after XF86VidModeSwitchToMode() failure,
+because of unconditional currentMode info destruction.
+
+E.g. (the case I investigated) when screen resolution set by RandR was
+lower than requested by XF86VidModeSwitchToMode(), xf86SwitchMode is
+unsuccessful; due to currentMode == NULL (in some way) DRIAdjustFrame()
+called itself recursively again and again, leading to stack overflow.
+
+This patch seems to avoid the crash.
+
+--- XFree86-4.3.0/xc/programs/Xserver/hw/xfree86/common/xf86VidMode.c.orig	Tue Jan 28 21:52:28 2003
++++ XFree86-4.3.0/xc/programs/Xserver/hw/xfree86/common/xf86VidMode.c	Sat Mar  8 01:05:00 2003
+@@ -330,6 +330,8 @@
+ VidModeSwitchMode(int scrnIndex, pointer mode)
+ {
+     ScrnInfoPtr pScrn;
++    DisplayModePtr pTmpMode;
++    Bool retval;
+ 
+     DEBUG_P("VidModeSwitchMode");
+ 
+@@ -338,8 +340,12 @@
+ 
+     pScrn = xf86Screens[scrnIndex];
+     /* Force a mode switch */
++    pTmpMode = pScrn->currentMode;
+     pScrn->currentMode = NULL;
+-    return xf86SwitchMode(pScrn->pScreen, mode);
++    retval = xf86SwitchMode(pScrn->pScreen, mode);
++    if (retval == FALSE)
++	pScrn->currentMode = pTmpMode;
++    return retval;
+ }
+ 
+ Bool
