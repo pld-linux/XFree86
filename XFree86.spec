@@ -29,14 +29,6 @@ Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/XFree86-4.4.0-src-2.tgz
 # Source1-md5:	b9b6c74a03e314569e01d5fd4ff59523
 Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/XFree86-4.4.0-src-3.tgz
 # Source2-md5:	703404f48d3a15f58389a879d47c769d
-Source3:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/XFree86-4.4.0-src-4.tgz
-# Source3-md5:	5d1792f5c154c7462c6aef39c7853b3b
-Source4:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/XFree86-4.4.0-src-5.tgz
-# Source4-md5:	5c37f028efc6d54a9c725e333f9cc8ae
-Source5:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/XFree86-4.4.0-src-6.tgz
-# Source5-md5:	d1e12c33e9756d5143004a69f2cdac81
-Source6:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/XFree86-4.4.0-src-7.tgz
-# Source6-md5:	947a34279a0ca2da2f300719c583845e
 Source7:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
 # Source7-md5:	0a15b1c374256b5cad7961807baa3896
 Source8:	xdm.pamd
@@ -65,7 +57,6 @@ Source40:	oclock.png
 Source41:	xconsole.png
 Source42:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
 # Source42-md5:	a184106bb83cb27c6963944d9243ac3f
-#Source43:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
 Source44:	%{name}-Xserver-headers
 Source45:	%{name}-Xserver-headers-links
 Source46:	twm-xsession.desktop
@@ -791,60 +782,6 @@ ATI Radeon video driver.
 
 %description driver-radeon -l pl
 Sterownik do kart ATI Radeon.
-
-%package driver-ati.2
-Summary:	ATI video driver (ATI.2)
-Summary(pl):	Sterownik do kart ATI (ATI.2)
-Group:		X11/XFree86
-Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
-Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
-Obsoletes:	XFree86-ATI
-Obsoletes:	XFree86-Mach32
-Obsoletes:	XFree86-Mach64
-
-%description driver-ati.2
-ATI video driver (ATI.2) from gatos (http://gatos.sourceforge.net/).
-
-%description driver-ati.2 -l pl
-Sterownik do kart ATI (ATI.2) projektu gatos
-(http://gatos.sourceforge.net/).
-
-%package driver-r128.2
-Summary:	ATI Rage 128 video driver (ATI.2)
-Summary(pl):	Sterownik do kart ATI Rage 128 (ATI.2)
-Group:		X11/XFree86
-Requires:	OpenGL
-Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
-Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
-Requires:	%{name}-driver-ati.2
-Conflicts:	XFree86-driver-nvidia
-Obsoletes:	XFree86-Rage128
-
-%description driver-r128.2
-ATI Rage 128 video driver (ATI.2) from gatos
-(http://gatos.sourceforge.net/).
-
-%description driver-r128.2 -l pl
-Sterownik do kart ATI Rage 128 (ATI.2) projektu gatos
-(http://gatos.sourceforge.net/).
-
-%package driver-radeon.2
-Summary:	ATI Radeon video driver (ATI.2)
-Summary(pl):	Sterownik do kart ATI Radeon (ATI.2)
-Group:		X11/XFree86
-Requires:	OpenGL
-Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
-Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
-Requires:	%{name}-driver-ati.2
-Conflicts:	XFree86-driver-nvidia
-
-%description driver-radeon.2
-ATI Radeon video driver (ATI.2) from gatos
-(http://gatos.sourceforge.net/).
-
-%description driver-radeon.2 -l pl
-Sterownik do kart ATI Radeon (ATI.2) projektu gatos
-(http://gatos.sourceforge.net/).
 
 %package driver-chips
 Summary:	Chips and Technologies video driver
@@ -1800,8 +1737,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #--- %prep ---------------------------
 
 %prep
-%setup -qcT -b0 -b1 -b2 -b3 -b4 -b5 -b6 -b7
-
+%setup -qc -a1 -a2 -a7
 %patch0 -p0
 %patch1 -p1
 %patch2 -p1
@@ -1856,15 +1792,6 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 
 rm -f xc/config/cf/host.def
 
-#Remove fonts dir for faster build
-# only valid for snapshots
-rm -rf xc/fonts
-
-# New ATI drivers
-# cd xc/programs/Xserver/hw/xfree86/drivers
-#%bzcat %{SOURCE39} | tar x
-# ati.2 directory
-
 %build
 %{__make} -S -C xc World \
 	DEFAULT_OS_CPU_FROB=%{_target_cpu} \
@@ -1876,15 +1803,6 @@ rm -rf xc/fonts
 	CDEBUGFLAGS="" \
 	ICONDIR="%{_iconsdir}" \
 	LINUXDIR="/dev/null"
-
-%ifnarch alpha
-#%%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" Makefiles
-#%%{__make} -C xc/programs/Xserver/hw/xfree86/drivers SUBDIRS="ati.2" all \
-#	"BOOTSTRAPCFLAGS=%{rpmcflags}" \
-#	"CCOPTIONS=%{rpmcflags}" \
-#	"CXXOPTIONS=%{rpmcflags}" \
-#	"CXXDEBUGFLAGS=" "CDEBUGFLAGS="
-%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -1913,14 +1831,6 @@ install -d $RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,security/console.apps,sysconfi
 	CDEBUGFLAGS="" \
 	ICONDIR="%{_iconsdir}" \
 	LINUXDIR="/dev/null"
-
-%ifnarch alpha
-#install -d $RPM_BUILD_ROOT%{_libdir}/modules.gatos/{drivers,dri}
-#install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_drv.o \
-#	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/drivers
-#install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_dri.o \
-#	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/dri
-%endif
 
 # fix pkgconfig path
 if [ "%{_pkgconfigdir}" != "/usr/lib/pkgconfig" ] ; then
@@ -2712,34 +2622,6 @@ fi
 %attr(755,root,root) %{_libdir}/modules/dri/r200_dri.so
 %endif
 %{_mandir}/man4/radeon*
-
-%ifnarch alpha
-#%%files driver-ati.2
-#%defattr(644,root,root,755)
-#%dir %{_libdir}/modules.gatos/drivers
-#%attr(755,root,root) %{_libdir}/modules.gatos/drivers/ati*_drv.o
-#%attr(755,root,root) %{_libdir}/modules.gatos/drivers/[bfmt]*_drv.o
-%endif
-
-%ifnarch alpha
-#%files driver-r128.2
-#%defattr(644,root,root,755)
-#%attr(755,root,root) %{_libdir}/modules.gatos/drivers/r128*_drv.o
-#%ifnarch sparc sparc64
-#%attr(755,root,root) %{_libdir}/modules.gatos/dri/r128_dri.o
-#%endif
-#%%{_mandir}/man4/r128*
-%endif
-
-%ifnarch alpha
-#%files driver-radeon.2
-#%defattr(644,root,root,755)
-#%attr(755,root,root) %{_libdir}/modules.gatos/drivers/radeon*_drv.o
-#%attr(755,root,root) %{_libdir}/modules.gatos/drivers/saa7114_drv.o
-#%ifnarch sparc sparc64
-#%attr(755,root,root) %{_libdir}/modules.gatos/dri/radeon_dri.o
-#%endif
-%endif
 
 # Devel: sparc sparc64
 %ifarch %{ix86} alpha amd64
