@@ -17,7 +17,7 @@
 case "$1" in
   start)
 	show Starting X Font Server
-	daemon /usr/X11R6/bin/xfs
+	daemon /usr/X11R6/bin/xfs -daemon
 	touch /var/lock/subsys/xfs
 	;;
   stop)
