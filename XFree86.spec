@@ -11,7 +11,7 @@ Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.0/source/X402src-1.tgz
-Source1:	ftp://download.sourceforge.net/pub/sourceforge/mesa3d/MesaLib-3.4.tar.bz2
+#Source1:	ftp://download.sourceforge.net/pub/sourceforge/mesa3d/MesaLib-3.4.tar.bz2
 Source2:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source3:	xdm.pamd
 Source4:	xdm.init
@@ -872,7 +872,8 @@ X11R6-contrib in older releases.
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c -a1 -a2
+%setup -q -c -a2
+#%setup -q -c -a1 -a2
 #%patch0 -p1
 %patch1 -p1
 %patch2 -p1
