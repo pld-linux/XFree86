@@ -1,4 +1,6 @@
 
+# _without_tdfx		disables tdfx build
+
 %define		_sver	%(echo %{version} | tr -d .)
 
 Summary:	XFree86 Window System servers and basic programs
@@ -97,6 +99,7 @@ Patch56:	%{name}-Xfont-Type1-large-DoS.patch
 Patch57:	%{name}-GLcore-strip-a-workaround.patch
 # Original from: ftp://ftp.xfree86.org/pub/XFree86/4.2.1/fixes/4.2.1-mit-shm-security.patch
 Patch58:	%{name}-4.2.1-mit-shm-security.patch
+Patch59:	%{name}-disable_glide.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -109,11 +112,11 @@ BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
 BuildRequires:	libstdc++-devel
 %ifarch %{ix86} alpha
-BuildRequires:	Glide3-DRI-devel
+%{!?_without_tdfx:BuildRequires:	Glide3-DRI-devel}
 %endif
 # Required by xc/programs/Xserver/hw/xfree86/drivers/glide/glide_driver.c
 %ifarch %{ix86}
-BuildRequires:	Glide2x_SDK
+%{!?_without_tdfx:BuildRequires:	Glide2x_SDK}
 %endif
 Requires:	xauth
 Requires:	%{name}-libs = %{version}
@@ -1739,6 +1742,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %ifarch ppc
 %patch35
 %endif
+%{?_without_tdfx:%patch35}
 %patch36 -p0
 %patch37 -p1
 %patch38 -p1
@@ -1750,11 +1754,11 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch44 -p1
 %patch45 -p1
 %patch46 -p1
-%patch47 -p0
-%patch48 -p0
-%patch49 -p1
+%{!?_without_tdfx:%patch47 -p0}
+%{!?_without_tdfx:%patch48 -p0}
+%{!?_without_tdfx:%patch49 -p1}
 #%patch50 -p0
-%patch51 -p0
+%{!?_without_tdfx:%patch51 -p0}
 #%patch52 -p1
 #%patch53 -p1
 %patch54 -p1
@@ -1762,6 +1766,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch56 -p1
 %{!?debug:%patch57 -p1}
 %patch58 -p0
+%{?_without_tdfx:%patch59 -p0}
 
 rm -f xc/config/cf/host.def
 
@@ -1813,9 +1818,12 @@ install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysc
 		install install.man
 
 %ifnarch alpha
-install -d $RPM_BUILD_ROOT%{_libdir}/modules.gatos/drivers
+install -d $RPM_BUILD_ROOT%{_libdir}/modules.gatos/{drivers,dri}
 install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_drv.o \
 	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/drivers
+install xc/programs/Xserver/hw/xfree86/drivers/ati.2/*_dri.o \
+	$RPM_BUILD_ROOT%{_libdir}/modules.gatos/dri
+
 %endif
 
 # setting default X
@@ -2405,10 +2413,10 @@ fi
 %endif
 
 %ifnarch sparc sparc64 alpha ppc
-%files driver-glide
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/glide_drv.o
-%{_mandir}/man4/glide*
+%{!?_without_tdfx:%files driver-glide}
+%{!?_without_tdfx:%defattr(644,root,root,755)}
+%{!?_without_tdfx:%attr(755,root,root) %{_libdir}/modules/drivers/glide_drv.o}
+%{!?_without_tdfx:%{_mandir}/man4/glide*}
 %endif
 
 %files driver-glint
@@ -2498,7 +2506,7 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules.gatos/drivers/r128*_drv.o
 %ifnarch sparc sparc64
-%attr(755,root,root) %{_libdir}/modules.gatos/dri/r128_dri.so
+%attr(755,root,root) %{_libdir}/modules.gatos/dri/r128_dri.o
 %endif
 %{_mandir}/man4/r128*
 %endif
@@ -2509,7 +2517,7 @@ fi
 %attr(755,root,root) %{_libdir}/modules.gatos/drivers/radeon*_drv.o
 %attr(755,root,root) %{_libdir}/modules.gatos/drivers/saa7114_drv.o
 %ifnarch sparc sparc64
-%attr(755,root,root) %{_libdir}/modules.gatos/dri/radeon_dri.so
+%attr(755,root,root) %{_libdir}/modules.gatos/dri/radeon_dri.o
 %endif
 %endif
 
@@ -2609,11 +2617,11 @@ fi
 %endif
 
 %ifnarch sparc sparc64 ppc
-%files driver-tdfx
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/tdfx_drv.o
-%attr(755,root,root) %{_libdir}/modules/dri/tdfx_dri.so
-%{_mandir}/man4/tdfx*
+%{!?_without_tdfx:%files driver-tdfx}
+%{!?_without_tdfx:%defattr(644,root,root,755)}
+%{!?_without_tdfx:%attr(755,root,root) %{_libdir}/modules/drivers/tdfx_drv.o}
+%{!?_without_tdfx:%attr(755,root,root) %{_libdir}/modules/dri/tdfx_dri.so}
+%{!?_without_tdfx:%{_mandir}/man4/tdfx*}
 %endif
 
 %ifnarch sparc sparc64 ppc
