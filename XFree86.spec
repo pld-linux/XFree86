@@ -33,6 +33,7 @@ Patch6:		XFree86-4.0-makedepend.patch
 Patch7:		XFree86-tdfx.patch
 Patch8:		XFree86-xfsredhat.patch
 Patch9:		XFree86-xfs-fix.patch
+#Patch10:	XFree86-xfs-logger.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -41,7 +42,7 @@ BuildRequires:	tcl-devel
 BuildRequires:	pam-devel
 Requires:	xauth
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Buildroot:	/tmp/%{name}-%{version}-root/
 
 %ifarch sparc
 Obsoletes: X11R6.1
@@ -419,6 +420,15 @@ If you are installing the X Window System and your system uses a Digital TGA
 board based on the DC21040 chip, you'll need to install the XFree86-TGA
 package.
 
+%package DPS
+Summary:	Display PostScript
+Summary(pl):	Display PostScript
+Group:		X11/XFree
+Group(pl):	X11/XFree
+
+%description DPS
+%description -l pl DPS
+
 %package -n sessreg
 Summary:	sessreg - manage utmp/wtmp entries for non-init clients
 Group:		X11/XFree86
@@ -509,6 +519,7 @@ the case when using remote logins or granting access to other users).
 %patch7 -p0
 %patch8 -p0
 %patch9 -p0
+#%patch10 -p0
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
@@ -681,6 +692,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/X11/etc
 %dir %{_libdir}/X11/fonts
 %dir %{_bindir}
+
 
 %{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XKeysymDB
@@ -1086,6 +1098,7 @@ rm -rf $RPM_BUILD_ROOT
 /var/state/xkb
 %endif
 
+%files DPS
 #%files XF86Setup
 #%defattr(644,root,root,755)
 #%attr(755,root,root) %{_bindir}/XF86Setup
