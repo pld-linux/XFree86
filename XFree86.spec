@@ -47,6 +47,11 @@ Patch17:	%{name}-xdm-fixes.patch
 Patch18:	%{name}-imake-kernel-version.patch
 Patch19:	%{name}-no-kernel-modules.patch
 Patch20:	%{name}-cirrus.patch
+Patch21:	%{name}-locale.alias.patch
+Patch22:	%{name}-parallelmake.patch
+Patch23:	%{name}-portuguese.patch
+Patch24:	%{name}-XF86CardDrivers-cfg.patch
+Patch25:	%{name}-pic.patch
 BuildRequires:	flex
 BuildRequires:	bison
 BuildRequires:	ncurses-devel
@@ -59,6 +64,7 @@ BuildRequires:	Glide2x_SDK
 BuildRequires:	Glide_V3-DRI-devel >= 3.10-7
 %endif
 Requires:	xauth
+Prereq:		Xfree86-libs
 Obsoletes:	xpm-progs
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
 Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -1020,6 +1026,11 @@ X11R6-contrib in older releases.
 %patch18 -p1
 %patch19 -p1
 %patch20 -p0
+%patch21 -p0
+%patch22 -p1
+%patch23 -p1
+%patch24 -p1
+%patch25 -p1
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
@@ -1158,7 +1169,7 @@ gunzip $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
 %triggerpostun modules -- XFree86-modules < 4.0.2
 if [ -d /usr/X11R6/lib/X11/xkb ]; then
 	rm -rf /usr/X11R6/lib/X11/xkb
-	ln -sf ../../../../etc/X11/ /usr/X11R6/lib/X11/xkb
+	ln -sf ../../../../etc/X11/xkb /usr/X11R6/lib/X11/xkb
 fi
 
 %post libs
