@@ -2183,11 +2183,13 @@ fi
 %{_mandir}/man4/siliconmotion*
 %endif
 
-%ifnarch sparc sparc64 alpha ppc
+%ifnarch sparc sparc64 alpha
 %files driver-sis
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
+%ifnarch ppc
 %attr(755,root,root) %{_libdir}/modules/dri/sis_dri.so
+%endif
 %{_mandir}/man4/sis*
 %endif
 
