@@ -10,7 +10,7 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Name:		XFree86
 Version:	4.2.0
-Release:	0.1
+Release:	0.2
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -1873,7 +1873,7 @@ fi
 %{_libdir}/libGLw.a
 %dir %{_includedir}/GL
 %attr(644,root,root) %{_includedir}/GL/*
-%{_mandir}/man3/glX*
+%{_mandir}/man3/gl[A-Z]*
 %{_mandir}/man3/glu*
 %{_mandir}/man3/GLw*
 
