@@ -31,7 +31,7 @@ Source12:	xconsole.desktop
 Source13:	xterm.desktop
 Source14:	xlogo64.png
 Source15:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
-Source16:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20020310.tar.bz2
+Source16:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20020524.tar.bz2
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
