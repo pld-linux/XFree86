@@ -23,7 +23,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.99.4
-Release:	0.1
+Release:	0.2
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
@@ -2493,6 +2493,7 @@ fi
 %attr(755,root,root) %{_bindir}/bdftopcf
 %attr(755,root,root) %{_bindir}/xcursor-config
 %attr(755,root,root) %{_libdir}/libX[1Ta-eg-t]*.so
+%exclude %{_libdir}/libXrender*.so
 %attr(755,root,root) %{_libdir}/libXfont*.so
 %attr(755,root,root) %{_libdir}/libI*.so
 %attr(755,root,root) %{_libdir}/libS*.so
@@ -2531,6 +2532,9 @@ fi
 %{_includedir}/X11/extensions/X[^I]*.h
 %{_includedir}/X11/extensions/XI.h
 %{_includedir}/X11/extensions/XI[^E]*.h
+%exclude %{_includedir}/X11/extensions/render.h
+%exclude %{_includedir}/X11/extensions/renderproto.h
+%exclude %{_includedir}/X11/extensions/Xrender.h
 %{_includedir}/X11/fonts
 %{_includedir}/X11/Xcursor
 %{_includedir}/xf86*.h
@@ -2903,6 +2907,7 @@ fi
 %dir %{_soundsdir}
 %dir %{_wmpropsdir}
 %attr(755,root,root) %{_libdir}/libX[1Ta-eg-t]*.so.*.*
+%exclude %{_libdir}/libXrender*.so.*.*
 %attr(755,root,root) %{_libdir}/libXfont*.so.*.*
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
 %attr(755,root,root) %{_libdir}/libS*.so.*.*
@@ -2998,7 +3003,7 @@ fi
 %{_libdir}/libXmuu.a
 %{_libdir}/libXp.a
 %{_libdir}/libXpm.a
-%{_libdir}/libXrender.a
+#%{_libdir}/libXrender.a
 %{_libdir}/libXt.a
 %{_libdir}/libXtst.a
 
