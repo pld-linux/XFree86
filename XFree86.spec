@@ -358,7 +358,7 @@ Xft jest bibliotek± s³u¿±c± do renderowania fontów dla X Window.
 Summary:	X Font Rendering library
 Summary(pl):	Biblioteka do renderowania fontów
 Group:		X11/Development/Libraries
-Requires:	%{name}-xft = %{version}
+Requires:	%{name}-xft >= %{version}
 Requires:	%{name}-fontconfig-devel
 Provides:	Xft-devel = 2.1-2
 Obsoletes:	XFree86-xft2-devel
@@ -380,7 +380,7 @@ programów korzystaj±cych z biblioteki Xft.
 Summary:	X Font Rendering library
 Summary(pl):	Biblioteka do renderowania fontów
 Group:		X11/Development/Libraries
-Requires:	%{name}-xft-devel = %{version}
+Requires:	%{name}-xft-devel >= %{version}
 Provides:	Xft-static = 2.1-2
 Obsoletes:	XFree86-xft2-static
 Obsoletes:	Xft-static
@@ -417,7 +417,7 @@ systemie i wybierania ich w zale¿no¶ci od potrzeb aplikacji.
 Summary:	Font configuration and customization library
 Summary(pl):	Biblioteka do konfigurowania fontów
 Group:		Development/Libraries
-Requires:	%{name}-fontconfig-realpkg = %{version}
+Requires:	%{name}-fontconfig-realpkg >= %{version}
 Requires:	freetype-devel
 Provides:	fontconfig-devel = 1.0.1
 Provides:	%{name}-fontconfig-devel-realpkg = %{version}
@@ -441,7 +441,7 @@ programów korzystaj±cych z biblioteki fontconfig.
 Summary:	Font configuration and customization library
 Summary(pl):	Biblioteka do konfigurowania fontów
 Group:		Development/Libraries
-Requires:	%{name}-fontconfig-devel-realpkg = %{version}
+Requires:	%{name}-fontconfig-devel-realpkg >= %{version}
 Provides:	fontconfig-static = 1.0.1
 Obsoletes:	fontconfig-static
 
