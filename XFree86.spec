@@ -72,6 +72,7 @@ Patch35:	%{name}-alpha_GLX_align_fix.patch
 Patch36:	%{name}-manpage_link_fixes.patch
 Patch37:	%{name}-XftConfig_in_correct_place.patch
 Patch38:	%{name}-i740.patch
+Patch39:        %{name}-compaq-alpha-megapatch.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1410,6 +1411,9 @@ serwerów lokalnych lub zdalnych.
 %patch36 -p1
 %patch37 -p1
 %patch38 -p1
+%ifarch alpha
+%patch39 -p0
+%endif
 rm -f xc/config/cf/host.def
 tar zx -f %{SOURCE15} -C xc/programs/Xserver/hw/xfree86/drivers/
 
