@@ -1415,7 +1415,7 @@ rm -rf $RPM_BUILD_ROOT
   happen.
 
 * Mon Mar 30 1998 Erik Troan <ewt@redhat.com>
-- switched to using the Xwrapper from XFree86 rather then a separate package
+- swhiched to using the Xwrapper from XFree86 rather then a separate package
 
 * Sat Mar 21 1998 Jakub Jelinek <jj@ultra.linux.cz>
 - built sparc version against glibc
