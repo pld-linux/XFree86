@@ -1790,7 +1790,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_pixmapsdir}/mini
 %attr(755,root,root) %{_libdir}/libX*.so.*.*
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
+%ifnarch alpha
 %attr(755,root,root) %{_libdir}/libP*.so.*.*
+%endif
 %attr(755,root,root) %{_libdir}/libS*.so.*.*
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/libx*.so.*.*
@@ -1839,7 +1841,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/gccmakedep
 %attr(755,root,root) %{_libdir}/libX*.so
 %attr(755,root,root) %{_libdir}/libI*.so
+%ifnarch alpha
 %attr(755,root,root) %{_libdir}/libP*.so
+%endif
 %attr(755,root,root) %{_libdir}/libS*.so
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/libx*.so
@@ -1864,7 +1868,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_includedir}/X11
 %{_includedir}/X11/*.h
 %{_includedir}/X11/ICE
+%ifnarch alpha
 %{_includedir}/X11/PEX5
+%endif
 %{_includedir}/X11/PM
 %{_includedir}/X11/SM
 %{_includedir}/X11/Xaw
@@ -1889,7 +1895,9 @@ rm -rf $RPM_BUILD_ROOT
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libICE.a
+%ifnarch alpha
 %{_libdir}/libPEX5.a
+%endif
 %{_libdir}/libSM.a
 %{_libdir}/libX11.a
 %{_libdir}/libXIE.a
@@ -1938,7 +1946,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xserver
 %config(missingok) /etc/security/console.apps/xserver
 
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 alpha
 
 %files driver-apm
 %defattr(644,root,root,755)
@@ -1954,12 +1962,15 @@ rm -rf $RPM_BUILD_ROOT
 
 %endif
 
+%ifnarch alpha
+
 %files driver-ati
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/ati*_drv.o
 #%{_mandir}/man4/ati*
+%endif
 
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 alpha
 
 %files driver-chips
 %defattr(644,root,root,755)
@@ -1967,7 +1978,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/chips*
 
 %endif
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 alpha
 
 %files driver-cirrus
 %defattr(644,root,root,755)
@@ -1984,10 +1995,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %endif
 
+%ifnarch alpha
+
 %files driver-fbdev
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/fbdev_drv.o
 %{_mandir}/man4/fbdev*
+
+%endif
 
 %ifnarch sparc sparc64 alpha
 
@@ -2014,7 +2029,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/i128*
 
 %endif
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 alpha
 
 %files driver-i740
 %defattr(644,root,root,755)
@@ -2040,7 +2055,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/mga*
 
 %endif
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 alpha
 
 %files driver-neomagic
 %defattr(644,root,root,755)
@@ -2048,7 +2063,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/neomagic*
 
 %endif
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 
 
 %files driver-nv
 %defattr(644,root,root,755)
@@ -2056,11 +2071,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/nv*
 
 %endif
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 
 
 %files driver-r128
 %defattr(644,root,root,755)
+%ifnarch alpha
 %attr(755,root,root) %{_libdir}/modules/drivers/r128_drv.o
+%endif
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
 %endif
@@ -2070,7 +2087,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files driver-radeon
 %defattr(644,root,root,755)
+%ifnarch alpha
 %attr(755,root,root) %{_libdir}/modules/drivers/radeon_drv.o
+%endif
 %ifnarch sparc sparc64
 %attr(755,root,root) %{_libdir}/modules/dri/radeon_dri.so
 %endif
@@ -2197,7 +2216,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/modules/drivers/tga_drv.o
 
 %endif
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 alpha
 
 %files driver-trident
 %defattr(644,root,root,755)
@@ -2205,7 +2224,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man4/trident*
 
 %endif
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 alpha
 
 %files driver-tseng
 %defattr(644,root,root,755)
