@@ -44,7 +44,6 @@ Patch15:	%{name}-sparc4.patch.gz
 Patch17:	%{name}-broken-includes.patch
 #Patch18:	%{name}-Xaw-unaligned.patch
 #Patch19:	%{name}-4.0.1-alpha-pcibus-lemming.patch
-Patch20:	%{name}-%{version}-xdm-pam.patch
 #Patch21:	%{name}-xlib-textmeasure.patch
 Patch22:	%{name}-fhs.patch
 #Patch23:	%{name}-xdmsecurity.patch
@@ -899,7 +898,6 @@ X11R6-contrib in older releases.
 %patch17 -p1
 #%patch18 -p1 #not needed, included in 4.0.2
 #%patch19 -p0 #not needed, included in 4.0.2
-%patch20 -p1
 #%patch21 -p0 #not needed, included in 4.0.2
 %patch22 -p1
 #%patch23 -p1 #not needed, included in 4.0.2
