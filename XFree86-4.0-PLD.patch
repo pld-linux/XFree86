@@ -387,3 +387,32 @@ diff -urN XFree86-4.0.orig/xc/programs/xterm/xterm.h XFree86-4.0/xc/programs/xte
  
  #ifndef XF86ExtraCardDrivers
  #define XF86ExtraCardDrivers	v4l
+diff -ur XFree/xc/config/cf/linux.cf XFree86-4.0.1.new/xc/config/cf/linux.cf
+--- XFree/xc/config/cf/linux.cf	Sat Jun 24 20:15:54 2000
++++ XFree86-4.0.1.new/xc/config/cf/linux.cf	Tue Aug 22 13:54:23 2000
+@@ -180,6 +180,8 @@
+ #    endif
+ #  elif defined(SparcArchitecture)
+ #    define BuildXF86DRI              YES
++#  elif defined(AlphaArchitecture)
++#    define BuildXF86DRI              YES
+ #  else
+ #    define BuildXF86DRI              NO
+ #  endif
+diff -ur XFree/xc/config/cf/xfree86.cf XFree86-4.0.1.new/xc/config/cf/xfree86.cf
+--- XFree/xc/config/cf/xfree86.cf	Sat Jul  1 01:34:21 2000
++++ XFree86-4.0.1.new/xc/config/cf/xfree86.cf	Tue Aug 22 13:53:28 2000
+@@ -416,8 +416,11 @@
+ 
+ /* Pure PCI drivers should go first */
+ # ifndef XF86CardDrivers
+-#  define XF86CardDrivers	mga tdfx glint s3virge rendition tga \
+-				r128 vga XF86OSCardDrivers XF86ExtraCardDrivers
++#  define XF86CardDrivers	mga glint nv tga s3virge sis rendition \
++				neomagic i740 tdfx \
++				cirrus tseng trident chips apm \
++				fbdev \
++				ati r128 v4l vga XF86OSCardDrivers XF86ExtraCardDrivers
+ # endif
+ #endif
+ 
