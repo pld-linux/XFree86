@@ -2056,9 +2056,6 @@ rm -rf $RPM_BUILD_ROOT
 %post   DPS -p /sbin/ldconfig
 %postun DPS -p /sbin/ldconfig
 
-%post   OpenGL-core -p /sbin/ldconfig
-%postun OpenGL-core -p /sbin/ldconfig
-
 %post   OpenGL-libGL -p /sbin/ldconfig
 %postun OpenGL-libGL -p /sbin/ldconfig
 
