@@ -366,8 +366,9 @@ diff -Nru xc.orig/programs/xdm/config/Xres.cpp xc/programs/xdm/config/Xres.cpp
 @@ -71,9 +71,9 @@
  XHASHendif
  #ifdef XPM
- XHASHif PLANES >= 8
+-XHASHif PLANES >= 8
 -xlogin*logoFileName: BITMAPDIR/**//XDM_PIXMAP
++XHASHif PLANES > 8
 +xlogin*logoFileName: BITMAPDIR/**//xdm-pld-logo.xpm
  XHASHelse
 -xlogin*logoFileName: BITMAPDIR/**//XDM_BWPIXMAP
