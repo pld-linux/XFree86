@@ -35,7 +35,7 @@ Patch5:		%{name}-xfs-fix.patch
 Patch6:		%{name}-xfs-logger.patch
 Patch7:		%{name}-xterm-utempter.patch
 Patch8:		%{name}-app_defaults_dir.patch
-Patch9:		%{name}-startx_xauth.patch
+Patch9:		%{name}-%{version}-startx_xauth.patch
 Patch10:	%{name}-v4l.patch
 Patch11:	%{name}-fixemacs.patch
 Patch14:	%{name}-sparc3.patch.gz
@@ -884,7 +884,7 @@ X11R6-contrib in older releases.
 #%patch6 -p0
 %patch7 -p1
 %patch8 -p1
-#%patch9 -p1
+%patch9 -p0
 #%patch10 -p1
 #%patch11 -p1
 #%patch12 -p0
