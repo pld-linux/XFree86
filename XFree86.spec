@@ -1365,7 +1365,7 @@ rm -rf $RPM_BUILD_ROOT
   [3.3.2-20]
 - changed Buildroot to /tmp/%%{name}-%%{version}-root,
 - added static subpackage,
-- changeded dependences to "Requires: %%{name} = %%{version}" in devel
+- changed dependencies to "Requires: %%{name} = %%{version}" in devel
   subpackage,
 - added using $RPM_OPT_FLAGS during compile,
 - added striping shared libraries,
