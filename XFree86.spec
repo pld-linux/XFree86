@@ -5,11 +5,14 @@ Summary:	XFree86 Window System servers and basic programs
 Summary(de):	Xfree86 Window-System-Server und grundlegende Programme
 Summary(es):	Programas bАsicos y servidores para el sistema de ventanas XFree86
 Summary(fr):	Serveurs du systХme XFree86 et programmes de base
+Summary(ja):	XFree86 window system ╓н╔╣║╪╔п╓х╢Пкэе╙╓й╔в╔М╔╟╔И╔Ю
+Summary(ko):	X©║ гй©Дгя ╠Б╨╩юШюн ╠ш╡ц╟З га╥н╠в╥╔╟З ╧╝╪╜╣И
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularЩ ve temel programlar
 Summary(pt_BR):	Programas bАsicos e servidores para o sistema de janelas XFree86
 Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
+Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.2.1
 Release:	3
