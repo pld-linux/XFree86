@@ -54,7 +54,7 @@ Patch25:	%{name}-%{version}-xman.patch
 #Patch27:	%{name}-tdfxdrmfixes.patch
 Patch28:	%{name}-HasXdmAuth.patch
 #Patch29:	%{name}-Xserver_observe_XAUTHORITY.patch
-Patch30:	%{name}-xdm-fixes.patch
+Patch30:	%{name}-%{version}-xdm-fixes.patch
 
 BuildRequires:	flex
 BuildRequires:	ncurses-devel
@@ -909,7 +909,7 @@ X11R6-contrib in older releases.
 #%patch27 -p1 #not needed, included in 4.0.2
 %patch28 -p1
 #%patch29 -p0 #not needed, included in 4.0.2
-#%patch30 -p0
+%patch30 -p1
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
