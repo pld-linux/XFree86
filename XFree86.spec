@@ -1581,6 +1581,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps,sysconfig} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/pl \
 	$RPM_BUILD_ROOT%{_datadir}/{misc,sounds} \
+	$RPM_BUILD_ROOT%{_sbindir} \
 	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
 	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
 	$RPM_BUILD_ROOT{%{_applnkdir}/{Utilities,Terminals},%{_pixmapsdir}/mini} \
@@ -2432,6 +2433,7 @@ fi
 %dir %{_includedir}
 %dir %{_includedir}/X11
 %dir %{_bindir}
+%dir %{_sbindir}
 /usr/bin/X11
 /usr/lib/X11
 /usr/include/X11
