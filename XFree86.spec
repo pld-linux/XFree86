@@ -124,8 +124,8 @@ Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Prereq:		grep
 Prereq:		/sbin/ldconfig
-Obsoletes:	Mesa
-Obsoletes:	Mesa-devel
+#Obsoletes:	Mesa
+#Obsoletes:	Mesa-devel
 
 %ifarch sparc
 Obsoletes: X11R6.1-libs
