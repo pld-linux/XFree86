@@ -4,6 +4,7 @@
 #
 # Conditional build:
 %bcond_without	glide	# don't build glide driver
+%bcond_with	cursors	# build with XcursorTheme-* packages
 #
 Summary:	XFree86 Window System servers and basic programs
 Summary(de):	XFree86 Window-System-Server und grundlegende Programme
@@ -19,7 +20,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.4.0
-Release:	9
+Release:	10
 Epoch:		1
 License:	XFree86 1.1
 Group:		X11/XFree86
@@ -3104,6 +3105,7 @@ fi
 %{_pixmapsdir}/xload.png
 %{_pixmapsdir}/xmag.png
 
+%if %{with cursors}
 %files -n XcursorTheme-handhelds
 %defattr(644,root,root,755)
 %{_iconsdir}/handhelds
@@ -3115,6 +3117,7 @@ fi
 %files -n XcursorTheme-whiteglass
 %defattr(644,root,root,755)
 %{_iconsdir}/whiteglass
+%endif
 
 %files -n imake
 %defattr(644,root,root,755)
