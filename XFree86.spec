@@ -1519,10 +1519,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_libdir}/X11/doc
 %endif
 
-%{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XftConfig
-%{_libdir}/X11/XKeysymDB
-%{_libdir}/X11/locale
 
 %dir %{_libdir}/X11/app-defaults
 %{_libdir}/X11/app-defaults/XCalc
@@ -1836,6 +1833,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %dir %{_libdir}
 %dir %{_libdir}/X11
+%{_libdir}/X11/XErrorDB
+%{_libdir}/X11/XKeysymDB
+%{_libdir}/X11/locale
 /usr/lib/X11
 %dir %{_bindir}
 /usr/bin/X11
