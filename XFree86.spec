@@ -2050,8 +2050,6 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/libGL*.so
 ln -sf libGL.so.1 $RPM_BUILD_ROOT%{_libdir}/libGL.so
 ln -sf libGLU.so.1 $RPM_BUILD_ROOT%{_libdir}/libGLU.so
 
-ln -sf %{_includedir}/GL $RPM_BUILD_ROOT/usr/include/GL
-
 # set up PLD xdm config
 rm -f $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/{*Console,Xaccess,Xsession,Xsetup*}
 install xdm-xinitrc-*/pixmaps/* $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/pixmaps
@@ -2525,6 +2523,7 @@ fi
 %attr(755,root,root) %{_bindir}/glxgears
 %attr(755,root,root) %{_libdir}/libGL.so.*.*
 %attr(755,root,root) %{_libdir}/libGL.so
+%attr(755,root,root) /usr/lib/libGL.so*
 %attr(755,root,root) %{_libdir}/modules/extensions/libglx.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libGLcore.a
 %{_mandir}/man1/glxgears.1x*
