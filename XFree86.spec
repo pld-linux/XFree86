@@ -7,7 +7,7 @@ Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Summary(es):	Programas básicos y servidores para el sistema de ventanas XFree86
 Name:		XFree86
 Version:	4.1.0
-Release:	7
+Release:	8
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
