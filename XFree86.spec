@@ -24,7 +24,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.99.11
-Release:	0.2
+Release:	0.3
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
@@ -116,6 +116,7 @@ Patch45:	%{name}-spencode-nowarning.patch
 Patch46:	%{name}-lock.patch
 Patch47:	%{name}-linux-version.patch
 Patch48:	%{name}-new-s3-nodebug.patch
+Patch49:	%{name}-core_pointer.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	%{_bindir}/perl
 BuildRequires:	bison
@@ -1984,6 +1985,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch47 -p1
 tar xfz *.tar.gz
 %patch48 -p0
+%patch49 -p0
 
 rm -f xc/config/cf/host.def
 
