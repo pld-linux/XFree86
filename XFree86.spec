@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	4.0.1
-Release:	2
+Release:	3
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -53,7 +53,7 @@ BuildRequires:	zlib-devel
 BuildRequires:	utempter-devel
 BuildRequires:	tcl-devel
 BuildRequires:	pam-devel
-%ifnarch sparc
+%ifnarch sparc alpha
 BuildRequires:	Glide2x_SDK
 BuildRequires:	Glide_V3-DRI-devel >= 3.10-7
 %endif
@@ -683,23 +683,6 @@ Aby uruchomiæ X Window System potrzebujesz X serwera dostosowanego do
 Twojego sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun dla
 wszystkich wspieranych framebufferów SBUS.
 
-%package TGA
-Summary:	XFree86 TGA server
-Summary(pl):	XFree86 serwer dla kart TGA
-Group:		X11/XFree86/Servers
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}
-Requires:	%{name}-fonts = %{version}
-
-%description TGA
-The XFree86-TGA package contains an 8-bit X server for Digital TGA boards
-based on the DC21040 chip. These adapters are very popular in Alpha
-workstations and are included with Alpha UDB (Multia) machines.
-
-If you are installing the X Window System and your system uses a Digital TGA
-board based on the DC21040 chip, you'll need to install the XFree86-TGA
-package.
-
 %package DPS
 Summary:	Display PostScript
 Summary(pl):	Display PostScript
@@ -1269,9 +1252,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xf86config.1*
 %{_mandir}/man1/SuperProbe.1*
 %{_mandir}/man1/xon.1*
-%{_mandir}/man1/libxrx.1*
 %{_mandir}/man1/revpath.1*
 %{_mandir}/man1/xgamma.1*
+%ifnarch alpha
+%{_mandir}/man1/libxrx.1*
+%endif
 %{_mandir}/man7/*
 
 /usr/bin/X11
@@ -1386,7 +1371,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
 %attr(755,root,root) %{_libdir}/libP*.so.*.*
 %attr(755,root,root) %{_libdir}/libS*.so.*.*
+%ifnarch alpha
 %attr(755,root,root) %{_libdir}/libx*.so.*.*
+%endif
 
 %files OpenGL-core
 %defattr(644,root,root,755)
@@ -1418,7 +1405,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libI*.so
 %attr(755,root,root) %{_libdir}/libP*.so
 %attr(755,root,root) %{_libdir}/libS*.so
+%ifnarch alpha
 %attr(755,root,root) %{_libdir}/libx*.so
+%endif
 %{_libdir}/libFS.a
 %{_libdir}/libXau.a
 %{_libdir}/libXdmcp.a
@@ -1532,20 +1521,24 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/modules/drivers/cirrus_*.o
 %{_mandir}/man4/cirrus*
 
+%ifnarch alpha
 %files driver-cyrix
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/cyrix_drv.o
 %{_mandir}/man4/cyrix*
+%endif
 
 %files driver-fbdev
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/fbdev_drv.o
 %{_mandir}/man4/fbdev*
 
+%ifnarch alpha
 %files driver-glide
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/glide_drv.o
 %{_mandir}/man4/glide*
+%endif
 
 %files driver-glint
 %defattr(644,root,root,755)
@@ -1558,11 +1551,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/modules/drivers/i740_drv.o
 %{_mandir}/man4/i740*
 
+%ifnarch alpha
 %files driver-i810
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/i810_drv.o
 %attr(755,root,root) %{_libdir}/modules/dri/i810_dri.so
 %{_mandir}/man4/i810*
+%endif
 
 %files driver-mga
 %defattr(644,root,root,755)
@@ -1604,7 +1599,9 @@ rm -rf $RPM_BUILD_ROOT
 %files driver-tdfx
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tdfx_drv.o
+%ifnarch alpha
 %attr(755,root,root) %{_libdir}/modules/dri/tdfx_dri.so
+%endif
 %{_mandir}/man4/tdfx*
 
 %files driver-tga
@@ -1620,14 +1617,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tseng_drv.o
 %{_mandir}/man4/tseng*
-
-%ifarch alpha
-
-%files TGA
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/XF86_TGA
-%{_mandir}/man5/XF86Config.5*
-%endif
 
 %ifarch sparc
 
