@@ -135,7 +135,6 @@ BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	pam-devel
-BuildRequires:	sed >= 4.0
 BuildRequires:	tcl-devel
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
@@ -1833,7 +1832,7 @@ rm -rf xc/fonts
 %ifarch %{ix86} mips ppc arm
 olddir=$(pwd)
 cd LinuxDriver/2D
-sed -i -e 's#$(XF86OSSRC)/vbe#$(XF86SRC)/vbe#g' Imakefile
+echo -e ',s#$(XF86OSSRC)/vbe#$(XF86SRC)/vbe#g\n,w' | ed Imakefile
 xmkmf $olddir/xc .
 %{__make} -S savage_drv.o \
 	DEFAULT_OS_CPU_FROB=%{_target_cpu} \
