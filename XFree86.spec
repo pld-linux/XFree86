@@ -798,7 +798,7 @@ the case when using remote logins or granting access to other users).
 %patch6 -p0
 %patch7 -p0
 %patch8 -p0
-%patch9 -p0
+#%patch9 -p0
 %patch10 -p1
 %patch11 -p0
 %patch12 -p1
