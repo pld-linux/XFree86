@@ -20,7 +20,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.99.902
-Release:	1
+Release:	1.1
 Epoch:		1
 License:	MIT
 Group:		X11/XFree86
@@ -116,7 +116,7 @@ Patch44:	%{name}-pkgconfig.patch
 Patch45:	%{name}-spencode-nowarning.patch
 # Small (maybe buggy) patch to resolve problems with totem 0.97.0
 Patch46:	%{name}-lock.patch
-Patch47:	%{name}-linux-version.patch
+Patch47:	%{name}-sparc-kbd.patch
 
 Patch49:	%{name}-mandir-fix.patch
 Patch50:	%{name}-xterm-256colors.patch
