@@ -1,0 +1,26 @@
+#!/bin/bash
+# ver. 0.5
+
+. /etc/rc.d/init.d/functions
+
+# See how we were called.
+case "$1" in
+  start)
+	show Starting X Daemon
+	busy
+	/usr/X11R6/bin/xdm & 
+	deltext;ok
+	;;
+  stop)
+	show Shuting down X daemon
+	busy
+	killall -9 xdm &>/dev/null
+	deltext;ok
+	;;
+  *)
+	echo "Usage: $0 {start|stop}"
+	exit 1
+esac
+
+exit 0
+
