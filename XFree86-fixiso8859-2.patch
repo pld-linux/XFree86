@@ -1,0 +1,11 @@
+--- XFree86-3.3.3.1/xc/nls/XLC_LOCALE/iso8859-2.fixiso8859-2	Thu Jun 10 14:25:13 1999
++++ XFree86-3.3.3.1/xc/nls/XLC_LOCALE/iso8859-2	Thu Jun 10 14:25:48 1999
+@@ -67,7 +67,7 @@
+ #else
+ 	wc_encoding	\x00008080
+ #endif
+-	ct_encoding	ISO8859-2:GR
++	ct_encoding	ISO8859-2:GR ISO8859-1:GR
+ }
+ 
+ END XLC_XLOCALE

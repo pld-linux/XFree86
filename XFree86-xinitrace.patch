@@ -1,0 +1,48 @@
+--- XFree86-3.3.3.1/xc/programs/xinit/xinit.c.xinitrace	Tue Jun  8 12:41:23 1999
++++ XFree86-3.3.3.1/xc/programs/xinit/xinit.c	Tue Jun  8 12:43:39 1999
+@@ -561,22 +561,32 @@
+ 			serverpid = -1;
+ 			break;
+ 		}
+-		/*
+-		 * kludge to avoid race with TCP, giving server time to
+-		 * set his socket options before we try to open it,
+-		 * either use the 15 second timeout, or await SIGUSR1.
++		
++		/* 
++		 * before we try the below kludge, see if we are already
++		 * ready to connect.  Fast CPUs with cached filesystems
++		 * shouldn't have to wait 15 seconds.
+ 		 *
+-		 * If your machine is substantially slower than 15 seconds,
+-		 * you can easily adjust this value.
++		 * pbrown@redhat.com - 06/08/1999
+ 		 */
+-		alarm (15);
+-		pause ();
+-		alarm (0);
+-
+ 		if (waitforserver() == 0) {
+-			Error("unable to connect to X server\r\n");
+-			shutdown();
+-			serverpid = -1;
++		  /*
++		   * kludge to avoid race with TCP, giving server time to
++		   * set his socket options before we try to open it,
++		   * either use the 15 second timeout, or await SIGUSR1.
++		   *
++		   * If your machine is substantially slower than 15 seconds,
++		   * you can easily adjust this value.
++		   */
++		  alarm (15);
++		  pause ();
++		  alarm (0);
++
++		  if (waitforserver() == 0) {
++		    Error("unable to connect to X server\r\n");
++		    shutdown();
++		    serverpid = -1;
++		  }
+ 		}
+ 		break;
+ 	}
