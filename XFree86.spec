@@ -25,7 +25,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.0
-Release:	1
+Release:	1.1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-1.tgz
@@ -2887,6 +2887,8 @@ fi
 
 %files libs -f XFree86-libs.lang
 %defattr(644,root,root,755)
+%dir /usr/share/themes
+%dir /usr/share/themes/Default
 %{_libdir}/X11/XErrorDB
 %{_libdir}/X11/XKeysymDB
 %dir %{_libdir}/X11/app-defaults
