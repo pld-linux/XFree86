@@ -77,14 +77,14 @@ Patch41:	%{name}-nv020414.patch
 Patch42:	%{name}-fix-07-s3trio64v2gx+netfinity.patch
 Patch43:	%{name}-prosavage.patch
 Patch44:	%{name}-xtt-null-pointer.patch
-Patch45:	%{name}-vesa-xf86SetDpi-fix.patch
+Patch45:	%{name}-i740-driver-update-cvs-20020617.patch
 Patch46:	%{name}-neomagic-Xv-support.patch
 Patch47:	%{name}-tdfx-disable-dri-on-16Mb-cards-in-hires.patch
 Patch48:	%{name}-tdfx-enable-interlaced-modes.patch
 Patch49:	%{name}-tdfx-fix-compiler-warnings.patch
 Patch50:	%{name}-tdfx-fix-vtswitch-font-corruption.patch
 Patch51:	%{name}-tdfx-should-be-2048-not-2046.patch
-Patch52:	%{name}-i740-driver-update-cvs-20020617.patch
+Patch52:	%{name}-sis-option-swcursor.patch
 Patch53:	%{name}-sis-unresolved-symbols.patch
 Patch54:	%{name}-sis-maxxfbmem-fixup.patch
 
