@@ -2741,7 +2741,7 @@ fi
 #%ifnarch sparc sparc64
 #%attr(755,root,root) %{_libdir}/modules.gatos/dri/r128_dri.o
 #%endif
-#%{_mandir}/man4/r128*
+#%%{_mandir}/man4/r128*
 %endif
 
 %ifnarch alpha
@@ -2772,7 +2772,7 @@ fi
 %files driver-s3
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/s3_drv.o
-#%{_mandir}/man4/s3*
+#%%{_mandir}/man4/s3*
 %endif
 
 %ifnarch sparc sparc64
@@ -2954,14 +2954,14 @@ fi
 %attr(755,root,root) %{_libdir}/X11/xserver
 %dir /etc/X11/xserver
 /etc/X11/xserver/SecurityPolicy
-#%{_mandir}/man1/xtr*
+#%%{_mandir}/man1/xtr*
 %{_mandir}/man1/xkbcomp.1*
 %{_mandir}/man4/citron*
 %{_mandir}/man4/dmc.4*
 %{_mandir}/man4/dynapro*
 %{_mandir}/man4/keyboard*
 %{_mandir}/man4/microtouch*
-#%{_mandir}/man4/mouse* - conflicts with man-pages - fixme
+#%%{_mandir}/man4/mouse* - conflicts with man-pages - fixme
 %{_mandir}/man4/penmount.4*
 %{_mandir}/man4/v4l*
 %ifnarch sparc sparc64
@@ -3202,4 +3202,4 @@ fi
 %{_mandir}/man1/fstobdf.1*
 %{_mandir}/man1/mkcfm.1*
 %{_mandir}/man1/xfsinfo.1*
-#%{_mandir}/man1/xftcache.1*
+#%%{_mandir}/man1/xftcache.1*
