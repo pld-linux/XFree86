@@ -2356,8 +2356,6 @@ fi
 %attr(755,root,root) %{_bindir}/makestrs
 %attr(755,root,root) %{_bindir}/mergelib
 %attr(755,root,root) %{_bindir}/mkdirhier
-%attr(755,root,root) %{_bindir}/mkfontdir
-%attr(755,root,root) %{_bindir}/mkfontscale
 %attr(755,root,root) %{_bindir}/mkhtmlindex
 %attr(755,root,root) %{_bindir}/proxymngr
 %attr(755,root,root) %{_bindir}/resize
@@ -2436,8 +2434,6 @@ fi
 %{_mandir}/man1/makeg.1*
 %{_mandir}/man1/mergelib.1*
 %{_mandir}/man1/mkdirhier.1*
-%{_mandir}/man1/mkfontdir.1*
-%{_mandir}/man1/mkfontscale.1*
 %{_mandir}/man1/mkhtmlindex.1*
 %{_mandir}/man1/proxymngr.1*
 %{_mandir}/man1/resize.1*
@@ -2494,6 +2490,14 @@ fi
 %lang(pl) %{_mandir}/pl/man1/startx.1*
 %lang(pl) %{_mandir}/pl/man1/xinit.1*
 %lang(pl) %{_mandir}/pl/man1/xwd.1*
+
+# to be separated
+%attr(755,root,root) %{_bindir}/fonttosfnt
+%attr(755,root,root) %{_bindir}/mkfontdir
+%attr(755,root,root) %{_bindir}/mkfontscale
+%{_mandir}/man1/fonttosfnt.1*
+%{_mandir}/man1/mkfontdir.1*
+%{_mandir}/man1/mkfontscale.1*
 
 %files common
 %defattr(644,root,root,755)
