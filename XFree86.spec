@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
 Version:	4.0
-Release:	4
+Release:	5
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
@@ -30,11 +30,12 @@ Patch3:		XFree86-3.9.18-Xwrapper.patch
 Patch4:		XFree86-3.9.17-PAM.patch
 Patch5:		XFree86-4.0-GLU.patch
 Patch6:		XFree86-4.0-makedepend.patch
-Patch7:		XFree86-tdfx.patch
-Patch8:		XFree86-xfsredhat.patch
-Patch9:		XFree86-xfs-fix.patch
-Patch10:	XFree86-xfs-logger.patch
-Patch11:	XFree86-xterm-utempter.patch
+Patch7:		XFree86-xfsredhat.patch
+Patch8:		XFree86-xfs-fix.patch
+Patch9:		XFree86-xfs-logger.patch
+Patch10:	XFree86-xterm-utempter.patch
+# From DRI CVS
+Patch11:	XFree86-DRI-20000522.patch.gz
 # from rawhide
 Patch12:	XFree86-startx_xauth.patch
 Patch13:	XFree86-sparc.patch
@@ -45,10 +46,10 @@ BuildRequires:	zlib-devel
 BuildRequires:	utempter-devel
 BuildRequires:	tcl-devel
 BuildRequires:	pam-devel
-# u mnie glide sie nie kompiluje, a jest potrzebny dla _poprawnej_ kompilacji
-#BuildRequires:	glide-devel
-#
+BuildRequires:	Glide2x_SDK
+BuildRequires:	Glide_V3-DRI-devel
 Requires:	xauth
+Obsoletes:	X11R6-contrib
 Exclusivearch:	%{ix86} alpha sparc m68k armv4l noarch
 Buildroot:	/tmp/%{name}-%{version}-root/
 
@@ -400,6 +401,200 @@ zamanda Diamond Speedstar, Orchid Kelvins, STB Nitros / Horizons, Genoa
 8500VL, çoðu Actix kartlarý, Spider VLB Plus gibi kartlar ve birçok diðer
 kart ile de çalýþýr. Herhangi bir sorun yaþarsanýz bu sunucuyu deneyin.
 
+%package driver-apm
+Summary:	Alliance Promotion video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+
+%description driver-apm
+Alliance Promotion driver for XFree86 4.0+.
+
+%package driver-ati
+Summary:	ATI video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+
+%description driver-ati
+ATI video driver.
+
+%package driver-chips
+Summary:	Chips and Technologies video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+
+%description driver-chips
+Chips and Technologies video driver.
+
+%package driver-cirrus
+Summary:	Cirrus Logic video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+
+%description driver-cirrus
+Cirrus Logic video driver.
+
+%package driver-cyrix
+Summary:	Cyrix video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+
+%description driver-cyrix
+Cyrix video driver.
+
+%package driver-fbdev
+Summary:	Video driver for framebuffer device
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+
+%description driver-fbdev
+Video driver for framebuffer device.
+
+%package driver-glide
+Summary:	Voodoo 1 and Voodoo 2 video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+
+%description driver-glide
+Voodoo 1 and Voodoo 2 video driver.
+
+%package driver-glint
+Summary:	GLINT/Permedia video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	OpenGL
+
+%description driver-glint
+GLINT/Permedia video driver.
+
+%package driver-i740
+Summary:	Intel i740 video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+
+%description driver-i740
+Intel i740 video driver.
+
+%package driver-i810
+Summary:	Intel i810 video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	OpenGL
+
+%description driver-i810
+Intel i810 video driver.
+
+%package driver-mga
+Summary:	Matrox video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	OpenGL
+
+%description driver-mga
+Matrox video driver.
+
+%package driver-neomagic
+Summary:	NeoMagic video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+
+%description driver-neomagic
+NeoMagic video driver.
+
+%package driver-nv
+Summary:	NVIDIA video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+
+%description driver-nv
+NVIDIA video driver.
+
+%package driver-r128
+Summary:	ATI Rage 128 video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	OpenGL
+
+%description driver-r128
+ATI Rage 128 video driver.
+
+%package driver-rendition
+Summary:	Rendition video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+
+%description driver-rendition
+Rendition video driver.
+
+%package driver-s3virge
+Summary:	S3 ViRGE video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+
+%description driver-s3virge
+S3 ViRGE video driver.
+
+%package driver-sis
+Summary:	SiS video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+
+%description driver-sis
+SiS video driver.
+
+%package driver-tdfx
+Summary:	3Dfx video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+Requires:	OpenGL
+
+%description driver-tdfx
+3Dfx video driver.
+
+%package driver-tga
+Summary:	TGA video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+
+%description driver-tga
+TGA video driver.
+
+%package driver-trident
+Summary:	Trident video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+
+%description driver-trident
+Trident video driver.
+
+%package driver-tseng
+Summary:	Tseng Labs video driver
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Requires:	%{name}-modules = %{version}-%{release}
+
+%description driver-tseng
+Tseng Labs video driver.
+
 %package Sun
 Summary:	XFree86 Sun server (monochrome and 8-bit color SBUS framebuffers)
 Summary(pl):	Serwer XFree86 Sun (dla framebuffera)
@@ -604,9 +799,8 @@ the case when using remote logins or granting access to other users).
 %patch7 -p0
 %patch8 -p0
 %patch9 -p0
-#%patch10 -p0
-%patch11 -p1
-
+%patch10 -p1
+%patch11 -p0
 %patch12 -p1
 %patch13 -p0
 %patch14 -p1
@@ -616,11 +810,15 @@ rm -f xc/config/cf/host.def
 #--- %build --------------------------
 
 %build
-make -C xc World \
+mv -f xc/Makefile ./
+sed 's/^WORLDOPTS.*//g' Makefile > xc/Makefile
+MAKE="make -S" ; export MAKE
+make -S -C xc World \
 	"BOOTSTRAPCFLAGS=$RPM_OPT_FLAGS" \
 	"CDEBUGFLAGS=" "CCOPTIONS=$RPM_OPT_FLAGS" \
 	"CXXDEBUGFLAGS=" "CXXOPTIONS=$RPM_OPT_FLAGS" \
-	"RAWCPP=/lib/cpp"
+	"RAWCPP=/lib/cpp" \
+	"WORLDOPTS=-S"
 
 #--- %install ------------------------
 
@@ -632,8 +830,7 @@ install -d $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
 	$RPM_BUILD_ROOT/usr/include \
 	$RPM_BUILD_ROOT/usr/bin \
 	$RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties \
-	$RPM_BUILD_ROOT{%{_appnkldir}/Utilities,%{_datadir}/pixmaps} \
-	$RPM_BUILD_ROOT/%{_docdir}/%{name}-doc-%{version}
+	$RPM_BUILD_ROOT{%{_appnkldir}/Utilities,%{_datadir}/pixmaps}
 
 make -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
@@ -823,6 +1020,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/X11/etc/*.sh
 %{_libdir}/X11/etc/*.term*
 %{_libdir}/X11/etc/xmodmap.std
+%{_libdir}/X11/xman.help
 
 %attr(755,root,root) %{_bindir}/lbxproxy
 %attr(755,root,root) %{_bindir}/proxymngr
@@ -903,6 +1101,18 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/revpath
 %attr(755,root,root) %{_bindir}/xedit
 %attr(755,root,root) %{_bindir}/xgamma
+%attr(755,root,root) %{_bindir}/ico
+%attr(755,root,root) %{_bindir}/listres
+%attr(755,root,root) %{_bindir}/showfont
+%attr(755,root,root) %{_bindir}/viewres
+%attr(755,root,root) %{_bindir}/xbiff
+%attr(755,root,root) %{_bindir}/xcalc
+%attr(755,root,root) %{_bindir}/xev
+%attr(755,root,root) %{_bindir}/xeyes
+%attr(755,root,root) %{_bindir}/xgc
+%attr(755,root,root) %{_bindir}/xload
+%attr(755,root,root) %{_bindir}/xman
+%attr(755,root,root) %{_bindir}/xmessage
 
 %{_includedir}/X11/bitmaps
 
@@ -979,6 +1189,18 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/revpath.1*
 %{_mandir}/man1/xedit.1*
 %{_mandir}/man1/xgamma.1*
+%{_mandir}/man1/ico.1*
+%{_mandir}/man1/listres.1*
+%{_mandir}/man1/showfont.1*
+%{_mandir}/man1/viewres.1*
+%{_mandir}/man1/xbiff.1*
+%{_mandir}/man1/xcalc.1*
+%{_mandir}/man1/xev.1*
+%{_mandir}/man1/xeyes.1*
+%{_mandir}/man1/xgc.1*
+%{_mandir}/man1/xload.1*
+%{_mandir}/man1/xman.1*
+%{_mandir}/man1/xmessage.1*
 %{_mandir}/man7/*
 
 /usr/bin/X11
@@ -990,8 +1212,25 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/X11/xkb
 /var/lib/xkb
 %dir %{_libdir}/modules
-%attr(755,root,root) %{_libdir}/modules/*
-%{_mandir}/man4/*
+%dir %{_libdir}/modules/dri
+%dir %{_libdir}/modules/drivers
+%{_libdir}/modules/*.uc
+%attr(755,root,root) %{_libdir}/modules/*.a
+%attr(755,root,root) %{_libdir}/modules/codeconv
+%attr(755,root,root) %{_libdir}/modules/drivers/linux
+%attr(755,root,root) %{_libdir}/modules/drivers/vga_drv.o
+%attr(755,root,root) %{_libdir}/modules/extensions
+%attr(755,root,root) %{_libdir}/modules/fonts
+%attr(755,root,root) %{_libdir}/modules/input
+%attr(755,root,root) %{_libdir}/modules/linux
+%{_mandir}/man4/dynapro*
+%{_mandir}/man4/keyboard*
+%{_mandir}/man4/microtouch*
+%{_mandir}/man4/mouse*
+%{_mandir}/man4/v4l*
+%{_mandir}/man4/vga*
+%{_mandir}/man4/void*
+%{_mandir}/man4/wacom*
 
 %endif
 
@@ -1015,15 +1254,18 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xdm.1*
 
 %dir    /etc/X11/xdm
-%config /etc/X11/xdm/xdm-config
-%config /etc/X11/xdm/chooser
-%config /etc/X11/xdm/Xsetup_0
-%config /etc/X11/xdm/Xsession
-%config /etc/X11/xdm/Xservers
-%config /etc/X11/xdm/Xresources
+%attr(755,root,root) %config /etc/X11/xdm/GiveConsole
+%attr(755,root,root) %config /etc/X11/xdm/TakeConsole
+%attr(755,root,root) %config /etc/X11/xdm/Xsession
+%attr(755,root,root) %config /etc/X11/xdm/Xsetup_0
+%attr(755,root,root) %config /etc/X11/xdm/Xwilling
+%attr(755,root,root) %config /etc/X11/xdm/chooser
 %config /etc/X11/xdm/Xaccess
-%config /etc/X11/xdm/TakeConsole
-%config /etc/X11/xdm/GiveConsole
+%config /etc/X11/xdm/Xresources
+%config /etc/X11/xdm/Xservers
+%config /etc/X11/xdm/xdm-config
+/etc/X11/xdm/authdir
+/etc/X11/xdm/pixmaps
 
 %files -n twm
 %defattr(644,root,root,755)
@@ -1091,6 +1333,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libFS.a
 %{_libdir}/libXau.a
 %{_libdir}/libXdmcp.a
+%{_libdir}/libXfontcache.a
 %{_libdir}/libXss.a
 %{_libdir}/libXxf86dga.a
 %{_libdir}/libXxf86misc.a
@@ -1122,7 +1365,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/imake.1*
 %{_mandir}/man1/makedepend.1*
 %{_mandir}/man1/xmkmf.1*
-%{_mandir}/man3/[A..Z]*
+%{_mandir}/man3/[A-Z]*
 
 /usr/include/X11
 
@@ -1179,6 +1422,115 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xserver
 %config(missingok) /etc/security/console.apps/xserver
 
+%files driver-apm
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/apm_drv.o
+%{_mandir}/man4/apm*
+
+%files driver-ati
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/ati_drv.o
+%{_mandir}/man4/ati*
+
+%files driver-chips
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/chips_drv.o
+%{_mandir}/man4/chips*
+
+%files driver-cirrus
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/cirrus_*.o
+%{_mandir}/man4/cirrus*
+
+%files driver-cyrix
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/cyrix_drv.o
+%{_mandir}/man4/cyrix*
+
+%files driver-fbdev
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/fbdev_drv.o
+%{_mandir}/man4/fbdev*
+
+%files driver-glide
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/glide_drv.o
+%{_mandir}/man4/glide*
+
+%files driver-glint
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/glint_drv.o
+%attr(755,root,root) %{_libdir}/modules/dri/gamma_dri.so
+%{_mandir}/man4/glint*
+
+%files driver-i740
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/i740_drv.o
+%{_mandir}/man4/i740*
+
+%files driver-i810
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/i810_drv.o
+%attr(755,root,root) %{_libdir}/modules/dri/i810_dri.so
+%{_mandir}/man4/i810*
+
+%files driver-mga
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/mga_drv.o
+%attr(755,root,root) %{_libdir}/modules/dri/mga_dri.so
+%{_mandir}/man4/mga*
+
+%files driver-neomagic
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/neomagic_drv.o
+%{_mandir}/man4/neomagic*
+
+%files driver-nv
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/nv_drv.o
+%{_mandir}/man4/nv*
+
+%files driver-r128
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/r128_drv.o
+%attr(755,root,root) %{_libdir}/modules/dri/r128_dri.so
+%{_mandir}/man4/r128*
+
+%files driver-rendition
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/rendition_drv.o
+%{_mandir}/man4/rendition*
+
+%files driver-s3virge
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/s3virge_drv.o
+%{_mandir}/man4/s3virge*
+
+%files driver-sis
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/sis_drv.o
+%{_mandir}/man4/sis*
+
+%files driver-tdfx
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/tdfx_drv.o
+%attr(755,root,root) %{_libdir}/modules/dri/tdfx_dri.so
+%{_mandir}/man4/tdfx*
+
+%files driver-tga
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/tga_drv.o
+
+%files driver-trident
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/trident_drv.o
+%{_mandir}/man4/trident*
+
+%files driver-tseng
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/tseng_drv.o
+%{_mandir}/man4/tseng*
+
 %ifarch alpha
 
 %files TGA
@@ -1219,12 +1571,19 @@ rm -rf $RPM_BUILD_ROOT
 
 %files DPS
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/makepsres
+%attr(755,root,root) %{_bindir}/pswrap
 %attr(755,root,root) %{_libdir}/libdps.so.1.0
 %attr(755,root,root) %{_libdir}/libdpstk.so.1.0
 %attr(755,root,root) %{_libdir}/libpsres.so.1.0
+%{_mandir}/man1/makepsres*
+%{_mandir}/man1/pswrap*
 
 %files DPS-devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libdps.so
+%attr(755,root,root) %{_libdir}/libdpstk.so
+%attr(755,root,root) %{_libdir}/libpsres.so
 %{_includedir}/DPS/*.h
 
 %files DPS-static
