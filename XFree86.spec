@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
 Version:	4.0.1
-Release:	4
+Release:	5
 Copyright:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -48,6 +48,7 @@ Patch17:	%{name}-shared.patch
 Patch18:	%{name}-broken-includes.patch
 Patch19:	%{name}-Xaw-unaligned.patch
 Patch20:	%{name}-4.0.1-alpha-pcibus-lemming.patch
+Patch21:	%{name}-xdm-pam.patch
 
 BuildRequires:	flex
 BuildRequires:	ncurses-devel
@@ -913,6 +914,7 @@ X11R6-contrib in older releases.
 %ifarch alpha
 %patch20 -p0 -b .lemming
 %endif 
+%patch21 -p1
 rm -f xc/config/cf/host.def
 
 #--- %build --------------------------
