@@ -1,0 +1,19 @@
+diff -urN XFree86-4.0.3.orig/xc/programs/mkfontdir/mkfontdir.c XFree86-4.0.3/xc/programs/mkfontdir/mkfontdir.c
+--- XFree86-4.0.3.orig/xc/programs/mkfontdir/mkfontdir.c	Wed Nov 29 17:45:52 2000
++++ XFree86-4.0.3/xc/programs/mkfontdir/mkfontdir.c	Wed May 23 20:00:31 2001
+@@ -210,6 +210,7 @@
+ 	fprintf (file, "%s %s\n", entry->u.bitmap.fileName, entry->name.name);
+     }
+     fclose (file);
++    chmod (full_name, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+ 
+     /* Write out encodings directory */
+ 
+@@ -232,6 +233,7 @@
+         fprintf(file, "%s %s%s\n", 
+                 encoding->name, prefix, encoding->fileName);
+     fclose(file);
++    chmod (full_name, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+ 
+     return TRUE;
+ }
