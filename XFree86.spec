@@ -5,51 +5,71 @@ Summary(pl):    XFree86 Window System wraz z podstawowymi programami
 Summary(tr):    XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:           XFree86
 Version:        3.3.3.1
-Release:        23
+Release:        22
 Copyright:      MIT
 Group:          X11/XFree86
 Group(pl):      X11/XFree86
 Requires:       XFree86-modules
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/3.3.3/source/X333src-1.tgz
-Source1:	ftp://ftp.xfree86.org/pub/XFree86/3.3.3/source/X333src-2.tgz
 Source2:        xdm.pamd
 Source3:        xdm.initd
 Source4:        xfs.initd
 Source5:	xfs.config
 Patch0:		ftp://ftp.xfree86.org/pub/XFree86/3.3.3/fixes/3.3.3-3.3.3.1.diff.gz
-# patch with main set xhanges setings
-Patch1:		XFree86-cf.patch
-Patch2:		XFree86-xdm.patch
+Patch1:		XFree86-rh.patch
+Patch2:		XFree86-rhxdm.patch
 Patch3:		XFree86-fsstnd.patch
-# PAM patch
-Patch4:		XFree86-pam.patch
-Patch5:		XFree86-pam-SharedLibXdmGreet.patch
+Patch4:		XFree86-nopam.patch
+Patch5:		XFree86-pamconsole.patch
 Patch6:		XFree86-alpha-sockets.patch
+# sparc patches from ultrapenguin
 Patch7:		XFree86-sparc.patch
-Patch8:		XFree86-ffb.patch
+Patch8:		XFree86-ffb.patch.gz
+# enable FBDev device on alpha / intel
 Patch9:		XFree86-fbdev.patch
 # fix xinput problems with threads / GTK+ -- Owen Taylor's fix
 Patch10:	XFree86-xinput.patch
+# more sun patches from ultrapenguin
 Patch11:	XFree86-suncards.patch
 Patch12:	XFree86-sparc2.patch
-Patch13:	XFree86-jay.patch
-#Patch14:	XFree86-86setup.patch
-Patch15:	XFree86-czskkbd.patch
-Patch16:	XFree86-iso88592xlclocale.patch
-Patch17:	XFree86-utextit.patch
-Patch18:	XFree86-joy.patch
-Patch19:	XFree86-arm.patch
-Patch20:	XFree86-xfsft.patch
-Patch21:	XFree86-ru_SU.patch
-Patch22:	XFree86-startx_xauth.patch
-Patch23:	XFree86-xfsredhat.patch
-Patch24:	XFree86-alpha-at.patch
-Patch25:	XFree86-alpha-vga.patch
-Patch26:	XFree86-glibc.patch
-Patch27:	XFree86-ncurses.patch
-Patch28:	XFree86-xterm-ptmx.patch
-Patch29:	XFree86-HasZlib.patch
+Patch13:	XFree86-creator2.patch.gz
+Patch14:	XFree86-newcreator.patch
+Patch15:	XFree86-sparc3.patch.gz
+# the following was causing problems with RagePRO based ATI
+# chipsets, but this has been fixed
+Patch16:	XFree86-mach64.patch.gz
+Patch17:	XFree86-creator4.patch.gz
+Patch18:	XFree86-jay.patch
+Patch19:	XFree86-86setup.patch
+Patch20:	XFree86-czskkbd.patch
+Patch21:	XFree86-is_keyboard.patch
+# use glibc 2.1 routines for utmp, doesn't require xterm to be setuid
+Patch22:	XFree86-nosuidxterm.patch
+Patch23:	XFree86-joy.patch
+Patch24:	XFree86-arm.patch
+Patch25:	XFree86-xfsft.patch
+Patch26:	XFree86-ru_SU.patch
+Patch27:	XFree86-startx_xauth.patch
+Patch28:	XFree86-xfsredhat.patch
+Patch29:	XFree86-mgafix.patch
+# the following patch is incomplete..broken..and thus commented out.
+#Patch30:	XFree86-alphadga.patch
+# work by VMWare, inc. to provide hardware accelerated DGA "XFree86 3.4"
+Patch31:	XFree86-dga1.1.patch
+# Patch from Ian Reid Remmler <ian@marmoset.resnet.tamu.edu> to fix mouse
+# movement with Kensington ExpertMouse / ThinkingMouse
+Patch32:	XFree86-thinkingmouse.patch
+# fix keymap error for dvorak keyboards
+Patch33:	XFree86-dvorak.patch
+# Fix dainbramage where the X server chmods whatever .X11-unix points to
+Patch34:	XFree86-dainbramage.patch
+# link xterm with libncurses instead libtermcap
+Patch35:	XFree86-ncurses.patch
+# Compile X serwers againsty system installed libz.so
+Patch36:	XFree86-HasZlib.patch
 
+BuildPrereq:	ncurses-devel
+BuildPrereq:	zlib-devel
 Exclusivearch:	i386 i486 i586 i686 alpha sparc m68k armv4l
 Buildroot:      /tmp/%{name}-%{version}-root
 
@@ -496,6 +516,18 @@ a client of your real X server (perhaps for testing purposes).
 
 %description -l pl Xnest
 
+%package Xptr
+Summary:	X print server
+Summary(pl):	X print server
+Group:		X11/XFree86/Servers
+Group(pl):	X11/XFree86/Serwery
+
+%description Xptr
+Xprt provides an X server with the print extension and special DDX
+implementation.
+
+%description -l pl Xptr
+
 %package 8514
 Summary:	XFree86 8514 server
 Summary(de):	XFree86 8514 Server
@@ -910,38 +942,49 @@ Summary(pl): XAuth
 
 %description -l pl -n xauth
 
+#--- %prep ---------------------------
+
 %prep
-%setup -q -c -a 1
+%setup -q -c
 %patch0  -p0
-%patch1  -p1
-%patch2  -p1
-%patch3  -p1
-%patch4  -p1
-#%patch5  -p1
-%patch6  -p1
-%patch7  -p1
-%patch8  -p1
-%patch9  -p1
-%patch10 -p1
-%patch11 -p1
-%patch12 -p1
-%patch13 -p1
-#%patch14 -p0
-%patch15 -p1
-%patch16 -p1
-%patch17 -p1
-%patch18 -p1
-%patch19 -p1
-%patch20 -p1
-%patch21 -p1
-%patch22 -p1
-%patch23 -p1
-#%patch24 -p0
-#%patch25 -p1
-%patch26 -p1
-%patch27 -p1
-%patch28 -p1
-%patch29 -p1
+%patch1  -p1 -b .rh
+%patch2  -p1 -b .rhxdm
+%patch3  -p1 -b .fsstnd
+%patch4  -p1 -b .nopam
+%patch5  -p1 -b .pamconsole
+
+# the following patch is in CVS diff format, needs POSIXLY_CORRECT env var.
+#POSIXLY_CORRECT=1 patch -p1 -b -z .alpha-sockets -s < %PATCH6
+
+%patch7  -p1 -b .sparc
+%patch8  -p1 -b .ffb
+%patch9  -p1 -b .fbdev
+%patch10 -p1 -b .xinput
+%patch11 -p1 -b .suncards
+%patch12 -p1 -b .sparc2
+%patch13 -p1 -b .creator2
+%patch14 -p1 -b .newcreator
+%patch15 -p1 -b .sparc3
+%patch16 -p1 -b .mach64
+%patch17 -p1 -b .creator4
+%patch18 -p1 -b .jay
+%patch20 -p1 -b .czskkbd
+%patch21 -p1 -b .is_keyboard
+%patch22 -p1 -b .nosuidxterm
+%patch23 -p1 -b .joy
+%patch24 -p1 -b .arm
+%patch25 -p1 -b .xfsft
+%patch26 -p1 -b .ru_SU
+%patch27 -p1 -b .startx_xauth
+%patch28 -p1 -b .xfsredhat
+%patch29 -p1 -b .mgafix
+#%patch30 -p1 -b .alphadga
+%patch31 -p0 -b .dga1.1
+%patch32 -p1 -b .thinkingmouse
+%patch33 -p0 -b .dvorak
+%patch34 -p1 -b .dainbramage
+%patch35 -p1 -b .ncurses
+%patch36 -p1 -b .HasZlib
 
 ## Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
@@ -954,7 +997,6 @@ make -C xc World \
 	"CXXDEBUGFLAGS=" "CXXOPTIONS=$RPM_OPT_FLAGS"
 
 %install
-
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,lib/X11,man/man{1,3,5}} \
 	$RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,}
@@ -1040,7 +1082,6 @@ rm -rf $RPM_BUILD_ROOT
 %docdir /usr/X11R6/lib/X11/doc
 
 %config /usr/X11R6/lib/X11/XF86Config.eg
-%config /usr/X11R6/lib/X11/XF86Config
 %doc /usr/X11R6/lib/X11/Cards
 
 %dir /usr/X11R6/lib
@@ -1167,80 +1208,80 @@ rm -rf $RPM_BUILD_ROOT
 
 /usr/X11R6/include/X11/bitmaps
 
-/usr/X11R6/man/man1/lbxproxy.1x.*
-/usr/X11R6/man/man1/proxymngr.1x.*
-/usr/X11R6/man/man1/xfindproxy.1x.*
-/usr/X11R6/man/man1/xfwp.1x.*
-/usr/X11R6/man/man1/xrx.1x.*
-/usr/X11R6/man/man1/lndir.1x.*
-/usr/X11R6/man/man1/makestrs.1x.*
-/usr/X11R6/man/man1/makeg.1x.*
-/usr/X11R6/man/man1/mkdirhier.1x.*
-/usr/X11R6/man/man1/appres.1x.*
-/usr/X11R6/man/man1/bdftopcf.1x.*
-/usr/X11R6/man/man1/beforelight.1x.*
-/usr/X11R6/man/man1/bitmap.1x.*
-/usr/X11R6/man/man1/bmtoa.1x.*
-/usr/X11R6/man/man1/atobm.1x.*
-/usr/X11R6/man/man1/editres.1x.*
-/usr/X11R6/man/man1/fsinfo.1x.*
-/usr/X11R6/man/man1/fslsfonts.1x.*
-/usr/X11R6/man/man1/fstobdf.1x.*
-/usr/X11R6/man/man1/iceauth.1x.*
-/usr/X11R6/man/man1/mkfontdir.1x.*
-/usr/X11R6/man/man1/showrgb.1x.*
-/usr/X11R6/man/man1/rstart.1x.*
-/usr/X11R6/man/man1/rstartd.1x.*
-/usr/X11R6/man/man1/smproxy.1x.*
-/usr/X11R6/man/man1/twm.1x.*
-/usr/X11R6/man/man1/x11perf.1x.*
-/usr/X11R6/man/man1/x11perfcomp.1x.*
-/usr/X11R6/man/man1/xclipboard.1x.*
-/usr/X11R6/man/man1/xcutsel.1x.*
-/usr/X11R6/man/man1/xclock.1x.*
-/usr/X11R6/man/man1/xcmsdb.1x.*
-/usr/X11R6/man/man1/xconsole.1x.*
-/usr/X11R6/man/man1/sessreg.1x.*
-/usr/X11R6/man/man1/xdpyinfo.1x.*
-/usr/X11R6/man/man1/dga.1x.*
-/usr/X11R6/man/man1/xfd.1x.*
-/usr/X11R6/man/man1/xhost.1x.*
-/usr/X11R6/man/man1/xieperf.1x.*
-/usr/X11R6/man/man1/xinit.1x.*
-/usr/X11R6/man/man1/startx.1x.*
-/usr/X11R6/man/man1/setxkbmap.1x.*
-/usr/X11R6/man/man1/xkbcomp.1x.*
-/usr/X11R6/man/man1/xkbevd.1x.*
-/usr/X11R6/man/man1/xkbprint.1x.*
-/usr/X11R6/man/man1/xkill.1x.*
-/usr/X11R6/man/man1/xlogo.1x.*
-/usr/X11R6/man/man1/xlsatoms.1x.*
-/usr/X11R6/man/man1/xlsclients.1x.*
-/usr/X11R6/man/man1/xlsfonts.1x.*
-/usr/X11R6/man/man1/xmag.1x.*
-/usr/X11R6/man/man1/xmh.1x.*
-/usr/X11R6/man/man1/xmodmap.1x.*
-/usr/X11R6/man/man1/xprop.1x.*
-/usr/X11R6/man/man1/xrdb.1x.*
-/usr/X11R6/man/man1/xrefresh.1x.*
-/usr/X11R6/man/man1/xset.1x.*
-/usr/X11R6/man/man1/xsetmode.1x.*
-/usr/X11R6/man/man1/xsetpointer.1x.*
-/usr/X11R6/man/man1/xsetroot.1x.*
-/usr/X11R6/man/man1/xsm.1x.*
-/usr/X11R6/man/man1/xstdcmap.1x.*
-/usr/X11R6/man/man1/xterm.1x.*
-/usr/X11R6/man/man1/resize.1x.*
-/usr/X11R6/man/man1/xvidtune.1x.*
-/usr/X11R6/man/man1/xwd.1x.*
-/usr/X11R6/man/man1/xwininfo.1x.*
-/usr/X11R6/man/man1/xwud.1x.*
-/usr/X11R6/man/man1/Xserver.1x.*
-/usr/X11R6/man/man1/XFree86.1x.*
-/usr/X11R6/man/man1/reconfig.1x.*
-/usr/X11R6/man/man1/xf86config.1x.*
-/usr/X11R6/man/man1/SuperProbe.1x.*
-/usr/X11R6/man/man1/xon.1x.*
+/usr/X11R6/man/man1/lbxproxy.1*
+/usr/X11R6/man/man1/proxymngr.1*
+/usr/X11R6/man/man1/xfindproxy.1*
+/usr/X11R6/man/man1/xfwp.1*
+/usr/X11R6/man/man1/xrx.1*
+/usr/X11R6/man/man1/lndir.1*
+/usr/X11R6/man/man1/makestrs.1*
+/usr/X11R6/man/man1/makeg.1*
+/usr/X11R6/man/man1/mkdirhier.1*
+/usr/X11R6/man/man1/appres.1*
+/usr/X11R6/man/man1/bdftopcf.1*
+/usr/X11R6/man/man1/beforelight.1*
+/usr/X11R6/man/man1/bitmap.1*
+/usr/X11R6/man/man1/bmtoa.1*
+/usr/X11R6/man/man1/atobm.1*
+/usr/X11R6/man/man1/editres.1*
+/usr/X11R6/man/man1/fsinfo.1*
+/usr/X11R6/man/man1/fslsfonts.1*
+/usr/X11R6/man/man1/fstobdf.1*
+/usr/X11R6/man/man1/iceauth.1*
+/usr/X11R6/man/man1/mkfontdir.1*
+/usr/X11R6/man/man1/showrgb.1*
+/usr/X11R6/man/man1/rstart.1*
+/usr/X11R6/man/man1/rstartd.1*
+/usr/X11R6/man/man1/smproxy.1*
+/usr/X11R6/man/man1/twm.1*
+/usr/X11R6/man/man1/x11perf.1*
+/usr/X11R6/man/man1/x11perfcomp.1*
+/usr/X11R6/man/man1/xclipboard.1*
+/usr/X11R6/man/man1/xcutsel.1*
+/usr/X11R6/man/man1/xclock.1*
+/usr/X11R6/man/man1/xcmsdb.1*
+/usr/X11R6/man/man1/xconsole.1*
+/usr/X11R6/man/man1/sessreg.1*
+/usr/X11R6/man/man1/xdpyinfo.1*
+/usr/X11R6/man/man1/dga.1*
+/usr/X11R6/man/man1/xfd.1*
+/usr/X11R6/man/man1/xhost.1*
+/usr/X11R6/man/man1/xieperf.1*
+/usr/X11R6/man/man1/xinit.1*
+/usr/X11R6/man/man1/startx.1*
+/usr/X11R6/man/man1/setxkbmap.1*
+/usr/X11R6/man/man1/xkbcomp.1*
+/usr/X11R6/man/man1/xkbevd.1*
+/usr/X11R6/man/man1/xkbprint.1*
+/usr/X11R6/man/man1/xkill.1*
+/usr/X11R6/man/man1/xlogo.1*
+/usr/X11R6/man/man1/xlsatoms.1*
+/usr/X11R6/man/man1/xlsclients.1*
+/usr/X11R6/man/man1/xlsfonts.1*
+/usr/X11R6/man/man1/xmag.1*
+/usr/X11R6/man/man1/xmh.1*
+/usr/X11R6/man/man1/xmodmap.1*
+/usr/X11R6/man/man1/xprop.1*
+/usr/X11R6/man/man1/xrdb.1*
+/usr/X11R6/man/man1/xrefresh.1*
+/usr/X11R6/man/man1/xset.1*
+/usr/X11R6/man/man1/xsetmode.1*
+/usr/X11R6/man/man1/xsetpointer.1*
+/usr/X11R6/man/man1/xsetroot.1*
+/usr/X11R6/man/man1/xsm.1*
+/usr/X11R6/man/man1/xstdcmap.1*
+/usr/X11R6/man/man1/xterm.1*
+/usr/X11R6/man/man1/resize.1*
+/usr/X11R6/man/man1/xvidtune.1*
+/usr/X11R6/man/man1/xwd.1*
+/usr/X11R6/man/man1/xwininfo.1*
+/usr/X11R6/man/man1/xwud.1*
+/usr/X11R6/man/man1/Xserver.1*
+/usr/X11R6/man/man1/XFree86.1*
+/usr/X11R6/man/man1/reconfig.1*
+/usr/X11R6/man/man1/xf86config.1*
+/usr/X11R6/man/man1/SuperProbe.1*
+/usr/X11R6/man/man1/xon.1*
 
 %ifnarch sparc
 
@@ -1262,18 +1303,18 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/X11R6/lib/X11/xdm
 %attr(755,root,root) /usr/X11R6/bin/xdm
 %attr(755,root,root) /usr/X11R6/bin/sessreg
-/usr/X11R6/man/man1/xdm.1x.*
+/usr/X11R6/man/man1/xdm.1*
 
 %files -n xfs
 %defattr(644,root,root,755)
 %attr(700,root,root) %config /etc/rc.d/init.d/xfs
 %attr(755,root,root) /usr/X11R6/bin/xfs
-/usr/X11R6/man/man1/xfs.1x.*
+/usr/X11R6/man/man1/xfs.1*
 
 %files -n xauth
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/xauth
-/usr/X11R6/man/man1/xauth.1x.*
+/usr/X11R6/man/man1/xauth.1*
 
 %files libs
 %defattr(644,root,root,755)
@@ -1298,9 +1339,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/X11R6/bin/makedepend
 %attr(755,root,root) /usr/X11R6/bin/xmkmf
 
-/usr/X11R6/man/man1/imake.1x.*
-/usr/X11R6/man/man1/makedepend.1x.*
-/usr/X11R6/man/man1/xmkmf.1x.*
+/usr/X11R6/man/man1/imake.1*
+/usr/X11R6/man/man1/makedepend.1*
+/usr/X11R6/man/man1/xmkmf.1*
 /usr/X11R6/man/man3/*
 
 /usr/X11R6/lib/lib*.a
@@ -1308,20 +1349,20 @@ rm -rf $RPM_BUILD_ROOT
 %files Xvfb
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/Xvfb
-/usr/X11R6/man/man1/Xvfb.1x.*
+/usr/X11R6/man/man1/Xvfb.1*
 
 %files Xnest
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/Xnest
-/usr/X11R6/man/man1/Xnest.1x.*
+/usr/X11R6/man/man1/Xnest.1*
 
 %ifarch i386 i486 i586 i686 alpha
 
 %files SVGA
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_SVGA
-/usr/X11R6/man/man1/XF86_SVGA.1x.*
-/usr/X11R6/man/man5/XF86Config.5x.*
+/usr/X11R6/man/man1/XF86_SVGA.1*
+/usr/X11R6/man/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686 sparc
@@ -1329,8 +1370,8 @@ rm -rf $RPM_BUILD_ROOT
 %files VGA16
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_VGA16
-/usr/X11R6/man/man1/XF86_VGA16.1x.*
-/usr/X11R6/man/man5/XF86Config.5x.*
+/usr/X11R6/man/man1/XF86_VGA16.1*
+/usr/X11R6/man/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686
@@ -1338,9 +1379,9 @@ rm -rf $RPM_BUILD_ROOT
 %files W32
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_W32
-/usr/X11R6/man/man1/XF86_W32.1x.*
-/usr/X11R6/man/man1/XF86_Accel.1x.*
-/usr/X11R6/man/man5/XF86Config.5x.*
+/usr/X11R6/man/man1/XF86_W32.1*
+/usr/X11R6/man/man1/XF86_Accel.1*
+/usr/X11R6/man/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686 alpha
@@ -1348,8 +1389,8 @@ rm -rf $RPM_BUILD_ROOT
 %files Mono
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_Mono
-/usr/X11R6/man/man1/XF86_Mono.1x.*
-/usr/X11R6/man/man5/XF86Config.5x.*
+/usr/X11R6/man/man1/XF86_Mono.1*
+/usr/X11R6/man/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686 alpha
@@ -1357,9 +1398,9 @@ rm -rf $RPM_BUILD_ROOT
 %files S3
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_S3
-/usr/X11R6/man/man1/XF86_S3.1x.*
-/usr/X11R6/man/man1/XF86_Accel.1x.*
-/usr/X11R6/man/man5/XF86Config.5x.*
+/usr/X11R6/man/man1/XF86_S3.1*
+/usr/X11R6/man/man1/XF86_Accel.1*
+/usr/X11R6/man/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686 alpha
@@ -1367,9 +1408,9 @@ rm -rf $RPM_BUILD_ROOT
 %files S3V
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_S3V
-/usr/X11R6/man/man1/XF86_S3.1x.*
-/usr/X11R6/man/man1/XF86_Accel.1x.*
-/usr/X11R6/man/man5/XF86Config.5x.*
+/usr/X11R6/man/man1/XF86_S3.1*
+/usr/X11R6/man/man1/XF86_Accel.1*
+/usr/X11R6/man/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686
@@ -1377,9 +1418,9 @@ rm -rf $RPM_BUILD_ROOT
 %files 8514
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_8514
-/usr/X11R6/man/man1/XF86_8514.1x.*
-/usr/X11R6/man/man1/XF86_Accel.1x.*
-/usr/X11R6/man/man5/XF86Config.5x.*
+/usr/X11R6/man/man1/XF86_8514.1*
+/usr/X11R6/man/man1/XF86_Accel.1*
+/usr/X11R6/man/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686
@@ -1387,9 +1428,9 @@ rm -rf $RPM_BUILD_ROOT
 %files Mach8
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_Mach8
-/usr/X11R6/man/man1/XF86_Mach8.1x.*
-/usr/X11R6/man/man1/XF86_Accel.1x.*
-/usr/X11R6/man/man5/XF86Config.5x.*
+/usr/X11R6/man/man1/XF86_Mach8.1*
+/usr/X11R6/man/man1/XF86_Accel.1*
+/usr/X11R6/man/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686
@@ -1397,26 +1438,26 @@ rm -rf $RPM_BUILD_ROOT
 %files Mach32
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_Mach32
-/usr/X11R6/man/man1/XF86_Mach32.1x.*
-/usr/X11R6/man/man1/XF86_Accel.1x.*
-/usr/X11R6/man/man5/XF86Config.5x.*
+/usr/X11R6/man/man1/XF86_Mach32.1*
+/usr/X11R6/man/man1/XF86_Accel.1*
+/usr/X11R6/man/man5/XF86Config.5*
 %endif
 
 %files Mach64
 %defattr(644, root, root, 755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_Mach64
-/usr/X11R6/man/man1/XF86_Mach64.1x.*
-/usr/X11R6/man/man1/XF86_Accel.1x.*
-/usr/X11R6/man/man5/XF86Config.5x.*
+/usr/X11R6/man/man1/XF86_Mach64.1*
+/usr/X11R6/man/man1/XF86_Accel.1*
+/usr/X11R6/man/man5/XF86Config.5*
 
 %ifarch i386 i486 i586 i686 alpha
 
 %files P9000
 %defattr(644, root, root, 755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_P9000
-/usr/X11R6/man/man1/XF86_P9000.1x.*
-/usr/X11R6/man/man1/XF86_Accel.1x.*
-/usr/X11R6/man/man5/XF86Config.5x.*
+/usr/X11R6/man/man1/XF86_P9000.1*
+/usr/X11R6/man/man1/XF86_Accel.1*
+/usr/X11R6/man/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686
@@ -1424,9 +1465,9 @@ rm -rf $RPM_BUILD_ROOT
 %files AGX
 %defattr(644, root, root, 755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_AGX
-/usr/X11R6/man/man1/XF86_AGX.1x.*
-/usr/X11R6/man/man1/XF86_Accel.1x.*
-/usr/X11R6/man/man5/XF86Config.5x.*
+/usr/X11R6/man/man1/XF86_AGX.1*
+/usr/X11R6/man/man1/XF86_Accel.1*
+/usr/X11R6/man/man5/XF86Config.5*
 %endif
 
 %ifarch i386 i486 i586 i686
@@ -1434,9 +1475,9 @@ rm -rf $RPM_BUILD_ROOT
 %files I128
 %defattr(644, root, root, 755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_I128
-/usr/X11R6/man/man1/XF86_I128.1x.*
-/usr/X11R6/man/man1/XF86_Accel.1x.*
-/usr/X11R6/man/man5/XF86Config.5x.*
+/usr/X11R6/man/man1/XF86_I128.1*
+/usr/X11R6/man/man1/XF86_Accel.1*
+/usr/X11R6/man/man5/XF86Config.5*
 %endif
 
 %ifarch alpha
@@ -1444,7 +1485,7 @@ rm -rf $RPM_BUILD_ROOT
 %files TGA
 %defattr(644, root, root, 755)
 %attr(755,root,root) /usr/X11R6/bin/XF86_TGA
-/usr/X11R6/man/man5/XF86Config.5x.*
+/usr/X11R6/man/man5/XF86Config.5*
 %endif
 
 %ifarch sparc
@@ -1481,7 +1522,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %ifarch m68k 
 %attr(755,root,root) /usr/X11R6/bin/XF68_FBDev
-/usr/X11R6/man/man1/XF68_FBDev.1x.*
+/usr/X11R6/man/man1/XF68_FBDev.1*
 %else
 %attr(755,root,root) /usr/X11R6/bin/XF86_FBDev
 %endif
@@ -1491,13 +1532,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/X11R6/bin/XF86Setup
 %attr(755,root,root) /usr/X11R6/bin/xmseconfig
 /usr/X11R6/lib/X11/XF86Setup
-/usr/X11R6/man/man1/XF86Setup.1x.*
-/usr/X11R6/man/man1/xmseconfig.1x.*
+/usr/X11R6/man/man1/XF86Setup.1*
+/usr/X11R6/man/man1/xmseconfig.1*
 
 %changelog
 * Tue Apr 20 1999 Artur Frysiak <wiget@pld.org.pl>
   [3.3.3.1-23]
-- compiled on rpm 3
+- compiled on rpm 3.
 
 * Thu Mar 11 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [3.3.3.1-21]
