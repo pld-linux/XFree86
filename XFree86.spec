@@ -1,3 +1,6 @@
+
+%define         _sver %(echo %{version} | tr -d .)
+
 Summary:	XFree86 Window System servers and basic programs
 Summary(de):	Xfree86 Window-System-Server und grundlegende Programme
 Summary(es):	Programas básicos y servidores para el sistema de ventanas XFree86
@@ -16,7 +19,7 @@ Group(fr):	X11/XFree86
 Group(pl):	X11/XFree86
 Group(pt_BR):	X11/XFree86
 Group(tr):	X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/%{version}/source/X%{_sver}src-1.tgz
 Source1:	ftp://ftp.pld.org.pl/software/xinit/xdm-xinitrc-0.2.tar.bz2
 Source2:	xdm.pamd
 Source3:	xserver.pamd
@@ -1929,9 +1932,6 @@ fi
 %attr(755,root,root) %{_bindir}/bdftopcf
 %attr(755,root,root) %{_libdir}/libX*.so
 %attr(755,root,root) %{_libdir}/libI*.so
-%ifnarch alpha
-%attr(755,root,root) %{_libdir}/libP*.so
-%endif
 %attr(755,root,root) %{_libdir}/libS*.so
 %ifnarch alpha
 %attr(755,root,root) %{_libdir}/libx*.so
@@ -1954,9 +1954,6 @@ fi
 %{_libdir}/libXinerama.a
 %{_includedir}/X11/*.h
 %{_includedir}/X11/ICE
-%ifnarch alpha
-%{_includedir}/X11/PEX5
-%endif
 %{_includedir}/X11/PM
 %{_includedir}/X11/SM
 %{_includedir}/X11/Xaw
@@ -2289,11 +2286,8 @@ fi
 %attr(755,root,root) %{_libdir}/modules/extensions/libdbe.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libdri.a
 %attr(755,root,root) %{_libdir}/modules/extensions/libextmod.a
-%ifnarch alpha
-%attr(755,root,root) %{_libdir}/modules/extensions/libpex5.a
-%endif
 %attr(755,root,root) %{_libdir}/modules/extensions/librecord.a
-%attr(755,root,root) %{_libdir}/modules/extensions/libxie.a
+%attr(755,root,root) %{_libdir}/modules/extensions/libxtrap.a
 %attr(755,root,root) %{_libdir}/modules/fonts
 %attr(755,root,root) %{_libdir}/modules/input
 %attr(755,root,root) %{_libdir}/modules/linux
@@ -2316,12 +2310,10 @@ fi
 
 %files setup
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/SuperProbe
 %attr(755,root,root) %{_bindir}/pcitweak
 %attr(755,root,root) %{_bindir}/scanpci
 %attr(755,root,root) %{_bindir}/xf86cfg
 %attr(755,root,root) %{_bindir}/xf86config
-%{_mandir}/man1/SuperProbe.1*
 %{_mandir}/man1/scanpci.1*
 %{_mandir}/man1/pcitweak.1*
 %{_mandir}/man1/xf86cfg.1*
@@ -2330,12 +2322,8 @@ fi
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libICE.a
-%ifnarch alpha
-%{_libdir}/libPEX5.a
-%endif
 %{_libdir}/libSM.a
 %{_libdir}/libX11.a
-%{_libdir}/libXIE.a
 %{_libdir}/libXaw.a
 %{_libdir}/libXft.a
 %{_libdir}/libXext.a
@@ -2369,7 +2357,6 @@ fi
 %attr(755,root,root) %{_bindir}/xfd
 %attr(755,root,root) %{_bindir}/xfontsel
 %attr(755,root,root) %{_bindir}/xgc
-%attr(755,root,root) %{_bindir}/xieperf
 %attr(755,root,root) %{_bindir}/xload
 %attr(755,root,root) %{_bindir}/xmag
 %attr(755,root,root) %{_bindir}/xman
@@ -2399,7 +2386,6 @@ fi
 %{_mandir}/man1/xfd.1*
 %{_mandir}/man1/xfontsel.1*
 %{_mandir}/man1/xgc.1*
-%{_mandir}/man1/xieperf.1*
 %{_mandir}/man1/xload.1*
 %{_mandir}/man1/xmag.1*
 %{_mandir}/man1/xman.1*
