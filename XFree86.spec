@@ -1844,8 +1844,8 @@ install -d $RPM_BUILD_ROOT/etc/{X11/fs,pam.d,rc.d/init.d,security/console.apps,s
 	$RPM_BUILD_ROOT%{_sbindir} \
 	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
 	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
-	$RPM_BUILD_ROOT%{_applnkdir}/{Amusements,Editors,Utilities,Terminals} \
-	$RPM_BUILD_ROOT{%{_pixmapsdir}/mini,%{_wmpropsdir},%{_soundsdir},%{_themesdir}/{Default,ThinIce}}
+	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}/mini} \
+	$RPM_BUILD_ROOT{%{_wmpropsdir},%{_soundsdir},%{_themesdir}/{Default,ThinIce}}
 
 %{__make} -C xc	install	install.man \
 	DESTDIR="$RPM_BUILD_ROOT" \
@@ -1919,14 +1919,11 @@ install %{SOURCE10} $RPM_BUILD_ROOT/etc/sysconfig/xdm
 install %{SOURCE11} $RPM_BUILD_ROOT/etc/sysconfig/xfs
 
 install %{SOURCE20} $RPM_BUILD_ROOT%{_wmpropsdir}/twm.desktop
-install %{SOURCE21} $RPM_BUILD_ROOT%{_applnkdir}/Amusements
-install %{SOURCE22} $RPM_BUILD_ROOT%{_applnkdir}/Editors
-install %{SOURCE23} $RPM_BUILD_ROOT%{_applnkdir}/Terminals
-install %{SOURCE24} %{SOURCE25} %{SOURCE26} %{SOURCE27} \
-		$RPM_BUILD_ROOT%{_applnkdir}/Utilities
-install %{SOURCE30} $RPM_BUILD_ROOT%{_pixmapsdir}
-install %{SOURCE31} %{SOURCE32} %{SOURCE33} %{SOURCE34} %{SOURCE35} \
-	%{SOURCE36} %{SOURCE37} \
+install %{SOURCE21} %{SOURCE22} %{SOURCE23} %{SOURCE24} %{SOURCE25} \
+	%{SOURCE26} %{SOURCE27} \
+	$RPM_BUILD_ROOT%{_desktopdir}
+install %{SOURCE30} %{SOURCE31} %{SOURCE32} %{SOURCE33} %{SOURCE34} \
+	%{SOURCE35} %{SOURCE36} %{SOURCE37} \
 	$RPM_BUILD_ROOT%{_pixmapsdir}
 
 bzip2 -dc %{SOURCE38} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
@@ -2206,10 +2203,13 @@ fi
 %{_includedir}/X11/bitmaps
 %{_includedir}/X11/pixmaps
 
-%{_applnkdir}/Utilities/xconsole.desktop
-%{_applnkdir}/Terminals/*
+%{_desktopdir}/xconsole.desktop
+%{_desktopdir}/xterm.desktop
+%{_pixmapsdir}/xconsole.png
+%{_pixmapsdir}/xlogo64.png
+%{_pixmapsdir}/xterm.png
+
 %{_libdir}/X11/app-defaults/Xvidtune
-%{_pixmapsdir}/x*
 
 %{_mandir}/man1/Xmark.1*
 %{_mandir}/man1/appres.1*
@@ -3025,12 +3025,16 @@ fi
 %{_libdir}/X11/app-defaults/Xditview
 %{_libdir}/X11/app-defaults/Xditview-chrtr
 
-%{_applnkdir}/Utilities/xclipboard.desktop
-%{_applnkdir}/Utilities/oclock.desktop
-%{_applnkdir}/Utilities/xclock.desktop
-%{_applnkdir}/Editors/xedit.desktop
-%{_applnkdir}/Amusements/xeyes.desktop
-%{_pixmapsdir}/oclock*
+%{_desktopdir}/oclock.desktop
+%{_desktopdir}/xclipboard.desktop
+%{_desktopdir}/xclock.desktop
+%{_desktopdir}/xedit.desktop
+%{_desktopdir}/xeyes.desktop
+%{_pixmapsdir}/oclock.png
+%{_pixmapsdir}/xclipboard.png
+%{_pixmapsdir}/xclock.png
+%{_pixmapsdir}/xedit.png
+%{_pixmapsdir}/xeyes.png
 
 %files -n imake
 %defattr(644,root,root,755)
