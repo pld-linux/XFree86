@@ -141,6 +141,7 @@ BuildRequires:	libstdc++-devel
 %endif
 Requires:	xauth
 Requires:	%{name}-libs = %{version}
+Requires:	%{name}-xft = %{version}
 ExclusiveArch:	%{ix86} alpha sparc m68k armv4l noarch ppc
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	xpm-progs
