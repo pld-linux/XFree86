@@ -1,0 +1,4 @@
+- added %{_datadir}/sounds dir to the XFree86-libs,
+- added /var/log/XFree86.0.log log to the XFree86,
+- cosmetics,
+- no release change.
