@@ -27,7 +27,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.3.0
-Release:	1.1
+Release:	1.2
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/X430src-1.tgz
@@ -107,6 +107,7 @@ Patch41:	%{name}-GLcore-strip-a-workaround.patch
 Patch42:	%{name}-disable_glide.patch
 Patch43:	%{name}-expat.patch
 Patch44:	%{name}-pkgconfig.patch
+Patch45:	%{name}-VidMode-nocrashafterfailure.patch
 BuildRequires:	bison
 BuildRequires:	expat-devel
 BuildRequires:	flex
@@ -1935,6 +1936,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %{?_without_tdfx:%patch42 -p0}
 %patch43 -p0
 %patch44 -p0
+%patch45 -p1
 
 rm -f xc/config/cf/host.def
 
