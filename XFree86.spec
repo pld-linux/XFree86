@@ -45,15 +45,14 @@ Patch16:	%{name}-xdm-fixes.patch
 Patch17:	%{name}-imake-kernel-version.patch
 Patch18:	%{name}-no-kernel-modules.patch
 Patch19:	%{name}-parallelmake.patch
-Patch20:	%{name}-XF86CardDrivers-cfg.patch
-Patch21:	%{name}-pic.patch
-Patch22:	%{name}-defmodes-1400.patch
-Patch23:	%{name}-r128-busmstr2.patch
-Patch24:	%{name}-neomagic_swcursor.patch
-Patch25:	%{name}-mga-busmstr.patch
-Patch26:	%{name}-agpgart-load.patch
-Patch27:	%{name}-mkfontdir-chmod_644.patch
-Patch28:	%{name}-DEC.patch
+Patch20:	%{name}-pic.patch
+Patch21:	%{name}-defmodes-1400.patch
+Patch22:	%{name}-r128-busmstr2.patch
+Patch23:	%{name}-neomagic_swcursor.patch
+Patch24:	%{name}-mga-busmstr.patch
+Patch25:	%{name}-agpgart-load.patch
+Patch26:	%{name}-mkfontdir-chmod_644.patch
+Patch27:	%{name}-DEC.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1208,16 +1207,15 @@ X11R6-contrib in older releases.
 %patch17 -p1
 %patch18 -p1
 #%patch19 -p1
-#%patch20 -p1
+%patch20 -p1
 %patch21 -p1
 %patch22 -p1
 %patch23 -p1
 %patch24 -p1
 %patch25 -p1
 %patch26 -p1
-%patch27 -p1
 %ifarch alpha
-%patch28 -p0
+%patch27 -p0
 %endif
 rm -f xc/config/cf/host.def
 
