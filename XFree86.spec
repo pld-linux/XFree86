@@ -1265,7 +1265,7 @@ find . -size 0 -print | xargs rm -f
 #--- %build --------------------------
 
 %build
-make -C xc World \
+%{__make} -C xc World \
 	"BOOTSTRAPCFLAGS=$RPM_OPT_FLAGS -fno-strict-aliasing" \
 	"CDEBUGFLAGS=" "CCOPTIONS=$RPM_OPT_FLAGS -fno-strict-aliasing" \
 	"CXXDEBUGFLAGS=" "CXXOPTIONS=$RPM_OPT_FLAGS -fno-strict-aliasing"
@@ -1281,7 +1281,7 @@ $RPM_BUILD_ROOT%{_sysconfdir}/{X11,pam.d,rc.d/init.d,sysconfig,security/console.
 	$RPM_BUILD_ROOT/usr/bin \
 	$RPM_BUILD_ROOT%{_datadir}/gnome/wm-properties
 
-make -C xc install install.man \
+%{__make} -C xc install install.man \
 	"DESTDIR=$RPM_BUILD_ROOT" \
 	"INSTBINFLAGS=-m 755" \
 	"INSTPGMFLAGS=-m 755"
