@@ -471,7 +471,12 @@ Group(pl):	X11/XFree
 Obsoletes:	dgs
 
 %description DPS
+X-Windows Display PostScript is device-independent imaging model 
+for displaying information on a screen.
+
 %description -l pl DPS
+X-Windows Display PostScript, to niezale¿ny od urz±dzenia model 
+wy¶wietlania informacji na ekranie.
 
 %package DPS-devel
 Summary:	Display PostScript
@@ -482,7 +487,10 @@ Requires:	%{name}-DPS = %{version}
 Obsoletes:	dgs-devel
 
 %description DPS-devel
+Header files for develop X-Windows Display Postscript.
+
 %description -l pl DPS-devel
+Pliki nag³ówkowe do biblioteki do X-Windows Display PostScript.
 
 %package DPS-static
 Summary:	Display PostScript
@@ -493,7 +501,10 @@ Requires:	%{name}-DPS-devel = %{version}
 Obsoletes:	dgs-static
 
 %description DPS-static
+X-Windows Display PostScript static libraries.
+
 %description -l pl DPS-static
+Statyczne biblioteko do X-Windows Display PostScript.
 
 %package -n sessreg
 Summary:	sessreg - manage utmp/wtmp entries for non-init clients
