@@ -5,7 +5,7 @@ Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name:		XFree86
 Version:	4.0.2
-Release:	6
+Release:	7
 License:	MIT
 Group:		X11/XFree86
 Group(de):	X11/XFree86
@@ -202,6 +202,7 @@ Group(de):	X11/Libraries
 Group(pl):	X11/Biblioteki
 Requires:	%{name}-libs = %{version}
 Obsoletes:	xpm-devel
+Provides:	xpm-devel
 %ifarch sparc sparc64
 Obsoletes:	X11R6.1-devel
 %endif
@@ -955,6 +956,12 @@ Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name}-libs = %{version}
 Prereq:		chkconfig
+Prereq:		/usr/sbin/useradd
+Prereq:		/usr/sbin/groupadd
+Prereq:		/usr/sbin/userdel
+Prereq:		/usr/sbin/groupdel
+Prereq:		/usr/bin/getgid
+Prereq:		/bin/id
 Obsoletes:	xfsft XFree86-xfs
 
 %description -n xfs
@@ -1193,12 +1200,44 @@ else
 	echo "found"
 fi
 
+%pre -n xfs
+if [ -n "`/usr/bin/getgid xfs`" ]; then
+	if [ "`/usr/bin/getgid xfs`" != "56" ]; then
+		echo "Warning: group xfs hasn't gid=56. Correct this before installing xfs." 1>&2
+		exit 1
+	fi
+else
+	/usr/sbin/groupadd -g 56 -r -f xfs
+fi
+if [ -n "`/bin/id -u xfs 2>/dev/null`" ]; then
+	if [ "`/bin/id -u xfs`" != "56" ]; then
+		echo "Warning: user xfs hasn't uid=56. Corrent this before installing xfs." 1>&2
+		exit 1
+	fi
+else
+	/usr/sbin/useradd -u 56 -r -d /etc/X11/fs -s /bin/false -c "X Font Server" -g xfs xfs 1>&2
+fi
+
 %post -n xfs
 /sbin/chkconfig --add xfs
 if [ -f /var/lock/subsys/xfs ]; then
 	/etc/rc.d/init.d/xfs restart >&2
 else
 	echo "Run \"/etc/rc.d/init.d/xfs start\" to start font server." >&2
+fi
+
+%preun -n xfs
+if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/xfs ]; then
+		/etc/rc.d/init.d/xfs stop >&2
+	fi
+	/sbin/chkconfig --del xfs
+fi
+
+%postun -n xfs
+if [ $1 = 0 ]; then
+	/usr/sbin/userdel xfs 2>/dev/null
+	/usr/sbin/groupdel xfs 2>/dev/null
 fi
 
 %post -n xdm
@@ -1209,14 +1248,6 @@ else
 	echo "Run \"/etc/rc.d/init.d/xdm start\" to start xdm." >&2
 fi
 		
-%preun -n xfs
-if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/xfs ]; then
-		/etc/rc.d/init.d/xfs stop >&2
-	fi
-	/sbin/chkconfig --del xfs
-fi
-
 %preun -n xdm
 if [ "$1" = "0" ]; then
 	if [ -f /var/lock/subsys/xdm ]; then
@@ -1227,6 +1258,9 @@ fi
 
 %post   DPS -p /sbin/ldconfig
 %postun DPS -p /sbin/ldconfig
+
+%post	OpenGL-libs -p /sbin/ldconfig
+%postun	OpenGL-libs -p /sbin/ldconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
