@@ -17,7 +17,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.2.1
-Release:	6
+Release:	7
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
@@ -1880,7 +1880,7 @@ install %{SOURCE24}  %{SOURCE25} %{SOURCE26} %{SOURCE27} \
 		$RPM_BUILD_ROOT%{_applnkdir}/Utilities
 install %{SOURCE30} $RPM_BUILD_ROOT%{_datadir}/pixmaps
 install %{SOURCE31} %{SOURCE32} %{SOURCE33} %{SOURCE34} %{SOURCE35} \
-	%{SOURCE36} \
+	%{SOURCE36} %{SOURCE37} \
 	$RPM_BUILD_ROOT%{_pixmapsdir}
 
 bzip2 -dc %{SOURCE3} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
@@ -2892,8 +2892,10 @@ fi
 %{_libdir}/X11/app-defaults/Xditview-chrtr
 
 %{_applnkdir}/Utilities/xclipboard.desktop
+%{_applnkdir}/Utilities/oclock.desktop
 %{_applnkdir}/Utilities/xclock.desktop
 %{_applnkdir}/Editors/xedit.desktop
+%{_applnkdir}/Amusements/xeyes.desktop
 
 %files -n imake
 %defattr(644,root,root,755)
