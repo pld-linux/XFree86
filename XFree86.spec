@@ -4,60 +4,20 @@ Summary(fr):	Serveurs du système XFree86 et programmes de base
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
-Version:	3.3.5
+Version:	3.9.16
 Release:	1
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/3.3.5/source/X335src-1.tgz
-Source1:	ftp://ftp.xfree86.org/pub/XFree86/3.3.5/source/X335src-2.tgz
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/snapshots/3.9.16/source/X3916src-1.tgz
+Source1:	ftp://ftp.xfree86.org/pub/XFree86/snapshots/3.9.16/source/X3916src-2.tgz
 Source2:	xdm.pamd
 Source3:	xdm.initd
 Source4:	xfs.initd
 Source5:	xfs.config
 Source6:	xserver.pamd
 Source7:	XTerm.ad-pl
-Patch0:		XFree86-rh.patch
-Patch1:		XFree86-rhxdm.patch
-Patch2:		XFree86-fsstnd.patch
-Patch3:		XFree86-alpha-sockets.patch
-# sparc patches from ultrapenguin
-Patch4:		XFree86-sparc.patch
-Patch5:		XFree86-ffb.patch.gz
-# more sun patches from ultrapenguin
-Patch6:		XFree86-suncards.patch
-Patch7:		XFree86-sparc2.patch
-Patch8:		XFree86-creator2.patch.gz
-Patch9:		XFree86-newcreator.patch
-Patch10:	XFree86-sparc3.patch.gz
-# the following was causing problems with RagePRO based ATI
-# chipsets, but this has been fixed
-Patch11:	XFree86-mach64.patch.gz
-Patch12:	XFree86-creator4.patch.gz
-# use glibc 2.1 routines for utmp, doesn't require xterm to be setuid
-Patch13:	XFree86-nosuidxterm.patch
-Patch14:	XFree86-joy.patch
-Patch15:	XFree86-xfsft.patch
-Patch16:	XFree86-ru_SU.patch
-Patch17:	XFree86-startx_xauth.patch
-Patch18:	XFree86-xfsredhat.patch
-# link xterm with libncurses instead libtermcap
-Patch19:	XFree86-ncurses.patch
-# Compile X serwers againsty system installed libz.so
-Patch20:	XFree86-HasZlib.patch
-# Man dir in /usr/X11R6/man or %{_mandir}
-Patch21:	XFree86-fhs.patch
-Patch22:	XFree86-voodoo-Rush.patch
-Patch23:	XFree86-ffbcrash.patch
-Patch24:	XFree86-ru_sparc.patch
-Patch25:	XFree86-xinitrace.patch
-Patch26:	XFree86-xterm-color.patch
-Patch27:	XFree86-xdm+pam_env.patch
-Patch28:	XFree86-XF86Config-path.patch
-Patch29:	XFree86-XF86Setup-fonts.patch
-Patch30:	XFree86-polish_kbd.patch
-Patch31:	XFree86-pam.patch
-Patch32:	XFree86-fixiso8859-2.patch
+Patch0:		XFree86-3.9.16-PLD.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -65,7 +25,7 @@ BuildRequires:	utempter-devel
 BuildRequires:	tcl-devel
 Requires:	pam
 Requires:	xauth
-Exclusivearch:	%{ix86} alpha sparc m68k armv4l
+Exclusivearch:	i386 i486 i586 i686 alpha sparc m68k armv4l
 Buildroot:	/tmp/%{name}-%{version}-root/
 
 %ifarch sparc
@@ -260,157 +220,120 @@ generic VGA 16 color server be available.
 %description -l pl XF86Setup
 Graficzny konfigurator dla XFree86
 
-%package S3
-Summary:	XFree86 S3 server
-Summary(de):	XFree86 S3 Server
-Summary(fr):	Serveur XFree86 pour S3
-Summary(pl):	XFree86 serwer dla kart S3
-Summary(tr):	XFree86 S3 sunucularý
+%package Xvfb
+Summary:	XFree86 Xvfb server
+Summary(pl):	Serwer XFree86 Xvfb
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-fonts = %{version}
 
-%description S3
-XFree86-S3 is the X server for video cards based on S3 chips, including most
-#9 cards, many Diamond Stealth cards, Orchid Farenheits, Mirco Crystal 8S,
-most STB cards, and some motherboards with built-in graphics accelerators
-(such as the IBM ValuePoint line). Note that if you have an S3 ViRGE based
-video card, you'll need XFree86-S3V instead of XFree86-S3.
+%description Xvfb
+Xvfb (X Virtual Frame Buffer) is an X Windows System server that is capable
+of running on machines with no display hardware and no physical input
+devices. Xvfb emulates a dumb framebuffer using virtual memory. Xvfb doesn't
+open any devices, but behaves otherwise as an X display. Xvfb is normally
+used for testing servers. Using Xvfb, the mfb or cfb code for any depth can
+be exercised without using real hardware that supports the desired depths.
+Xvfb has also been used to test X clients against unusual depths and screen
+configurations, to do batch processing with Xvfb as a background rendering
+engine, to do load testing, to help with porting an X server to a new
+platform, and to provide an unobtrusive way of running applications which
+really don't need an X server but insist on having one.
 
-If you are installing the X Window System and you have a video card based on
-an S3 chip, you should install XFree86-S3. You will also need to install
-the XFree86 package, one or more XFree86 fonts packages, the X11R6-contrib
-package, the Xconfigurator package and the XFree86-libs package. And,
-finally, if you are going to develop applications that run as X clients, you
-will also need to install XFree86-devel.
+If you need to test your X server or your X clients, you may want to install
+Xvfb for that purpose.
 
-%description -l de S3
-X-Server für Steckkarten mit dem S3-Chipsatz (inkl. den meisten #9-Karten),
-Karten wie Diamond Stealth, Orchid Farenheit und Mirco Crystal 8S, den
-meisten STB-Karten sowie einigen Motherboards mit integrierten
-Grafikbeschleunigern (z.B. die Reihe IBM ValuePoint).
+%description -l pl Xvfb
 
-%description -l fr S3
-Serveur X pour les cartes construites autour des circuits S3, dont la
-plupart des cartes #9, de nombreuses Diamond Stealth, Orchid Farenheits,
-Mirco Crystal 8S, la plupart des cartes STB et certaines cartes mères
-intégrant des accélérateurs graphiques (comme la gamme ValuePoint d'IBM).
-
-%description -l pl S3
-X serwer dla kart opartych na uk³adzie S3 - s± ta m.in. #9, wiele kart
-Diamond Stealth, Orchid Farenheits, Mirco Crystal 8S, wiêkszo¶c kart STB a
-tak¿e niektóre p³yty g³ówne z wbudowanymi akcelatorami graficznymi (jak np.
-ValuePoint IBM'a).
-
-%description -l tr S3
-S3 tabanlý ekran kartlarý için sunucular. Çoðu #9, Diamond Stealth, Orchid
-Fahrenheit, Mirco Crystal 8S, çoðu STB ve bazý anakarta tümleþik grafik
-hýzlandýrýcýlar bu gruba girer. S3 Virge sunucusu ayrý bir pakette yer alýr.
-
-%package I128
-Summary:	XFree86 #9 Imagine 128 Server
-Summary(de):	XFree86 #9 Imagine 128 Server
-Summary(fr):	Serveur Xfree86 pour #9 Imagine 128
-Summary(pl):	XFree86 serwer dla kart Number Nine Imagine 128
-Summary(tr):	XFree86 #9 Imagine 128 sunucusu
+%package Xnest
+Summary:	XFree86 Xnest server
+Summary(pl):	Serwer XFree86 Xnest
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-fonts = %{version}
 
-%description I128
-X server for the #9 Imagine 128 board.
+%description Xnest
+Xnest is an X Window System server which runs in an X window. Xnest is a
+'nested' window server, actually a client of the real X server, which
+manages windows and graphics requests for Xnest, while Xnest manages the
+windows and graphics requests for its own clients.
 
-%description -l de I128
-X-Server für die Steckkarte #9 Imagine 128
+You will need to install Xnest if you require an X server which will run as
+a client of your real X server (perhaps for testing purposes).
 
-%description -l fr I128
-Serveur X pour les cartes #9 Imagine 128.
+%description -l pl Xnest
 
-%description -l pl I128
-X serwer do kart #9 Imagine 128.
-
-%description -l tr I128
-#9 Imagine kartý için X sunucusu.
-
-%package S3V
-Summary:	XFree86 S3 Virge server
-Summary(de):	Xfree86 S3 Virge-Server
-Summary(fr):	Serveur XFree86 pour S3 Virge
-Summary(pl):	XFree86 serwer dla kart S3 Virge
-Summary(tr):	XFree86 S3 Virge sunucusu
+%package Xptr
+Summary:	X print server
+Summary(pl):	X print server
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-fonts = %{version}
 
-%description S3V
-XFree86-S3V is the X server for video cards based on the S3 ViRGE chipset.
+%description Xptr
+Xprt provides an X server with the print extension and special DDX
+implementation.
 
-If you are installing the X Window System and you have a video card based on
-an S3 ViRGE chip, you should install XFree86-S3V.
+%description -l pl Xptr
 
-%description -l de S3V
-X-Server für Grafikkarten mit dem S3 Virge-Chipsatz.
-
-%description -l fr S3V
-Serveur X pour les cartes construites autour du circuit S3 Virge.
-
-%description -l pl S3V
-X serwer dla kart opartych na S3 Virge.
-
-%description -l tr S3V
-XFree86 S3 Virge sunucusu
-
-%package Mach64
-Summary:	XFree86 Mach64 server
-Summary(de):	Xfree86 Mach64-Server
-Summary(fr):	Serveur Mach64 de XFree86
-Summary(pl):	XFree86 serwer dla kart Mach64
-Summary(tr):	XFree86 Mach64 sunucusu
+%package Xserver
+Summary:	XFree86 X display server
+Summary(de):	XFree86 Server
+Summary(fr):	Serveur XFree86
+Summary(pl):	XFree86 serwer
+Summary(tr):	XFree86 sunucusu
 Group:		X11/XFree86/Servers
 Group(pl):	X11/XFree86/Serwery
 Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-fonts = %{version}
+Obsoletes:	%{name}-VGA16 %{name}-SVGA %{name}-Mono
+Obsoletes:	%{name}-S3 %{name}-S3V %{name}-I128
+Obsoletes:	%{name}-Mach8 %{name}-Mach32 %{name}-Mach64
+Obsoletes:	%{name}-8514 %{name}-AGX %{name}-3DLabs
+Obsoletes:	%{name}-P9000 %{name}-W32
 
-%description Mach64
-XFree86-Mach64 is the server package for cards based on ATI's Mach64 chip,
-such as the Graphics Xpression, GUP Turbo, and WinTurbo cards. Note that
-this server is known to have problems with some Mach64 cards. Check
-http://www.xfree86.org for current information on updating this server.
+%description Xserver
+X server for most simple framebuffer SVGA devices, including cards built
+from ET4000 chips, Cirrus Logic chips, Chips and Technologies laptop chips,
+Trident 8900 and 9000 chips. It works for Diamond Speedstar, Orchid Kelvins,
+STB Nitros and Horizons, Genoa 8500VL, most Actix boards, the Spider VLB
+Plus. It also works for many other chips and cards, so try this server if
+you are having problems.
 
-If you are installing the X Window System and the video card in your system
-is based on the Mach64 chip, you need to install XFree86-Mach64.
+%description -l de Xserver
+X-Server für die elementarsten Framebuffer-SVGA-Geräte, einschließlich
+Karten, die aus ET4000-Chips, Cirrus Logic-Chips, Chips and Technologies
+Laptop-Chips sowie Trident 8900 und 9000 Chips gebaut sind. Funktioniert mit
+Diamond Speedstar, Orchid Kelvins, STB Nitros und Horizons, Genoa 8500VL,
+den meisten Actix-Karten sowie Spider VLB Plus und außerdem mit vielen
+anderen Chips und Karten. Es lohnt sich, diesen Server auszuprobieren, wenn
+Sie Probleme haben.
 
-%description -l de Mach64
-X-Server für ATI Mach64-Karten wie Graphics Xpression, GUP Turbo, und
-WinTurbo. Dieser Server verursacht gelegentlich Probleme mit Mach64-Karten,
-die aber von einer neueren Version von XFree86 (der als Beta-Version
-verfügbar ist) gelöst werden könnten. Unter http://www.xfree86.org finden
-Sie Informationen zum Aktualisieren dieses Servers.
+%description -l fr Xserver
+Serveur X pour les circuits SVGA les plus simples, dont les cartes
+construites avec les circuits ET4000, Cirrus Logic, Chips and Technologies
+laptop, Trident 8900 et 9000. Fonctionne pour les cartes Diamond Speedstar,
+Orchid Kelvins, STB Nitros et Horizons, Genoa 8500VL, la plupart des Actix
+et la Spider VLB Plus. Fonctionne aussi pour de nombreux autres circuits et
+cartes. Essayez ce serveur si vous avez des problèmes.
 
-%description -l fr Mach64
-Serveur X pour les cartes basées sur l'ATI Mach64, comme les cartes GUP
-Turbo, Graphics Xpression et WinTurbo. Ce serveur est connu pour avoir des
-problèmes avec certaines cartes Mach64 que les versions plus récentes
-d'XFree86 corrigent (elles ne sont encore qu'en version BETA au moment de
-cette distribution). Consultez http://www.xfree86.org pour les informations
-de mise à jour du serveur.
+%description -l pl Xserver
+X serwer dla wiêkszo¶ci prostych kart SVGA, w³±czaj±c karty zbudowane na
+uk³adach ET4000, Cirrus Logic, Trident 8900 i 9000, oraz uk³ady wystêpuj±ce
+w laptopach. Dzia³a tak¿e z kartami Diamnod Speedstar, Orchid Kelvins, STB
+Nitros i Horizons, Genoa 8500VL, wiêkszo¶æ Actix, Spider VLB Plus. Dzia³a
+równie¿ na wielu innych kartach opartych na innych uk³adach wiêc spróbuj ten
+serwer je¶li masz jakie¶ problemy.
 
-%description -l pl Mach64
-X serwer dla kart opartych na uk³adzie ATI Mach64 jak np. Graphics
-Xpression, GUP Turbo, a tak¿e WinTurbo. Serwer jest znany z problemów z
-niektórymi kartami Mach64, które jednak mog± byæ ju¿ poprawione w nowszej
-wersji XFree86 (osi±galna wy³±cznie jako wersja BETA). Spójrz na stronê
-http://www.xfree86.org/ gdzie znajdziesz informacje nt. nowszych wersji
-XFree86.
-
-%description -l tr Mach64
-ATI Mach64 tabanlý kartlar için X sunucusu. Graphics Xpression, GUP Turbo ve
-WinTurbo gibi kartlarý destekler. Bazý Mach64 kartlarýn yeni XFree86 ile
-sorun yaþadýklarý bilinmektedir. Bu sorunla ilgili son bilgilere ulaþmak
-için lütfen http://www.xfree86.org adresine bakýn.
+%description -l tr Xserver
+ET4000, Cirrus Logic, Chips and Technologies dizüstü, Trident 8900 ve 9000
+gibi basit 'framebuffer' SVGA kullananan kartlar için X sunucusu. Ayný
+zamanda Diamond Speedstar, Orchid Kelvins, STB Nitros / Horizons, Genoa
+8500VL, çoðu Actix kartlarý, Spider VLB Plus gibi kartlar ve birçok diðer
+kart ile de çalýþýr. Herhangi bir sorun yaþarsanýz bu sunucuyu deneyin.
 
 %package Sun
 Summary:	XFree86 Sun server (monochrome and 8-bit color SBUS framebuffers)
@@ -466,428 +389,6 @@ Aby uruchomiæ X Window System potrzebujesz X serwera dostosowanego do
 Twojego sprzêtu. Ten pakiet zawiera X serwer dla komputerów firmy Sun dla
 wszystkich wspieranych framebufferów SBUS.
 
-%package Xvfb
-Summary:	XFree86 Xvfb server
-Summary(pl):	Serwer XFree86 Xvfb
-Group:		X11/XFree86/Servers
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
-
-%description Xvfb
-Xvfb (X Virtual Frame Buffer) is an X Windows System server that is capable
-of running on machines with no display hardware and no physical input
-devices. Xvfb emulates a dumb framebuffer using virtual memory. Xvfb doesn't
-open any devices, but behaves otherwise as an X display. Xvfb is normally
-used for testing servers. Using Xvfb, the mfb or cfb code for any depth can
-be exercised without using real hardware that supports the desired depths.
-Xvfb has also been used to test X clients against unusual depths and screen
-configurations, to do batch processing with Xvfb as a background rendering
-engine, to do load testing, to help with porting an X server to a new
-platform, and to provide an unobtrusive way of running applications which
-really don't need an X server but insist on having one.
-
-If you need to test your X server or your X clients, you may want to install
-Xvfb for that purpose.
-
-%description -l pl Xvfb
-
-%package 3DLabs
-Summary:	XFree86 3DLabs server
-Summary(pl):	Serwer XFree86 3DLabs
-Group:		X11/XFree86/Servers
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
-
-%description 3DLabs
-X server for cards built around 3D Labs GLINT and Permedia chipsets,
-including GLINT 500TX with IBM RGB526 RAMDAC, GLINT MX with IBM RGB526 and
-IBM RGB640 RAMDAC, Permedia with IBM RGB526 RAMDAC and the Permedia 2
-(classic, 2a, 2v).
-
-%description -l pl 3DLabs
-XFree86 3DLabs server.
-
-%package Xnest
-Summary:	XFree86 Xnest server
-Summary(pl):	Serwer XFree86 Xnest
-Group:		X11/XFree86/Servers
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
-
-%description Xnest
-Xnest is an X Window System server which runs in an X window. Xnest is a
-'nested' window server, actually a client of the real X server, which
-manages windows and graphics requests for Xnest, while Xnest manages the
-windows and graphics requests for its own clients.
-
-You will need to install Xnest if you require an X server which will run as
-a client of your real X server (perhaps for testing purposes).
-
-%description -l pl Xnest
-
-%package Xptr
-Summary:	X print server
-Summary(pl):	X print server
-Group:		X11/XFree86/Servers
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
-
-%description Xptr
-Xprt provides an X server with the print extension and special DDX
-implementation.
-
-%description -l pl Xptr
-
-%package 8514
-Summary:	XFree86 8514 server
-Summary(de):	XFree86 8514 Server
-Summary(fr):	serveur 8514 pour XFree86.
-Summary(pl):	XFree86 serwer dla kart 8514
-Summary(tr):	XFree86 8514 sunucusu
-Group:		X11/XFree86/Servers
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
-
-%description 8514
-X server for older IBM 8514 cards and compatibles from companies such as
-ATI.
-
-%description -l de 8514
-If you are installing the X Window System and the video card in your system
-is an older IBM 8514 or a compatible from a company such as ATI, you should
-install XFree86-8514.
-
-%description -l fr 8514
-Serveur X pour les vieilles cartes IBM 8514 et compatibles comme lesATI.
-
-%description -l pl 8514
-X serwer dla starszych kart IBM 8514 oraz kompatybilnych robionych przez
-inne firmy takie jak np. ATI.
-
-%description -l tr 8514
-Eski IBM 8514 ve uyumlu kartlar (ATI gibi) için sunucu.
-
-%package AGX
-Summary:	XFree86 AGX server
-Summary(de):	XFree86 AGX Server
-Summary(fr):	serveur AGX pour XFree86.
-Summary(pl):	XFree86 serwer dla kart AGX
-Summary(tr):	XFree86 AGX sunucusu
-Group:		X11/XFree86/Servers
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
-
-%description AGX
-This is the X server for AGX-based cards, such as the Boca Vortex, Orchid
-Celsius, Spider Black Widow and Hercules Graphite.
-
-If you are installing the X Window System and the video card in your system
-is an AGX, you'll need to install XFree86-AGX.
-
-%description -l de AGX
-X-Server für Karten auf AGX-Basis wie etwa Boca Vortex, Orchid Celsius,
-Spider Black Widow und Hercules Graphite.
-
-%description -l fr AGX
-Serveur X pour les cartes à base d'AGX comme la Boca Vortex, l'Orchid
-
-%description -l pl AGX
-
-%description -l tr AGX
-Boca Vortex, Orchid Celsius, Spider Black Widow ve Hercules Graphite gibi AGX
-tabanlý kartlar için X sunucusu.
-
-%package FBDev
-Summary:	XFree68/86 FBDev server
-Summary(pl):	XFree86/86 FBDev server
-Group:		X11/XFree86/Servers
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
-
-%description FBDev
-X server for the generic frame buffer device used on the Amiga, Atari
-and Macintosh/m68k machines. Support for Intel and Alpha architectures
-is now included in the Linux 2.2 kernel as well.
-
-%description -l pl FBDev
-X serwer wspieraj±cy frame buffera dla Amigi, Atari i Macintosha /m68k.
-Wsparcie dla platform Intel i Alpha jest w j±drze systemu.
-
-%package Mach32
-Summary:	XFree86 Mach32 server
-Summary(de):	Xfree86 Mach32-Server
-Summary(fr):	Serveur XFree86 pour Mach32
-Summary(pl):	XFree86 serwer dla kart Mach32
-Summary(tr):	XFree86 Mach32 sunucusu
-Group:		X11/XFree86/Servers
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
-
-%description Mach32
-XFree86-Mach32 is the X server package for video cards built around ATI's
-Mach32 chip, including the ATI Graphics Ultra Pro and Ultra Plus.
-
-If you are installing the X Window System and the video card in your system
-is based on the Mach32 chip, you need to install XFree86-Mach32.
-
-%description -l de Mach32
-X-Server für Karten auf der Basis des ATI Mach32-Chip, einschließlich
-ATI Graphics Ultra Pro und Ultra Plus.
-
-%description -l fr Mach32
-Serveur X pour les cartes utilisant le circuit ATI Mach32, dont les
-cartes ATI Graphics Ultra Pro et Ultra Plus.
-
-%description -l pl Mach32
-X serwer dla kart zbudowanych na uk³adzie ATI Mach32 w³±czaj±c w to ATI
-Graphics Ultra Pro oraz Ultra Plus.
-
-%description -l tr Mach32
-ATI Mach32 tabanlý ATI Graphics Ultra Pro ve Ultra Plus kartlarý için X
-sunucusu.
-
-%package Mach8
-Summary:	XFree86 Mach8 server
-Summary(de):	XFree86 Mach8 Server
-Summary(fr):	Serveur Mach8 pour XFree86
-Summary(pl):	XFree86 serwer dla kart Mach8
-Summary(tr):	XFree86 Mach8 sunucusu
-Group:		X11/XFree86/Servers
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
-
-%description Mach8
-XFree86-Mach 8 is the X server for video cards built around ATI's Mach8
-chip, including the ATI 8514 Ultra and Graphics Ultra.
-
-If you are installing the X Window System and the video card in your system
-is based on the Mach8 chip, you need to install XFree86-Mach8.
-
-%description -l de Mach8
-X-Server für Karten auf der Basis des ATI Mach8-Chips, einschließlich
-des ATI 8514 Ultra und des Graphics Ultra.
-
-%description -l fr Mach8
-Serveur X pour les cartes basées sur les chips ATI Mach8, dont les cartes
-ATI 8514 Ultra et Graphics Ultra.
-
-%description -l pl Mach8
-X serwer dla kart opartych na uk³adzie ATI Mach8, w³±czaj±c w to ATI 8514
-Ultra oraz graphics Ultra.
-
-%description -l tr Mach8
-ATI 8514 Ultra ve Graphics Ultra gibi ATI Mach8 tabanlý kartlar için X
-sunucusu.
-
-%package Mono
-Summary:	XFree86 Mono server
-Summary(de):	Xfree86 Mono-Server
-Summary(fr):	Serveur Monochrome de XFree86
-Summary(pl):	XFree86 serwer dla kart Monochromatycznych
-Summary(tr):	XFree86 Mono sunucusu
-Group:		X11/XFree86/Servers
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
-
-%description Mono
-XFree86-Mono is a generic monochrome (2 color) server for VGA cards.
-XFree86-Mono will work for nearly all VGA compatible cards, but will only
-support a monochrome display.
-
-If you are installing the X Window System and your VGA card is not currently
-supported, you should install and try either XFree86-Mono or XFree86-VGA16,
-depending upon the capabilities of your display.
-
-%description -l de Mono
-Generischer monochromer (Schwarzweiß-) Server für VGA-Karten, der
-praktisch mit allen VGA-ähnlichen Karten mit beschränkter Auflösung
-funktioniert.
-
-%description -l fr Mono
-Serveur générique monochrome (2 couleurs) pour les cartes VGA, fonctionne avec
-pratiquement toutes les cartes VGA ayant des résolutions limitées.
-
-%description -l pl Mono
-Dwu kolorowy (monochromatyczny) serwer dla kart VGA, pracuje na wszystkich
-typu VGA w ograniczonej rozdzielczo¶ci.
-
-%description -l tr Mono
-Mono (2 renk) VGA kartlarý için genel X sunucusu. Kýsýtlý bir çözünürlük
-altýnda birçok VGA kart ile çalýþýr.
-
-%package P9000
-Summary:	XFree86 P9000 server
-Summary(de):	XFree86 P9000 Server
-Summary(fr):	Serveur XFree86 pour P9000
-Summary(pl):	XFree86 serwer dla kart P9000
-Summary(tr):	XFree86 P9000 sunucusu
-Group:		X11/XFree86/Servers
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
-
-%description P9000
-XFree86-P9000 is the X server for video cards built around the Weitek P9000
-chip, such as most Diamond Viper cards and the Orchid P9000 card.
-
-If you are installing the X Window System and you have a Weitek P9000 based
-video card, you should install XFree86-P9000.
-
-%description -l de P9000
-X-Server für Karten auf Basis des Weitek P9000-Chip, wie die meisten
-Diamond Viper und Orchid P9000-Karten.
-
-%description -l fr P9000
-Serveur X pour les cartes construites autour des circuits P9000 de
-Weitek, comme la plupart des cartes Diamond Viper et l'Orchid P9000.
-
-%description -l pl P9000
-X serwer dla kart zbudowanych na uk³adzie Weitek P9000 czyli w wiêkszo¶ci
-karty Diamond Viper oraz Orchid P9000.
-
-%description -l tr P9000
-Diamond Viper ve Orchid P9000 gibi Weitek P9000 tabanlý kartlar için X
-sunucusu.
-
-%package SVGA
-Summary:	XFree86 SVGA server
-Summary(de):	XFree86 SVGA-Server
-Summary(fr):	Serveur XFree86 pour SVGA
-Summary(pl):	XFree86 serwer dla kart SVGA
-Summary(tr):	XFree86 SVGA sunucusu
-Group:		X11/XFree86/Servers
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
-
-%description SVGA
-X server for most simple framebuffer SVGA devices, including cards built
-from ET4000 chips, Cirrus Logic chips, Chips and Technologies laptop chips,
-Trident 8900 and 9000 chips. It works for Diamond Speedstar, Orchid Kelvins,
-STB Nitros and Horizons, Genoa 8500VL, most Actix boards, the Spider VLB
-Plus. It also works for many other chips and cards, so try this server if
-you are having problems.
-
-%description -l de SVGA
-X-Server für die elementarsten Framebuffer-SVGA-Geräte, einschließlich
-Karten, die aus ET4000-Chips, Cirrus Logic-Chips, Chips and Technologies
-Laptop-Chips sowie Trident 8900 und 9000 Chips gebaut sind. Funktioniert mit
-Diamond Speedstar, Orchid Kelvins, STB Nitros und Horizons, Genoa 8500VL,
-den meisten Actix-Karten sowie Spider VLB Plus und außerdem mit vielen
-anderen Chips und Karten. Es lohnt sich, diesen Server auszuprobieren, wenn
-Sie Probleme haben.
-
-%description -l fr SVGA
-Serveur X pour les circuits SVGA les plus simples, dont les cartes
-construites avec les circuits ET4000, Cirrus Logic, Chips and Technologies
-laptop, Trident 8900 et 9000. Fonctionne pour les cartes Diamond Speedstar,
-Orchid Kelvins, STB Nitros et Horizons, Genoa 8500VL, la plupart des Actix
-et la Spider VLB Plus. Fonctionne aussi pour de nombreux autres circuits et
-cartes. Essayez ce serveur si vous avez des problèmes.
-
-%description -l pl SVGA
-X serwer dla wiêkszo¶ci prostych kart SVGA, w³±czaj±c karty zbudowane na
-uk³adach ET4000, Cirrus Logic, Trident 8900 i 9000, oraz uk³ady wystêpuj±ce
-w laptopach. Dzia³a tak¿e z kartami Diamnod Speedstar, Orchid Kelvins, STB
-Nitros i Horizons, Genoa 8500VL, wiêkszo¶æ Actix, Spider VLB Plus. Dzia³a
-równie¿ na wielu innych kartach opartych na innych uk³adach wiêc spróbuj ten
-serwer je¶li masz jakie¶ problemy.
-
-%description -l tr SVGA
-ET4000, Cirrus Logic, Chips and Technologies dizüstü, Trident 8900 ve 9000
-gibi basit 'framebuffer' SVGA kullananan kartlar için X sunucusu. Ayný
-zamanda Diamond Speedstar, Orchid Kelvins, STB Nitros / Horizons, Genoa
-8500VL, çoðu Actix kartlarý, Spider VLB Plus gibi kartlar ve birçok diðer
-kart ile de çalýþýr. Herhangi bir sorun yaþarsanýz bu sunucuyu deneyin.
-
-%package VGA16
-Summary:	XFree86 VGA16 server
-Summary(de):	XFree86 VGA16-Server
-Summary(fr):	Serveur XFree86 pour VGA16
-Summary(pl):	XFree86 serwer dla kart CGA16
-Summary(tr):	XFree86 VGA16 sunucusu
-Group:		X11/XFree86/Servers
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
-
-%description VGA16
-XFree86-VGA16 is a generic 16 color server for VGA boards. XFree86-VGA16
-will work on nearly all VGA style graphics boards, but will only support a
-low resolution, 16 color display.
-
-If you are installing the X Window System and your VGA video card is not
-specifically supported by another X server package, you should install
-either XFree86-Mono or XFree86-VGA16, depending upon the capabilities of
-your display.
-
-%description -l de VGA16
-Generischer 16-Farben-Server für VGA-Karten. Funktioniert auf fast allen VGA-
-Grafikkarten, allerdings nur bei geringer Auflösung und wenigen Farben.
-
-%description -l fr VGA16
-Serveur 16 couleurs générique pour cartes VGA. Fonctionne avec presque
-toutes les cartes VGA, mais seulement en faible résolution avec peu de couleurs.
-
-%description -l pl VGA16
-Podstawowy serwer dla 16 kolorowego trybu pracy kart VGA. Dzia³a ze
-wszystkimi kartami VGA ale jedynie w niskiej rozdzielczo¶ci i ma³ej ilo¶ci
-kolorów.
-
-%description -l tr VGA16
-VGA kartlarý için genel 16 renk sunucusu. Çoðu VGA tipi kart ile düþük renk
-ve çözünürlükte çalýþýr.
-
-%package W32
-Summary:	XFree86 W32 server
-Summary(de):	XFree86 W32 Server
-Summary(fr):	Serveur XFree86 pour W32
-Summary(pl):	XFree86 serwer dla kart W32
-Summary(tr):	XFree86 W32 sunucusu
-Group:		X11/XFree86/Servers
-Group(pl):	X11/XFree86/Serwery
-Requires:	%{name}-modules = %{version}-%{release}
-Requires:	%{name}-fonts = %{version}
-
-%description W32
-XFree86-W32 is the X server for cards built around ET4000/W32 chips,
-including the Genoa 8900 Phantom 32i, the Hercules Dynamite, the LeadTek
-WinFast S200, the Sigma Concorde, the STB LightSpeed, the TechWorks
-Thunderbolt, and the ViewTop PCI.
-
-If you are installing the X Window System and your VGA video card is based
-on the ET4000/W32 chipset, you should install XFree86-W32.
-
-%description -l de W32
-Genoa 8900 Phantom 32I, Hercules Dynamite, LeaTek WinFast S200,
-Sigma Concorde, STB LightSpeed, TechWorks Thunderbolt und ViewTop PCI.
-
-%description -l fr W32
-Serveur X pour les cartes basée sur les chips ET4000/W32, dontla Genoa 8900
-Phantom 32i, les cartes Hercules Dynamite, la LeadTek WinFast S200, la Sigma
-Concorde, la STB LightSpeed, la TechWorks Thunderbolt, et la ViewTop PCI.
-
-%description -l pl W32
-X serwer dla kart zbudowanych na uk³adzie ET4000/W32, w³±czaj±c w to karty
-Genoa 8900 Phantom 32i, Hercules Dynamite, LeadTek WinFast S200,
-Sigma Concorde, STB LightSpeed, TechWorks Thunderbolt oraz karty ViewTop
-(PCI).
-
-%description -l tr W32
-Genoa 8900 Phantom 32i, Hercules Dynamite kartlarý, LeadTek WinFast S200,
-Sigma Concorde, STB LightSpeed, TechWorks Thunderbolt, ve ViewTop PCI
-gibi kartlarýn kullandýðý ET4000/W32 tabanlý kartlar için X sunucusu.
-
 %package TGA
 Summary:	XFree86 TGA server
 Summary(pl):	XFree86 serwer dla kart TGA
@@ -914,7 +415,6 @@ Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Requires:	%{name} = %{version}
 Requires:	pam >= 0.66
-Requires:	rc-scripts
 Obsoletes:	XFree86-xdm
 
 %description -n xdm
@@ -927,7 +427,6 @@ Summary:	Font server for XFree86
 Summary(pl):	Serwer fontów do XFree86
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Requires:	rc-scripts
 Obsoletes:	xfsft XFree86-xfs
 
 %description -n xfs
@@ -1048,50 +547,37 @@ Cyrillic raster fonts.
 %description -l pl cyrillic-fonts
 Fonty rastrowe czcionkami w cyrylicy.
 
+%package latin2-100dpi-fonts
+Summary:	Latin 2 100dpi fonts - only need on server side
+Summary(pl):	Pliterki
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Prereq:		%{_bindir}/mkfontdir
+
+%description latin2-100dpi-fonts
+Latin 2 raster fonts.
+
+%description -l pl latin2-100dpi-fonts
+Fonty rastrowe czcionkami w ISO-8859-2.
+
+%package latin2-75dpi-fonts
+Summary:	Latin 2 75dpi fonts - only need on server side
+Summary(pl):	Pliterki
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
+Prereq:		%{_bindir}/mkfontdir
+
+%description latin2-75dpi-fonts
+Latin 2 raster fonts.
+
+%description -l pl latin2-75dpi-fonts
+Fonty rastrowe czcionkami w ISO-8859-2.
+
 #--- %prep ---------------------------
 
 %prep
 %setup -q -c -a1
-%patch0  -p1
-%patch1  -p1
-%patch2  -p1
-# the following patch is in CVS diff format, needs POSIXLY_CORRECT env var.
-#export POSIXLY_CORRECT=1
-#%patch3 -p1 -b .alpha-sockets
-#unset POSIXLY_CORRECT
-%patch4  -p1
-%patch5  -p1
-%patch6  -p1
-%patch7  -p1
-%patch8  -p1
-%patch9  -p1
-%patch10 -p1
-%patch11 -p1
-%patch12 -p1
-%patch13 -p1
-%patch14 -p1
-%patch15 -p1
-%patch16 -p1
-%patch17 -p1
-%patch18 -p1
-%patch19 -p1
-%patch20 -p1
-%patch21 -p1
-%patch22 -p0
-%patch23 -p1
-%patch24 -p1
-%patch25 -p1
-%patch26 -p1
-%patch27 -p1
-%patch28 -p1
-%patch29 -p1
-#%patch30 -p1
-%patch31 -p1
-%patch32 -p1 -R
-
-## Clean up to save a *lot* of disk space
-find . -name "*.orig" -print | xargs rm -f
-find . -size 0 -print | xargs rm -f
+%patch0 -p1
 
 #--- %build --------------------------
 
@@ -1099,7 +585,8 @@ find . -size 0 -print | xargs rm -f
 make -C xc World \
 	"BOOTSTRAPCFLAGS=$RPM_OPT_FLAGS -fno-strict-aliasing" \
 	"CDEBUGFLAGS=" "CCOPTIONS=$RPM_OPT_FLAGS -fno-strict-aliasing" \
-	"CXXDEBUGFLAGS=" "CXXOPTIONS=$RPM_OPT_FLAGS -fno-strict-aliasing"
+	"CXXDEBUGFLAGS=" "CXXOPTIONS=$RPM_OPT_FLAGS -fno-strict-aliasing" \
+	"RAWCPP=/lib/cpp"
 
 #--- %install ------------------------
 
@@ -1115,14 +602,13 @@ make -C xc	"DESTDIR=$RPM_BUILD_ROOT" \
 		"DOCDIR=/usr/share/doc/%{name}-%{version}" \
 		"INSTBINFLAGS=-m 755" \
 		"INSTPGMFLAGS=-m 755" \
+		"RAWCPP=/lib/cpp" \
 		install install.man
 
 strip $RPM_BUILD_ROOT%{_bindir}/* || :
-strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/{lib*.so.*.*,modules/*} || :
+strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/{lib*.so.*.*,modules/*.so} || :
 
-# setup the default X server
-rm -f $RPM_BUILD_ROOT%{_bindir}/X
-ln -s Xwrapper $RPM_BUILD_ROOT%{_bindir}/X
+# DO NOT STRIP ANYTHING ELSE IN %{_libdir}/modules/ !!!
 
 # Move config stuff to /etc/X11
 
@@ -1132,10 +618,10 @@ ln -sf ../../../../etc/X11/XF86Config $RPM_BUILD_ROOT%{_libdir}/X11/XF86Config
 
 # setting default X
 rm -f $RPM_BUILD_ROOT%{_bindir}/X
-ln -sf Xwrapper $RPM_BUILD_ROOT%{_bindir}/X
+ln -sf XFree86 $RPM_BUILD_ROOT%{_bindir}/X
 
 # setting ghost X in /etc/X11 -- xf86config will fix this ...
-ln -s ../..%{_bindir}/Xwrapper $RPM_BUILD_ROOT/etc/X11/X
+ln -s ../..%{_bindir}/XFree86 $RPM_BUILD_ROOT/etc/X11/X
 
 ln -sf ../../../../etc/X11/XF86Config \
 $RPM_BUILD_ROOT%{_libdir}/X11/XF86Config
@@ -1152,9 +638,9 @@ ln -s ../X11R6/include/X11 $RPM_BUILD_ROOT/usr/include/X11
 ln -s ../X11R6/bin $RPM_BUILD_ROOT/usr/bin/X11
 
 # make TrueType font dir, touch default .dir and .scale files
-install	-d $RPM_BUILD_ROOT%{_fontdir}/TrueType
-echo 0 > $RPM_BUILD_ROOT%{_fontdir}/TrueType/fonts.dir
-echo 0 > $RPM_BUILD_ROOT%{_fontdir}/TrueType/fonts.scale
+install	-d $RPM_BUILD_ROOT%{_fontdir}/TTF
+echo 0 > $RPM_BUILD_ROOT%{_fontdir}/TTF/fonts.dir
+echo 0 > $RPM_BUILD_ROOT%{_fontdir}/TTF/fonts.scale
 
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/xdm
 install %{SOURCE6} $RPM_BUILD_ROOT/etc/pam.d/xserver
@@ -1170,12 +656,6 @@ touch $RPM_BUILD_ROOT/etc/security/blacklist.xdm
 #ln -sf ../..%{_includedir}/X11 $RPM_BUILD_ROOT%{_includedir}/X11 ##change
 ln -sf %{_fontdir} $RPM_BUILD_ROOT%{_libdir}/X11/fonts
 
-for n in libX11.so.6.1 libICE.so.6.3 libSM.so.6.0 libXext.so.6.3 libXt.so.6.0 \
-	 libXmu.so.6.0 libXaw.so.6.1 libXIE.so.6.0 libXi.so.6.0 \
-	 libXtst.so.6.1 libXxf86rush.so.1.0; do
-ln -sf $n $RPM_BUILD_ROOT%{_libdir}/`echo $n | sed "s/\.so.*/\.so/"`
-done
-
 # xkb 'compiled' files need to be in /var/state/xkb, so
 # /usr is NFS / read-only mountable
 mkdir -p $RPM_BUILD_ROOT/var/state/xkb
@@ -1185,6 +665,9 @@ rm -rf $RPM_BUILD_ROOT%{_libdir}/X11/xkb/compiled
 ln -sf ../../../../../var/state/xkb \
 	$RPM_BUILD_ROOT%{_libdir}/X11/xkb/compiled
 
+# we have libXpm from xpm package
+rm -f $RPM_BUILD_ROOT/%{_libdir}/libXpm*
+
 # do not duplicate xkbcomp program
 rm -f $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
 ln -sf ../../../bin/xkbcomp $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
@@ -1192,7 +675,7 @@ ln -sf ../../../bin/xkbcomp $RPM_BUILD_ROOT%{_libdir}/X11/xkb/xkbcomp
 ln -sf ../../../share/doc/%{name}-%{version} \
 	$RPM_BUILD_ROOT%{_libdir}/X11/doc
 
-gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[135]/* \
+gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man[13457]/* \
 	$RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
 
 # don't gzip README.* files, they are needed by XF86Setup
@@ -1250,12 +733,15 @@ umask 022
 %{_bindir}/mkfontdir
 
 %post cyrillic-fonts
-cd %{_fontdir}/100dpi
+cd %{_fontdir}/cyrillic
 %{_bindir}/mkfontdir
 
-%postun cyrillic-fonts
-cd %{_fontdir}/100dpi
-umask 022
+%post latin2-100dpi-fonts
+cd %{_fontdir}/latin2/100dpi
+%{_bindir}/mkfontdir
+
+%post latin2-75dpi-fonts
+cd %{_fontdir}/latin2/75dpi
 %{_bindir}/mkfontdir
 
 %post -n xfs
@@ -1316,10 +802,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/X11/xserver
 %dir %{_bindir}
 
-%ifnarch sparc
-%dir %{_libdir}/modules
-%endif
-
 %config(noreplace) %verify(not md5 mtime size) /etc/X11/XF86Config
 %config %verify(not md5 mtime size) /etc/pam.d/xserver
 %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xserver
@@ -1356,9 +838,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/X11/x11perfcomp/*
 %{_libdir}/X11/*.txt
 
-%attr(755,root,root) %{_libdir}/X11/etc/*
-
-%attr(4755,root,root) %{_bindir}/Xwrapper
+%attr(755,root,root) %{_libdir}/X11/etc/*.sh
+%{_libdir}/X11/etc/*.term*
+%{_libdir}/X11/etc/xmodmap.std
+%{_libdir}/X11/etc/et4000clock.c
 
 %attr(755,root,root) %{_bindir}/X
 %attr(755,root,root) %{_bindir}/Xprt
@@ -1368,7 +851,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/rstartd
 %attr(755,root,root) %{_bindir}/xfindproxy
 %attr(755,root,root) %{_bindir}/xfwp
-%attr(755,root,root) %{_bindir}/xrx
 %attr(755,root,root) %{_bindir}/lndir
 %attr(755,root,root) %{_bindir}/mkdirhier
 %attr(755,root,root) %{_bindir}/gccmakedep
@@ -1381,9 +863,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/bmtoa
 %attr(755,root,root) %{_bindir}/atobm
 %attr(755,root,root) %{_bindir}/editres
-%attr(755,root,root) %{_bindir}/fsinfo
-%attr(755,root,root) %{_bindir}/fslsfonts
-%attr(755,root,root) %{_bindir}/fstobdf
 %attr(755,root,root) %{_bindir}/iceauth
 %attr(755,root,root) %{_bindir}/mkfontdir
 %attr(755,root,root) %{_bindir}/showrgb
@@ -1420,7 +899,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xlsclients
 %attr(755,root,root) %{_bindir}/xlsfonts
 %attr(755,root,root) %{_bindir}/xmag
-%attr(755,root,root) %{_bindir}/xmh
 %attr(755,root,root) %{_bindir}/xmodmap
 %attr(755,root,root) %{_bindir}/xprop
 %attr(755,root,root) %{_bindir}/xrdb
@@ -1437,11 +915,16 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/xwd
 %attr(755,root,root) %{_bindir}/xwininfo
 %attr(755,root,root) %{_bindir}/xwud
-%attr(755,root,root) %{_bindir}/reconfig
 %attr(755,root,root) %{_bindir}/xf86config
 %attr(755,root,root) %{_bindir}/scanpci
 %attr(755,root,root) %{_bindir}/SuperProbe
 %attr(755,root,root) %{_bindir}/xon
+%attr(755,root,root) %{_bindir}/makestrs
+%attr(755,root,root) %{_bindir}/oclock
+%attr(755,root,root) %{_bindir}/pcitweak
+%attr(755,root,root) %{_bindir}/revpath
+%attr(755,root,root) %{_bindir}/xedit
+%attr(755,root,root) %{_bindir}/xgamma
 
 %{_includedir}/X11/bitmaps
 
@@ -1449,7 +932,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/proxymngr.1*
 %{_mandir}/man1/xfindproxy.1*
 %{_mandir}/man1/xfwp.1*
-%{_mandir}/man1/xrx.1*
 %{_mandir}/man1/lndir.1*
 %{_mandir}/man1/makestrs.1*
 %{_mandir}/man1/makeg.1*
@@ -1461,9 +943,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bmtoa.1*
 %{_mandir}/man1/atobm.1*
 %{_mandir}/man1/editres.1*
-%{_mandir}/man1/fsinfo.1*
-%{_mandir}/man1/fslsfonts.1*
-%{_mandir}/man1/fstobdf.1*
 %{_mandir}/man1/iceauth.1*
 %{_mandir}/man1/mkfontdir.1*
 %{_mandir}/man1/showrgb.1*
@@ -1496,7 +975,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xlsclients.1*
 %{_mandir}/man1/xlsfonts.1*
 %{_mandir}/man1/xmag.1*
-%{_mandir}/man1/xmh.1*
 %{_mandir}/man1/xmodmap.1*
 %{_mandir}/man1/xprop.1*
 %{_mandir}/man1/xrdb.1*
@@ -1513,12 +991,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/xwd.1*
 %{_mandir}/man1/xwininfo.1*
 %{_mandir}/man1/xwud.1*
-%{_mandir}/man1/Xserver.1*
-%{_mandir}/man1/XFree86.1*
-%{_mandir}/man1/reconfig.1*
 %{_mandir}/man1/xf86config.1*
 %{_mandir}/man1/SuperProbe.1*
 %{_mandir}/man1/xon.1*
+%{_mandir}/man1/libxrx.1*
+%{_mandir}/man1/oclock.1*
+%{_mandir}/man1/revpath.1*
+%{_mandir}/man1/xedit.1*
+%{_mandir}/man1/xgamma.1*
+%{_mandir}/man7/*
 
 /usr/bin/X11
 
@@ -1530,6 +1011,7 @@ rm -rf $RPM_BUILD_ROOT
 /var/state/xkb
 %dir %{_libdir}/modules
 %attr(755,root,root) %{_libdir}/modules/*
+%{_mandir}/man4/*
 
 %endif
 
@@ -1567,11 +1049,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/fsinfo
 %attr(755,root,root) %{_bindir}/fslsfonts
 %attr(755,root,root) %{_bindir}/fstobdf
+%attr(755,root,root) %{_bindir}/mkcfm
 
 %{_mandir}/man1/xfs.1*
 %{_mandir}/man1/fsinfo.1*
 %{_mandir}/man1/fslsfonts.1*
 %{_mandir}/man1/fstobdf.1*
+%{_mandir}/man1/mkcfm.1*
 
 %files -n xauth
 %defattr(644,root,root,755)
@@ -1588,7 +1072,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libFS.a
 %{_libdir}/libXau.a
 %{_libdir}/libXdmcp.a
-%{_libdir}/libXdpms.a
 %{_libdir}/libXss.a
 %{_libdir}/libXxf86dga.a
 %{_libdir}/libXxf86misc.a
@@ -1596,6 +1079,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/liboldX.a
 %{_libdir}/libxkbfile.a
 %{_libdir}/libxkbui.a
+%{_libdir}/libXv.a
+%{_libdir}/libfntstubs.a
+%{_libdir}/libxf86config.a
 
 %{_includedir}/X11/*.h
 %{_includedir}/X11/ICE
@@ -1606,6 +1092,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/X11/Xmu
 %{_includedir}/X11/extensions
 %{_includedir}/X11/fonts
+%{_includedir}/GL
+%{_includedir}/xf86*.h
 %{_libdir}/X11/config
 
 %attr(755,root,root) %{_bindir}/imake
@@ -1621,6 +1109,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files static
 %defattr(644,root,root,755)
+%{_libdir}/libGL.a
 %{_libdir}/libICE.a
 %{_libdir}/libPEX5.a
 %{_libdir}/libSM.a
@@ -1628,12 +1117,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libXIE.a
 %{_libdir}/libXaw.a
 %{_libdir}/libXext.a
+%{_libdir}/libXfont.a
 %{_libdir}/libXi.a
 %{_libdir}/libXmu.a
 %{_libdir}/libXp.a
 %{_libdir}/libXt.a
 %{_libdir}/libXtst.a
-%{_libdir}/libXxf86rush.a
 
 %files Xvfb
 %defattr(644,root,root,755)
@@ -1645,129 +1134,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/Xnest
 %{_mandir}/man1/Xnest.1*
 
-%ifarch %{ix86} alpha
-
-%files SVGA
+%files Xserver
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/XF86_SVGA
-%{_mandir}/man1/XF86_SVGA.1*
+%attr(4755,root,root) %{_bindir}/XFree86
+%{_mandir}/man1/XFree86.1*
+%{_mandir}/man1/Xserver.1*
 %{_mandir}/man5/XF86Config.5*
-%endif
-
-%ifarch %{ix86} sparc
-
-%files VGA16
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/XF86_VGA16
-%{_mandir}/man1/XF86_VGA16.1*
-%{_mandir}/man5/XF86Config.5*
-%endif
-
-%ifarch %{ix86}
-
-%files W32
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/XF86_W32
-%{_mandir}/man1/XF86_W32.1*
-%{_mandir}/man1/XF86_Accel.1*
-%{_mandir}/man5/XF86Config.5*
-%endif
-
-%ifarch %{ix86} alpha
-
-%files Mono
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/XF86_Mono
-%{_mandir}/man1/XF86_Mono.1*
-%{_mandir}/man5/XF86Config.5*
-%endif
-
-%ifarch %{ix86} alpha
-
-%files S3
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/XF86_S3
-%{_mandir}/man1/XF86_S3.1*
-%{_mandir}/man1/XF86_Accel.1*
-%{_mandir}/man5/XF86Config.5*
-%endif
-
-%ifarch %{ix86} alpha
-
-%files S3V
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/XF86_S3V
-%{_mandir}/man1/XF86_S3.1*
-%{_mandir}/man1/XF86_Accel.1*
-%{_mandir}/man5/XF86Config.5*
-%endif
-
-%ifarch %{ix86}
-
-%files 8514
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/XF86_8514
-%{_mandir}/man1/XF86_8514.1*
-%{_mandir}/man1/XF86_Accel.1*
-%{_mandir}/man5/XF86Config.5*
-%endif
-
-%ifarch %{ix86}
-
-%files Mach8
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/XF86_Mach8
-%{_mandir}/man1/XF86_Mach8.1*
-%{_mandir}/man1/XF86_Accel.1*
-%{_mandir}/man5/XF86Config.5*
-%endif
-
-%ifarch %{ix86}
-
-%files Mach32
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/XF86_Mach32
-%{_mandir}/man1/XF86_Mach32.1*
-%{_mandir}/man1/XF86_Accel.1*
-%{_mandir}/man5/XF86Config.5*
-%endif
-
-%files Mach64
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/XF86_Mach64
-%{_mandir}/man1/XF86_Mach64.1*
-%{_mandir}/man1/XF86_Accel.1*
-%{_mandir}/man5/XF86Config.5*
-
-%ifarch %{ix86} alpha
-
-%files P9000
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/XF86_P9000
-%{_mandir}/man1/XF86_P9000.1*
-%{_mandir}/man1/XF86_Accel.1*
-%{_mandir}/man5/XF86Config.5*
-%endif
-
-%ifarch %{ix86}
-
-%files AGX
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/XF86_AGX
-%{_mandir}/man1/XF86_AGX.1*
-%{_mandir}/man1/XF86_Accel.1*
-%{_mandir}/man5/XF86Config.5*
-%endif
-
-%ifarch %{ix86}
-
-%files I128
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/XF86_I128
-%{_mandir}/man1/XF86_I128.1*
-%{_mandir}/man1/XF86_Accel.1*
-%{_mandir}/man5/XF86Config.5*
-%endif
 
 %ifarch alpha
 
@@ -1807,34 +1179,23 @@ rm -rf $RPM_BUILD_ROOT
 /var/state/xkb
 %endif
 
-%ifarch %{ix86}
-
-%files 3DLabs
-%attr(755,root,root) %{_bindir}/XF86_3DLabs
-%endif
-
-%files FBDev
-%defattr(644,root,root,755)
-%ifarch m68k
-%attr(755,root,root) %{_bindir}/XF68_FBDev
-%{_mandir}/man1/XF68_FBDev.1*
-%else
-%attr(755,root,root) %{_bindir}/XF86_FBDev
-%endif
-
-%files XF86Setup
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/XF86Setup
-%attr(755,root,root) %{_bindir}/xmseconfig
-%{_libdir}/X11/XF86Setup
-%{_mandir}/man1/XF86Setup.1*
-%{_mandir}/man1/xmseconfig.1*
+#%files XF86Setup
+#%defattr(644,root,root,755)
+#%attr(755,root,root) %{_bindir}/XF86Setup
+#%attr(755,root,root) %{_bindir}/xmseconfig
+#%{_libdir}/X11/XF86Setup
+#%{_mandir}/man1/XF86Setup.1*
+#%{_mandir}/man1/xmseconfig.1*
 
 %files fonts
 %defattr(644,root,root,755)
 %{_fontdir}/PEX
 %{_fontdir}/Speedo
 %{_fontdir}/Type1
+%{_fontdir}/CID
+%{_fontdir}/TTF
+%{_fontdir}/encodings
+%{_fontdir}/local
 %dir %{_fontdir}/misc
 %{_fontdir}/misc/*gz
 %verify(not mtime size md5) %{_fontdir}/misc/fonts.*
@@ -1848,9 +1209,17 @@ rm -rf $RPM_BUILD_ROOT
 %files 100dpi-fonts
 %defattr(644,root,root,755)
 %dir %{_fontdir}/100dpi
-%dir %{_fontdir}/100dpi/*gz
+%{_fontdir}/100dpi/*gz
 %verify(not mtime size md5) %{_fontdir}/100dpi/fonts.*
 
 %files cyrillic-fonts
 %defattr(644,root,root,755)
 %{_fontdir}/cyrillic
+
+%files latin2-100dpi-fonts
+%defattr(644,root,root,755)
+%{_fontdir}/latin2/100dpi
+
+%files latin2-75dpi-fonts
+%defattr(644,root,root,755)
+%{_fontdir}/latin2/75dpi
