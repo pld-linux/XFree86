@@ -416,3 +416,14 @@ diff -ur XFree/xc/config/cf/xfree86.cf XFree86-4.0.1.new/xc/config/cf/xfree86.cf
  # endif
  #endif
  
+--- XFree86-4.0.1.new/xc/config/cf/xfree86.cf~	Tue Aug 22 13:53:28 2000
++++ XFree86-4.0.1.new/xc/config/cf/xfree86.cf	Tue Aug 22 14:04:56 2000
+@@ -569,7 +569,7 @@
+  * The server-side of PEX is not 64-bit clean.
+  */
+ #if !defined(BuildPexExt)
+-# if XF86Server && !defined(AlphaArchitecture)
++# if XF86Server
+ #  define BuildPexExt		YES
+ # else
+ #  define BuildPexExt		NO
