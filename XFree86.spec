@@ -395,6 +395,7 @@ Group:		X11/Development/Libraries
 Requires:	%{name}-OpenGL-devel = %{epoch}:%{version}-%{release}
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 Provides:	OpenGL-devel-base
+Obsoletes:	XFree86-driver-nvidia-devel
 
 %description OpenGL-devel-base
 Base headers (GL and GLX only) for OpenGL for X11R6.
