@@ -2,6 +2,10 @@
 # TODO:
 # - separate XFS to be standalone - is it possible without duplicated files?
 
+# Linux OpenGL ABI compliance (http://oss.sgi.com/projects/ogl-sample/ABI/index.html)
+# - place libGLU.{so.1,so} in /usr/lib
+# - consider moving lib/libGL* and include/GL to /usr instead of symlinking
+
 #
 # Conditional build:
 %bcond_without	tdfx	# disables tdfx drivers building
