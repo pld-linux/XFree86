@@ -108,6 +108,7 @@ Patch46:	%{name}-spencode-nowarning.patch
 # Small (maybe buggy) patch to resolve problems with totem 0.97.0
 Patch47:	%{name}-lock.patch
 Patch48:	%{name}-savage-20030505.patch
+URL:		http://www.xfree86.org
 BuildRequires:	bison
 BuildRequires:	expat-devel
 BuildRequires:	flex
