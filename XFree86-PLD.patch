@@ -61,6 +61,15 @@ diff -urN XFree86-4.0.1.orig/xc/config/cf/Imake.tmpl XFree86-4.0.1/xc/config/cf/
  #endif
  #ifndef InstBinFlags
  #define InstBinFlags -m 0755
+@@ -918,7 +918,7 @@
+ #define CppCmd /lib/cpp
+ #endif
+ #ifndef RawCppCmd
+-#define RawCppCmd CppCmd -undef
++#define RawCppCmd CppCmd
+ #endif
+ #ifndef CppNoLineInfoOption
+ #define CppNoLineInfoOption /**/
 diff -urN XFree86-4.0.1.orig/xc/config/cf/X11.tmpl XFree86-4.0.1/xc/config/cf/X11.tmpl
 --- XFree86-4.0.1.orig/xc/config/cf/X11.tmpl	Tue Jun 27 02:55:45 2000
 +++ XFree86-4.0.1/xc/config/cf/X11.tmpl	Sun Oct 29 23:37:03 2000
@@ -164,11 +173,11 @@ diff -urN XFree86-4.0.1.orig/xc/config/cf/X11.tmpl XFree86-4.0.1/xc/config/cf/X1
  #endif
  #ifndef DefaultUserPath			/* for xdm */
 -#define DefaultUserPath :/bin:/usr/bin:$(BINDIR):/usr/ucb
-+#define DefaultUserPath /usr/local/bin:/bin:/usr/bin:$(BINDIR):$$HOME/bin
++#define DefaultUserPath /usr/local/bin:/bin:/usr/bin:$(BINDIR)
  #endif
  #ifndef DefaultSystemPath		/* for xdm */
 -#define DefaultSystemPath /etc:/bin:/usr/bin:$(BINDIR):/usr/ucb
-+#define DefaultSystemPath /sbin:/bin:/usr/sbin:/usr/bin:$(BINDIR):$$HOME/bin
++#define DefaultSystemPath /sbin:/bin:/usr/sbin:/usr/bin:$(BINDIR)
  #endif
  #ifndef DefaultSystemShell		/* for xdm to set in SHELL */
  #define DefaultSystemShell BourneShell
@@ -244,9 +253,9 @@ diff -urN XFree86-4.0.1.orig/xc/config/cf/site.def XFree86-4.0.1/xc/config/cf/si
  #undef DefaultUserPath
 -#define DefaultUserPath /bin:/usr/bin:$(BINDIR):/usr/ucb:/usr/local/bin
 -*/
-+#define DefaultUserPath /usr/local/bin:/bin:/usr/bin:$(BINDIR):$$HOME/bin
++#define DefaultUserPath /usr/local/bin:/bin:/usr/bin:$(BINDIR)
 +#undef DefaultSystemPath
-+#define DefaultSystemPath /sbin:/bin:/usr/sbin:/usr/bin:$(BINDIR):$$HOME/bin
++#define DefaultSystemPath /sbin:/bin:/usr/sbin:/usr/bin:$(BINDIR)
 +
 +
 +#define HasPam    YES
@@ -486,7 +495,7 @@ diff -urN XFree86-4.0.1.orig/xc/programs/xdm/config/Xres.cpp XFree86-4.0.1/xc/pr
  #ifdef XPM
  /**/#if PLANES >= 8
 -xlogin*logoFileName: BITMAPDIR/**//XDM_PIXMAP
-+xlogin*logoFileName: BITMAPDIR/**//xdm-pld-logo-transparent.xpm
++xlogin*logoFileName: BITMAPDIR/**//xdm-pld-logo.xpm
  /**/#else
 -xlogin*logoFileName: BITMAPDIR/**//XDM_BWPIXMAP
 +xlogin*logoFileName: BITMAPDIR/**//xdm-pld-logo-bw.xpm
@@ -513,11 +522,11 @@ diff -urN XFree86-4.0.1.orig/xc/programs/xdm/resource.c XFree86-4.0.1/xc/program
  #endif
  #ifndef DEF_USER_PATH
 -#define DEF_USER_PATH ":/bin:/usr/bin:/usr/bin/X11:/usr/ucb"
-+#define DEF_USER_PATH "/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin:$HOME/bin"
++#define DEF_USER_PATH "/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin"
  #endif
  #ifndef DEF_SYSTEM_PATH
 -#define DEF_SYSTEM_PATH "/etc:/bin:/usr/bin:/usr/bin/X11:/usr/ucb"
-+#define DEF_SYSTEM_PATH "/sbin:/bin:/usr/sbin:/usr/bin:/usr/X11R6/bin:$HOME/bin"
++#define DEF_SYSTEM_PATH "/sbin:/bin:/usr/sbin:/usr/bin:/usr/X11R6/bin"
  #endif
  #ifndef DEF_SYSTEM_SHELL
  #define DEF_SYSTEM_SHELL "/bin/sh"
