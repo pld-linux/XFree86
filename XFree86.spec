@@ -1056,7 +1056,7 @@ Sterownik do kart firmy Tseng Labs.
 
 %package driver-vmware
 Summary:	VMWare SVGA video driver
-Summary(pl):	Sterownik do emulowanych kart SVGA pod VMware
+Summary(pl):	Sterownik karty SVGA dostêpnej pod VMware
 Group:		X11/XFree86
 Group(de):	X11/XFree86
 Group(pl):	X11/XFree86
@@ -1064,10 +1064,12 @@ Requires:	%{name}-modules = %{version}-%{release}
 Requires:	%{name}-Xserver = %{version}-%{release}
 
 %description driver-vmware
-VMware SVGA video driver.
+VMware SVGA video driver. Necessary if you run Linux on VMware virtual machine.
 
 %description driver-vmware -l pl
-Sterownik do emulowanych kart SVGA pod VMware.
+Sterownik karty SVGA dostêpnej pod VMware. Przydatny je¶li uruchamiasz Linuxa
+na wirtualnej maszynie VMware.
+
 
 %package libs
 Summary:	X11R6 shared libraries
