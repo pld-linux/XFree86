@@ -1,4 +1,6 @@
 
+# SECURITY: CAN-2004-0083 CAN-2004-0084 CAN-2004-0106 CAN-2004-0419
+
 # _without_tdfx		disables tdfx build
 
 %define		_sver	%(echo %{version} | tr -d .)
