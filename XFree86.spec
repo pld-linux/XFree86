@@ -1083,7 +1083,6 @@ Group(es):	X11/XFree86
 Group(fr):	X11/XFree86
 Group(pl):	X11/XFree86
 Group(pt_BR):	X11/XFree86
-PreReq:		/sbin/ldconfig
 PreReq:		grep
 Obsoletes:	xpm
 Provides:	xpm
