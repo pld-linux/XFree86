@@ -1789,13 +1789,13 @@ fi
 %{_mandir}/man7/*
 
 %lang(it) %{_mandir}/it/man1/startx.1*
-%lang(it) %{_mandir}/man1/it/xconsole.1*
-%lang(it) %{_mandir}/man1/it/xinit.1*
-%lang(it) %{_mandir}/man1/it/xsetpointer.1*
+%lang(it) %{_mandir}/it/man1/xconsole.1*
+%lang(it) %{_mandir}/it/man1/xinit.1*
+%lang(it) %{_mandir}/it/man1/xsetpointer.1*
 
 %lang(ko) %{_mandir}/ko/man1/xterm.1*
 
-%lang(pl) %{_mandir}/pl/man1/lndir.1*
+%lang(pl) %{_mandir}/pl/man1/lbxproxy.1*
 %lang(pl) %{_mandir}/pl/man1/startx.1*
 %lang(pl) %{_mandir}/pl/man1/xinit.1*
 %lang(pl) %{_mandir}/pl/man1/xwd.1*
