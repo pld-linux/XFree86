@@ -4,20 +4,21 @@ Summary(fr):	Serveurs du système XFree86 et programmes de base
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
 Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Name: 		XFree86
-Version:	3.9.16
-Release:	1
+Version:	3.9.17
+Release:	2
 Copyright:	MIT
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/snapshots/3.9.16/source/X3916src-1.tgz
-Source1:	ftp://ftp.xfree86.org/pub/XFree86/snapshots/3.9.16/source/X3916src-2.tgz
-Source2:	xdm.pamd
-Source3:	xdm.initd
-Source4:	xfs.initd
-Source5:	xfs.config
-Source6:	xserver.pamd
-Source7:	XTerm.ad-pl
-Patch0:		XFree86-3.9.16-PLD.patch
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/snapshots/3.9.17/source/X3917src-1.tgz
+Source1:	ftp://ftp.xfree86.org/pub/XFree86/snapshots/3.9.17/source/X3917src-2.tgz
+Source2:	X3917-doc.tgz
+Source3:	xdm.pamd
+Source4:	xdm.initd
+Source5:	xfs.initd
+Source6:	xfs.config
+Source7:	xserver.pamd
+Source8:	XTerm.ad-pl
+Patch0:		XFree86-3.9.17-PLD.patch
 
 BuildRequires:	ncurses-devel
 BuildRequires:	zlib-devel
@@ -26,7 +27,7 @@ BuildRequires:	tcl-devel
 Requires:	pam
 Requires:	xauth
 Exclusivearch:	i386 i486 i586 i686 alpha sparc m68k armv4l
-Buildroot:	/tmp/%{name}-%{version}-root/
+Buildroot:	/home/baggins/praca/tmp/%{name}-%{version}-root/
 
 %ifarch sparc
 Obsoletes: X11R6.1
@@ -577,7 +578,7 @@ Czcionki rastrowe ISO-8859-2.
 #--- %prep ---------------------------
 
 %prep
-%setup -q -c -a1
+%setup -q -c -a1 -a2
 %patch0 -p1
 
 #--- %build --------------------------
@@ -614,7 +615,7 @@ strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/{lib*.so.*.*,modules/*.so} || :
 # Move config stuff to /etc/X11
 
 cp $RPM_BUILD_ROOT%{_libdir}/X11/XF86Config.eg \
-$RPM_BUILD_ROOT/etc/X11/XF86Config
+	$RPM_BUILD_ROOT/etc/X11/XF86Config
 ln -sf ../../../../etc/X11/XF86Config $RPM_BUILD_ROOT%{_libdir}/X11/XF86Config
 
 # setting default X
@@ -623,9 +624,6 @@ ln -sf XFree86 $RPM_BUILD_ROOT%{_bindir}/X
 
 # setting ghost X in /etc/X11 -- xf86config will fix this ...
 ln -s ../..%{_bindir}/XFree86 $RPM_BUILD_ROOT/etc/X11/X
-
-ln -sf ../../../../etc/X11/XF86Config \
-$RPM_BUILD_ROOT%{_libdir}/X11/XF86Config
 
 for i in xdm twm fs xsm xinit; do
 	rm -rf $RPM_BUILD_ROOT/etc/X11/$i
@@ -643,12 +641,12 @@ install	-d $RPM_BUILD_ROOT%{_fontdir}/TTF
 echo 0 > $RPM_BUILD_ROOT%{_fontdir}/TTF/fonts.dir
 echo 0 > $RPM_BUILD_ROOT%{_fontdir}/TTF/fonts.scale
 
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/xdm
-install %{SOURCE6} $RPM_BUILD_ROOT/etc/pam.d/xserver
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
-install %{SOURCE5} $RPM_BUILD_ROOT/etc/X11/fs/config
-install %{SOURCE7} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/XTerm
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/pam.d/xdm
+install %{SOURCE7} $RPM_BUILD_ROOT/etc/pam.d/xserver
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
+install %{SOURCE5} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
+install %{SOURCE6} $RPM_BUILD_ROOT/etc/X11/fs/config
+install %{SOURCE8} $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults/XTerm
 
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
@@ -785,6 +783,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_libdir}/X11/doc
 
 %doc %{_libdir}/X11/XF86Config.eg
+%doc %{_libdir}/X11/XF86Config.98
 %doc %{_libdir}/X11/Cards
 
 %ifarch ix86 alpha sparc
@@ -1076,6 +1075,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libXss.a
 %{_libdir}/libXxf86dga.a
 %{_libdir}/libXxf86misc.a
+%{_libdir}/libXxf86rush.a
 %{_libdir}/libXxf86vm.a
 %{_libdir}/liboldX.a
 %{_libdir}/libxkbfile.a
