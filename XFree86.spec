@@ -129,6 +129,7 @@ Patch47:	%{name}-linux-version.patch
 Patch48:	%{name}-new-s3-nodebug.patch
 Patch49:	%{name}-mandir-fix.patch
 Patch50:	%{name}-xterm-256colors.patch
+Patch51:	%{name}-new-s3-pScreen.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	%{_bindir}/perl
 BuildRequires:	bison
@@ -1800,6 +1801,7 @@ tar xfz *.tar.gz
 %patch48 -p0
 %patch49 -p1
 %patch50 -p1
+%patch51 -p1
 
 rm -f xc/config/cf/host.def
 
