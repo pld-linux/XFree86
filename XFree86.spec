@@ -11,10 +11,10 @@ Group:          X11/XFree86
 Group(pl):      X11/XFree86
 Requires:       XFree86-modules
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/3.3.3/source/X333src-1.tgz
-Source2:        xdm.pamd
-Source3:        xdm.initd
-Source4:        xfs.initd
-Source5:	xfs.config
+Source1:	xdm.pamd
+Source2:	xdm.initd
+Source3:	xfs.initd
+Source4:	xfs.config
 Patch0:		ftp://ftp.xfree86.org/pub/XFree86/3.3.3/fixes/3.3.3-3.3.3.1.diff.gz
 Patch1:		XFree86-rh.patch
 Patch2:		XFree86-rhxdm.patch
@@ -153,6 +153,8 @@ Summary(fr):	Bibliothèques partagées X11R6
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
 Prereq:		grep 
+Prereq:		/sbin/ldconfig
+
 %ifarch sparc
 Obsoletes: X11R6.1-libs
 %endif
@@ -196,13 +198,13 @@ içerir. Bunlar, X programlarýný (sunucu olsun olmasýn) çalýþtýrmak için
 gerekli disk alanýný azaltmak için ayrý bir paket olarak sunulmuþtur.
 
 %package devel
-Summary:	X11R6 static libraries, headers and programming man pages
-Summary(de):	X11R6 statische Libraries, Headers und man pages für Programmierer
-Summary(fr):	Bibliothèques X11R6 statiques et pages man de programmation
-Summary(pl):	Biblioteki statyczne, pliki nag³ówkowe dla X11R6
+Summary:	X11R6 headers and programming man pages
+Summary(de):	X11R6 Headers und man pages für Programmierer
+Summary(fr):	Pages man de programmation
+Summary(pl):	Pliki nag³ówkowe dla X11R6
 Summary(tr):	X11R6 ile geliþtirme için gerekli dosyalar
-Group:		X11/XFree86
-Group(pl):	X11/XFree86
+Group:		X11/Libraries
+Group(pl):	X11/Biblioteki
 %ifarch sparc
 Obsoletes:	X11R6.1-devel
 %endif
@@ -239,6 +241,21 @@ polecanych przez Red Hat'a.
 X istemcisi olarak çalýþacak programlar geliþtirmek için gereken statik
 kitaplýklar, baþlýk dosyalarý ve belgeler. Xlib kitaplýðýnýn yanýsýra Xt ve
 Xaw arayüz kitaplýklarýný da içerir.
+
+%package static
+Summary:	X11R6 static libraries
+Summary(pl):	Biblioteki sytatyczne do X11R6
+Group:		X11/Libraries
+Group(pl):	X11/Biblioteki
+%ifarch sparc
+Obsoletes:	X11R6.1-devel
+%endif
+
+%description devel
+X11R6 static libraries.
+
+%description -l pl devel
+Biblioteki sytatyczne do X11R6.
 
 %package	XF86Setup
 Summary:	Graphical configuration tool for XFree86
@@ -923,15 +940,20 @@ Obsoletes:	xdm
 %description -l pl -n xdm
 
 %package -n xfs
-Summary:	XFS
-Summary(pl):	XFS
+Summary:	Font server for XFree86
+Summary(pl):	Serwer fontów do XFree86
 Group:		X11/XFree86
 Group(pl):	X11/XFree86
-Obsoletes:	xfsft
+Obsoletes:	xfsft XFree86-xfs
 
 %description -n xfs
+This is a font server for XFree86. You can serve fonts to other X servers
+remotely with this package, and the remote system will be able to use all
+fonts installed on the font server, even if they are not installed on the
+remote computer.
 
 %description -l pl -n xfs
+
 %package -n xauth
 Summary:     XAuth
 Group:       X11/XFree86
@@ -1038,10 +1060,10 @@ install	-d $RPM_BUILD_ROOT/usr/X11R6/lib/X11/fonts/TrueType
 echo 0	>  $RPM_BUILD_ROOT/usr/X11R6/lib/X11/fonts/TrueType/fonts.dir
 echo 0	>  $RPM_BUILD_ROOT/usr/X11R6/lib/X11/fonts/TrueType/fonts.scale
 
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/xdm
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
-install %{SOURCE5} $RPM_BUILD_ROOT/etc
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/xdm
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
+install %{SOURCE4} $RPM_BUILD_ROOT/etc
 
 #ln -sf  ../../usr/X11R6/include/X11 $RPM_BUILD_ROOT/usr/include/X11 ##change
 
@@ -1050,6 +1072,15 @@ for n in libX11.so.6.1 libICE.so.6.3 libSM.so.6.0 libXext.so.6.3 libXt.so.6.0 \
 	 libXtst.so.6.1; do
 ln -sf $n $RPM_BUILD_ROOT/usr/X11R6/lib/`echo $n | sed "s/\.so.*/\.so/"`
 done
+
+# xkb 'compiled' files need to be in /var/lib/xkb, so
+# /usr is NFS / read-only mountable
+mkdir -p $RPM_BUILD_ROOT/var/lib/xkb
+cp -a $RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/compiled/* \
+	$RPM_BUILD_ROOT/var/lib/xkb
+rm -rf $RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/compiled
+ln -sf ../../../../../var/lib/xkb \
+	$RPM_BUILD_ROOT/usr/X11R6/lib/X11/xkb/compiled
 
 gzip -9nf $RPM_BUILD_ROOT/usr/X11R6/man/man[135]/*
 
@@ -1072,6 +1103,14 @@ if ! grep "^/usr/X11R6/lib$" /etc/ld.so.conf > /dev/null; then
 	echo "/usr/X11R6/lib missing from /etc/ld.so.conf" >&2
 else
 	echo "found"
+fi
+
+%post -n xfs
+/sbin/chkconfig --add xdm
+
+%postun -n xfs
+if [ "$1" = "0" ]; then
+	/sbin/chkconfig --del xfs
 fi
 
 %clean
@@ -1288,6 +1327,7 @@ rm -rf $RPM_BUILD_ROOT
 %files modules
 %defattr(755,root,root,755)
 /usr/X11R6/lib/X11/xkb
+/var/lib/xkb
 %attr(755,root,root) /usr/X11R6/lib/modules/*
 
 %endif
@@ -1307,9 +1347,19 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n xfs
 %defattr(644,root,root,755)
-%attr(700,root,root) %config /etc/rc.d/init.d/xfs
+%attr(754,root,root) /etc/rc.d/init.d/xfs
+%dir /etc/X11/fs
+%config(noreplace) /etc/X11/fs/config
+
 %attr(755,root,root) /usr/X11R6/bin/xfs
+%attr(755,root,root) /usr/X11R6/bin/fsinfo
+%attr(755,root,root) /usr/X11R6/bin/fslsfonts
+%attr(755,root,root) /usr/X11R6/bin/fstobdf
+
 /usr/X11R6/man/man1/xfs.1*
+/usr/X11R6/man/man1/fsinfo.1*
+/usr/X11R6/man/man1/fslsfonts.1*
+/usr/X11R6/man/man1/fstobdf.1*  
 
 %files -n xauth
 %defattr(644,root,root,755)
@@ -1344,6 +1394,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/man/man1/xmkmf.1*
 /usr/X11R6/man/man3/*
 
+%files static
+%defattr(644,root,root,755)
 /usr/X11R6/lib/lib*.a
 
 %files Xvfb
@@ -1494,6 +1546,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) /usr/X11R6/bin/Xsun
 %attr(-,root,root) /usr/X11R6/lib/X11/xkb
+/var/lib/xkb
 %endif
 
 %ifarch sparc
@@ -1502,6 +1555,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644, root, root, 755)
 %attr(755,root,root) /usr/X11R6/bin/XsunMono
 %attr(-,root,root) /usr/X11R6/lib/X11/xkb
+/var/lib/xkb
 %endif
 
 %ifarch sparc
@@ -1510,6 +1564,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644, root, root, 755)
 %attr(755,root,root) /usr/X11R6/bin/Xsun24
 %attr(-,root,root) /usr/X11R6/lib/X11/xkb
+/var/lib/xkb
 %endif
 
 %ifarch i386 i486 i586 i686
