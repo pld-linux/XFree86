@@ -1,7 +1,6 @@
-
+#
 # TODO:
 # - separate XFS to be standalone - is it possible without duplicated files?
-
 #
 # Conditional build:
 %bcond_without	tdfx	# disables tdfx drivers building
@@ -24,48 +23,60 @@ Release:	0.1
 Epoch:		1
 License:	XFree86 1.1
 Group:		X11/XFree86
-Source0:	%{name}-%{version}.tar.bz2
-# Source0-md5:	79eafbc972b93dc78584f9c489f33e6e
-Source3:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
-# Source3-md5:	0a15b1c374256b5cad7961807baa3896
-Source4:	xdm.pamd
-Source5:	xserver.pamd
-Source6:	xdm.init
-Source7:	xfs.init
-Source8:	xfs.config
-Source9:	XTerm.ad-pl
-Source10:	xdm.sysconfig
-Source11:	xfs.sysconfig
-Source20:	twm.desktop
-Source21:	xeyes.desktop
-Source22:	xedit.desktop
-Source23:	xterm.desktop
-Source24:	xclipboard.desktop
-Source25:	xclock.desktop
-Source26:	oclock.desktop
-Source27:	xconsole.desktop
-Source30:	xlogo64.png
-Source31:	xeyes.png
-Source32:	xedit.png
-Source33:	xterm.png
-Source34:	xclipboard.png
-Source35:	xclock.png
-Source36:	oclock.png
-Source37:	xconsole.png
-Source38:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
-# Source38-md5:	a184106bb83cb27c6963944d9243ac3f
-#Source39:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
-Source40:	%{name}-Xserver-headers
-Source41:	%{name}-Xserver-headers-links
-Source42:	twm-xsession.desktop
-Source43:	xcalc.desktop
-Source44:	xload.desktop
-Source45:	xmag.desktop
-Source46:	xcalc.png
-Source47:	xload.png
-Source48:	xmag.png
-Source49:	http://oss.sgi.com/projects/ogl-sample/ABI/glext.h
-# NoSource49-md5: bf9b05a66798796b53ed1a050049b2ee
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/XFree86-4.4.0-src-1.tgz
+# Source0-md5:	97cea3d9e1197dde32ca34e3b6086469
+Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/XFree86-4.4.0-src-2.tgz
+# Source1-md5:	b9b6c74a03e314569e01d5fd4ff59523
+Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/XFree86-4.4.0-src-3.tgz
+# Source2-md5:	703404f48d3a15f58389a879d47c769d
+Source3:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/XFree86-4.4.0-src-4.tgz
+# Source3-md5:	5d1792f5c154c7462c6aef39c7853b3b
+Source4:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/XFree86-4.4.0-src-5.tgz
+# Source4-md5:	5c37f028efc6d54a9c725e333f9cc8ae
+Source5:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/XFree86-4.4.0-src-6.tgz
+# Source5-md5:	d1e12c33e9756d5143004a69f2cdac81
+Source6:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/XFree86-4.4.0-src-7.tgz
+# Source6-md5:	947a34279a0ca2da2f300719c583845e
+Source7:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
+# Source7-md5:	0a15b1c374256b5cad7961807baa3896
+Source8:	xdm.pamd
+Source9:	xserver.pamd
+Source10:	xdm.init
+Source11:	xfs.init
+Source12:	xfs.config
+Source13:	XTerm.ad-pl
+Source14:	xdm.sysconfig
+Source15:	xfs.sysconfig
+Source24:	twm.desktop
+Source25:	xeyes.desktop
+Source26:	xedit.desktop
+Source27:	xterm.desktop
+Source28:	xclipboard.desktop
+Source29:	xclock.desktop
+Source30:	oclock.desktop
+Source31:	xconsole.desktop
+Source34:	xlogo64.png
+Source35:	xeyes.png
+Source36:	xedit.png
+Source37:	xterm.png
+Source38:	xclipboard.png
+Source39:	xclock.png
+Source40:	oclock.png
+Source41:	xconsole.png
+Source42:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-non-english-Xman-pages.tar.bz2
+# Source42-md5:	a184106bb83cb27c6963944d9243ac3f
+#Source43:	cvs://anonymous@cvs.gatos.sourceforge.net/cvsroot/gatos/ati.2-20021001.tar.bz2
+Source44:	%{name}-Xserver-headers
+Source45:	%{name}-Xserver-headers-links
+Source46:	twm-xsession.desktop
+Source47:	xcalc.desktop
+Source48:	xload.desktop
+Source49:	xmag.desktop
+Source50:	xcalc.png
+Source51:	xload.png
+Source52:	xmag.png
+Source53:	http://oss.sgi.com/projects/ogl-sample/ABI/glext.h
+# NoSource53-md5: bf9b05a66798796b53ed1a050049b2ee
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -115,9 +126,7 @@ Patch45:	%{name}-spencode-nowarning.patch
 # Small (maybe buggy) patch to resolve problems with totem 0.97.0
 Patch46:	%{name}-lock.patch
 Patch47:	%{name}-sparc-kbd.patch
-
 Patch50:	%{name}-xterm-256colors.patch
-
 Patch52:	%{name}-kernel_headers.patch
 Patch53:	%{name}-stdint.patch
 Patch54:	%{name}-lnx_kbd.patch
@@ -1951,17 +1960,17 @@ rm -f $RPM_BUILD_ROOT/usr/include/GL
 mv -f $RPM_BUILD_ROOT%{_includedir}/GL $RPM_BUILD_ROOT/usr/include
 
 # get the most current OpenGL extensions
-cp -f %{SOURCE49} $RPM_BUILD_ROOT/usr/include/GL/glext.h
+cp -f %{SOURCE53} $RPM_BUILD_ROOT/usr/include/GL/glext.h
 
 # don't include shared version due to Motif issues
 rm -f $RPM_BUILD_ROOT%{_libdir}/libGLw.so*
 
 # collect Xserver headers and make symlinks
-for f in `cat %{SOURCE40}`; do
+for f in `cat %{SOURCE44}`; do
 	install -D xc/${f} $RPM_BUILD_ROOT%{_includedir}/X11/Xserver/${f}
 done
 cd $RPM_BUILD_ROOT%{_includedir}/X11/Xserver
-sh %{SOURCE41}
+sh %{SOURCE45}
 cd -
 
 # set up PLD xdm config
@@ -1969,29 +1978,29 @@ rm -f $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/{*Console,Xaccess,Xsession,Xsetup*}
 install xdm-xinitrc-*/pixmaps/* $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/pixmaps
 install xdm-xinitrc-*/{*Console,Xaccess,Xsession,Xsetup*} $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm
 
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/pam.d/xdm
-install %{SOURCE5} $RPM_BUILD_ROOT/etc/pam.d/xserver
-install %{SOURCE6} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
-install %{SOURCE7} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
-install %{SOURCE8} $RPM_BUILD_ROOT%{_sysconfdir}/X11/fs/config
-install %{SOURCE9} $RPM_BUILD_ROOT%{_appdefsdir}/pl/XTerm
+install %{SOURCE8} $RPM_BUILD_ROOT/etc/pam.d/xdm
+install %{SOURCE9} $RPM_BUILD_ROOT/etc/pam.d/xserver
+install %{SOURCE10} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
+install %{SOURCE11} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
+install %{SOURCE12} $RPM_BUILD_ROOT%{_sysconfdir}/X11/fs/config
+install %{SOURCE13} $RPM_BUILD_ROOT%{_appdefsdir}/pl/XTerm
 
-install %{SOURCE10} $RPM_BUILD_ROOT/etc/sysconfig/xdm
-install %{SOURCE11} $RPM_BUILD_ROOT/etc/sysconfig/xfs
+install %{SOURCE14} $RPM_BUILD_ROOT/etc/sysconfig/xdm
+install %{SOURCE15} $RPM_BUILD_ROOT/etc/sysconfig/xfs
 
-install %{SOURCE20} $RPM_BUILD_ROOT%{_wmpropsdir}/twm.desktop
-install %{SOURCE21} %{SOURCE22} %{SOURCE23} %{SOURCE24} %{SOURCE25} \
-	%{SOURCE26} %{SOURCE27} %{SOURCE43} %{SOURCE44} %{SOURCE45} \
+install %{SOURCE24} $RPM_BUILD_ROOT%{_wmpropsdir}/twm.desktop
+install %{SOURCE25} %{SOURCE26} %{SOURCE27} %{SOURCE28} %{SOURCE29} \
+	%{SOURCE30} %{SOURCE31} %{SOURCE47} %{SOURCE48} %{SOURCE49} \
 	$RPM_BUILD_ROOT%{_desktopdir}
-install %{SOURCE30} %{SOURCE31} %{SOURCE32} %{SOURCE33} %{SOURCE34} \
-	%{SOURCE35} %{SOURCE36} %{SOURCE37} %{SOURCE46} %{SOURCE47} \
-	%{SOURCE48} \
+install %{SOURCE34} %{SOURCE35} %{SOURCE36} %{SOURCE37} %{SOURCE38} \
+	%{SOURCE39} %{SOURCE40} %{SOURCE41} %{SOURCE50} %{SOURCE51} \
+	%{SOURCE52} \
 	$RPM_BUILD_ROOT%{_pixmapsdir}
 
-bzip2 -dc %{SOURCE38} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
+bzip2 -dc %{SOURCE42} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 
 # twm desktop file for gdm/kdm support
-install %{SOURCE42} $RPM_BUILD_ROOT%{_xsessdir}/twm.desktop
+install %{SOURCE46} $RPM_BUILD_ROOT%{_xsessdir}/twm.desktop
 
 :> $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 :> $RPM_BUILD_ROOT/etc/security/blacklist.xserver
