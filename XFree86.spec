@@ -604,7 +604,7 @@ make -C xc World \
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_libdir}/X11/pl/app-defaults \
-	$RPM_BUILD_ROOT/etc/{X11,pam.d,rc.d/init.d,security/console.apps} \
+	$RPM_BUILD_ROOT/etc/{sysconfig,X11,pam.d,rc.d/init.d,security/console.apps} \
 	$RPM_BUILD_ROOT/var/state/xkb \
 	$RPM_BUILD_ROOT/usr/include \
 	$RPM_BUILD_ROOT/usr/bin \
