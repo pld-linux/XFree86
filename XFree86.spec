@@ -22,8 +22,8 @@ Summary(ru):	Базовые шрифты, программы и документация для рабочей станции под X
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
-Version:	4.3.99.3
-Release:	0.2
+Version:	4.3.99.4
+Release:	0.1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/develsnaps/%{name}-%{version}.tar.bz2
@@ -1867,7 +1867,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch45 -p1
 %patch46 -p1
 %patch47 -p0
-%patch48 -p1
+#%patch48 -p1	-- seems applied
 
 rm -f xc/config/cf/host.def
 
