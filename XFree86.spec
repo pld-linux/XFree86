@@ -45,15 +45,15 @@ Patch17:	%{name}-broken-includes.patch
 #Patch18:	%{name}-Xaw-unaligned.patch
 #Patch19:	%{name}-4.0.1-alpha-pcibus-lemming.patch
 Patch20:	%{name}-%{version}-xdm-pam.patch
-Patch21:	%{name}-xlib-textmeasure.patch
+#Patch21:	%{name}-xlib-textmeasure.patch
 Patch22:	%{name}-fhs.patch
-Patch23:	%{name}-xdmsecurity.patch
-Patch24:	%{name}-moresecurity.patch
-Patch25:	%{name}-xman.patch
-Patch26:	%{name}-glide3.patch
-Patch27:	%{name}-tdfxdrmfixes.patch
+#Patch23:	%{name}-xdmsecurity.patch
+#Patch24:	%{name}-moresecurity.patch
+Patch25:	%{name}-%{version}-xman.patch
+#Patch26:	%{name}-glide3.patch
+#Patch27:	%{name}-tdfxdrmfixes.patch
 Patch28:	%{name}-HasXdmAuth.patch
-Patch29:	%{name}-Xserver_observe_XAUTHORITY.patch
+#Patch29:	%{name}-Xserver_observe_XAUTHORITY.patch
 Patch30:	%{name}-xdm-fixes.patch
 
 BuildRequires:	flex
@@ -900,15 +900,15 @@ X11R6-contrib in older releases.
 #%patch18 -p1 #not needed, included in 4.0.2
 #%patch19 -p0 #not needed, included in 4.0.2
 %patch20 -p1
-#%patch21 -p0
-#%patch22 -p1
-#%patch23 -p1
-#%patch24 -p1
-#%patch25 -p1
-#%patch26 -p0
-#%patch27 -p1
-#%patch28 -p1
-#%patch29 -p0
+#%patch21 -p0 #not needed, included in 4.0.2
+%patch22 -p1
+#%patch23 -p1 #not needed, included in 4.0.2
+#%patch24 -p1 #not needed, included in 4.0.2
+%patch25 -p1
+#%patch26 -p0 #not needed, included in 4.0.2
+#%patch27 -p1 #not needed, included in 4.0.2
+%patch28 -p1
+#%patch29 -p0 #not needed, included in 4.0.2
 #%patch30 -p0
 rm -f xc/config/cf/host.def
 
