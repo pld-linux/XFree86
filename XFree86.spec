@@ -17,7 +17,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.2.1
-Release:	5
+Release:	5.1
 License:	MIT
 Group:		X11/XFree86
 Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.2.0/source/X420src-1.tgz
@@ -77,7 +77,7 @@ Patch36:	ftp://ftp.xfree86.org/pub/XFree86/4.2.1/patches/4.2.0-4.2.1.diff.gz
 Patch37:	%{name}-clearrts.patch
 Patch38:	%{name}-mga020414.patch
 Patch39:	%{name}-trident-9397.patch
-Patch40:	%{name}-i815m.patch
+Patch40:	%{name}-4.2.0-i810-driver-update-cvs-20020617.patch.bz2
 Patch41:	%{name}-nv020414.patch
 Patch42:	%{name}-fix-07-s3trio64v2gx+netfinity.patch
 Patch43:	%{name}-prosavage.patch
@@ -1744,7 +1744,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch37 -p1
 %patch38 -p1
 #%patch39 -p1
-%patch40 -p1
+%patch40 -p0
 %patch41 -p1
 %patch42 -p1
 %patch43 -p1
