@@ -1064,6 +1064,9 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del xdm
 fi
 
+%post DPS -p /sbin/ldconfig
+%postun DPS -p /sbin/ldconfig
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
