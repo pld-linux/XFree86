@@ -405,7 +405,7 @@ Summary:        X Font Rendering library
 Summary(pl):    Biblioteka do renderowania fontów
 Group:          X11/Development/Libraries
 Requires:       %{name}-xft2 = %{version}
-Requires:       fontconfig-devel
+Requires:       %{name}-fontconfig-devel
 Provides:	Xft-devel = 2.1
 Obsoletes:      XFree86-xft-devel
 Obsoletes:	Xft-devel
@@ -438,54 +438,58 @@ Xft jest bibliotek± s³u¿±c± do renderowania fontów dla X Window.
 
 Ten pakiet zawiera biblioteki statyczne.
 
-%package -n fontconfig
+%package fontconfig
 Summary:        Font configuration and customization library
 Summary(pl):    Biblioteka do konfigurowania fontów
 Requires:	%{name}-libs = %{version}
 Group:          Libraries
+Provides:	fontconfig
+Obsoletes:	fontconfig
 
-%description -n fontconfig
+%description fontconfig
 Fontconfig is designed to locate fonts within the system and select
 them according to requirements specified by applications.
 
-%description -n fontconfig -l pl
+%description fontconfig -l pl
 Fontconfig jest biblioteka przeznaczon± do lokalizowania fontów w
 systemie i wybierania ich w zale¿no¶ci od potrzeb aplikacji.
 
-%package -n fontconfig-devel
+%package fontconfig-devel
 Summary:        Font configuration and customization library
 Summary(pl):    Biblioteka do konfigurowania fontów
 Group:          Development/Libraries
-Requires:       fontconfig = %{version}
+Provides:	fontconfig-devel
+Requires:       %{name}-fontconfig = %{version}
 Requires:       freetype-devel
+Obsoletes:	fontconfig-devel
 
-%description -n fontconfig-devel
+%description fontconfig-devel
 Fontconfig is designed to locate fonts within the system and select
 them according to requirements specified by applications.
 
 This package contains the header files needed to develop programs that
 use these fontconfig.
 
-%description -n fontconfig-devel -l pl
+%description fontconfig-devel -l pl
 Fontconfig jest biblioteka przeznaczon± do lokalizowania fontów w
 systemie i wybierania ich w zale¿no¶ci od potrzeb aplikacji.
 
 Ten pakiet zawiera pliki nag³ówkowe potrzebne do kompilowania
 programów korzystaj±cych z biblioteki fontconfig.
 
-%package -n fontconfig-static
+%package fontconfig-static
 Summary:        Font configuration and customization library
 Summary(pl):    Biblioteka do konfigurowania fontów
 Group:          Development/Libraries
-Requires:       fontconfig-devel = %{version}
+Requires:       %{name}-fontconfig-devel = %{version}
 
-%description -n fontconfig-static
+%description fontconfig-static
 Fontconfig is designed to locate fonts within the system and select
 them according to requirements specified by applications.
 
 This package contains static libraries.
 
-%description -n fontconfig-static -l pl
+%description fontconfig-static -l pl
 Fontconfig jest biblioteka przeznaczon± do lokalizowania fontów w
 systemie i wybierania ich w zale¿no¶ci od potrzeb aplikacji.
 
@@ -2084,8 +2088,8 @@ rm -rf $RPM_BUILD_ROOT
 %post   xft2 -p /sbin/ldconfig
 %postun xft2 -p /sbin/ldconfig
 
-%post   -n fontconfig -p /sbin/ldconfig
-%postun -n fontconfig -p /sbin/ldconfig
+%post	fontconfig -p /sbin/ldconfig
+%postun	fontconfig -p /sbin/ldconfig
 
 %post	OpenGL-libs -p /sbin/ldconfig
 %postun	OpenGL-libs -p /sbin/ldconfig
@@ -2452,7 +2456,7 @@ fi
 %defattr(644,root,root,755)
 %{_libdir}/libXft.a
 
-%files -n fontconfig
+%files fontconfig
 %defattr(644,root,root,755)
 %dir %{_sysconfdir}/fonts
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/fonts/fonts.conf
@@ -2461,7 +2465,7 @@ fi
 %attr(755,root,root) %{_libdir}/libfontconfig.so.1.0
 %{_mandir}/man1/fc-*.1*
 
-%files -n fontconfig-devel
+%files fontconfig-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/fontconfig-config
 %{_includedir}/fontconfig
@@ -2469,7 +2473,7 @@ fi
 %{_pkgconfigdir}/fontconfig.pc
 %{_mandir}/man3/fontconfig.3*
 
-%files -n fontconfig-static
+%files fontconfig-static
 %defattr(644,root,root,755)
 %{_libdir}/libfontconfig.a
 
