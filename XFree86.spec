@@ -373,12 +373,12 @@ Old version of font rendering library.
 Stara wersja biblioteki wy¶wietlaj±cej fonty.
 
 %package xft
-Summary:        X Font rendering library
-Summary(pl):    Biblioteka do renderowania fontów
-Group:          X11/XFree86
-Requires:       %{name}-libs = %{version}
+Summary:	X Font rendering library
+Summary(pl):	Biblioteka do renderowania fontów
+Group:		X11/XFree86
+Requires:	%{name}-libs = %{version}
 Requires:	%{name}-fontconfig = %{version}
-Provides:	Xft = 2.1
+Provides:	Xft = 2.1-2
 Obsoletes:	XFree86-xft2
 Obsoletes:	Xft
 
@@ -389,13 +389,13 @@ Xft is a font rendering library for X.
 Xft jest bibliotek± s³u¿±c± do renderowania fontów dla X Window.
 
 %package xft-devel
-Summary:        X Font Rendering library
-Summary(pl):    Biblioteka do renderowania fontów
-Group:          X11/Development/Libraries
-Requires:       %{name}-xft = %{version}
-Requires:       %{name}-fontconfig-devel
-Provides:	Xft-devel = 2.1
-Obsoletes:      XFree86-xft2-devel
+Summary:	X Font Rendering library
+Summary(pl):	Biblioteka do renderowania fontów
+Group:		X11/Development/Libraries
+Requires:	%{name}-xft = %{version}
+Requires:	%{name}-fontconfig-devel
+Provides:	Xft-devel = 2.1-2
+Obsoletes:	XFree86-xft2-devel
 Obsoletes:	Xft-devel
 
 %description xft-devel
@@ -411,11 +411,11 @@ Ten pakiet zawiera pliki nag³ówkowe potrzebne do kompilowania
 programów korzystaj±cych z biblioteki Xft.
 
 %package xft-static
-Summary:        X Font Rendering library
-Summary(pl):    Biblioteka do renderowania fontów
-Group:          X11/Development/Libraries
-Requires:       %{name}-xft-devel = %{version}
-Obsoletes:      XFree86-xft2-static
+Summary:	X Font Rendering library
+Summary(pl):	Biblioteka do renderowania fontów
+Group:		X11/Development/Libraries
+Requires:	%{name}-xft-devel = %{version}
+Obsoletes:	XFree86-xft2-static
 
 %description xft-static
 Xft is a font rendering library for X.
@@ -428,10 +428,10 @@ Xft jest bibliotek± s³u¿±c± do renderowania fontów dla X Window.
 Ten pakiet zawiera biblioteki statyczne.
 
 %package fontconfig
-Summary:        Font configuration and customization library
-Summary(pl):    Biblioteka do konfigurowania fontów
+Summary:	Font configuration and customization library
+Summary(pl):	Biblioteka do konfigurowania fontów
 Requires:	%{name}-libs = %{version}
-Group:          Libraries
+Group:		Libraries
 Provides:	fontconfig = 1.0.1
 Obsoletes:	fontconfig
 
@@ -444,11 +444,11 @@ Fontconfig jest biblioteka przeznaczon± do lokalizowania fontów w
 systemie i wybierania ich w zale¿no¶ci od potrzeb aplikacji.
 
 %package fontconfig-devel
-Summary:        Font configuration and customization library
-Summary(pl):    Biblioteka do konfigurowania fontów
-Group:          Development/Libraries
-Requires:       %{name}-fontconfig = %{version}
-Requires:       freetype-devel
+Summary:	Font configuration and customization library
+Summary(pl):	Biblioteka do konfigurowania fontów
+Group:		Development/Libraries
+Requires:	%{name}-fontconfig = %{version}
+Requires:	freetype-devel
 Provides:	fontconfig-devel = 1.0.1
 Obsoletes:	fontconfig-devel
 
@@ -467,10 +467,10 @@ Ten pakiet zawiera pliki nag³ówkowe potrzebne do kompilowania
 programów korzystaj±cych z biblioteki fontconfig.
 
 %package fontconfig-static
-Summary:        Font configuration and customization library
-Summary(pl):    Biblioteka do konfigurowania fontów
-Group:          Development/Libraries
-Requires:       %{name}-fontconfig-devel = %{version}
+Summary:	Font configuration and customization library
+Summary(pl):	Biblioteka do konfigurowania fontów
+Group:		Development/Libraries
+Requires:	%{name}-fontconfig-devel = %{version}
 
 %description fontconfig-static
 Fontconfig is designed to locate fonts within the system and select
