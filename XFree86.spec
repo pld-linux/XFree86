@@ -65,6 +65,7 @@ Patch31:	%{name}-alpha_GLX_align_fix.patch
 Patch32:	%{name}-XftConfig_in_correct_place.patch
 Patch33:	%{name}-PEX+XIE.patch
 Patch34:	%{name}-xman-manpaths.patch
+Patch35:	%{name}-no_tdfx.patch
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	freetype-devel >= 2.0.0
@@ -1410,6 +1411,9 @@ serwerów lokalnych lub zdalnych.
 %patch32 -p1
 %patch33 -p1
 %patch34 -p1
+%ifarch ppc
+%patch35
+%endif
 
 rm -f xc/config/cf/host.def
 
@@ -2237,7 +2241,7 @@ fi
 %{_mandir}/man4/suntcx*
 %endif
 
-%ifnarch sparc sparc64
+%ifnarch sparc sparc64 ppc
 %files driver-tdfx
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/tdfx_drv.o
