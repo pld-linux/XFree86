@@ -1,0 +1,19 @@
+--- XFree86-4.3.0/xc/programs/xterm/charproc.c.xterm-can-2003-0063	2003-02-06 18:09:42.000000000 -0500
++++ XFree86-4.3.0/xc/programs/xterm/charproc.c	2003-02-25 05:10:42.000000000 -0500
+@@ -3867,11 +3867,16 @@
+ 	break;
+ 
+     case 21:			/* Report the window's title */
++/* This code block is disabled to fix a security issue reported
++ * in CAN-2003-0063
++ */
++#if 0
+ 	report_win_label(screen, 'l', &text,
+ 			 XGetWMName(
+ 				       screen->display,
+ 				       VShellWindow,
+ 				       &text));
++#endif
+ 	break;
+ 
+     default:			/* DECSLPP (24, 25, 36, 48, 72, 144) */
