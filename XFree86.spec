@@ -958,11 +958,11 @@ Manager Control Protocol.
 %package -n twm
 Summary:	Tab Window Manager for the X Window System
 Summary(pl):	Twm - podstawowy zarz±dca okien dla X Window System
-Group:		X11/Window Managers/Tools
-Group(de):	X11/Fenstermanager/Werkzeuge
+Group:		X11/Window Managers
+Group(de):	X11/Fenstermanager
 Group(es):	X11/Administraadores De Ventanas
 Group(fr):	X11/Gestionnaires De Fenêtres
-Group(pl):	X11/Zarz±dcy Okien/Narzêdzia
+Group(pl):	X11/Zarz±dcy Okien
 
 %description -n twm
 Twm is a window manager for the X Window System. It provides
