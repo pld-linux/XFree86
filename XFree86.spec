@@ -32,22 +32,21 @@ Patch10:	XFree86-xinput.patch
 Patch11:	XFree86-suncards.patch
 Patch12:	XFree86-sparc2.patch
 Patch13:	XFree86-jay.patch
-Patch14:	XFree86-86setup.patch
-Patch15:	XFree86-czskkbd.patch
-Patch16:	XFree86-iso88592xlclocale.patch
-Patch17:	XFree86-utextit.patch
-Patch18:	XFree86-joy.patch
-Patch19:	XFree86-arm.patch
-Patch20:	XFree86-xfsft.patch
-Patch21:	XFree86-ru_SU.patch
-Patch22:	XFree86-startx_xauth.patch
-Patch23:	XFree86-xfsredhat.patch
-Patch24:	XFree86-alpha-at.patch
-Patch25:	XFree86-alpha-vga.patch
-Patch26:	XFree86-glibc.patch
-Patch27:	XFree86-ncurses.patch
-Patch28:	XFree86-xterm-ptmx.patch
-Patch29:	XFree86-HasZlib.patch
+Patch14:	XFree86-czskkbd.patch
+Patch15:	XFree86-iso88592xlclocale.patch
+Patch16:	XFree86-utextit.patch
+Patch17:	XFree86-joy.patch
+Patch18:	XFree86-arm.patch
+Patch19:	XFree86-xfsft.patch
+Patch20:	XFree86-ru_SU.patch
+Patch21:	XFree86-startx_xauth.patch
+Patch22:	XFree86-xfsredhat.patch
+Patch23:	XFree86-alpha-at.patch
+Patch24:	XFree86-alpha-vga.patch
+Patch25:	XFree86-glibc.patch
+Patch26:	XFree86-ncurses.patch
+Patch27:	XFree86-xterm-ptmx.patch
+Patch28:	XFree86-HasZlib.patch
 
 Exclusivearch:	i386 alpha sparc m68k armv4l
 Buildroot:      /tmp/%{name}-%{version}-root
@@ -916,7 +915,6 @@ Summary(pl): XAuth
 %patch2  -p1
 %patch3  -p1
 %patch4  -p1
-%patch5  -p1
 %patch6  -p1
 %patch7  -p1
 %patch8  -p1
@@ -925,7 +923,7 @@ Summary(pl): XAuth
 %patch11 -p1
 %patch12 -p1
 %patch13 -p1
-%patch14 -p0
+%patch14 -p1
 %patch15 -p1
 %patch16 -p1
 %patch17 -p1
@@ -935,12 +933,12 @@ Summary(pl): XAuth
 %patch21 -p1
 %patch22 -p1
 %patch23 -p1
-%patch24 -p0
+%patch24 -p1
 %patch25 -p1
 %patch26 -p1
 %patch27 -p1
 %patch28 -p1
-%patch29 -p1
+#%patch5  -p1
 
 # Clean up to save a *lot* of disk space
 find . -name "*.orig" -print | xargs rm -f
@@ -954,7 +952,7 @@ make -C xc World \
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/usr/X11R6/{bin,lib/X11,man/man{1,3,5}} \
+install -d $RPM_BUILD_ROOT/usr/{X11R6/{bin,lib/X11,man/man{1,3,5}},include} \
 	$RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,}
 
 make -C xc  "DESTDIR=$RPM_BUILD_ROOT" \
