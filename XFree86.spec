@@ -703,8 +703,8 @@ package.
 %package DPS
 Summary:	Display PostScript
 Summary(pl):	Display PostScript
-Group:		X11/XFree
-Group(pl):	X11/XFree
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
 Obsoletes:	dgs
 
 %description DPS
@@ -718,8 +718,8 @@ wy¶wietlania informacji na ekranie.
 %package DPS-devel
 Summary:	Display PostScript
 Summary(pl):	Display PostScript
-Group:		X11/XFree
-Group(pl):	X11/XFree
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
 Requires:	%{name}-DPS = %{version}
 Obsoletes:	dgs-devel
 
@@ -732,8 +732,8 @@ Pliki nag³ówkowe do biblioteki do X-Windows Display PostScript.
 %package DPS-static
 Summary:	Display PostScript
 Summary(pl):	Display PostScript
-Group:		X11/XFree
-Group(pl):	X11/XFree
+Group:		X11/XFree86
+Group(pl):	X11/XFree86
 Requires:	%{name}-DPS-devel = %{version}
 Obsoletes:	dgs-static
 
