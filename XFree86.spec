@@ -1130,12 +1130,13 @@ install	-d $RPM_BUILD_ROOT%{_fontdir}/TrueType
 echo 0 > $RPM_BUILD_ROOT%{_fontdir}/TrueType/fonts.dir
 echo 0 > $RPM_BUILD_ROOT%{_fontdir}/TrueType/fonts.scale
 
+install -d $RPM_BUILD_ROOT/usr/X11R6/lib/X11/pl
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/pam.d/xdm
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/pam.d/xserver
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/xdm
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/rc.d/init.d/xfs
 install %{SOURCE4} $RPM_BUILD_ROOT/etc/X11/fs/config
-install %{SOURCE6} $RPM_BUILD_ROOT/usr/X11R6/lib/X11/app-defaults/XTerm.pl
+install %{SOURCE6} $RPM_BUILD_ROOT/usr/X11R6/lib/X11/pl/XTerm
 
 touch $RPM_BUILD_ROOT/etc/security/console.apps/xserver
 touch $RPM_BUILD_ROOT/etc/security/blacklist.xserver
@@ -1299,6 +1300,8 @@ rm -rf $RPM_BUILD_ROOT
 /usr/X11R6/lib/X11/lbxproxy
 /usr/X11R6/lib/X11/proxymngr
 /usr/X11R6/lib/X11/app-defaults
+
+%lang(pl) /usr/X11R6/lib/X11/pl
 
 %attr(755,root,root) /usr/X11R6/lib/X11/xinit
 
