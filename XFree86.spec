@@ -2787,6 +2787,7 @@ fi
 %{_libdir}/X11/locale
 %dir %{_includedir}
 %dir %{_includedir}/X11
+/usr/include/X11
 %dir %{_sbindir}
 %dir %{_datadir}/locale
 %dir %{_datadir}/misc
