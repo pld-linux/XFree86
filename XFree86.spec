@@ -1875,7 +1875,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,security/console.apps,sysconfig,xdg} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/X11/fs \
 	$RPM_BUILD_ROOT%{_libdir}/X11/app-defaults/{cs,da,de,es,fr,hu,it,ja,ko,nl,pl,pt,ru,sk,zh_CN.gb2312,zh_TW.big5} \
-	$RPM_BUILD_ROOT%{_datadir}/{misc,xsessions} \
+	$RPM_BUILD_ROOT%{_datadir}/misc \
 	$RPM_BUILD_ROOT%{_sbindir} \
 	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
 	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
@@ -2879,11 +2879,11 @@ fi
 %dir %{_sbindir}
 %dir %{_datadir}/locale
 %dir %{_datadir}/misc
-%dir %{_datadir}/xsessions
 %dir %{_pixmapsdir}
 %dir %{_pixmapsdir}/mini
 %dir %{_soundsdir}
 %dir %{_wmpropsdir}
+%dir %{_xsessdir}
 %attr(755,root,root) %{_libdir}/libX[1Ta-eg-t]*.so.*.*
 %attr(755,root,root) %{_libdir}/libXfont*.so.*.*
 %attr(755,root,root) %{_libdir}/libI*.so.*.*
