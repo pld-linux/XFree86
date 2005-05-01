@@ -1,0 +1,3 @@
+- %{_iconsdir} & %{_pixmapsdir} already in rpm macros
+- %(_iconsdir} owned by -libs sybpkg
+- Added %{_iconsdir}/mini
