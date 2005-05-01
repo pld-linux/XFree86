@@ -1,0 +1,2 @@
+- Desktop files moved to %{_desktopdir}
+- Fixed %files
