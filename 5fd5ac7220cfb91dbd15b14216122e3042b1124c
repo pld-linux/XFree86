@@ -1,0 +1,3 @@
+- some %files updates (more shared libs now)
+- explicit libs lists instead of glob inclusions/exclusions
+  (for easier maintaining of devel/static split)
