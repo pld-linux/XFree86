@@ -1,0 +1,2 @@
+- Added %{_datadir}/xsessions to libs subpkg
+- Added %{_datadir}/xsessions/twm.desktop to twm subpkg
