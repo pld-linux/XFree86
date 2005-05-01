@@ -141,7 +141,7 @@ BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	pam-devel
-BuildRequires:	rpmbuild(macros) >= 1.159
+BuildRequires:	rpmbuild(macros) >= 1.202
 BuildRequires:	tcl-devel
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
@@ -2098,22 +2098,8 @@ if [ "$1" = "0" ]; then
 fi
 
 %pre xfs
-if [ -n "`/usr/bin/getgid xfs`" ]; then
-	if [ "`/usr/bin/getgid xfs`" != "56" ]; then
-		echo "Error: group xfs doesn't have GID=56. Correct this before installing xfs." 1>&2
-		exit 1
-	fi
-else
-	/usr/sbin/groupadd -g 56 -r -f xfs
-fi
-if [ -n "`/bin/id -u xfs 2>/dev/null`" ]; then
-	if [ "`/bin/id -u xfs`" != "56" ]; then
-		echo "Error: user xfs doesn't have UID=56. Correct this before installing xfs." 1>&2
-		exit 1
-	fi
-else
-	/usr/sbin/useradd -u 56 -r -d /etc/X11/fs -s /bin/false -c "X Font Server" -g xfs xfs 1>&2
-fi
+%groupadd -P %{name}-xfs -g 56 -r -f xfs
+%useradd -P %{name}-xfs -u 56 -r -d /etc/X11/fs -s /bin/false -c "X Font Server" -g xfs xfs
 
 %post xfs
 /sbin/chkconfig --add xfs
