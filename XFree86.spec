@@ -24,11 +24,11 @@ Release:	11
 Epoch:		1
 License:	XFree86 1.1
 Group:		X11
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/XFree86-4.4.0-src-1.tgz
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/%{name}-%{version}-src-1.tgz
 # Source0-md5:	97cea3d9e1197dde32ca34e3b6086469
-Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/XFree86-4.4.0-src-2.tgz
+Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/%{name}-%{version}-src-2.tgz
 # Source1-md5:	b9b6c74a03e314569e01d5fd4ff59523
-Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/XFree86-4.4.0-src-3.tgz
+Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/%{name}-%{version}-src-3.tgz
 # Source2-md5:	703404f48d3a15f58389a879d47c769d
 Source7:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
 # Source7-md5:	0a15b1c374256b5cad7961807baa3896
@@ -69,7 +69,7 @@ Source51:	xload.png
 Source52:	xmag.png
 Source53:	http://oss.sgi.com/projects/ogl-sample/ABI/glext.h
 # NoSource53-md5: 0c40bd4545aa630e139043c2b12f0807
-Source54:	XFree86-xrender.pc
+Source54:	%{name}-xrender.pc
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
 Patch2:		%{name}-DisableDebug.patch
@@ -348,7 +348,7 @@ Statyczne biblioteki X-Window Display PostScript.
 %package OpenGL-core
 Summary:	OpenGL support extension modules for Xserver
 Summary(pl):	ModuЁy rozszerzeЯ X serwera obsЁuguj╠ce OpenGL
-Group:		X11/Xserver
+Group:		X11/Servers
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
 
 %description OpenGL-core
@@ -445,8 +445,8 @@ Summary(ru):	"Вложенный" сервер XFree86
 Summary(uk):	"Вкладений" сервер XFree86
 Group:		X11/Servers
 Requires:	%{name}-common = %{epoch}:%{version}-%{release}
-Requires:	/usr/X11R6/lib/X11/rgb.txt
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
+Requires:	/usr/X11R6/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
 
 %description Xnest
@@ -486,11 +486,11 @@ Xnest - це сервер X Window System, який працю╓ у в╕кн╕ X. Фактично це
 Summary:	X print server
 Summary(pl):	X serwer z rozszerzeniem Xprint
 Group:		X11/Servers
-PreReq:		xprint-initrc
 Requires:	%{name}-common = %{epoch}:%{version}-%{release}
-Requires:	/usr/X11R6/lib/X11/rgb.txt
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
+Requires:	/usr/X11R6/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
+Requires:	xprint-initrc
 
 %description Xprt
 Xprt provides an X server with the print extension and special DDX
@@ -507,8 +507,8 @@ Summary(pl):	Serwer XFree86
 Summary(tr):	XFree86 sunucusu
 Group:		X11/Servers
 Requires:	%{name}-common = %{epoch}:%{version}-%{release}
-Requires:	/usr/X11R6/lib/X11/rgb.txt
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
+Requires:	/usr/X11R6/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
 Requires:	pam
 Obsoletes:	XFree86-Mono
@@ -543,8 +543,8 @@ Summary(ru):	Сервер XFree86 для виртуального фреймбуфера
 Summary(uk):	Сервер XFree86 для в╕ртуального фреймбуфера
 Group:		X11/Servers
 Requires:	%{name}-common = %{epoch}:%{version}-%{release}
-Requires:	/usr/X11R6/lib/X11/rgb.txt
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
+Requires:	/usr/X11R6/lib/X11/rgb.txt
 Requires:	XFree86-fonts-base
 
 %description Xvfb
@@ -618,8 +618,8 @@ Summary(ru):	Библиотеки разработчика, хедера и документация по программированию 
 Summary(tr):	X11R6 ile geliЧtirme iГin gerekli dosyalar
 Summary(uk):	Б╕бл╕отеки програм╕ста, хедери та документац╕я по програмуванню X11R6
 Group:		X11/Development/Libraries
-Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	%{name}-imake = %{epoch}:%{version}-%{release}
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	fontconfig-devel >= 1:1.0.0
 Provides:	render = 0.8
 Provides:	xcursor-devel = 1.0
@@ -763,8 +763,8 @@ Summary:	ATI Radeon video driver
 Summary(pl):	Sterownik do kart ATI Radeon
 Group:		X11/Servers
 Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
-Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
 Requires:	%{name}-driver-ati = %{epoch}:%{version}-%{release}
+Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
 %ifarch %{ix86} ia64 %{x8664} alpha ppc arm
 # for dri
 Requires:	%{name}-OpenGL-core = %{epoch}:%{version}-%{release}
@@ -1700,13 +1700,13 @@ Summary(pl):	XDM - zarz╠dca ekranСw z obsЁug╠ XDMCP i wybieraniem hostСw
 Summary(ru):	Менеджер дисплея X
 Summary(uk):	Менеджер дисплею X
 Group:		X11
-PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires:	pam >= 0.71
 Requires:	%{name}-sessreg = %{epoch}:%{version}-%{release}
 Requires:	/usr/X11R6/bin/sessreg
+Requires:	pam >= 0.71
+Requires:	rc-scripts
 Provides:	XDM
 Provides:	xdm = %{epoch}:%{version}-%{release}
 Obsoletes:	entrance
@@ -1738,16 +1738,16 @@ Summary(pl):	Serwer fontСw dla XFree86
 Summary(ru):	Фонтсервер для X Window System
 Summary(uk):	Фонтсервер для X Window System
 Group:		X11
-PreReq:		rc-scripts
-Requires(pre):	/bin/id
-Requires(pre):	/usr/bin/getgid
-Requires(pre):	/usr/sbin/useradd
-Requires(pre):	/usr/sbin/groupadd
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
+Requires(pre):	/bin/id
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/sbin/useradd
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	XFree86-fonts-base
+Requires:	rc-scripts
 Provides:	xfs = %{epoch}:%{version}-%{release}
 Provides:	group(xfs)
 Provides:	user(xfs)
@@ -2434,9 +2434,9 @@ fi
 %{_libx11dir}/Options
 %{_libx11dir}/getconfig
 
-%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/X11/XF86Config
-%attr(640,root,root) %config %verify(not md5 size mtime) /etc/pam.d/xserver
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.xserver
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/X11/XF86Config
+%attr(640,root,root) %config %verify(not md5 mtime size) /etc/pam.d/xserver
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xserver
 %config(missingok) /etc/security/console.apps/xserver
 
 %files Xvfb
@@ -3175,10 +3175,10 @@ fi
 
 %files xdm
 %defattr(644,root,root,755)
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/pam.d/xdm
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/security/blacklist.xdm
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/xdm
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/security/blacklist.xdm
 %attr(754,root,root) /etc/rc.d/init.d/xdm
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/xdm
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/xdm
 /var/lib/xdm
 
 %{_appdefsdir}/Chooser
@@ -3188,26 +3188,26 @@ fi
 %attr(755,root,root) %{_bindir}/chooser
 %{_mandir}/man1/xdm.1*
 
-%dir /etc/X11/xdm
-%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/GiveConsole
-%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/TakeConsole
-%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xsession
-%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xsetup_0
-%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xwilling
-%config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xaccess
-%config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xresources
-%config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/Xservers
-%config(noreplace) %verify(not size mtime md5) /etc/X11/xdm/xdm-config
-/etc/X11/xdm/pixmaps
-/etc/X11/xdm/authdir
+%dir %{_sysconfdir}/X11/xdm
+%attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/X11/xdm/GiveConsole
+%attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/X11/xdm/TakeConsole
+%attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/X11/xdm/Xsession
+%attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/X11/xdm/Xsetup_0
+%attr(755,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/X11/xdm/Xwilling
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/X11/xdm/Xaccess
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/X11/xdm/Xresources
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/X11/xdm/Xservers
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/X11/xdm/xdm-config
+%{_sysconfdir}/X11/xdm/pixmaps
+%{_sysconfdir}/X11/xdm/authdir
 
 %files xfs
 %defattr(644,root,root,755)
 %attr(754,root,root) /etc/rc.d/init.d/xfs
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/xfs
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/xfs
 %dir %{_sysconfdir}/X11/fs
 %attr(755,root,root) %{_libx11dir}/fs
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/X11/fs/config
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/X11/fs/config
 
 %attr(755,root,root) %{_bindir}/xfs
 %attr(755,root,root) %{_bindir}/fslsfonts
