@@ -1309,6 +1309,7 @@ Summary(pt_BR):	Bibliotecas compartilhadas X11R6
 Summary(ru):	Разделяемые библиотеки для X Window System (X11R6.4)
 Summary(uk):	Б╕бл╕отеки сп╕льного використання для X Window System (X11R6.4)
 Group:		X11/Libraries
+Requires(triggerpostun):	sed >= 4.0
 Requires:	%{name}-common = %{epoch}:%{version}-%{release}
 Requires:	glibc >= 6:2.3.5-7.6
 Provides:	xcursor = 1.0
