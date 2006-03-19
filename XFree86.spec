@@ -13,9 +13,9 @@ Summary(fr):	Serveurs du système XFree86 et programmes de base
 Summary(ja):	XFree86 window system ¤Î¥µ¡¼¥Ð¤È´ðËÜÅª¤Ê¥×¥í¥°¥é¥à
 Summary(ko):	X¿¡ ÇÊ¿äÇÑ ±âº»ÀûÀÎ ±Û²Ã°ú ÇÁ·Î±×·¥°ú ¹®¼­µé
 Summary(pl):	XFree86 Window System wraz z podstawowymi programami
-Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(pt_BR):	Programas básicos e servidores para o sistema de janelas XFree86
 Summary(ru):	âÁÚÏ×ÙÅ ÛÒÉÆÔÙ, ÐÒÏÇÒÁÍÍÙ É ÄÏËÕÍÅÎÔÁÃÉÑ ÄÌÑ ÒÁÂÏÞÅÊ ÓÔÁÎÃÉÉ ÐÏÄ X
+Summary(tr):	XFree86 Pencereleme Sistemi sunucularý ve temel programlar
 Summary(uk):	âÁÚÏ×¦ ÛÒÉÆÔÉ, ÐÒÏÇÒÁÍÉ ÔÁ ÄÏËÕÍÅÎÔÁÃ¦Ñ ÄÌÑ ÒÏÂÏÞÏ§ ÓÔÁÎÃ¦§ Ð¦Ä X
 Summary(zh_CN):	XFree86 ´°¿ÚÏµÍ³·þÎñÆ÷ºÍ»ù±¾³ÌÐò
 Name:		XFree86
@@ -141,7 +141,7 @@ BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	pam-devel
-BuildRequires:	rpmbuild(macros) >= 1.213
+BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	tcl-devel
 BuildRequires:	utempter-devel
 BuildRequires:	zlib-devel
@@ -410,9 +410,9 @@ Group:		X11/Development/Libraries
 Requires:	%{name}-OpenGL-libs = %{epoch}:%{version}-%{release}
 Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 Requires:	OpenGL-devel-base
-Provides:	OpenGL-devel = 1.4
 Provides:	OpenGL-GLU-devel = 1.3
 Provides:	OpenGL-GLX-devel = 1.4
+Provides:	OpenGL-devel = 1.4
 Obsoletes:	Mesa-devel
 Obsoletes:	XFree86-OpenGL-doc
 Obsoletes:	glxMesa-devel
@@ -428,8 +428,8 @@ Summary:	X11R6 static libraries with OpenGL
 Summary(pl):	Biblioteki statyczne do X11R6 ze wsparciem dla OpenGL
 Group:		X11/Development/Libraries
 Requires:	%{name}-OpenGL-devel = %{epoch}:%{version}-%{release}
-Provides:	OpenGL-static = 1.4
 Provides:	OpenGL-GLU-static = 1.3
+Provides:	OpenGL-static = 1.4
 Obsoletes:	Mesa-static
 
 %description OpenGL-static
@@ -1748,9 +1748,9 @@ Requires(pre):	/usr/sbin/useradd
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	XFree86-fonts-base
 Requires:	rc-scripts
-Provides:	xfs = %{epoch}:%{version}-%{release}
 Provides:	group(xfs)
 Provides:	user(xfs)
+Provides:	xfs = %{epoch}:%{version}-%{release}
 Obsoletes:	xfs
 Obsoletes:	xfsft
 
@@ -1873,7 +1873,7 @@ install -d $RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,security/console.apps,sysconfi
 
 %{__make} -C xc	install	install.man \
 	DESTDIR="$RPM_BUILD_ROOT" \
-	DOCDIR="/usr/share/doc/%{name}-%{version}" \
+	DOCDIR="%{_docdir}/%{name}-%{version}" \
 	INSTBINFLAGS="-m 755" \
 	INSTPGMFLAGS="-m 755" \
 	RAWCPP="/lib/cpp" \
@@ -1974,14 +1974,14 @@ ln -sf %{_fontsdir} $RPM_BUILD_ROOT%{_libx11dir}/fonts
 rm -f $RPM_BUILD_ROOT%{_libx11dir}/xkb/xkbcomp
 ln -sf %{_bindir}/xkbcomp $RPM_BUILD_ROOT%{_sysconfdir}/X11/xkb/xkbcomp
 
-ln -sf /usr/share/doc/%{name}-%{version} $RPM_BUILD_ROOT%{_libx11dir}/doc
+ln -sf %{_docdir}/%{name}-%{version} $RPM_BUILD_ROOT%{_libx11dir}/doc
 
 rm -f $RPM_BUILD_ROOT%{_libx11dir}/config/host.def
 
 :> $RPM_BUILD_ROOT%{_libx11dir}/config/host.def
 :> $RPM_BUILD_ROOT%{_sysconfdir}/X11/XF86Config
 
-rm -rf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/html
+rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/html
 
 # resolve conflict with man-pages
 mv -f $RPM_BUILD_ROOT%{_mandir}/man4/{mouse.4,mouse-x.4}
@@ -1990,10 +1990,10 @@ mv -f $RPM_BUILD_ROOT%{_mandir}/man4/{mouse.4,mouse-x.4}
 chmod 755 $RPM_BUILD_ROOT%{_libdir}/modules/dri/*.so
 
 %ifnarch sparc sparc64
-gzip -9nf $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/*
+gzip -9nf $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/*
 
 # don't gzip README.* files, they are needed by XF86Setup
-gunzip $RPM_BUILD_ROOT/usr/share/doc/%{name}-%{version}/README.*
+gunzip $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/README.*
 %endif
 
 # kill some stuff for cleaner build
@@ -2003,7 +2003,7 @@ rm -rf $RPM_BUILD_ROOT%{_libdir}/pkgconfig/fontconfig.pc \
 	$RPM_BUILD_ROOT%{_libdir}/libfontconfig.* \
 	$RPM_BUILD_ROOT%{_includedir}/fontconfig \
 	$RPM_BUILD_ROOT%{_bindir}/{fc-cache,fc-list} \
-	$RPM_BUILD_ROOT/etc/fonts \
+	$RPM_BUILD_ROOT%{_sysconfdir}/fonts \
 	$RPM_BUILD_ROOT%{_prefix}/src
 
 %clean
@@ -2057,17 +2057,15 @@ fi
 %post xdm
 /sbin/chkconfig --add xdm
 if [ -f /var/lock/subsys/xdm ]; then
-	echo "Run \"/etc/rc.d/init.d/xdm restart\" to restart xdm." >&2
+	echo "Run \"/sbin/service xdm restart\" to restart xdm." >&2
 	echo "WARNING: it will terminate all sessions opened from xdm!" >&2
 else
-	echo "Run \"/etc/rc.d/init.d/xdm start\" to start xdm." >&2
+	echo "Run \"/sbin/service xdm start\" to start xdm." >&2
 fi
 
 %preun xdm
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/xdm ]; then
-		/etc/rc.d/init.d/xdm stop >&2
-	fi
+	%service xdm stop
 	/sbin/chkconfig --del xdm
 fi
 
@@ -2077,17 +2075,11 @@ fi
 
 %post xfs
 /sbin/chkconfig --add xfs
-if [ -f /var/lock/subsys/xfs ]; then
-	/etc/rc.d/init.d/xfs restart >&2
-else
-	echo "Run \"/etc/rc.d/init.d/xfs start\" to start font server." >&2
-fi
+%service xfs restart "font server"
 
 %preun xfs
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/xfs ]; then
-		/etc/rc.d/init.d/xfs stop >&2
-	fi
+	%service xfs stop
 	/sbin/chkconfig --del xfs
 fi
 
