@@ -20,7 +20,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.4.0
-Release:	11
+Release:	12
 Epoch:		1
 License:	XFree86 1.1
 Group:		X11
@@ -1309,10 +1309,8 @@ Summary(pt_BR):	Bibliotecas compartilhadas X11R6
 Summary(ru):	Разделяемые библиотеки для X Window System (X11R6.4)
 Summary(uk):	Б╕бл╕отеки сп╕льного використання для X Window System (X11R6.4)
 Group:		X11/Libraries
-Requires(post,postun):	/sbin/ldconfig
-Requires(post,postun):	grep
-Requires(postun):	fileutils
 Requires:	%{name}-common = %{epoch}:%{version}-%{release}
+Requires:	glibc >= 6:2.3.5-7.6
 Provides:	xcursor = 1.0
 Provides:	xft = 2.1.0
 Provides:	xpm
@@ -1996,6 +1994,9 @@ gzip -9nf $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/*
 gunzip $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/README.*
 %endif
 
+install -d $RPM_BUILD_ROOT/etc/ld.so.conf.d
+echo '%{_libdir}' > $RPM_BUILD_ROOT/etc/ld.so.conf.d/%{name}-%{_lib}.conf
+
 # kill some stuff for cleaner build
 # (fontconfig packaged separately, DRM already in kernel)
 rm -rf $RPM_BUILD_ROOT%{_libdir}/pkgconfig/fontconfig.pc \
@@ -2009,7 +2010,7 @@ rm -rf $RPM_BUILD_ROOT%{_libdir}/pkgconfig/fontconfig.pc \
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-#--- %post{un}, %preun, %verifyscript, %trigge ----------
+#--- %post{un}, %preun, %trigger ----------
 
 %post	DPS -p /sbin/ldconfig
 %postun DPS -p /sbin/ldconfig
@@ -2020,28 +2021,8 @@ rm -rf $RPM_BUILD_ROOT
 %post	OpenGL-libs -p /sbin/ldconfig
 %postun OpenGL-libs -p /sbin/ldconfig
 
-%post libs
-umask 022
-grep -qs "^%{_libdir}$" /etc/ld.so.conf
-[ $? -ne 0 ] && echo "%{_libdir}" >> /etc/ld.so.conf
-/sbin/ldconfig
-
-%postun libs
-if [ "$1" = "0" ]; then
-	umask 022
-	grep -v "%{_libdir}" /etc/ld.so.conf > /etc/ld.so.conf.new
-	mv -f /etc/ld.so.conf.new /etc/ld.so.conf
-fi
-/sbin/ldconfig
-
-%verifyscript libs
-echo -n "Looking for %{_libdir} in /etc/ld.so.conf... "
-if ! grep -q "^%{_libdir}$" /etc/ld.so.conf ; then
-	echo "missing"
-	echo "%{_libdir} missing from /etc/ld.so.conf" >&2
-else
-	echo "found"
-fi
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %pre modules
 if [ -d /etc/X11/xkb/geometry/hp ]; then
@@ -2053,6 +2034,9 @@ if [ -d /usr/X11R6/lib/X11/xkb ]; then
 	rm -rf /usr/X11R6/lib/X11/xkb
 	ln -sf /etc/X11/xkb /usr/X11R6/lib/X11/xkb
 fi
+
+%triggerpostun libs -- XFree86-libs < 1:4.4.0-12
+sed -i -e "/^%(echo %{_libdir} | sed -e 's,/,\\/,g')$/d" /etc/ld.so.conf
 
 %post xdm
 /sbin/chkconfig --add xdm
@@ -2818,7 +2802,8 @@ fi
 
 %files libs
 %defattr(644,root,root,755)
-%dir /etc/xdg
+/etc/ld.so.conf.d/*.conf
+%dir %{_sysconfdir}/xdg
 %dir %{_themesdir}
 %dir %{_themesdir}/Default
 %dir %{_themesdir}/ThinIce
