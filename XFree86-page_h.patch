@@ -1,0 +1,11 @@
+--- xc/programs/Xserver/hw/xfree86/fbdevhw/fbdevhw.c.orig	2006-03-16 17:50:24.000000000 +0100
++++ xc/programs/Xserver/hw/xfree86/fbdevhw/fbdevhw.c	2006-06-11 09:00:06.306443728 +0200
+@@ -14,7 +14,7 @@
+ #include "fbdevhw.h"
+ #include "fbpriv.h"
+ 
+-#include "asm/page.h"	/* #define for PAGE_* */
++#include "/usr/src/linux/include/asm/page.h"	/* #define for PAGE_* */
+ 
+ #include "globals.h"
+ #define DPMS_SERVER
