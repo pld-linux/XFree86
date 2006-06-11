@@ -1,6 +1,8 @@
 #
 # TODO:
 # - separate XFS to be standalone - is it possible without duplicated files?
+# - fix Xwrapper and this ugly page.h hack
+# - unpacked files
 #
 # Conditional build:
 %bcond_without	glide	# don't build glide driver
@@ -19,17 +21,17 @@ Summary(tr):	XFree86 Pencereleme Sistemi sunucularЩ ve temel programlar
 Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
-Version:	4.4.0
-Release:	12
+Version:	4.6.0
+Release:	0.1
 Epoch:		1
 License:	XFree86 1.1
 Group:		X11
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/%{name}-%{version}-src-1.tgz
-# Source0-md5:	97cea3d9e1197dde32ca34e3b6086469
-Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/%{name}-%{version}-src-2.tgz
-# Source1-md5:	b9b6c74a03e314569e01d5fd4ff59523
-Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.4.0/source/%{name}-%{version}-src-3.tgz
-# Source2-md5:	703404f48d3a15f58389a879d47c769d
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.6.0/source/%{name}-%{version}-src-1.tgz
+# Source0-md5:	6c05f3486f088d01584f4517540e8d18
+Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.6.0/source/%{name}-%{version}-src-2.tgz
+# Source1-md5:	f084d12aa734c9cd83e8d2a3a4eb3e32
+Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.6.0/source/%{name}-%{version}-src-3.tgz
+# Source2-md5:	05450997f1876098d791a4cf9db21af8
 Source7:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
 # Source7-md5:	0a15b1c374256b5cad7961807baa3896
 Source8:	xdm.pamd
@@ -126,6 +128,8 @@ Patch54:	%{name}-lnx_kbd.patch
 Patch55:	%{name}-elfloader-linux-non-exec-stack.patch
 Patch56:	%{name}-exec-shield-GNU-stack.patch
 Patch57:	%{name}-libGL-exec-shield-fixes-v2.patch
+Patch58:	%{name}-page_h.patch
+Patch59:	%{name}-Xwrapper2.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	/usr/bin/perl
 # Required by xc/programs/Xserver/hw/xfree86/drivers/glide/glide_driver.c
@@ -133,6 +137,7 @@ BuildRequires:	/usr/bin/perl
 %{?with_glide:BuildRequires:	Glide2x_SDK}
 %endif
 BuildRequires:	bison
+BuildRequires:	cpp
 BuildRequires:	ed
 BuildRequires:	expat-devel
 BuildRequires:	flex
@@ -1790,7 +1795,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch0 -p0
 %patch1 -p1
 %patch2 -p1
-%patch3 -p0
+#%patch3 -p0   -- TODO: make it somehow work
 %patch4 -p1
 %patch5 -p0
 %patch6 -p0
@@ -1802,24 +1807,24 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch12 -p1
 %patch13 -p1
 %patch14 -p0
-%patch15 -p1
+%patch15 -p0
 %patch16 -p0
 #%patch17 -p1	-- not ready, is it required?
-%patch18 -p1
+#%patch18 -p1   -- obsoleted ? now theres a Makfile, not Imakefile
 #%patch19 -p1	-- maybe should be updated to allow using make -j
-%patch20 -p0
+#%patch20 -p0
 %patch21 -p1
 %patch22 -p1
 %patch23 -p1
 %patch24 -p1
 %patch26 -p1
-%patch27 -p1
+#%patch27 -p1   -- this is obsolete
 %ifarch sparc sparc64
 #%patch28 -p1	-- needs update
 %endif
 %patch29 -p0
-%patch30 -p1
-%patch32 -p1
+%patch30 -p0
+%patch32 -p0
 %patch33 -p1
 #%patch34 -p1	-- seems not applied (was partially in rc1??? maybe another fix present?)
 #%patch35 -p1	-- obsoleted? (but doesn't look to be applied)
@@ -1827,7 +1832,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #%patch38 -p0	-- causing problems IIRC (but not really needed)
 %patch39 -p0
 %patch40 -p1
-%{!?debug:%patch41 -p1}
+%{!?debug:%patch41 -p0}
 %{!?with_glide:%patch42 -p0}
 %patch43 -p0
 %patch44 -p0
@@ -1837,10 +1842,12 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch50 -p0
 %patch52 -p1
 %patch53 -p0
-%patch54 -p0
-%patch55 -p0
-%patch56 -p0
-%patch57 -p0
+#%patch54 -p0   -- obsoleted ?
+#%patch55 -p0   -- obsoleted ?
+#%patch56 -p0   -- check it
+#%patch57 -p0   -- obsoleted ?
+%patch58 -p0
+#%patch59 -p0   -- same as patch3, make it work !
 
 rm -f xc/config/cf/host.def
 
@@ -1930,6 +1937,7 @@ done
 cd $RPM_BUILD_ROOT%{_includedir}/X11/Xserver
 sh %{SOURCE45}
 cd -
+install $RPM_BUILD_ROOT%{_includedir}/X11/Xserver/lib/GL/glx/*.h $RPM_BUILD_ROOT%{_includedir}
 
 # set up PLD xdm config
 rm -f $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/{*Console,Xaccess,Xsession,Xsetup*}
@@ -2396,7 +2404,7 @@ fi
 
 %files Xserver
 %defattr(644,root,root,755)
-%attr(4755,root,root) %{_bindir}/Xwrapper
+#%attr(4755,root,root) %{_bindir}/Xwrapper
 %attr(755,root,root) %{_bindir}/XFree86
 %attr(755,root,root) %{_bindir}/getconfig*
 %attr(755,root,root) %{_sysconfdir}/X11/X
@@ -2469,7 +2477,7 @@ fi
 %{_libdir}/libXdmcp.a
 %{_libdir}/libfntstubs.a
 %{_libdir}/liboldX.a
-%{_libdir}/libxf86config.a
+#%{_libdir}/libxf86config.a
 %{_includedir}/X11/*.h
 %{_includedir}/X11/ICE
 %{_includedir}/X11/PM
@@ -2578,7 +2586,7 @@ fi
 %attr(755,root,root) %{_libdir}/modules/drivers/i810_drv.o
 # i810_dri alone is built on x86_64 - what for?
 %attr(755,root,root) %{_libdir}/modules/dri/i810_dri.so
-%attr(755,root,root) %{_libdir}/modules/dri/i830_dri.so
+#%attr(755,root,root) %{_libdir}/modules/dri/i830_dri.so
 %{_mandir}/man4/i810.4*
 %endif
 
@@ -2893,7 +2901,7 @@ fi
 %dir %{_libdir}/modules/dri
 %dir %{_libdir}/modules/drivers
 %attr(755,root,root) %{_libdir}/modules/*.a
-%attr(755,root,root) %{_libdir}/modules/codeconv
+#%attr(755,root,root) %{_libdir}/modules/codeconv
 %ifnarch %{x8664}
 %attr(755,root,root) %{_libdir}/modules/drivers/linux
 %endif
