@@ -1,18 +1,18 @@
-diff -Nru xc.orig/programs/xterm/Imakefile xc/programs/xterm/Imakefile
---- xc.orig/programs/xterm/Imakefile	2003-12-23 13:08:25.000000000 +0100
-+++ xc/programs/xterm/Imakefile	2003-12-23 13:10:13.000000000 +0100
-@@ -16,6 +16,7 @@
- /* Define UTF8support to compile-in support for UTF-8 */
- #define UTF8support
+--- xc/programs/xterm/Imakefile.orig	2006-06-11 03:49:18.234381592 +0200
++++ xc/programs/xterm/Imakefile	2006-06-11 03:52:43.109235880 +0200
+@@ -46,6 +46,8 @@
+         UTMPLIB = -lutempter
+ #endif
  
 +COLORS_256 = -DOPT_256_COLORS=1
++
  /*
-  * Fixes to allow compile with X11R5
+  * Fixes to allow compile with X11R5, etc.
   */
-@@ -122,7 +123,7 @@
+@@ -185,7 +187,7 @@
      XKB_DEFINES = XkbClientDefines
     PATH_DEFINES = -DPROJECTROOT=$(PROJECTROOT)
-         DEFINES = $(XKB_DEFINES) $(TERMCAPDEFINES) $(FEATURE_DEFINES) $(SCROLLBAR_RIGHT) $(UTF8_OPTION) $(XRFDEF) $(PATH_DEFINES) $(TRACEDEF)
+         DEFINES = $(XKB_DEFINES) $(TERMCAPDEFINES) $(FEATURE_DEFINES) $(SCROLLBAR_RIGHT) $(UTF8_OPTION) $(XRFDEF) $(PATH_DEFINES) $(PUTENVDEF) $(IMAKEDEFINES) $(TRACEDEF)
 -       INCLUDES = -I. -I/usr/include/ncurses $(XRFINCLUDES)
 +       INCLUDES = -I. -I/usr/include/ncurses $(COLORS_256) $(XRFINCLUDES)
  
