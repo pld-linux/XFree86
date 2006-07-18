@@ -1,7 +1,7 @@
 #
 # TODO:
 # - separate XFS to be standalone - is it possible without duplicated files?
-# - fix Xwrapper and this ugly page.h hack
+# - fix Xwrapper
 # - unpacked files
 #
 # Conditional build:
