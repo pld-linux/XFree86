@@ -207,7 +207,7 @@
  #ifndef XF86OSCardDrivers
 --- xc/config/cf/site.def.orig	2006-01-09 15:56:13.000000000 +0100
 +++ xc/config/cf/site.def	2006-06-11 00:28:00.330502072 +0200
-@@ -104,10 +104,14 @@
+@@ -104,10 +104,15 @@
  #define HasSentinel	YES
  */
  
@@ -222,6 +222,7 @@
 +
 +#define HasPam    YES
 +#define HasPamMisc    YES
++#define HasFontconfig	YES
  
  
  /* You do NOT need SetUID if you only run the server under xdm */
