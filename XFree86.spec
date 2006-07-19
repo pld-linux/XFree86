@@ -2405,7 +2405,7 @@ fi
 
 %files Xserver
 %defattr(644,root,root,755)
-#%attr(4755,root,root) %{_bindir}/Xwrapper
+%attr(4755,root,root) %{_bindir}/Xwrapper
 %attr(755,root,root) %{_bindir}/XFree86
 %attr(755,root,root) %{_bindir}/getconfig*
 %attr(755,root,root) %{_sysconfdir}/X11/X
