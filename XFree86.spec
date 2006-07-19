@@ -1,7 +1,6 @@
 #
 # TODO:
 # - separate XFS to be standalone - is it possible without duplicated files?
-# - fix Xwrapper
 # - unpacked files
 #
 # Conditional build:
@@ -22,7 +21,7 @@ Summary(uk):	Базов╕ шрифти, програми та документац╕я для робочо╖ станц╕╖ п╕д X
 Summary(zh_CN):	XFree86 ╢╟©зо╣мЁ╥ЧнЯфВ╨м╩Ы╠╬ЁлпР
 Name:		XFree86
 Version:	4.6.0
-Release:	0.1
+Release:	0.2
 Epoch:		1
 License:	XFree86 1.1
 Group:		X11
@@ -130,6 +129,7 @@ Patch56:	%{name}-exec-shield-GNU-stack.patch
 Patch57:	%{name}-libGL-exec-shield-fixes-v2.patch
 Patch58:	%{name}-page_h.patch
 Patch59:	%{name}-Xwrapper2.patch
+Patch60:	%{name}-imakefile.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	/usr/bin/perl
 # Required by xc/programs/Xserver/hw/xfree86/drivers/glide/glide_driver.c
@@ -1795,7 +1795,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch0 -p0
 %patch1 -p1
 %patch2 -p1
-#%patch3 -p0   -- TODO: make it somehow work
+%patch3 -p0
 %patch4 -p1
 %patch5 -p0
 %patch6 -p0
@@ -1847,7 +1847,8 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #%patch56 -p0   -- check it
 #%patch57 -p0   -- obsoleted ?
 %patch58 -p0
-#%patch59 -p0   -- same as patch3, make it work !
+%patch59 -p0
+%patch60 -p0
 
 rm -f xc/config/cf/host.def
 
