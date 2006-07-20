@@ -120,6 +120,7 @@ Patch45:	%{name}-spencode-nowarning.patch
 # Small (maybe buggy) patch to resolve problems with totem 0.97.0
 Patch46:	%{name}-lock.patch
 Patch47:	%{name}-sparc-kbd.patch
+Patch48:	%{name}-freetype-nointernals.patch
 Patch50:	%{name}-xterm-256colors.patch
 Patch52:	%{name}-kernel_headers.patch
 Patch53:	%{name}-stdint.patch
@@ -128,8 +129,6 @@ Patch55:	%{name}-elfloader-linux-non-exec-stack.patch
 Patch56:	%{name}-exec-shield-GNU-stack.patch
 Patch57:	%{name}-libGL-exec-shield-fixes-v2.patch
 Patch58:	%{name}-page_h.patch
-Patch59:	%{name}-Xwrapper2.patch
-Patch60:	%{name}-imakefile.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	/usr/bin/perl
 # Required by xc/programs/Xserver/hw/xfree86/drivers/glide/glide_driver.c
@@ -1839,6 +1838,7 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 %patch45 -p1
 %patch46 -p0
 %patch47 -p1
+%patch48 -p1
 %patch50 -p0
 %patch52 -p1
 %patch53 -p0
@@ -1847,8 +1847,6 @@ System. Також вам прийдеться встановити наступн╕ пакети: XFree86,
 #%patch56 -p0   -- check it
 #%patch57 -p0   -- obsoleted ?
 %patch58 -p0
-%patch59 -p0
-%patch60 -p0
 
 rm -f xc/config/cf/host.def
 
@@ -2007,15 +2005,8 @@ gunzip $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/README.*
 install -d $RPM_BUILD_ROOT/etc/ld.so.conf.d
 echo '%{_libdir}' > $RPM_BUILD_ROOT/etc/ld.so.conf.d/%{name}-%{_lib}.conf
 
-# kill some stuff for cleaner build
-# (fontconfig packaged separately, DRM already in kernel)
-rm -rf $RPM_BUILD_ROOT%{_libdir}/pkgconfig/fontconfig.pc \
-	$RPM_BUILD_ROOT%{_mandir}/{man3/fontconfig.3x,man1/fc-{cache,list}.1x} \
-	$RPM_BUILD_ROOT%{_libdir}/libfontconfig.* \
-	$RPM_BUILD_ROOT%{_includedir}/fontconfig \
-	$RPM_BUILD_ROOT%{_bindir}/{fc-cache,fc-list} \
-	$RPM_BUILD_ROOT%{_sysconfdir}/fonts \
-	$RPM_BUILD_ROOT%{_prefix}/src
+# kill some stuff for cleaner build (DRM already in kernel)
+rm -rf	$RPM_BUILD_ROOT%{_prefix}/src
 
 %clean
 rm -rf $RPM_BUILD_ROOT
