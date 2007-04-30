@@ -96,8 +96,9 @@ Patch21:	%{name}-r128-busmstr2.patch
 Patch22:	%{name}-neomagic_swcursor.patch
 Patch23:	%{name}-mga-busmstr.patch
 Patch24:	%{name}-agpgart-load.patch
+# ftp://ftp.xfree86.org/pub/XFree86/4.6.0/fixes/fix-01 (CVE-2006-3739, CVE-2006-3740)
+Patch25:	%{name}-fix-01.patch
 Patch26:	%{name}-HasFreetype2.patch
-Patch27:	%{name}-config-s3.patch
 Patch28:	%{name}-sparc_pci_domains.patch
 Patch29:	%{name}-XTerm.ad.patch
 Patch30:	%{name}-alpha_GLX_align_fix.patch
@@ -1803,8 +1804,8 @@ System. Також вам прийдеться встановити наступ
 %patch22 -p1
 %patch23 -p1
 %patch24 -p1
+%patch25 -p0
 %patch26 -p1
-#%patch27 -p1   -- this is obsolete
 %ifarch sparc sparc64
 #%patch28 -p1	-- needs update
 %endif
