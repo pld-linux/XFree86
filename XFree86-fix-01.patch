@@ -1,0 +1,118 @@
+Fix integer overflow vulnerabilities in the handling of Type1 fonts.
+
+*** xc/lib/font/Type1/AFM.h	Sun May  2 23:58:44 1999
+--- xc/lib/font/Type1/AFM.h	Wed Sep  6 17:37:56 2006
+*************** typedef struct
+*** 47,52 ****
+--- 47,54 ----
+      BBox charBBox;	/* key: B */
+  } Metrics;
+  
++ #define MAX_CID_METRICS ((int)((unsigned int)(-1) / (2 * sizeof(Metrics))))
++ 
+  typedef struct
+  { 
+      int nChars;		        /* number of entries in char metrics array */
+*** xc/lib/font/Type1/afm.c	Fri Oct 14 09:16:02 2005
+--- xc/lib/font/Type1/afm.c	Wed Sep  6 17:37:56 2006
+*************** int CIDAFM(FILE *fd, FontInfo **pfi) {
+*** 111,116 ****
+--- 111,122 ----
+              
+              fi->nChars = atoi(p);
+  
++ 	    if ((fi->nChars <= 0) || (fi->nChars > MAX_CID_METRICS)) {
++ 		xfree(afmbuf);
++ 		xfree(fi);
++ 		return(1);
++ 	    }
++ 
+              fi->metrics = (Metrics *)xalloc(fi->nChars * 
+                  sizeof(Metrics));
+              if (fi->metrics == NULL) {
+*** xc/lib/font/Type1/range.h	Tue May  4 03:35:22 1999
+--- xc/lib/font/Type1/range.h	Wed Sep  6 17:37:56 2006
+*************** typedef struct spacerange_code {
+*** 24,29 ****
+--- 24,32 ----
+      unsigned int srcCodeHi;
+  } spacerangecode;
+  
++ #define MAX_CID_SPACERANGECODES \
++     ((int)((unsigned int)(-1) / (2 * sizeof(spacerangecode))))
++ 
+  typedef struct space_range {
+      struct space_range *next;
+      int rangecnt;
+*************** typedef struct cidrange_code {
+*** 36,41 ****
+--- 39,47 ----
+      unsigned int dstCIDLo;
+  } cidrangecode;
+  
++ #define MAX_CID_CIDRANGECODES \
++     ((int)((unsigned int)(-1) / (2 * sizeof(cidrangecode))))
++ 
+  typedef struct cid_range {
+      struct cid_range *next;
+      int rangecnt;
+*** xc/lib/font/Type1/scanfont.c	Fri Oct 14 09:16:02 2005
+--- xc/lib/font/Type1/scanfont.c	Wed Sep  6 17:37:56 2006
+*************** scan_cidfont(cidfont *CIDFontP, cmapres 
+*** 1732,1737 ****
+--- 1732,1741 ----
+          break;
+        case TOKEN_NAME:
+          if (0 == strncmp(tokenStartP,"begincodespacerange",19)) {
++ 	  if ((rangecnt <= 0) || (rangecnt > MAX_CID_SPACERANGECODES)) {
++ 	    rc = SCAN_OUT_OF_MEMORY;
++ 	    break;
++ 	  }
+            CIDFontP->spacerangecnt++;
+            spacerangeP = (spacerange *)vm_alloc(sizeof(spacerange));
+            if (!spacerangeP) {
+*************** scan_cidfont(cidfont *CIDFontP, cmapres 
+*** 1787,1792 ****
+--- 1791,1800 ----
+            }
+          }
+          if (0 == strncmp(tokenStartP,"begincidrange",13)) {
++ 	  if ((rangecnt <= 0) || (rangecnt > MAX_CID_CIDRANGECODES)) {
++ 	    rc = SCAN_OUT_OF_MEMORY;
++ 	    break;
++ 	  }
+            CIDFontP->cidrangecnt++;
+            cidrangeP = (cidrange *)vm_alloc(sizeof(cidrange));
+            if (!cidrangeP) {
+*************** scan_cidfont(cidfont *CIDFontP, cmapres 
+*** 1868,1873 ****
+--- 1876,1885 ----
+          }
+  
+          if (0 == strncmp(tokenStartP,"beginnotdefrange",16)) {
++ 	  if ((rangecnt <= 0) || (rangecnt > MAX_CID_CIDRANGECODES)) {
++ 	    rc = SCAN_OUT_OF_MEMORY;
++ 	    break;
++ 	  }
+            CIDFontP->notdefrangecnt++;
+            notdefrangeP = (cidrange *)vm_alloc(sizeof(cidrange));
+            if (!notdefrangeP) {
+*** xc/lib/font/Type1/util.c	Fri Oct 14 09:16:03 2005
+--- xc/lib/font/Type1/util.c	Wed Sep  6 17:42:08 2006
+*************** vm_alloc(int bytes)
+*** 96,102 ****
+    bytes = (bytes + 7) & ~7;
+   
+    /* Allocate the space, if it is available */
+!   if (bytes <= vm_free) {
+      answer = vm_next;
+      vm_free -= bytes;
+      vm_next += bytes;
+--- 96,102 ----
+    bytes = (bytes + 7) & ~7;
+   
+    /* Allocate the space, if it is available */
+!   if ((bytes > 0) && (bytes <= vm_free)) {
+      answer = vm_next;
+      vm_free -= bytes;
+      vm_next += bytes;
