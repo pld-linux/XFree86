@@ -4,7 +4,7 @@
  #ifdef SparcArchitecture
  LinkSourceFile(glapi_sparc.S, $(MESASRCDIR)/src/SPARC)
  #endif
-+LinkSourceFile(mem.c, $(MESASRCDIR)/src)
++LinkSourceFile(mem.c, $(MESASRCDIR)/src/mesa/glapi)
  
  
  # Maybe some of these could come from
@@ -28,9 +28,8 @@
  
       GLX_DEFS = GlxDefines
  
-diff -urN xc.org/extras/Mesa/src/glapi.c xc/extras/Mesa/src/glapi.c
---- xc.org/extras/Mesa/src/glapi.c	2004-06-07 22:45:05.571381120 +0200
-+++ xc/extras/Mesa/src/glapi.c	2004-06-07 23:11:34.201872576 +0200
+--- xc.org/extras/Mesa/src/mesa/glapi/glapi.c	2004-06-07 22:45:05.571381120 +0200
++++ xc/extras/Mesa/src/mesa/glapi/glapi.c	2004-06-07 23:11:34.201872576 +0200
 @@ -50,6 +50,7 @@
  #include "glapioffsets.h"
  #include "glapitable.h"
@@ -57,8 +56,8 @@ diff -urN xc.org/extras/Mesa/src/glapi.c xc/extras/Mesa/src/glapi.c
     unsigned long glapi_addr = (unsigned long) &_glapi_Dispatch;
     if (code) {
        memcpy(code, insn_template, sizeof(insn_template));
---- xc/extras/Mesa/src/mem.c.org	1970-01-01 01:00:00.000000000 +0100
-+++ xc/extras/Mesa/src/mem.c	2004-06-09 02:02:29.152086688 +0200
+--- xc/extras/Mesa/src/mesa/glapi/mem.c.org	1970-01-01 01:00:00.000000000 +0100
++++ xc/extras/Mesa/src/mesa/glapi/mem.c	2004-06-09 02:02:29.152086688 +0200
 @@ -0,0 +1,325 @@
 +#include <unistd.h>
 +#include <sys/mman.h>
@@ -385,9 +384,8 @@ diff -urN xc.org/extras/Mesa/src/glapi.c xc/extras/Mesa/src/glapi.c
 +}
 +#endif
 +
-diff -urN xc.org/extras/Mesa/src/imports.h xc/extras/Mesa/src/imports.h
---- xc.org/extras/Mesa/src/imports.h	2004-06-07 22:45:05.944324424 +0200
-+++ xc/extras/Mesa/src/imports.h	2004-06-07 23:04:42.561451432 +0200
+--- xc.org/extras/Mesa/src/mesa/main/imports.h	2004-06-07 22:45:05.944324424 +0200
++++ xc/extras/Mesa/src/mesa/main/imports.h	2004-06-07 23:04:42.561451432 +0200
 @@ -50,6 +50,9 @@
  #define ALIGN_MALLOC_STRUCT(T, N)  (struct T *) _mesa_align_malloc(sizeof(struct T), N)
  #define ALIGN_CALLOC_STRUCT(T, N)  (struct T *) _mesa_align_calloc(sizeof(struct T), N)
@@ -410,9 +408,8 @@ diff -urN xc.org/extras/Mesa/src/imports.h xc/extras/Mesa/src/imports.h
  _mesa_memcpy( void *dest, const void *src, size_t n );
  
  extern void
-diff -urN xc.org/extras/Mesa/src/tnl/t_vtx_exec.c xc/extras/Mesa/src/tnl/t_vtx_exec.c
---- xc.org/extras/Mesa/src/tnl/t_vtx_exec.c	2004-06-07 22:45:06.597225168 +0200
-+++ xc/extras/Mesa/src/tnl/t_vtx_exec.c	2004-06-07 23:17:12.494444288 +0200
+--- xc.org/extras/Mesa/src/mesa/tnl/t_vtx_exec.c	2004-06-07 22:45:06.597225168 +0200
++++ xc/extras/Mesa/src/mesa/tnl/t_vtx_exec.c	2004-06-07 23:17:12.494444288 +0200
 @@ -593,7 +593,7 @@
     struct dynfn *f, *tmp;
     foreach_s (f, tmp, l) {
@@ -422,9 +419,8 @@ diff -urN xc.org/extras/Mesa/src/tnl/t_vtx_exec.c xc/extras/Mesa/src/tnl/t_vtx_e
        FREE( f );
     }
  }
-diff -urN xc.org/extras/Mesa/src/tnl/t_vtx_x86.c xc/extras/Mesa/src/tnl/t_vtx_x86.c
---- xc.org/extras/Mesa/src/tnl/t_vtx_x86.c	2004-06-07 22:45:06.608223496 +0200
-+++ xc/extras/Mesa/src/tnl/t_vtx_x86.c	2004-06-07 23:16:32.268559552 +0200
+--- xc.org/extras/Mesa/src/mesa/tnl/t_vtx_x86.c	2004-06-07 22:45:06.608223496 +0200
++++ xc/extras/Mesa/src/mesa/tnl/t_vtx_x86.c	2004-06-07 23:16:32.268559552 +0200
 @@ -75,7 +75,7 @@
  	 0xff, 0x25, 0, 0, 0, 0    	/* jmp    NOTIFY */
        };
@@ -587,9 +583,8 @@ diff -urN xc.org/extras/Mesa/src/tnl/t_vtx_x86.c xc/extras/Mesa/src/tnl/t_vtx_x8
     memcpy (dfn->code, temp, sizeof(temp));
     FIXUP(dfn->code, 1, 0x12345678, (int)tnl->texcoordptr[0]); 
     return dfn;
-diff -urN xc.org/lib/GL/mesa/src/drv/r200/r200_vtxfmt.c xc/lib/GL/mesa/src/drv/r200/r200_vtxfmt.c
---- xc.org/lib/GL/mesa/src/drv/r200/r200_vtxfmt.c	2004-06-07 22:44:55.376930912 +0200
-+++ xc/lib/GL/mesa/src/drv/r200/r200_vtxfmt.c	2004-06-07 22:48:38.196057256 +0200
+--- xc.org/lib/GL/mesa/drivers/dri/r200/r200_vtxfmt.c	2004-06-07 22:44:55.376930912 +0200
++++ xc/lib/GL/mesa/drivers/dri/r200/r200_vtxfmt.c	2004-06-07 22:48:38.196057256 +0200
 @@ -1074,7 +1074,7 @@
     struct dynfn *f, *tmp;
     foreach_s (f, tmp, l) {
@@ -599,9 +594,8 @@ diff -urN xc.org/lib/GL/mesa/src/drv/r200/r200_vtxfmt.c xc/lib/GL/mesa/src/drv/r
        FREE( f );
     }
  }
-diff -urN xc.org/lib/GL/mesa/src/drv/r200/r200_vtxfmt.h xc/lib/GL/mesa/src/drv/r200/r200_vtxfmt.h
---- xc.org/lib/GL/mesa/src/drv/r200/r200_vtxfmt.h	2004-06-07 22:44:55.377930760 +0200
-+++ xc/lib/GL/mesa/src/drv/r200/r200_vtxfmt.h	2004-06-07 22:48:38.192057864 +0200
+--- xc.org/lib/GL/mesa/drivers/dri/r200/r200_vtxfmt.h	2004-06-07 22:44:55.377930760 +0200
++++ xc/lib/GL/mesa/drivers/dri/r200/r200_vtxfmt.h	2004-06-07 22:48:38.192057864 +0200
 @@ -60,7 +60,7 @@
     insert_at_head( &CACHE, dfn );			\
     dfn->key[0] = key[0];					\
@@ -611,9 +605,8 @@ diff -urN xc.org/lib/GL/mesa/src/drv/r200/r200_vtxfmt.h xc/lib/GL/mesa/src/drv/r
     memcpy (dfn->code, start, end - start);		\
  }							\
  while ( 0 )
-diff -urN xc.org/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.c xc/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.c
---- xc.org/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.c	2004-06-07 22:44:55.473916168 +0200
-+++ xc/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.c	2004-06-07 22:48:38.218053912 +0200
+--- xc.org/lib/GL/mesa/drivers/dri/radeon/radeon_vtxfmt.c	2004-06-07 22:44:55.473916168 +0200
++++ xc/lib/GL/mesa/drivers/dri/radeon/radeon_vtxfmt.c	2004-06-07 22:48:38.218053912 +0200
 @@ -1042,7 +1042,7 @@
     struct dynfn *f, *tmp;
     foreach_s (f, tmp, l) {
@@ -623,9 +616,8 @@ diff -urN xc.org/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.c xc/lib/GL/mesa/src/d
        FREE( f );
     }
  }
-diff -urN xc.org/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.h xc/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.h
---- xc.org/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.h	2004-06-07 22:44:55.473916168 +0200
-+++ xc/lib/GL/mesa/src/drv/radeon/radeon_vtxfmt.h	2004-06-07 22:48:38.214054520 +0200
+--- xc.org/lib/GL/mesa/drivers/dri/radeon/radeon_vtxfmt.h	2004-06-07 22:44:55.473916168 +0200
++++ xc/lib/GL/mesa/drivers/dri/radeon/radeon_vtxfmt.h	2004-06-07 22:48:38.214054520 +0200
 @@ -58,7 +58,7 @@
     char *end = (char *)&FUNC##_end;			\
     insert_at_head( &CACHE, dfn );			\
