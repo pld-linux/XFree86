@@ -2046,7 +2046,7 @@ echo '%{_libdir}' > $RPM_BUILD_ROOT/etc/ld.so.conf.d/%{name}-%{_lib}.conf
 rm -rf	$RPM_BUILD_ROOT%{_prefix}/src
 
 # dmx examples
-rm -f $RPM_BUILD_ROOT%{_bindir}/{dvi,res,xbell,xinput,xled,xtest}
+rm -f $RPM_BUILD_ROOT%{_bindir}/{evi,res,xbell,xinput,xled,xtest}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
