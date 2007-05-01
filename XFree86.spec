@@ -438,6 +438,18 @@ X11R6 static libraries with OpenGL.
 %description OpenGL-static -l pl.UTF-8
 Biblioteki statyczne zawierające wsparcie dla OpenGL do X11R6.
 
+%package Xdmx
+Summary:	XFree86 Xdmx server
+Summary(pl.UTF-8):	Serwer XFree86 Xdmx
+Group:		X11/Servers
+Requires:	%{name}-common = %{epoch}:%{version}-%{release}
+
+%description Xdmx
+Xdmx - distributed multi-head X server.
+
+%description Xdmx -l pl.UTF-8
+Xdmx - rozproszony, wielomonitorowy serwer X.
+
 %package Xnest
 Summary:	XFree86 Xnest server
 Summary(pl.UTF-8):	Serwer XFree86 Xnest
@@ -2033,6 +2045,9 @@ echo '%{_libdir}' > $RPM_BUILD_ROOT/etc/ld.so.conf.d/%{name}-%{_lib}.conf
 # kill some stuff for cleaner build (DRM already in kernel)
 rm -rf	$RPM_BUILD_ROOT%{_prefix}/src
 
+# dmx examples
+rm -f $RPM_BUILD_ROOT%{_bindir}/{dvi,res,xbell,xinput,xled,xtest}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -2409,6 +2424,25 @@ fi
 %{_libdir}/libGL.a
 %{_libdir}/libGLU.a
 %{_libdir}/libOSMesa.a
+
+%files Xdmx
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/Xdmx
+%attr(755,root,root) %{_bindir}/dmxaddinput
+%attr(755,root,root) %{_bindir}/dmxaddscreen
+%attr(755,root,root) %{_bindir}/dmxreconfig
+%attr(755,root,root) %{_bindir}/dmxresize
+%attr(755,root,root) %{_bindir}/dmxrminput
+%attr(755,root,root) %{_bindir}/dmxrmscreen
+%attr(755,root,root) %{_bindir}/dmxtodmx
+%attr(755,root,root) %{_bindir}/dmxwininfo
+%attr(755,root,root) %{_bindir}/vdltodmx
+%attr(755,root,root) %{_bindir}/xdmx
+%attr(755,root,root) %{_bindir}/xdmxconfig
+%{_mandir}/man1/Xdmx.1x*
+%{_mandir}/man1/dmxtodmx.1x*
+%{_mandir}/man1/vdltodmx.1x*
+%{_mandir}/man1/xdmxconfig.1x*
 
 %files Xnest
 %defattr(644,root,root,755)
