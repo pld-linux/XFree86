@@ -89,7 +89,6 @@ Patch14:	%{name}-xman.patch
 Patch15:	%{name}-HasXdmAuth.patch
 Patch16:	%{name}-xdm-fixes.patch
 Patch17:	%{name}-imake-kernel-version.patch
-Patch18:	%{name}-no-kernel-modules.patch
 Patch19:	%{name}-parallelmake.patch
 Patch20:	%{name}-pic.patch
 Patch21:	%{name}-r128-busmstr2.patch
@@ -125,7 +124,6 @@ Patch48:	%{name}-freetype-nointernals.patch
 Patch50:	%{name}-xterm-256colors.patch
 Patch52:	%{name}-kernel_headers.patch
 Patch53:	%{name}-stdint.patch
-Patch54:	%{name}-lnx_kbd.patch
 Patch55:	%{name}-elfloader-linux-non-exec-stack.patch
 Patch56:	%{name}-exec-shield-GNU-stack.patch
 Patch57:	%{name}-libGL-exec-shield-fixes-v2.patch
@@ -1797,7 +1795,6 @@ System. Також вам прийдеться встановити наступ
 %patch15 -p0
 %patch16 -p0
 #%patch17 -p1	-- not ready, is it required?
-#%patch18 -p1   -- obsoleted ? now theres a Makfile, not Imakefile
 #%patch19 -p1	-- maybe should be updated to allow using make -j
 #%patch20 -p0
 %patch21 -p1
@@ -1830,10 +1827,9 @@ System. Також вам прийдеться встановити наступ
 %patch50 -p0
 %patch52 -p1
 %patch53 -p0
-#%patch54 -p0   -- obsoleted ?
-#%patch55 -p0   -- obsoleted ?
-#%patch56 -p0   -- check it
-#%patch57 -p0   -- obsoleted ?
+%patch55 -p0
+#%patch56 -p0   -- update if needed
+#%patch57 -p0   -- update if needed
 %patch58 -p0
 
 rm -f xc/config/cf/host.def
