@@ -609,6 +609,22 @@ Xvfb (X Virtual Frame Buffer) - це X-сервер, здатний працюв
 Якщо вам потрібно тестувати ваші X-сервери або X-клієнти, ви можете
 встановити для цієї цілі Xvfb.
 
+%package kdrive
+Summary:	Tiny X server (kdrive)
+Summary(pl.UTF-8):	Mały serwer X (TinyX/kdrive)
+Group:		X11/Servers
+Requires:	%{name}-common = %{epoch}:%{version}-%{release}
+Requires:	/usr/X11R6/lib/X11/rgb.txt
+Requires:	XFree86-fonts-base
+
+%description kdrive
+TinyX (also known as kdrive) is a family of X servers designed to be
+particularly small.
+
+%description kdrive -l pl.UTF-8
+TinyX (znany także jako kdrive) to rodzina serwerów X zaprojektowanych
+tak, by były szczególnie małe.
+
 %package devel
 Summary:	X11R6 headers and programming man pages
 Summary(de.UTF-8):	X11R6 Headers und man pages für Programmierer
@@ -2429,6 +2445,36 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/Xvfb
 %{_mandir}/man1/Xvfb.1*
+
+%files kdrive
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/Xchips
+%attr(755,root,root) %{_bindir}/Xfbdev
+%attr(755,root,root) %{_bindir}/Xi810
+%attr(755,root,root) %{_bindir}/Xigs
+%attr(755,root,root) %{_bindir}/Xipaq
+%attr(755,root,root) %{_bindir}/Xmach64
+%attr(755,root,root) %{_bindir}/Xsavage
+%attr(755,root,root) %{_bindir}/Xsis530
+%attr(755,root,root) %{_bindir}/Xtrident
+%attr(755,root,root) %{_bindir}/Xtrio
+%attr(755,root,root) %{_bindir}/Xts300
+%attr(755,root,root) %{_bindir}/Xvesa
+%{_mandir}/man1/TinyX.1x*
+%{_mandir}/man1/Xchips.1x*
+%{_mandir}/man1/Xfbdev.1x*
+%{_mandir}/man1/Xi810.1x*
+%{_mandir}/man1/Xigs.1x*
+%{_mandir}/man1/Xipaq.1x*
+%{_mandir}/man1/Xkdrive.1x*
+%{_mandir}/man1/Xmach64.1x*
+%{_mandir}/man1/Xsavage.1x*
+%{_mandir}/man1/Xsis530.1x*
+%{_mandir}/man1/Xtrident.1x*
+%{_mandir}/man1/Xtrio.1x*
+%{_mandir}/man1/Xts300.1x*
+%{_mandir}/man1/Xvesa.1x*
+%{_mandir}/man1/kdrive.1x*
 
 %files devel
 %defattr(644,root,root,755)
