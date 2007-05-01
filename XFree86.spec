@@ -722,6 +722,19 @@ Ark Logic driver.
 %description driver-ark -l pl.UTF-8
 Sterownik do kart Ark Logic.
 
+%package driver-aspeed
+Summary:	ASPEED video driver
+Summary(pl.UTF-8):	Sterownik do kart ASPEED
+Group:		X11/Servers
+Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
+Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
+
+%description driver-aspeed
+ASPEED driver. It supports AST2000 chip.
+
+%description driver-aspeed -l pl.UTF-8
+Sterownik do kart ASPEED. Obsługuje układy AST2000.
+
 %package driver-ati
 Summary:	ATI video driver
 Summary(pl.UTF-8):	Sterownik do kart ATI
@@ -1285,6 +1298,21 @@ VMware virtual machine.
 %description driver-vmware -l pl.UTF-8
 Sterownik do emulacji karty SVGA dostępnej pod VMware. Przydatny,
 jeśli uruchamiasz Linuksa na wirtualnej maszynie VMware.
+
+%package driver-xgi
+Summary:	XGI (Xabre Graphics Inc.) driver
+Summary(pl.UTF-8):	Sterownik do kart XGI (Xabre Graphics Inc.)
+Group:		X11/Servers
+Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
+Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
+
+%description driver-xgi
+XGI (Xabre Graphics Inc.) driver. It supports Volari V3XT/V5/V8 and
+Volari Z7 chipsets.
+
+%description driver-xgi -l pl.UTF-8
+Sterownik do kart XGI (Xabre Graphics Inc.). Obsługuje układy Volari
+V3XT/V5/V8 i Volari Z7.
 
 %package libs
 Summary:	X11R6 shared libraries
@@ -2492,6 +2520,13 @@ fi
 %endif
 
 # Devel: sparc sparc64
+%ifarch %{ix86} ia64 %{x8664}
+%files driver-aspeed
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/aspeed_drv.o
+%endif
+
+# Devel: sparc sparc64
 %ifarch %{ix86} ia64 %{x8664} mips ppc arm
 %files driver-chips
 %defattr(644,root,root,755)
@@ -2782,6 +2817,13 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/modules/drivers/vmware_drv.o
 %{_mandir}/man4/vmware.4*
+%endif
+
+%ifarch %{ix86} ia64 %{x8664}
+%files driver-xgi
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/xgi_drv.o
+%{_mandir}/man4/xgi.4*
 %endif
 
 %files libs
