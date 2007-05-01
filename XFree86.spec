@@ -2412,6 +2412,7 @@ fi
 %attr(755,root,root) %{_bindir}/mmapw
 %attr(755,root,root) %{_bindir}/xcursor-config
 %attr(755,root,root) %{_bindir}/xft-config
+%attr(755,root,root) %{_libdir}/libAppleWM.so
 %attr(755,root,root) %{_libdir}/libFS.so
 %attr(755,root,root) %{_libdir}/libI810XvMC.so
 %attr(755,root,root) %{_libdir}/libICE.so
@@ -2442,6 +2443,7 @@ fi
 %attr(755,root,root) %{_libdir}/libXxf86misc.so
 %attr(755,root,root) %{_libdir}/libXxf86rush.so
 %attr(755,root,root) %{_libdir}/libXxf86vm.so
+%attr(755,root,root) %{_libdir}/libdmx.so
 %attr(755,root,root) %{_libdir}/libfontenc.so
 %attr(755,root,root) %{_libdir}/libxkbfile.so
 %attr(755,root,root) %{_libdir}/libxkbui.so
@@ -2559,7 +2561,7 @@ fi
 %attr(755,root,root) %{_libdir}/modules/drivers/i810_drv.o
 # i810_dri alone is built on x86_64 - what for?
 %attr(755,root,root) %{_libdir}/modules/dri/i810_dri.so
-#%attr(755,root,root) %{_libdir}/modules/dri/i830_dri.so
+%attr(755,root,root) %{_libdir}/modules/dri/i915_dri.so
 %{_mandir}/man4/i810.4*
 %endif
 
@@ -2817,6 +2819,7 @@ fi
 /usr/include/X11
 %dir %{_sbindir}
 %dir %{_datadir}/misc
+%attr(755,root,root) %{_libdir}/libAppleWM.so.*.*
 %attr(755,root,root) %{_libdir}/libFS.so.*.*
 %attr(755,root,root) %{_libdir}/libI810XvMC.so.*.*
 %attr(755,root,root) %{_libdir}/libICE.so.*.*
@@ -2848,6 +2851,7 @@ fi
 %attr(755,root,root) %{_libdir}/libXxf86misc.so.*.*
 %attr(755,root,root) %{_libdir}/libXxf86rush.so.*.*
 %attr(755,root,root) %{_libdir}/libXxf86vm.so.*.*
+%attr(755,root,root) %{_libdir}/libdmx.so.*.*
 %attr(755,root,root) %{_libdir}/libfontenc.so.*.*
 %attr(755,root,root) %{_libdir}/libxkbfile.so.*.*
 %attr(755,root,root) %{_libdir}/libxkbui.so.*.*
@@ -2892,11 +2896,13 @@ fi
 %{_mandir}/man4/dmc.4*
 %{_mandir}/man4/dynapro.4*
 %{_mandir}/man4/elographics.4*
+%{_mandir}/man4/eloinput.4*
 %{_mandir}/man4/fbdevhw.4*
 %{_mandir}/man4/fpit.4*
 %{_mandir}/man4/js_x.4*
 %{_mandir}/man4/kbd.4*
 %{_mandir}/man4/keyboard.4*
+%{_mandir}/man4/magictouch.4*
 %{_mandir}/man4/microtouch.4*
 %{_mandir}/man4/mouse-x.4*
 %{_mandir}/man4/mutouch.4*
@@ -2930,6 +2936,7 @@ fi
 
 %files static
 %defattr(644,root,root,755)
+%{_libdir}/libAppleWM.a
 %{_libdir}/libFS.a
 %{_libdir}/libI810XvMC.a
 %{_libdir}/libICE.a
@@ -2960,6 +2967,7 @@ fi
 %{_libdir}/libXxf86misc.a
 %{_libdir}/libXxf86rush.a
 %{_libdir}/libXxf86vm.a
+%{_libdir}/libdmx.a
 %{_libdir}/libfontenc.a
 %{_libdir}/libxkbfile.a
 %{_libdir}/libxkbui.a
