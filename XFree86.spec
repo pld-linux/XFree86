@@ -1910,7 +1910,7 @@ install -d $RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,security/console.apps,sysconfi
 	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}} \
 	$RPM_BUILD_ROOT{%{_wmpropsdir},%{_themesdir}/{Default,ThinIce,Metal,Industrial,Bluecurve}} \
-	$RPM_BUILD_ROOT{%{_xsessdir}} \
+	$RPM_BUILD_ROOT%{_xsessdir} \
 	$RPM_BUILD_ROOT%{_pkgconfigdir}
 
 %{__make} -C xc	install	install.man \
