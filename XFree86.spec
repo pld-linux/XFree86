@@ -161,12 +161,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
-%define		_soundsdir	/usr/share/sounds
 %define		_themesdir	/usr/share/themes
-%define		_wallpapersdir	/usr/share/wallpapers
 %define		_wmpropsdir	/usr/share/wm-properties
 %define		_xsessdir	/usr/share/xsessions
-%define		_wmstylesdir	/etc/sysconfig/wmstyles
 %define		_libx11dir	%{_prefix}/lib/X11
 %define		_appdefsdir	%{_libx11dir}/app-defaults
 
@@ -1848,16 +1845,16 @@ rm -f xc/config/cf/host.def
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,security/console.apps,sysconfig,xdg} \
+install -d $RPM_BUILD_ROOT/etc/{pam.d,rc.d/init.d,security/console.apps,sysconfig} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/X11/fs \
 	$RPM_BUILD_ROOT%{_appdefsdir}/{cs,da,de,es,fr,hu,it,ja,ko,nl,pl,pt,ru,sk,zh_CN.gb2312,zh_TW.big5} \
 	$RPM_BUILD_ROOT%{_datadir}/misc \
 	$RPM_BUILD_ROOT%{_sbindir} \
 	$RPM_BUILD_ROOT/usr/{bin,include,lib} \
 	$RPM_BUILD_ROOT/var/{log,lib/xkb} \
-	$RPM_BUILD_ROOT{%{_desktopdir},%{_iconsdir},%{_pixmapsdir}/mini} \
-	$RPM_BUILD_ROOT{%{_wmpropsdir},%{_soundsdir},%{_themesdir}/{Default,ThinIce,Metal,Industrial,Bluecurve}} \
-	$RPM_BUILD_ROOT{%{_xsessdir},%{_wallpapersdir},%{_wmstylesdir}} \
+	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}} \
+	$RPM_BUILD_ROOT{%{_wmpropsdir},%{_themesdir}/{Default,ThinIce,Metal,Industrial,Bluecurve}} \
+	$RPM_BUILD_ROOT{%{_xsessdir}} \
 	$RPM_BUILD_ROOT%{_pkgconfigdir}
 
 %{__make} -C xc	install	install.man \
@@ -2788,9 +2785,6 @@ fi
 %files libs
 %defattr(644,root,root,755)
 /etc/ld.so.conf.d/*.conf
-%dir %{_sysconfdir}/xdg
-%dir %{_themesdir}
-%dir %{_themesdir}/Default
 %dir %{_themesdir}/ThinIce
 %dir %{_themesdir}/Metal
 %dir %{_themesdir}/Industrial
@@ -2823,14 +2817,6 @@ fi
 /usr/include/X11
 %dir %{_sbindir}
 %dir %{_datadir}/misc
-%dir %{_iconsdir}
-%dir %{_pixmapsdir}
-%dir %{_pixmapsdir}/mini
-%dir %{_soundsdir}
-%dir %{_wallpapersdir}
-%dir %{_wmpropsdir}
-%dir %{_xsessdir}
-%dir %{_wmstylesdir}
 %attr(755,root,root) %{_libdir}/libFS.so.*.*
 %attr(755,root,root) %{_libdir}/libI810XvMC.so.*.*
 %attr(755,root,root) %{_libdir}/libICE.so.*.*
