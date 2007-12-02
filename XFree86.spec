@@ -68,8 +68,8 @@ Source49:	xmag.desktop
 Source50:	xcalc.png
 Source51:	xload.png
 Source52:	xmag.png
-Source53:	http://oss.sgi.com/projects/ogl-sample/ABI/glext.h
-# NoSource53-md5: 0c40bd4545aa630e139043c2b12f0807
+Source53:	http://www.opengl.org/registry/api/glext.h
+# NoSource2-md5:	2e0c1c691b518b06691eba826a97cf3b
 Source54:	%{name}-xrender.pc
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
