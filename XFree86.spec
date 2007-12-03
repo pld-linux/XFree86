@@ -1,7 +1,7 @@
 #
 # TODO:
 # - separate XFS to be standalone - is it possible without duplicated files?
-# - unpacked files
+# - unpackaged files
 #
 # Conditional build:
 %bcond_without	glide	# don't build glide driver
@@ -20,17 +20,17 @@ Summary(tr.UTF-8):	XFree86 Pencereleme Sistemi sunucuları ve temel programlar
 Summary(uk.UTF-8):	Базові шрифти, програми та документація для робочої станції під X
 Summary(zh_CN.UTF-8):	XFree86 窗口系统服务器和基本程序
 Name:		XFree86
-Version:	4.6.0
-Release:	0.2
+Version:	4.7.0
+Release:	0.1
 Epoch:		1
 License:	XFree86 1.1
 Group:		X11
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.6.0/source/%{name}-%{version}-src-1.tgz
-# Source0-md5:	6c05f3486f088d01584f4517540e8d18
-Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.6.0/source/%{name}-%{version}-src-2.tgz
-# Source1-md5:	f084d12aa734c9cd83e8d2a3a4eb3e32
-Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.6.0/source/%{name}-%{version}-src-3.tgz
-# Source2-md5:	05450997f1876098d791a4cf9db21af8
+Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.7.0/source/%{name}-%{version}-src-1.tgz
+# Source0-md5:	e452e53240d16091abdc4f4bd2967ebd
+Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.7.0/source/%{name}-%{version}-src-2.tgz
+# Source1-md5:	db68bab296cff797c1ae399f683905f2
+Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.7.0/source/%{name}-%{version}-src-3.tgz
+# Source2-md5:	4787c740ee8ae61a294f488606ced230
 Source7:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
 # Source7-md5:	0a15b1c374256b5cad7961807baa3896
 Source8:	xdm.pamd
@@ -95,8 +95,7 @@ Patch21:	%{name}-r128-busmstr2.patch
 Patch22:	%{name}-neomagic_swcursor.patch
 Patch23:	%{name}-mga-busmstr.patch
 Patch24:	%{name}-agpgart-load.patch
-# ftp://ftp.xfree86.org/pub/XFree86/4.6.0/fixes/fix-01 (CVE-2006-3739, CVE-2006-3740)
-Patch25:	%{name}-fix-01.patch
+
 Patch26:	%{name}-HasFreetype2.patch
 Patch28:	%{name}-sparc_pci_domains.patch
 Patch29:	%{name}-XTerm.ad.patch
@@ -120,7 +119,7 @@ Patch45:	%{name}-spencode-nowarning.patch
 # Small (maybe buggy) patch to resolve problems with totem 0.97.0
 Patch46:	%{name}-lock.patch
 Patch47:	%{name}-sparc-kbd.patch
-Patch48:	%{name}-freetype-nointernals.patch
+
 Patch50:	%{name}-xterm-256colors.patch
 Patch52:	%{name}-kernel_headers.patch
 Patch53:	%{name}-stdint.patch
@@ -376,7 +375,7 @@ Summary:	OpenGL libraries for X11R6
 Summary(pl.UTF-8):	Biblioteki OpenGL dla systemu X11R6
 Group:		X11/Libraries
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Provides:	OpenGL = 1.4
+Provides:	OpenGL = 1.5
 Provides:	OpenGL-GLU = 1.3
 Provides:	OpenGL-GLX = 1.4
 Obsoletes:	Mesa
@@ -412,7 +411,7 @@ Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
 Requires:	OpenGL-devel-base
 Provides:	OpenGL-GLU-devel = 1.3
 Provides:	OpenGL-GLX-devel = 1.4
-Provides:	OpenGL-devel = 1.4
+Provides:	OpenGL-devel = 1.5
 Obsoletes:	Mesa-devel
 Obsoletes:	XFree86-OpenGL-doc
 Obsoletes:	glxMesa-devel
@@ -779,46 +778,6 @@ ATI video driver.
 %description driver-ati -l pl.UTF-8
 Sterownik do kart ATI.
 
-%package driver-r128
-Summary:	ATI Rage 128 video driver
-Summary(pl.UTF-8):	Sterownik do kart ATI Rage 128
-Group:		X11/Servers
-Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
-Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
-%ifarch %{ix86} ia64 %{x8664} alpha ppc arm
-# for dri
-Requires:	%{name}-OpenGL-core = %{epoch}:%{version}-%{release}
-Requires:	%{name}-OpenGL-libGL = %{epoch}:%{version}-%{release}
-# -libs already required by -OpenGL-libGL
-%endif
-Obsoletes:	XFree86-Rage128
-
-%description driver-r128
-ATI Rage 128 video driver.
-
-%description driver-r128 -l pl.UTF-8
-Sterownik do kart ATI Rage 128.
-
-%package driver-radeon
-Summary:	ATI Radeon video driver
-Summary(pl.UTF-8):	Sterownik do kart ATI Radeon
-Group:		X11/Servers
-Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
-Requires:	%{name}-driver-ati = %{epoch}:%{version}-%{release}
-Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
-%ifarch %{ix86} ia64 %{x8664} alpha ppc arm
-# for dri
-Requires:	%{name}-OpenGL-core = %{epoch}:%{version}-%{release}
-Requires:	%{name}-OpenGL-libGL = %{epoch}:%{version}-%{release}
-# -libs already required by -OpenGL-libGL
-%endif
-
-%description driver-radeon
-ATI Radeon video driver.
-
-%description driver-radeon -l pl.UTF-8
-Sterownik do kart ATI Radeon.
-
 %package driver-chips
 Summary:	Chips and Technologies video driver
 Summary(pl.UTF-8):	Sterownik do kart na układach Chips and Technologies
@@ -1049,6 +1008,61 @@ nVidia video driver. Supports Riva128, RivaTNT, GeForce.
 
 %description driver-nv -l pl.UTF-8
 Sterownik do kart na układach firmy nVidia: Riva128, RivaTNT, GeForce.
+
+%package driver-pnozz
+Summary:	Weitek POWER 9100 video driver
+Summary(pl.UTF-8):	Sterownik do karty Weitek POWER 9100
+Group:		X11/Servers
+Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
+Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
+
+%description driver-pnozz
+Weitek POWER 9100 video driver, for SBus adapter which can be found
+in some SPARC laptops.
+
+%description driver-pnozz -l pl.UTF-8
+Sterownik do karty SBuusWeitek POWER 9100, spotykanej w niektórych
+laptopach z procesorem SPARC.
+
+%package driver-r128
+Summary:	ATI Rage 128 video driver
+Summary(pl.UTF-8):	Sterownik do kart ATI Rage 128
+Group:		X11/Servers
+Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
+Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
+%ifarch %{ix86} ia64 %{x8664} alpha ppc arm
+# for dri
+Requires:	%{name}-OpenGL-core = %{epoch}:%{version}-%{release}
+Requires:	%{name}-OpenGL-libGL = %{epoch}:%{version}-%{release}
+# -libs already required by -OpenGL-libGL
+%endif
+Obsoletes:	XFree86-Rage128
+
+%description driver-r128
+ATI Rage 128 video driver.
+
+%description driver-r128 -l pl.UTF-8
+Sterownik do kart ATI Rage 128.
+
+%package driver-radeon
+Summary:	ATI Radeon video driver
+Summary(pl.UTF-8):	Sterownik do kart ATI Radeon
+Group:		X11/Servers
+Requires:	%{name}-Xserver = %{epoch}:%{version}-%{release}
+Requires:	%{name}-driver-ati = %{epoch}:%{version}-%{release}
+Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
+%ifarch %{ix86} ia64 %{x8664} alpha ppc arm
+# for dri
+Requires:	%{name}-OpenGL-core = %{epoch}:%{version}-%{release}
+Requires:	%{name}-OpenGL-libGL = %{epoch}:%{version}-%{release}
+# -libs already required by -OpenGL-libGL
+%endif
+
+%description driver-radeon
+ATI Radeon video driver.
+
+%description driver-radeon -l pl.UTF-8
+Sterownik do kart ATI Radeon.
 
 %package driver-rendition
 Summary:	Rendition video driver
@@ -1854,7 +1868,6 @@ System. Також вам прийдеться встановити наступ
 %patch22 -p1
 %patch23 -p1
 %patch24 -p1
-%patch25 -p0
 %patch26 -p1
 %ifarch sparc sparc64
 #%patch28 -p1	-- needs update
@@ -1876,7 +1889,6 @@ System. Також вам прийдеться встановити наступ
 %patch45 -p1
 %patch46 -p0
 %patch47 -p1
-%patch48 -p1
 %patch50 -p0
 %patch52 -p1
 %patch53 -p0
@@ -1964,7 +1976,7 @@ mv -f $RPM_BUILD_ROOT%{_includedir}/GL $RPM_BUILD_ROOT/usr/include
 cp -f %{SOURCE53} $RPM_BUILD_ROOT/usr/include/GL/glext.h
 
 # don't include shared version due to Motif issues
-rm -f $RPM_BUILD_ROOT%{_libdir}/libGLw.so*
+#rm -f $RPM_BUILD_ROOT%{_libdir}/libGLw.so*
 
 # collect Xserver headers and make symlinks
 for f in `cat %{SOURCE44}`; do
@@ -2383,7 +2395,7 @@ fi
 %attr(755,root,root) %{_bindir}/glxgears
 %attr(755,root,root) %{_libdir}/libGLU.so.*.*
 # to be fixed: it contains unresolved symbols and would need -lXm
-#%attr(755,root,root) %{_libdir}/libGLw.so.*.*
+%attr(755,root,root) %{_libdir}/libGLw.so.*.*
 %attr(755,root,root) %{_libdir}/libOSMesa.so.*.*
 # Linux OpenGL ABI compatibility symlink
 %attr(755,root,root) /usr/%{_lib}/libGLU.so.1
@@ -2606,6 +2618,10 @@ fi
 %attr(755,root,root) %{_libdir}/modules/drivers/aspeed_drv.o
 %endif
 
+%files driver-ati
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/modules/drivers/ati*_drv.o
+
 # Devel: sparc sparc64
 %ifarch %{ix86} ia64 %{x8664} mips ppc arm
 %files driver-chips
@@ -2730,9 +2746,12 @@ fi
 %{_mandir}/man4/nv.4*
 %endif
 
-%files driver-ati
+%ifarch sparc sparc64
+%files driver-pnozz
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/modules/drivers/ati*_drv.o
+%attr(755,root,root) %{_libdir}/modules/drivers/pnozz_drv.o
+%{_mandir}/man4/pnozz.4*
+%endif
 
 %files driver-r128
 %defattr(644,root,root,755)
