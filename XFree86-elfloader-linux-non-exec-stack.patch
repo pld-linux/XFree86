@@ -1,15 +1,15 @@
---- xc/programs/Xserver/hw/xfree86/loader/elfloader.c.orig	2006-04-08 19:53:39.000000000 +0200
-+++ xc/programs/Xserver/hw/xfree86/loader/elfloader.c	2007-05-01 08:40:52.720051459 +0200
-@@ -1168,7 +1168,7 @@
+--- xc/programs/Xserver/hw/xfree86/loader/elfloader.c.orig	2007-04-09 17:37:17.000000000 +0200
++++ xc/programs/Xserver/hw/xfree86/loader/elfloader.c	2007-12-02 16:51:49.442062089 +0100
+@@ -1165,7 +1165,7 @@
  	    ErrorF("ELFCreateGOT() Unable to reallocate memory!!!!\n");
  	    return FALSE;
  	}
--#   if defined(linux) && defined(__ia64__) || defined(__OpenBSD__) || defined(__NetBSD__)
-+#   if defined(linux) || defined(__OpenBSD__) || defined(__NetBSD__)
+-#   if (defined(linux) && defined(__ia64__)) || \
++#   if defined(linux) || \
+        defined(__OpenBSD__) || defined(__NetBSD__)
  	{
  	    unsigned long page_size = getpagesize();
- 	    unsigned long round;
-@@ -3351,10 +3351,16 @@
+@@ -3483,10 +3483,16 @@
  	elffile->lsection[j].size = SecSize(i);
  	elffile->lsection[j].flags = flags;
  	switch (SecType(i)) {
@@ -28,12 +28,12 @@
  	    break;
  #endif
  	case SHT_SYMTAB:
-@@ -3556,7 +3562,7 @@
+@@ -3688,7 +3694,7 @@
  	ErrorF("Unable to allocate ELF sections\n");
  	return NULL;
      }
--#  if defined(linux) && defined(__ia64__) || defined(__OpenBSD__) || defined(__NetBSD__)
-+#  if defined(linux) || defined(__OpenBSD__) || defined(__NetBSD__)
+-#  if (defined(linux) && defined(__ia64__)) || \
++#  if defined(linux) || \
+       defined(__OpenBSD__) || defined(__NetBSD__)
      {
  	unsigned long page_size = getpagesize();
- 	unsigned long round;

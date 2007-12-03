@@ -207,7 +207,7 @@
  #ifndef XF86OSCardDrivers
 --- xc/config/cf/site.def.orig	2006-01-09 15:56:13.000000000 +0100
 +++ xc/config/cf/site.def	2006-06-11 00:28:00.330502072 +0200
-@@ -104,10 +104,15 @@
+@@ -104,10 +104,10 @@
  #define HasSentinel	YES
  */
  
@@ -218,11 +218,6 @@
 +#define DefaultUserPath /usr/local/bin:/bin:/usr/bin:$(BINDIR)
 +#undef DefaultSystemPath
 +#define DefaultSystemPath /sbin:/bin:/usr/sbin:/usr/bin:$(BINDIR)
-+
-+
-+#define HasPam    YES
-+#define HasPamMisc    YES
-+#define HasFontconfig	YES
  
  
  /* You do NOT need SetUID if you only run the server under xdm */
@@ -276,7 +271,7 @@
   *
 -#define TermcapLibrary		-lncurses
   */
-+#define TermcapLibrary		-lncurses
++#define TermcapLibrary		-ltinfo
  
  /*
   * Build a server that dynamically loads the modules by setting
@@ -290,6 +285,16 @@
  
  /*
   * Uncomment this if your default tools (eg, gcc, ld, as, etc) are
+@@ -691,4 +691,8 @@
+ #define X86EMU_LIBPATH /usr/local/lib
+  */ 
+ 
+-
++/* these must be before linux.cf is included */
++#define UsePam		YES
++#define HasPam		YES
++#define HasPamMisc	YES
++#define HasFontconfig	YES
 --- xc/config/cf/xfree86.cf.orig	2006-04-26 02:28:16.000000000 +0200
 +++ xc/config/cf/xfree86.cf	2006-06-11 00:28:00.337501008 +0200
 @@ -148,7 +148,7 @@
@@ -429,7 +434,7 @@
 -#else
 -InstallNonExecFileNoClobber($(SAMPLECONFIG),$(XINITDIR))
 -#endif
-+XCOMM Red Hat gets this from a different package
++XCOMM PLD gets this from a different package
 +XCOMM #if InstallXinitConfig
 +XCOMM InstallNonExecFile($(SAMPLECONFIG),$(XINITDIR))
 +XCOMM #else
@@ -438,9 +443,9 @@
  
  LinkConfDirectory(xinit,.,xinit,.)
  
---- xc/programs/xterm/Imakefile.orig	2006-04-10 02:34:36.000000000 +0200
-+++ xc/programs/xterm/Imakefile	2006-06-11 00:48:09.508679048 +0200
-@@ -94,6 +94,10 @@
+--- xc/programs/xterm/Imakefile.orig	2007-07-03 17:19:53.000000000 +0200
++++ xc/programs/xterm/Imakefile	2007-12-02 16:10:40.453362442 +0100
+@@ -102,6 +102,10 @@
  # endif
  #endif
  
@@ -451,12 +456,12 @@
  #ifndef SpecialCObjectRule
  #define SpecialCObjectRule(module,ignore,defines) \
  module.o: ; $(CC) -c defines $(CFLAGS) module.c
-@@ -179,7 +183,7 @@
-     XKB_DEFINES = XkbClientDefines
-    PATH_DEFINES = -DPROJECTROOT=$(PROJECTROOT)
-         DEFINES = $(XKB_DEFINES) $(TERMCAPDEFINES) $(FEATURE_DEFINES) $(SCROLLBAR_RIGHT) $(UTF8_OPTION) $(XRFDEF) $(PATH_DEFINES) $(PUTENVDEF) $(IMAKEDEFINES) $(TRACEDEF)
--       INCLUDES = -I. $(XRFINCLUDES)
-+       INCLUDES = -I. -I/usr/include/ncurses $(XRFINCLUDES)
+@@ -204,7 +208,7 @@
+         DEFINES = $(XKB_DEFINES) $(TERMCAPDEFINES) $(FEATURE_DEFINES) \
+                   $(SCROLLBAR_RIGHT) $(UTF8_OPTION) $(XRFDEF) $(PATH_DEFINES) \
+                   $(PUTENVDEF) $(IMAKEDEFINES) $(TRACEDEF)
+-       INCLUDES = $(OBSOLETE_INCLUDES) $(XRFINCLUDES)
++       INCLUDES = $(OBSOLETE_INCLUDES) $(XRFINCLUDES) -I/usr/include/ncurses
  
  #ifdef OS2Architecture
          MAINSRC = os2main.c

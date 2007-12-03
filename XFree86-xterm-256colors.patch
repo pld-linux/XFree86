@@ -1,6 +1,6 @@
---- xc/programs/xterm/Imakefile.orig	2006-06-11 03:49:18.234381592 +0200
-+++ xc/programs/xterm/Imakefile	2006-06-11 03:52:43.109235880 +0200
-@@ -46,6 +46,8 @@
+--- xc/programs/xterm/Imakefile.orig	2007-12-02 16:41:43.351522957 +0100
++++ xc/programs/xterm/Imakefile	2007-12-02 16:43:16.500831234 +0100
+@@ -50,6 +50,8 @@
          UTMPLIB = -lutempter
  #endif
  
@@ -9,12 +9,12 @@
  /*
   * Fixes to allow compile with X11R5, etc.
   */
-@@ -185,7 +187,7 @@
-     XKB_DEFINES = XkbClientDefines
+@@ -209,7 +211,7 @@
     PATH_DEFINES = -DPROJECTROOT=$(PROJECTROOT)
-         DEFINES = $(XKB_DEFINES) $(TERMCAPDEFINES) $(FEATURE_DEFINES) $(SCROLLBAR_RIGHT) $(UTF8_OPTION) $(XRFDEF) $(PATH_DEFINES) $(PUTENVDEF) $(IMAKEDEFINES) $(TRACEDEF)
--       INCLUDES = -I. -I/usr/include/ncurses $(XRFINCLUDES)
-+       INCLUDES = -I. -I/usr/include/ncurses $(COLORS_256) $(XRFINCLUDES)
+         DEFINES = $(XKB_DEFINES) $(TERMCAPDEFINES) $(FEATURE_DEFINES) \
+                   $(SCROLLBAR_RIGHT) $(UTF8_OPTION) $(XRFDEF) $(PATH_DEFINES) \
+-                  $(PUTENVDEF) $(IMAKEDEFINES) $(TRACEDEF)
++                  $(PUTENVDEF) $(IMAKEDEFINES) $(TRACEDEF) $(COLORS_256)
+        INCLUDES = $(OBSOLETE_INCLUDES) $(XRFINCLUDES) -I/usr/include/ncurses
  
  #ifdef OS2Architecture
-         MAINSRC = os2main.c
