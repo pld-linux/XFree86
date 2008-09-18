@@ -155,13 +155,14 @@ Obsoletes:	xterm
 %ifarch sparc sparc64
 Obsoletes:	X11R6.1
 %endif
+Conflicts:	filesystem < 3.0-20
 ExclusiveArch:	%{ix86} %{x8664} alpha armv4l ia64 m68k ppc sparc
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
 %define		_themesdir	/usr/share/themes
-%define		_wmpropsdir	/usr/share/wm-properties
+%define		_wmpropsdir	/usr/share/gnome/wm-properties
 %define		_xsessdir	/usr/share/xsessions
 %define		_libx11dir	%{_prefix}/lib/X11
 %define		_appdefsdir	%{_libx11dir}/app-defaults
