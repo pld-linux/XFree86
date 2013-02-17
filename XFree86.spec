@@ -20,17 +20,17 @@ Summary(tr.UTF-8):	XFree86 Pencereleme Sistemi sunucuları ve temel programlar
 Summary(uk.UTF-8):	Базові шрифти, програми та документація для робочої станції під X
 Summary(zh_CN.UTF-8):	XFree86 窗口系统服务器和基本程序
 Name:		XFree86
-Version:	4.7.0
+Version:	4.8.0
 Release:	0.1
 Epoch:		1
 License:	XFree86 1.1
 Group:		X11
-Source0:	ftp://ftp.xfree86.org/pub/XFree86/4.7.0/source/%{name}-%{version}-src-1.tgz
-# Source0-md5:	e452e53240d16091abdc4f4bd2967ebd
-Source1:	ftp://ftp.xfree86.org/pub/XFree86/4.7.0/source/%{name}-%{version}-src-2.tgz
-# Source1-md5:	db68bab296cff797c1ae399f683905f2
-Source2:	ftp://ftp.xfree86.org/pub/XFree86/4.7.0/source/%{name}-%{version}-src-3.tgz
-# Source2-md5:	4787c740ee8ae61a294f488606ced230
+Source0:	http://ftp.xfree86.org/pub/XFree86/4.8.0/source/%{name}-%{version}-src-1.tgz
+# Source0-md5:	42d802caf03cbaadfa3a69b887e9b203
+Source1:	http://ftp.xfree86.org/pub/XFree86/4.8.0/source/%{name}-%{version}-src-2.tgz
+# Source1-md5:	c614ca85a88c5878e9e94f2a73077225
+Source2:	http://ftp.xfree86.org/pub/XFree86/4.8.0/source/%{name}-%{version}-src-3.tgz
+# Source2-md5:	d87b6590a62a394c518061caf03255f4
 Source7:	ftp://ftp.pld-linux.org/software/xinit/xdm-xinitrc-0.2.tar.bz2
 # Source7-md5:	0a15b1c374256b5cad7961807baa3896
 Source8:	xdm.pamd
@@ -69,7 +69,7 @@ Source50:	xcalc.png
 Source51:	xload.png
 Source52:	xmag.png
 Source53:	http://www.opengl.org/registry/api/glext.h
-# NoSource53-md5:	2e0c1c691b518b06691eba826a97cf3b
+# NoSource53-md5:	e66d10cdd74e7d9ef7fe5ee92575fde6
 Source54:	%{name}-xrender.pc
 Patch0:		%{name}-PLD.patch
 Patch1:		%{name}-HasZlib.patch
@@ -95,7 +95,7 @@ Patch21:	%{name}-r128-busmstr2.patch
 Patch22:	%{name}-neomagic_swcursor.patch
 Patch23:	%{name}-mga-busmstr.patch
 Patch24:	%{name}-agpgart-load.patch
-
+Patch25:	%{name}-zlib.patch
 Patch26:	%{name}-HasFreetype2.patch
 Patch28:	%{name}-sparc_pci_domains.patch
 Patch29:	%{name}-XTerm.ad.patch
@@ -120,13 +120,14 @@ Patch45:	%{name}-spencode-nowarning.patch
 Patch46:	%{name}-lock.patch
 Patch47:	%{name}-sparc-kbd.patch
 
+Patch49:	%{name}-link.patch
 Patch50:	%{name}-xterm-256colors.patch
+Patch51:	%{name}-libpng.patch
 Patch52:	%{name}-kernel_headers.patch
 Patch53:	%{name}-stdint.patch
 Patch55:	%{name}-elfloader-linux-non-exec-stack.patch
 Patch56:	%{name}-exec-shield-GNU-stack.patch
 Patch57:	%{name}-libGL-exec-shield-fixes-v2.patch
-Patch58:	%{name}-page_h.patch
 URL:		http://www.xfree86.org/
 BuildRequires:	/usr/bin/perl
 # Required by xc/programs/Xserver/hw/xfree86/drivers/glide/glide_driver.c
@@ -174,6 +175,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 # ELF objects with Rendition microcode - disliked by ELF utils
 %define		_noautostrip	.*\\.uc
 %define		_noautochrpath	.*\\.uc
+
+# these libs rely on external symbols
+%define		skip_post_check_so	libOSMesa.so.* libXfont.so.*
 
 %description
 The X Window System provides the base technology for developing
@@ -1869,6 +1873,7 @@ System. Також вам прийдеться встановити наступ
 %patch22 -p1
 %patch23 -p1
 %patch24 -p1
+%patch25 -p1
 %patch26 -p1
 %ifarch sparc sparc64
 #%patch28 -p1	-- needs update
@@ -1890,15 +1895,14 @@ System. Також вам прийдеться встановити наступ
 %patch45 -p1
 %patch46 -p0
 %patch47 -p1
+%patch49 -p1
 %patch50 -p0
+%patch51 -p1
 %patch52 -p1
 %patch53 -p0
 %patch55 -p0
 #%patch56 -p0   -- update if needed
 #%patch57 -p0   -- update if needed
-%patch58 -p0
-
-rm -f xc/config/cf/host.def
 
 %build
 %{__make} -S -C xc World \
@@ -1946,7 +1950,7 @@ if [ "%{_pkgconfigdir}" != "/usr/lib/pkgconfig" ] ; then
 fi
 
 # setting default X
-rm -f $RPM_BUILD_ROOT%{_bindir}/X
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/X
 ln -sf XFree86 $RPM_BUILD_ROOT%{_bindir}/X
 
 # setting ghost X in /etc/X11 -- xf86config will fix this ...
@@ -1958,7 +1962,7 @@ ln -sf %{_libx11dir} $RPM_BUILD_ROOT/usr/lib/X11
 ln -sf %{_bindir} $RPM_BUILD_ROOT/usr/bin/X11
 
 # fix libGL*.so links
-rm -f $RPM_BUILD_ROOT%{_libdir}/libGL*.so
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libGL*.so
 ln -sf libGL.so.1 $RPM_BUILD_ROOT%{_libdir}/libGL.so
 ln -sf libGLU.so.1 $RPM_BUILD_ROOT%{_libdir}/libGLU.so
 
@@ -1970,14 +1974,14 @@ ln -sf %{_libdir}/libGLU.so.1 $RPM_BUILD_ROOT/usr/%{_lib}/libGLU.so.1
 ln -sf %{_libdir}/libGLU.so $RPM_BUILD_ROOT/usr/%{_lib}/libGLU.so
 
 # move instead of symlinking
-rm -f $RPM_BUILD_ROOT/usr/include/GL
+%{__rm} $RPM_BUILD_ROOT/usr/include/GL
 mv -f $RPM_BUILD_ROOT%{_includedir}/GL $RPM_BUILD_ROOT/usr/include
 
 # get the most current OpenGL extensions
 cp -f %{SOURCE53} $RPM_BUILD_ROOT/usr/include/GL/glext.h
 
 # don't include shared version due to Motif issues
-#rm -f $RPM_BUILD_ROOT%{_libdir}/libGLw.so*
+#%{__rm} $RPM_BUILD_ROOT%{_libdir}/libGLw.so*
 
 # collect Xserver headers and make symlinks
 for f in `cat %{SOURCE44}`; do
@@ -1989,7 +1993,7 @@ cd -
 install $RPM_BUILD_ROOT%{_includedir}/X11/Xserver/lib/GL/glx/*.h $RPM_BUILD_ROOT%{_includedir}
 
 # set up PLD xdm config
-rm -f $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/{*Console,Xaccess,Xsession,Xsetup*}
+%{__rm} $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/{*Console,Xaccess,Xsession,Xsetup*}
 install xdm-xinitrc-*/pixmaps/* $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm/pixmaps
 install xdm-xinitrc-*/{*Console,Xaccess,Xsession,Xsetup*} $RPM_BUILD_ROOT%{_sysconfdir}/X11/xdm
 
@@ -2027,20 +2031,20 @@ install %{SOURCE46} $RPM_BUILD_ROOT%{_xsessdir}/twm.desktop
 ln -sf %{_fontsdir} $RPM_BUILD_ROOT%{_libx11dir}/fonts
 
 # do not duplicate xkbcomp program
-rm -f $RPM_BUILD_ROOT%{_libx11dir}/xkb/xkbcomp
+%{__rm} $RPM_BUILD_ROOT%{_libx11dir}/xkb/xkbcomp
 ln -sf %{_bindir}/xkbcomp $RPM_BUILD_ROOT%{_sysconfdir}/X11/xkb/xkbcomp
 
 ln -sf %{_docdir}/%{name}-%{version} $RPM_BUILD_ROOT%{_libx11dir}/doc
 
-rm -f $RPM_BUILD_ROOT%{_libx11dir}/config/host.def
+%{__rm} $RPM_BUILD_ROOT%{_libx11dir}/config/host.def
 
 :> $RPM_BUILD_ROOT%{_libx11dir}/config/host.def
 :> $RPM_BUILD_ROOT%{_sysconfdir}/X11/XF86Config
 
-rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/html
-
 # resolve conflict with man-pages
 mv -f $RPM_BUILD_ROOT%{_mandir}/man4/{mouse.4,mouse-x.4}
+
+%{__rm} $RPM_BUILD_ROOT%{_mandir}/README.XFree86-non-english-Xman-pages
 
 # help rpm to detect deps
 chmod 755 $RPM_BUILD_ROOT%{_libdir}/modules/dri/*.so
@@ -2056,10 +2060,17 @@ install -d $RPM_BUILD_ROOT/etc/ld.so.conf.d
 echo '%{_libdir}' > $RPM_BUILD_ROOT/etc/ld.so.conf.d/%{name}-%{_lib}.conf
 
 # kill some stuff for cleaner build (DRM already in kernel)
-rm -rf	$RPM_BUILD_ROOT%{_prefix}/src
+%{__rm} -r $RPM_BUILD_ROOT%{_prefix}/src
+
+%if %{without cursors}
+%{__rm} -r $RPM_BUILD_ROOT%{_iconsdir}/{handhelds,redglass,whiteglass}
+%endif
 
 # dmx examples
-rm -f $RPM_BUILD_ROOT%{_bindir}/{evi,res,xbell,xinput,xled,xtest}
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/{evi,res,xbell,xinput,xled,xtest}
+
+# test programs
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/{find-routines,inb,inw,inl,outb,outw,outl,restest}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -2357,8 +2368,11 @@ fi
 %attr(755,root,root) %{_bindir}/dpsinfo
 %attr(755,root,root) %{_bindir}/dpsexec
 %attr(755,root,root) %{_libdir}/libdps.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libdps.so.1
 %attr(755,root,root) %{_libdir}/libdpstk.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libdpstk.so.1
 %attr(755,root,root) %{_libdir}/libpsres.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libpsres.so.1
 %{_mandir}/man1/makepsres.1*
 %{_mandir}/man1/pswrap.1*
 %{_mandir}/man1/dpsexec.1*
@@ -2385,6 +2399,7 @@ fi
 %files OpenGL-libGL
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libGL.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libGL.so.1
 %attr(755,root,root) %{_libdir}/libGL.so
 # Linux OpenGL ABI compatibility symlinks
 %attr(755,root,root) /usr/%{_lib}/libGL.so.1
@@ -2395,9 +2410,12 @@ fi
 %attr(755,root,root) %{_bindir}/glxinfo
 %attr(755,root,root) %{_bindir}/glxgears
 %attr(755,root,root) %{_libdir}/libGLU.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libGLU.so.1
 # to be fixed: it contains unresolved symbols and would need -lXm
 %attr(755,root,root) %{_libdir}/libGLw.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libGLw.so.1
 %attr(755,root,root) %{_libdir}/libOSMesa.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libOSMesa.so.4
 # Linux OpenGL ABI compatibility symlink
 %attr(755,root,root) /usr/%{_lib}/libGLU.so.1
 %{_mandir}/man1/glxinfo.1*
@@ -2962,42 +2980,81 @@ fi
 %dir %{_sbindir}
 %dir %{_datadir}/misc
 %attr(755,root,root) %{_libdir}/libAppleWM.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libAppleWM.so.1
 %attr(755,root,root) %{_libdir}/libFS.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libFS.so.6
 %attr(755,root,root) %{_libdir}/libI810XvMC.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libI810XvMC.so.1
 %attr(755,root,root) %{_libdir}/libICE.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libICE.so.6
 %attr(755,root,root) %{_libdir}/libSM.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libSM.so.6
 %attr(755,root,root) %{_libdir}/libX11.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libX11.so.6
 %attr(755,root,root) %{_libdir}/libXRes.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXRes.so.1
 %attr(755,root,root) %{_libdir}/libXTrap.so.*.*
-%attr(755,root,root) %{_libdir}/libXaw.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXTrap.so.6
+%attr(755,root,root) %{_libdir}/libXaw.so.6.*
+%attr(755,root,root) %ghost %{_libdir}/libXaw.so.6
+%attr(755,root,root) %{_libdir}/libXaw.so.7.*
+%attr(755,root,root) %ghost %{_libdir}/libXaw.so.7
 %attr(755,root,root) %{_libdir}/libXcursor.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXcursor.so.1
 %attr(755,root,root) %{_libdir}/libXext.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXext.so.6
 %attr(755,root,root) %{_libdir}/libXfont.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXfont.so.1
 %attr(755,root,root) %{_libdir}/libXfontcache.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXfontcache.so.1
 %attr(755,root,root) %{_libdir}/libXft.so.1.*
+%attr(755,root,root) %ghost %{_libdir}/libXft.so.1
 %attr(755,root,root) %{_libdir}/libXft.so.2.*
+%attr(755,root,root) %ghost %{_libdir}/libXft.so.2
 %attr(755,root,root) %{_libdir}/libXi.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXi.so.6
 %attr(755,root,root) %{_libdir}/libXinerama.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXinerama.so.1
 %attr(755,root,root) %{_libdir}/libXmu.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXmu.so.6
 %attr(755,root,root) %{_libdir}/libXmuu.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXmuu.so.1
 %attr(755,root,root) %{_libdir}/libXp.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXp.so.6
 %attr(755,root,root) %{_libdir}/libXpm.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXpm.so.4
 %attr(755,root,root) %{_libdir}/libXrandr.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXrandr.so.2
 %attr(755,root,root) %{_libdir}/libXrender.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXrender.so.1
 %attr(755,root,root) %{_libdir}/libXss.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXss.so.1
 %attr(755,root,root) %{_libdir}/libXt.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXt.so.6
 %attr(755,root,root) %{_libdir}/libXtst.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXtst.so.6
 %attr(755,root,root) %{_libdir}/libXv.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXv.so.1
 %attr(755,root,root) %{_libdir}/libXvMC.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXvMC.so.1
 %attr(755,root,root) %{_libdir}/libXxf86dga.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXxf86dga.so.1
 %attr(755,root,root) %{_libdir}/libXxf86misc.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXxf86misc.so.1
 %attr(755,root,root) %{_libdir}/libXxf86rush.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXxf86rush.so.1
 %attr(755,root,root) %{_libdir}/libXxf86vm.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libXxf86vm.so.1
 %attr(755,root,root) %{_libdir}/libdmx.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libdmx.so.1
 %attr(755,root,root) %{_libdir}/libfontenc.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libfontenc.so.1
 %attr(755,root,root) %{_libdir}/libxkbfile.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libxkbfile.so.1
 %attr(755,root,root) %{_libdir}/libxkbui.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libxkbui.so.1
 %attr(755,root,root) %{_libdir}/libxrx.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libxrx.so.6
 
 %files modules
 %defattr(644,root,root,755)
@@ -3006,10 +3063,11 @@ fi
 %{_sysconfdir}/X11/xkb
 /var/lib/xkb
 %dir %{_libdir}/modules
+%attr(755,root,root) %{_libdir}/modules/*.a
 %dir %{_libdir}/modules/dri
 %dir %{_libdir}/modules/drivers
-%attr(755,root,root) %{_libdir}/modules/*.a
 #%attr(755,root,root) %{_libdir}/modules/codeconv
+%attr(755,root,root) %{_libdir}/modules/drivers/dummy_drv.o
 %ifnarch %{x8664}
 %attr(755,root,root) %{_libdir}/modules/drivers/linux
 %endif
@@ -3117,6 +3175,7 @@ fi
 %files tools
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/beforelight
+%attr(755,root,root) %{_bindir}/dbedizzy
 %attr(755,root,root) %{_bindir}/ico
 %attr(755,root,root) %{_bindir}/listres
 %attr(755,root,root) %{_bindir}/showfont

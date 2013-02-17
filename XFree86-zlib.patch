@@ -1,0 +1,29 @@
+--- XFree86-4.8.0/xc/programs/mkfontscale/ident.c.orig	2005-03-26 02:28:02.000000000 +0100
++++ XFree86-4.8.0/xc/programs/mkfontscale/ident.c	2013-02-15 20:49:41.914882346 +0100
+@@ -214,7 +214,7 @@
+ #define NKEY 20
+ 
+ static char*
+-getKeyword(gzFile *f, int *eol)
++getKeyword(gzFile f, int *eol)
+ {
+     static char keyword[NKEY + 1];
+     int c, i;
+@@ -237,7 +237,7 @@
+ }
+ 
+ static int
+-bdfskip(gzFile *f)
++bdfskip(gzFile f)
+ {
+     int c;
+     do {
+@@ -249,7 +249,7 @@
+ }
+ 
+ static char *
+-bdfend(gzFile *f)
++bdfend(gzFile f)
+ {
+     int c;
+     char *buf = NULL;

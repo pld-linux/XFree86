@@ -1,11 +1,96 @@
-diff -durN -x '*~' XFree86-4.3.99.901.orig/xc/programs/Xserver/hw/xfree86/os-support/shared/drm/kernel/drm.h XFree86-4.3.99.901/xc/programs/Xserver/hw/xfree86/os-support/shared/drm/kernel/drm.h
---- XFree86-4.3.99.901.orig/xc/programs/Xserver/hw/xfree86/os-support/shared/drm/kernel/drm.h	2003-12-02 14:02:43.000000000 +0100
-+++ XFree86-4.3.99.901/xc/programs/Xserver/hw/xfree86/os-support/shared/drm/kernel/drm.h	2004-12-20 16:14:32.996352304 +0100
-@@ -38,7 +38,6 @@
- #define _DRM_H_
+--- XFree86-4.8.0/xc/lib/Xxf86dga/XF86DGA.c.orig	2005-02-28 17:42:21.000000000 +0100
++++ XFree86-4.8.0/xc/lib/Xxf86dga/XF86DGA.c	2013-02-15 19:01:14.491822103 +0100
+@@ -19,7 +19,6 @@
+ #define HAS_MMAP_ANON
+ #include <sys/types.h>
+ #include <sys/mman.h>
+-#include <asm/page.h>   /* PAGE_SIZE */
+ #define HAS_SC_PAGESIZE /* _SC_PAGESIZE may be an enum for Linux */
+ #define HAS_GETPAGESIZE
+ #endif /* linux */
+--- XFree86-4.8.0/xc/lib/Xaw/OS.c.orig	2005-02-28 17:42:10.000000000 +0100
++++ XFree86-4.8.0/xc/lib/Xaw/OS.c	2013-02-15 19:48:32.911702986 +0100
+@@ -11,7 +11,6 @@
+ #endif
  
- #if defined(__linux__)
--#include <linux/config.h>
- #include <asm/ioctl.h>		/* For _IO* macros */
- #define DRM_IOCTL_NR(n)		_IOC_NR(n)
- #define DRM_IOC_VOID		_IOC_NONE
+ #if defined(linux)
+-#include <asm/page.h>	/* for PAGE_SIZE */
+ #define HAS_GETPAGESIZE
+ #define HAS_SC_PAGESIZE	/* _SC_PAGESIZE may be an enum for Linux */
+ #endif
+--- XFree86-4.8.0/xc/programs/xedit/lisp/lisp.c.orig	2005-10-18 16:37:04.000000000 +0200
++++ XFree86-4.8.0/xc/programs/xedit/lisp/lisp.c	2013-02-15 22:38:05.974609398 +0100
+@@ -46,7 +46,6 @@
+ #endif
+ 
+ #if defined(linux)
+-#include <asm/page.h>	/* for PAGE_SIZE */
+ #define HAS_GETPAGESIZE
+ #define HAS_SC_PAGESIZE	/* _SC_PAGESIZE may be an enum for Linux */
+ #endif
+--- XFree86-4.8.0/xc/programs/Xserver/hw/xfree86/fbdevhw/fbdevhw.c.orig	2006-03-19 01:22:50.000000000 +0100
++++ XFree86-4.8.0/xc/programs/Xserver/hw/xfree86/fbdevhw/fbdevhw.c	2013-02-16 10:17:41.869514501 +0100
+@@ -1,5 +1,7 @@
+ /* $XFree86: xc/programs/Xserver/hw/xfree86/fbdevhw/fbdevhw.c,v 1.35 2006/03/16 16:50:24 dawes Exp $ */
+ 
++#include <unistd.h>
++
+ /* all driver need this */
+ #include "xf86.h"
+ #include "xf86_OSproc.h"
+@@ -14,8 +16,6 @@
+ #include "fbdevhw.h"
+ #include "fbpriv.h"
+ 
+-#include "asm/page.h"	/* #define for PAGE_* */
+-
+ #include "globals.h"
+ #define DPMS_SERVER
+ #include <X11/extensions/dpms.h>
+@@ -545,6 +545,7 @@
+ static void
+ calculateFbmem_len(fbdevHWPtr fPtr)
+ {
++	size_t PAGE_MASK = getconf(_SC_PAGESIZE);
+ 	fPtr->fboff = (unsigned long) fPtr->fix.smem_start & ~PAGE_MASK;
+ 	fPtr->fbmem_len = (fPtr->fboff+fPtr->fix.smem_len+~PAGE_MASK) &
+ 			  PAGE_MASK;
+@@ -555,6 +556,7 @@
+ fbdevHWMapVidmem(ScrnInfoPtr pScrn)
+ {
+ 	fbdevHWPtr fPtr = FBDEVHWPTR(pScrn);
++	size_t PAGE_MASK = getconf(_SC_PAGESIZE);
+ 
+ 	TRACE_ENTER("MapVidmem");
+ 	if (NULL == fPtr->fbmem) {
+@@ -607,6 +609,7 @@
+ 	unsigned int mmio_off;
+ 
+ 	fbdevHWPtr fPtr = FBDEVHWPTR(pScrn);
++	size_t PAGE_MASK = getconf(_SC_PAGESIZE);
+ 
+ 	TRACE_ENTER("MapMMIO");
+ 	if (NULL == fPtr->mmio) {
+@@ -638,6 +641,7 @@
+ fbdevHWUnmapMMIO(ScrnInfoPtr pScrn)
+ {
+ 	fbdevHWPtr fPtr = FBDEVHWPTR(pScrn);
++	size_t PAGE_MASK = getconf(_SC_PAGESIZE);
+ 
+ 	TRACE_ENTER("UnmapMMIO");
+ 	if (NULL != fPtr->mmio) {
+--- XFree86-4.8.0/xc/programs/Xserver/hw/tinyx/vesa/vm86.c.orig	2005-02-28 17:42:55.000000000 +0100
++++ XFree86-4.8.0/xc/programs/Xserver/hw/tinyx/vesa/vm86.c	2013-02-16 17:57:20.158357150 +0100
+@@ -269,10 +269,10 @@
+ 	return -1;
+     }
+     memcpy(&(LM(vi,vi->ret_code)), retcode_data, sizeof(retcode_data));
+-    vi->vms.regs.eflags = IF_MASK | IOPL_MASK;
++    vi->vms.regs.eflags = X86_EFLAGS_IF | X86_EFLAGS_IOPL;
+     vi->vms.regs.ss = POINTER_SEGMENT(vi->stack_base);
+     vi->vms.regs.esp = STACK_SIZE;
+-    PUSHW(vi, IF_MASK | IOPL_MASK);
++    PUSHW(vi, X86_EFLAGS_IF | X86_EFLAGS_IOPL);
+     PUSHW(vi, POINTER_SEGMENT(vi->ret_code));
+     PUSHW(vi, POINTER_OFFSET(vi->ret_code));
+     vi->vms.regs.cs = seg;

@@ -1,0 +1,107 @@
+Note: Xft1 chunk removes non-public (and no longer used) Xft function,
+which relied on private fontconfig functions, which are no longer exported.
+--- XFree86-4.8.0/xc/config/cf/lnxLib.tmpl.orig	2006-02-19 17:25:26.000000000 +0100
++++ XFree86-4.8.0/xc/config/cf/lnxLib.tmpl	2013-02-17 12:47:40.102177683 +0100
+@@ -23,8 +23,11 @@
+ #define SharedXaw6Reqs	  $(LDPRELIB) $(XMULIB) $(XTOOLLIB) $(XLIB)
+ #define SharedXawReqs	  $(LDPRELIB) $(XMULIB) $(XTOOLLIB) $(XPMLIB) $(XLIB)
+ #define SharedXmuReqs	  $(LDPRELIB) $(XTOOLLIB) $(XLIB)
++#define SharedXmuuReqs	  $(LDPRELIB) $(XONLYLIB)
+ #define SharedXextReqs	  $(LDPRELIB) $(XONLYLIB)
+ #define SharedXiReqs	  $(LDPRELIB) $(XLIB)
++#define SharedXpmReqs	  $(LDPRELIB) $(XONLYLIB)
++#define SharedXpReqs	  $(LDPRELIB) $(XLIB)
+ #define SharedXrenderReqs $(LDPRELIB) $(XLIB)
+ #define SharedXtstReqs	  $(LDPRELIB) $(XLIB)
+ #define SharedSMReqs	  $(LDPRELIB) $(ICELIB)
+@@ -36,16 +39,28 @@
+ #endif
+ #define SharedGLReqs	  $(LDPRELIB) $(XLIB) ExtraSharedGLReqs
+ 
++#define SharedAppleWMReqs	$(LDPRELIB) $(XLIB)
++#define SharedDPSReqs	$(LDPRELIB) $(XTOOLONLYLIB) $(XLIB)
++#define SharedDPSTKReqs	$(LDPRELIB) $(XONLYLIB) $(DPSLIB) -lm
++#define SharedDmxReqs	$(LDPRELIB) $(XLIB)
++#define SharedFontencReqs	$(LDPREFIX) -lz
++#define SharedGLUReqs	$(LDPRELIB) $(GLXLIB)
++#define	SharedOSMesaReqs	$(LDPREFIX) $(GLXLIB) $(XXF86VMLIB) $(XLIB) -lm
+ #define SharedXResReqs	$(LDPRELIB) $(XLIB)
++#define SharedXcursorReqs	$(LDPRELIB) $(XRENDERLIB) $(XONLYLIB)
++#define SharedXfontReqs	$(LDPRELIB) $(FREETYPE2LIB) -lm -lz
+ #define SharedXfontcacheReqs	$(LDPRELIB) $(XLIB)
+ #define SharedXineramaReqs	$(LDPRELIB) $(XLIB)
++#define SharedXrandrReqs	$(LDPRELIB) $(XRENDERLIB) $(XLIB)
+ #define SharedXssReqs	$(LDPRELIB) $(XLIB)
++#define SharedXvReqs	$(LDPRELIB) $(XLIB)
+ #define SharedXvMCReqs	$(LDPRELIB) $(XLIB)
+ #define SharedXxf86dgaReqs	$(LDPRELIB) $(XLIB)
+ #define SharedXxf86miscReqs	$(LDPRELIB) $(XLIB)
++#define SharedXxf86rushReqs	$(LDPRELIB) $(XLIB)
+ #define SharedXxf86vmReqs	$(LDPRELIB) $(XLIB)
+ #define SharedxkbfileReqs	$(LDPRELIB) $(XONLYLIB)
+-#define SharedxkbuiReqs $(LDPRELIB) $(XKBFILELIB) $(XONLYLIB)
++#define SharedxkbuiReqs $(LDPRELIB) $(XKBFILELIB) $(XONLYLIB) -lm
+ 
+ #else	/* UseElfFormat */
+ 
+--- XFree86-4.8.0/xc/programs/xrx/plugin/Imakefile.orig	2007-01-19 16:12:54.000000000 +0100
++++ XFree86-4.8.0/xc/programs/xrx/plugin/Imakefile	2013-02-17 12:41:51.235525657 +0100
+@@ -197,7 +197,7 @@
+ PLUGIN_LDOPTIONS = $(LDPRELIBS)
+ #endif /* UseInstalledX11 */
+ 
+-    REQUIREDLIBS =  $(X11R6_3_EXTENSIONS) $(PLUGIN_LDOPTIONS) $(RXICELIB) $(XTOOLONLYLIB) $(XLIB)
++    REQUIREDLIBS =  $(X11R6_3_EXTENSIONS) $(PLUGIN_LDOPTIONS) $(RXICELIB) $(XTOOLONLYLIB) $(XLIB) $(ICELIB)
+ 
+ #include <Library.tmpl>
+ 
+--- XFree86-4.8.0/xc/lib/XvMC/hw/i810/Imakefile.orig	2005-10-18 16:34:46.000000000 +0200
++++ XFree86-4.8.0/xc/lib/XvMC/hw/i810/Imakefile	2013-02-17 12:43:06.572189160 +0100
+@@ -10,7 +10,7 @@
+ #include <Threads.tmpl>
+ 
+ #ifdef SharedXvMCReqs
+-REQUIREDLIBS = SharedXvMCReqs
++REQUIREDLIBS = SharedXvMCReqs $(XVMCLIB) $(XVLIB)
+ #endif
+ 
+ #if Malloc0ReturnsNull
+--- XFree86-4.8.0/xc/lib/GLw/Imakefile.orig	2005-10-18 16:34:31.000000000 +0200
++++ XFree86-4.8.0/xc/lib/GLw/Imakefile	2013-02-17 12:44:09.392186525 +0100
+@@ -69,7 +69,7 @@
+ #define SoRev SOGLWREV
+ #define IncSubdir GL
+ 
+-REQUIREDLIBS = $(LDPRELIBS) $(XTOOLLIB) $(XLIB)
++REQUIREDLIBS = $(LDPRELIBS) $(XTOOLLIB) $(GLXLIB) $(XLIB)
+ 
+ DEFINES = 
+ 
+--- XFree86-4.8.0/xc/lib/Xft1/xftpat.c.orig	2005-02-28 17:42:19.000000000 +0100
++++ XFree86-4.8.0/xc/lib/Xft1/xftpat.c	2013-02-17 14:23:35.631936147 +0100
+@@ -206,15 +206,6 @@ XftPatternGetBool (XftPattern *p, const
+     return XftResultMatch;
+ }
+ 
+-XftPatternElt *
+-XftPatternFind (XftPattern *p, const char *object, FcBool insert)
+-{
+-    if (insert)
+-	return FcPatternInsertElt (p, object);
+-    else
+-	return FcPatternFindElt (p, object);
+-}
+-
+     
+ XftPattern *
+ XftPatternDuplicate (XftPattern *orig)
+--- XFree86-4.8.0/xc/lib/Xft1/Xft-def.cpp.orig	2005-02-28 17:42:19.000000000 +0100
++++ XFree86-4.8.0/xc/lib/Xft1/Xft-def.cpp	2013-02-17 14:24:14.931934499 +0100
+@@ -135,7 +135,6 @@
+ XftPatternDel
+ XftPatternDestroy
+ XftPatternDuplicate
+-XftPatternFind
+ XftPatternGet
+ XftPatternGetBool
+ XftPatternGetDouble

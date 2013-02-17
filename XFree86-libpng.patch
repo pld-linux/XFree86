@@ -1,0 +1,11 @@
+--- XFree86-4.8.0/xc/programs/xcursorgen/xcursorgen.c.orig	2005-02-28 17:44:13.000000000 +0100
++++ XFree86-4.8.0/xc/programs/xcursorgen/xcursorgen.c	2013-02-16 20:40:59.811278393 +0100
+@@ -182,7 +182,7 @@
+       return NULL;
+     }
+ 
+-  if (setjmp (png->jmpbuf))
++  if (setjmp (png_jmpbuf (png)))
+     {
+       png_destroy_read_struct (&png, &info, NULL);
+       return NULL;

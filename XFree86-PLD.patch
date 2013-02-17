@@ -233,38 +233,6 @@
  
  /*
   * To not install the local font directory, uncomment the following
-@@ -304,27 +304,26 @@
-  * HasGlide2 to YES and set the Glide2IncDir variable. 
-  * HasGlide2 is per default NO.
-  *
--#define HasGlide2 YES
-  */
-+#define HasGlide2 YES
- 
- /*
-  * Set the path to your Glide include files.
-  *
--#define Glide2IncDir /usr/include/glide
-  */
-+#define Glide2IncDir /usr/include/glide
- 
- /* 
-  * Have glide 3?
-  *
--#define HasGlide3 YES
-  */
-+#define HasGlide3 YES
- 
- /*
-  * Set the path to your Glide 3 include files.
-  *
--#define Glide3IncDir /usr/include/glide3
-  */
--
-+#define Glide3IncDir /usr/include/glide3
- 
- 
- /*
 @@ -426,8 +425,8 @@
   * Some Linux releases don't have a libtermcap.  In this case you may need
   * to uncomment the following
@@ -443,8 +411,8 @@
  
  LinkConfDirectory(xinit,.,xinit,.)
  
---- xc/programs/xterm/Imakefile.orig	2007-07-03 17:19:53.000000000 +0200
-+++ xc/programs/xterm/Imakefile	2007-12-02 16:10:40.453362442 +0100
+--- xc/programs/xterm/Imakefile.orig	2008-11-01 20:57:39.000000000 +0100
++++ xc/programs/xterm/Imakefile	2013-02-15 18:39:33.885210018 +0100
 @@ -102,6 +102,10 @@
  # endif
  #endif
@@ -456,10 +424,10 @@
  #ifndef SpecialCObjectRule
  #define SpecialCObjectRule(module,ignore,defines) \
  module.o: ; $(CC) -c defines $(CFLAGS) module.c
-@@ -204,7 +208,7 @@
-         DEFINES = $(XKB_DEFINES) $(TERMCAPDEFINES) $(FEATURE_DEFINES) \
+@@ -209,7 +213,7 @@
                    $(SCROLLBAR_RIGHT) $(UTF8_OPTION) $(XRFDEF) $(PATH_DEFINES) \
-                   $(PUTENVDEF) $(IMAKEDEFINES) $(TRACEDEF)
+                   $(XTERM_FEATURE_OPTIONS) $(PUTENVDEF) \
+                   $(IMAKEDEFINES) $(TRACEDEF)
 -       INCLUDES = $(OBSOLETE_INCLUDES) $(XRFINCLUDES)
 +       INCLUDES = $(OBSOLETE_INCLUDES) $(XRFINCLUDES) -I/usr/include/ncurses
  
