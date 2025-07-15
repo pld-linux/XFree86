@@ -1860,15 +1860,15 @@ System. Також вам прийдеться встановити наступ
 %patch -P8 -p1
 %patch -P9 -p1
 %patch -P10 -p0
-#%patch11 -p0	-- obsoleted???
+#%%patch11 -p0	-- obsoleted???
 %patch -P12 -p1
 %patch -P13 -p1
 %patch -P14 -p0
 %patch -P15 -p0
 %patch -P16 -p0
-#%patch17 -p1	-- not ready, is it required?
-#%patch19 -p1	-- maybe should be updated to allow using make -j
-#%patch20 -p0
+#%%patch17 -p1	-- not ready, is it required?
+#%%patch19 -p1	-- maybe should be updated to allow using make -j
+#%%patch20 -p0
 %patch -P21 -p1
 %patch -P22 -p1
 %patch -P23 -p1
@@ -1876,16 +1876,16 @@ System. Також вам прийдеться встановити наступ
 %patch -P25 -p1
 %patch -P26 -p1
 %ifarch sparc sparc64
-#%patch28 -p1	-- needs update
+#%%patch28 -p1	-- needs update
 %endif
 %patch -P29 -p0
 %patch -P30 -p0
 %patch -P32 -p0
 %patch -P33 -p1
-#%patch34 -p1	-- seems not applied (was partially in rc1??? maybe another fix present?)
-#%patch35 -p1	-- obsoleted? (but doesn't look to be applied)
+#%%patch34 -p1	-- seems not applied (was partially in rc1??? maybe another fix present?)
+#%%patch35 -p1	-- obsoleted? (but doesn't look to be applied)
 %patch -P36 -p0
-#%patch38 -p0	-- causing problems IIRC (but not really needed)
+#%%patch38 -p0	-- causing problems IIRC (but not really needed)
 %patch -P39 -p0
 %patch -P40 -p1
 %{!?debug:%patch41 -p0}
@@ -1901,8 +1901,8 @@ System. Також вам прийдеться встановити наступ
 %patch -P52 -p1
 %patch -P53 -p0
 %patch -P55 -p0
-#%patch56 -p0   -- update if needed
-#%patch57 -p0   -- update if needed
+#%%patch56 -p0   -- update if needed
+#%%patch57 -p0   -- update if needed
 
 %build
 %{__make} -S -C xc World \
