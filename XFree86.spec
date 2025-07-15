@@ -1849,58 +1849,58 @@ System. Також вам прийдеться встановити наступ
 
 %prep
 %setup -qc -a1 -a2 -a7
-%patch0 -p0
-%patch1 -p1
-%patch2 -p1
-%patch3 -p0
-%patch4 -p1
-%patch5 -p0
-%patch6 -p0
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
-%patch10 -p0
+%patch -P0 -p0
+%patch -P1 -p1
+%patch -P2 -p1
+%patch -P3 -p0
+%patch -P4 -p1
+%patch -P5 -p0
+%patch -P6 -p0
+%patch -P7 -p1
+%patch -P8 -p1
+%patch -P9 -p1
+%patch -P10 -p0
 #%patch11 -p0	-- obsoleted???
-%patch12 -p1
-%patch13 -p1
-%patch14 -p0
-%patch15 -p0
-%patch16 -p0
+%patch -P12 -p1
+%patch -P13 -p1
+%patch -P14 -p0
+%patch -P15 -p0
+%patch -P16 -p0
 #%patch17 -p1	-- not ready, is it required?
 #%patch19 -p1	-- maybe should be updated to allow using make -j
 #%patch20 -p0
-%patch21 -p1
-%patch22 -p1
-%patch23 -p1
-%patch24 -p1
-%patch25 -p1
-%patch26 -p1
+%patch -P21 -p1
+%patch -P22 -p1
+%patch -P23 -p1
+%patch -P24 -p1
+%patch -P25 -p1
+%patch -P26 -p1
 %ifarch sparc sparc64
 #%patch28 -p1	-- needs update
 %endif
-%patch29 -p0
-%patch30 -p0
-%patch32 -p0
-%patch33 -p1
+%patch -P29 -p0
+%patch -P30 -p0
+%patch -P32 -p0
+%patch -P33 -p1
 #%patch34 -p1	-- seems not applied (was partially in rc1??? maybe another fix present?)
 #%patch35 -p1	-- obsoleted? (but doesn't look to be applied)
-%patch36 -p0
+%patch -P36 -p0
 #%patch38 -p0	-- causing problems IIRC (but not really needed)
-%patch39 -p0
-%patch40 -p1
+%patch -P39 -p0
+%patch -P40 -p1
 %{!?debug:%patch41 -p0}
 %{!?with_glide:%patch42 -p0}
-%patch43 -p0
-%patch44 -p0
-%patch45 -p1
-%patch46 -p0
-%patch47 -p1
-%patch49 -p1
-%patch50 -p0
-%patch51 -p1
-%patch52 -p1
-%patch53 -p0
-%patch55 -p0
+%patch -P43 -p0
+%patch -P44 -p0
+%patch -P45 -p1
+%patch -P46 -p0
+%patch -P47 -p1
+%patch -P49 -p1
+%patch -P50 -p0
+%patch -P51 -p1
+%patch -P52 -p1
+%patch -P53 -p0
+%patch -P55 -p0
 #%patch56 -p0   -- update if needed
 #%patch57 -p0   -- update if needed
 
